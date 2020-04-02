@@ -78,16 +78,21 @@
 			getCode(val) {
 				this.plateNumber = val;
 			},
+			isLicensePlate: function(str) { //验证是不车牌
+				return /^(([京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼使领][A-Z](([0-9]{5}[DF])|([DF]([A-HJ-NP-Z0-9])[0-9]{4})))|([京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼使领][A-Z][A-HJ-NP-Z0-9]{4}[A-HJ-NP-Z0-9挂学警港澳使领]))$/
+					.test(str);
+			},
 			Confirm(e) {
-					var that = this;
-					const {
-						plateNumber,carType1
-					} = this;
-					var plate = this.plateNumber;
-					var cartype1 = this.carType1;
-					console.log(cartype1);
+				var that = this;
+				const {
+					plateNumber,
+					carType1
+				} = this;
+				var plate = this.plateNumber;
+				var cartype1 = this.carType1;
+				if (that.isLicensePlate(plate)) {
 					if (this.current == 0) {
-						if((plate.length ==7) && (cartype1 != null && cartype1 != "")){
+						if ((plate.length == 7) && (cartype1 != null && cartype1 != "")) {
 							uni.setStorage({
 								key: 'CarType',
 								data: that.carType1,
@@ -102,11 +107,11 @@
 								title: '请输入车牌号和选择车类型',
 								icon: "none"
 							})
-			
+
 						}
 					}
 					if (this.current == 1) {
-						if (plate.length ==8) {
+						if (plate.length == 8) {
 							uni.setStorage({
 								key: 'CarType',
 								data: that.carType,
@@ -121,11 +126,18 @@
 								title: '请输入车牌号',
 								icon: "none"
 							})
-					
+
 						}
+
 					}
-				},
-			}
+				} else {
+					uni.showToast({
+						title: "请输入正确车牌号",
+						icon: "none"
+					})
+				}
+			},
+		}
 	}
 </script>
 

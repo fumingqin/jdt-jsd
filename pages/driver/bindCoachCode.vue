@@ -9,10 +9,10 @@
 				<uniSegmentedControl :current="current" :values="items" @clickItem="onClickItem" style-type="button" active-color="#FFFFFF"></uniSegmentedControl>
 			</view>
 			<view v-if="current === 0" style="margin-top: 43rpx;margin-left: 53upx;margin-right: 53upx;">
-				<validCode ref="code" @tap="key3" :maxlength="7" :isPwd="false" @finish="getCode"></validCode>
+				<validCode ref="code" :maxlength="7" :isPwd="false" @finish="getCode"></validCode>
 			</view>
 			<view v-if="current === 1" style="margin-top: 43rpx;margin-left: 53upx;margin-right: 53upx;">
-				<validCode ref="code" @tap="key3" :maxlength="8" :isPwd="false" @finish="getCode"></validCode>
+				<validCode ref="code" :maxlength="8" :isPwd="false" @finish="getCode"></validCode>
 			</view>
 			<view style="margin-top: 37upx;margin-left: 53upx;margin-right: 53upx; color: #FFFFFF;font-size: 36upx;font-family: SourceHanSansSC-Regular;text-align: left;">
 				所选工作：{{carType}}
@@ -23,20 +23,17 @@
 			<!-- <button @tap="key3">汽车键盘</button> -->
 			<button class="btn" @click="Confirm">确定</button>
 		</view>
-		<tki-float-keyboard ref="keyb" :mode="keyMode" :type="keyType" :title="keyTitle" @del="keyDel" @val="keyVal" @show="keyShow"
-		 @hide="keyHide"></tki-float-keyboard>
+
 	</view>
 </template>
 
 <script>
 	import uniSegmentedControl from "../../components/uni-segmented-control/uni-segmented-control.vue";
 	import validCode from "../../components/p-validCode/validCode.vue";
-	import tkiFloatKeyboard from '../../components/tki-float-keyboard/tki-float-keyboard.vue';
 	export default {
 		components: {
 			uniSegmentedControl,
-			validCode,
-			tkiFloatKeyboard
+			validCode
 		},
 		data() {
 			return {
@@ -44,44 +41,18 @@
 				current: 0,
 				items: ['燃油汽车', '新能源汽车'],
 				carType: "",
-				vals:"",
-				keyMode:'keyboard',
-				keyType:0,
-				keyTitle:"汽车键盘",
+				vals: "",
+				keyMode: 'car',
+				keyType: 0,
 				plateNumber: "",
+				keyTitle: '汽车键盘',
 			}
 		},
+		onReady() {},
 		onLoad(option) {
 			this.carType = option.cartype;
 		},
 		methods: {
-			// 汽车键盘
-			key3(){
-				this.keyMode = "car"
-				this.keyTitle = "汽车键盘"
-				this.showKey()
-			},
-			// 显示键盘
-			showKey(){
-				this.$refs.keyb._keyShow()
-			},
-			// 键盘退格
-			keyDel(){
-				let d = this.vals
-				this.vals = d.substring(0,d.length-1)
-			},
-			// 键盘输入值
-			keyVal(v){
-				this.plateNumber = this.vals + v
-			},
-			// 显示键盘后的回调
-			keyShow(h){
-				console.log(h)
-			},
-			// 隐藏键盘后的回调
-			keyHide(){
-			
-			},
 			async load() {
 				var that = this;
 				uni.getSystemInfo({
@@ -89,6 +60,10 @@
 						that.imgHeight = res.windowHeight;
 					}
 				});
+			},
+			isLicensePlate: function(str) { //验证是不车牌
+				return /^(([京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼使领][A-Z](([0-9]{5}[DF])|([DF]([A-HJ-NP-Z0-9])[0-9]{4})))|([京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼使领][A-Z][A-HJ-NP-Z0-9]{4}[A-HJ-NP-Z0-9挂学警港澳使领]))$/
+					.test(str);
 			},
 			goBack: function() {
 				uni.clearStorageSync('CarType');
@@ -103,6 +78,7 @@
 			},
 			getCode(val) {
 				this.plateNumber = val;
+				console.log(val + '车牌');
 			},
 			Confirm(e) {
 				var that = this;
@@ -110,44 +86,49 @@
 					plateNumber
 				} = this;
 				var plate = this.plateNumber;
-				console.log(plate);
-				if (this.current == 0) {
-					if (plate.length == 7) {
-						uni.setStorage({
-							key: 'CarType',
-							data: that.carType,
-							success() {
-								uni.navigateTo({
-									url: '/pages/driver/taxiDriver',
-								})
-							}
-						})
-					} else {
-						uni.showToast({
-							title: '请输入车牌号',
-							icon: "none"
-						})
-
+				if (that.isLicensePlate(plate)) {
+					if (this.current == 0) {
+						if (plate.length == 7) {
+							uni.setStorage({
+								key: 'CarType',
+								data: that.carType,
+								success() {
+									uni.navigateTo({
+										url: '/pages/driver/taxiDriver',
+									})
+								}
+							})
+						} else {
+							uni.showToast({
+								title: '请输入车牌号',
+								icon: "none"
+							})
+						}
 					}
-				}
-				if (this.current == 1) {
-					if (plate.length == 8) {
-						uni.setStorage({
-							key: 'CarType',
-							data: that.carType,
-							success() {
-								uni.navigateTo({
-									url: '/pages/driver/taxiDriver',
-								})
-							}
-						})
-					} else {
-						uni.showToast({
-							title: '请输入车牌号',
-							icon: "none"
-						})
+					if (this.current == 1) {
+						if (plate.length == 8) {
+							uni.setStorage({
+								key: 'CarType',
+								data: that.carType,
+								success() {
+									uni.navigateTo({
+										url: '/pages/driver/taxiDriver',
+									})
+								}
+							})
+						} else {
+							uni.showToast({
+								title: '请输入车牌号',
+								icon: "none"
+							})
 
+						}
 					}
+				} else {
+					uni.showToast({
+						title: "请输入正确车牌号",
+						icon: "none"
+					})
 				}
 			},
 		}
