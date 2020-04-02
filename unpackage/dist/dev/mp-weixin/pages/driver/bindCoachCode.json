@@ -1,0 +1,8 @@
+{
+  "navigationStyle": "custom",
+  "usingComponents": {
+    "tki-float-keyboard": "/components/tki-float-keyboard/tki-float-keyboard",
+    "uni-segmented-control": "/components/uni-segmented-control/uni-segmented-control",
+    "valid-code": "/components/p-validCode/validCode"
+  }
+}
