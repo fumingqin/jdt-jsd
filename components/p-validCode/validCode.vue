@@ -9,31 +9,39 @@ isPwd：是否是密码模式
  -->
 <template>
 	<view class="code-area">
-		<view class="flex-box">
+		<view class="flex-box" >
 			<input
 			    :value="val"
 				type="text"
-				focus="true"
+				:focus="false"
 				:maxlength="maxlength"
+				:disabled="true"
 				class="hide-input"
 				@input="getVal"
 				@change="change"
+				@click="key3"
 			/>
-			<block v-if="maxlength >0" v-for="(items,index) in maxlength" :key=index>			
-				<view v-bind:class="['item', { active: codeIndex == index+1 }]">
+			<block v-if="maxlength >0" v-for="(items,index) in maxlength" :key="index" >			
+				<view  v-bind:class="['item', { active: codeIndex == index+1 }]" >
 					<view class="line"></view>
-					<block v-if="isPwd && codeArr.length >= index+1">
+					<block v-if="isPwd && codeArr.length >= index+1" >
 						<!-- <text class="dot">.</text> -->
 					</block>
 					<block v-else>	{{ codeArr[index] ? codeArr[index] : ''}}</block>
 				</view>
 			</block>
 		</view>
+		<tki-float-keyboard ref="keyb" :mode="keyMode" :type="keyType" :title="keyTitle" @del="keyDel" @val="keyVal" @show="keyShow"
+		 @hide="keyHide"></tki-float-keyboard>
 	</view>
 </template>
 
 <script>
+	import tkiFloatKeyboard from "../tki-float-keyboard/tki-float-keyboard.vue";
 export default {
+	components: {
+		tkiFloatKeyboard
+	},
 	props: {
 		//最大长度 值为4或者6
 		maxlength: {
@@ -51,6 +59,11 @@ export default {
 			codeIndex: 1, //下标
 			codeArr: [],
 			val:'',//输入框的值
+			keyMode: 'car',
+			keyType: 0,
+			keyTitle: '汽车键盘',
+			value1:'',
+			len:1,
 		};
 	},
 	methods: {
@@ -60,19 +73,76 @@ export default {
 				this.$emit('finish',this.codeArr.join(''));
 			}
 		},
+		// 汽车键盘
+		key3() {
+			this.keyMode = "car"
+			this.keyTitle = "汽车键盘"
+			this.showKey()
+		},
+		// 显示键盘
+		showKey() {
+			this.$refs.keyb._keyShow();
+		},
+		// 键盘退格
+		keyDel() {
+			if(this.codeIndex>1){
+				this.codeArr[this.codeIndex-2]= '';
+				this.value1=this.value1.substring(0,this.codeArr.length-1)
+				this.codeIndex--;
+				this.codeArr.length--;
+			}else{
+				uni.showToast({
+					title:"到底啦~~",
+					icon:"none"
+				})
+				console.log(this.codeArr)
+			}
+		
+			// this.vals = d.substring(0, d.length - 1)
+		},
+		// 键盘输入值
+		keyVal(value) {
+			if(this.len==Number(this.maxlength)){
+				this.getVal(value); 
+			}else{
+				this.value1='';
+				this.getVal(value); 
+				this.len=Number(this.maxlength);
+			}
+			
+		},
+		// 显示键盘后的回调
+		keyShow(h) {
+		},
+		// 隐藏键盘后的回调
+		keyHide() {
+		
+		},
 		//取值
 		getVal(e) {
-			let { value } = e.detail;
-			this.val=value;
-			// console.log('验证码:', value);
-			let arr = value.split('');
-			this.codeIndex = arr.length + 1;
-			this.codeArr = arr;
-			// console.log(this.codeIndex, this.pwdArr);
-			// if (this.codeIndex > Number(this.maxlength)) {
-			// 	//输入完成
-			// 	this.$emit('finish',this.codeArr.join(''));
-			// }
+			if(this.codeArr.length<Number(this.maxlength)){
+				this.value1=this.value1+e
+				var a={
+					value:this.value1
+				}
+				let { value } = a;
+				this.val=value;
+				// console.log('验证码:', value);
+				let arr = value.split('');
+				this.codeIndex = arr.length + 1;
+				this.codeArr = arr;
+				// console.log(arr.length)
+				// console.log(this.codeIndex, this.pwdArr);
+				if (this.codeIndex > Number(this.maxlength)) {
+					//输入完成
+					this.$emit('finish',this.codeArr.join(''));
+				}
+			}else{
+				uni.showToast({
+					title:"车牌最多"+this.maxlength+"位",
+					icon:"none"
+				})
+			}
 		},
 		//清除验证码或者密码
 		clear(){
