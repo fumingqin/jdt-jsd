@@ -62,7 +62,10 @@ export default {
 		},
 		//取值
 		getVal(e) {
+			uni.hideKeyboard();
+			console.log(e.detail)
 			let { value } = e.detail;
+			console.log(typeof value)
 			this.val=value;
 			// console.log('验证码:', value);
 			let arr = value.split('');

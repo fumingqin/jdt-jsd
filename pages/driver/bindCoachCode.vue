@@ -47,6 +47,7 @@
 				vals:"",
 				keyMode:'keyboard',
 				keyType:0,
+				keyTitle:"汽车键盘",
 				plateNumber: "",
 			}
 		},
