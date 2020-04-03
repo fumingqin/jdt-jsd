@@ -39,7 +39,7 @@
 				})
 			},
 			receipt() {
-				uni.navigateTo({
+				uni.redirectTo({
 					url: '/pages/driver/taxiDriver',
 				})
 			},
