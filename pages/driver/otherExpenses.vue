@@ -41,32 +41,9 @@
 			}
 		},
 		methods: {
-			finish() {
-				var that = this;
-				const {
-					highspeedFee,
-					pakingFee,
-					otherFee
-				} = this;
-				var highspeed = this.highspeedFee;
-				var paking = this.pakingFee;
-				var other = this.otherFee;
-				if ((highspeed == null || highspeed == "") || (paking == null || paking == "") || (other == null || other == "")) {
-					uni.showToast({
-						title: '请输入费用',
-						icon: "none"
-					})
-				} else {
-					uni.redirectTo({
-						url: '/pages/driver/orderComplete',
-					})
-
-				}
-			},
 			judgeNum(val) { //只能输入数字
 				var regPos = /^\d+(\.\d+)?$/; //非负浮点数
-				var regNeg = /^(-(([0-9]+\.[0-9]*[1-9][0-9]*)|([0-9]*[1-9][0-9]*\.[0-9]+)|([0-9]*[1-9][0-9]*)))$/; //负浮点数
-				if (regPos.test(val) || regNeg.test(val)) {
+				if (regPos.test(val)) {
 					return true;
 				} else {
 					return false;
@@ -84,6 +61,28 @@
 				}
 				const key = e.currentTarget.dataset.key;
 				this[key] = e.detail.value;
+			},
+			finish() {
+				var that = this;
+				const {
+					highspeedFee,
+					pakingFee,
+					otherFee
+				} = this;
+				var highspeed = this.highspeedFee;
+				var paking = this.pakingFee;
+				var other = this.otherFee;
+				//if ((highspeed == null || highspeed == "") || (paking == null || paking == "") || (other == null || other == "")) {
+				if (that.judgeNum(highspeed) && that.judgeNum(paking) && that.judgeNum(other)) {
+					uni.redirectTo({
+						url: '/pages/driver/orderComplete',
+					})
+				} else {
+					uni.showToast({
+						title: '请输入正确的费用',
+						icon: "none"
+					})
+				}
 			},
 		}
 	}

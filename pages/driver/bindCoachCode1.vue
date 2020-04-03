@@ -111,10 +111,10 @@
 						}
 					}
 					if (this.current == 1) {
-						if (plate.length == 8) {
+						if ((plate.length == 8) && (cartype1 != null && cartype1 != "")) {
 							uni.setStorage({
 								key: 'CarType',
-								data: that.carType,
+								data: that.carType1,
 								success() {
 									uni.navigateTo({
 										url: '/pages/driver/taxiDriver',
@@ -123,7 +123,7 @@
 							})
 						} else {
 							uni.showToast({
-								title: '请输入车牌号',
+								title: '请输入车牌号和选择车类型',
 								icon: "none"
 							})
 
