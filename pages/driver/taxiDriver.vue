@@ -62,8 +62,9 @@
 		},
 		methods: {
 			back: function() {
-				var that = this;
-				uni.navigateBack({});
+				uni.switchTab({
+					url: '/pages/index/index',
+				})
 			},
 			receipt() {
 				uni.navigateTo({

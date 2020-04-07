@@ -9,27 +9,25 @@
 		<view style="width: 94%;height: 105rpx; background-color: #FFFFFF;margin-left: 22rpx; border-radius:20rpx; margin-top: 10rpx;">
 			<view style="padding: 30rpx;display: flex;flex-direction: row;">
 				<text style="width:120rpx;height:40rpx;font-size:32rpx;font-family:Source Han Sans SC;font-weight:400;color:rgba(51,51,51,1);line-height:36rpx;">高速费</text>
-				<input type="number" class="inputClass" placeholder="请输入费用" data-key="highspeedFee" @input="inputChange" />
+				<input type="number" class="inputClass" placeholder="请输入费用" :value="highspeedFee" data-key="highspeedFee" @input="inputChange" />
 				<text class="textClass">元</text>
 			</view>
 		</view>
 		<view style="width: 94%;height: 105rpx; background-color: #FFFFFF;margin-left: 22rpx; border-radius:20rpx; margin-top: 40rpx;">
 			<view style="padding: 30rpx;display: flex;flex-direction: row;">
 				<text style="width:120rpx;height:40rpx;font-size:32rpx;font-family:Source Han Sans SC;font-weight:400;color:rgba(51,51,51,1);line-height:36rpx;">停车费</text>
-				<input type="number" class="inputClass" placeholder="请输入费用" data-key="pakingFee" @input="inputChange" />
+				<input type="number" class="inputClass" placeholder="请输入费用" :value="pakingFee" data-key="pakingFee" @input="inputChange" />
 				<text class="textClass">元</text>
 			</view>
 		</view>
 		<view style="width: 94%;height: 105rpx; background-color: #FFFFFF;margin-left: 22rpx; border-radius:20rpx; margin-top: 40rpx;">
 			<view style="padding: 30rpx;display: flex;flex-direction: row;">
 				<text style="width:120rpx;height:40rpx;font-size:32rpx;font-family:Source Han Sans SC;font-weight:400;color:rgba(51,51,51,1);line-height:36rpx;">其他</text>
-				<input type="number" class="inputClass" placeholder="请输入费用" data-key="otherFee" @input="inputChange" />
+				<input type="number" class="inputClass" placeholder="请输入费用" :value="otherFee" data-key="otherFee" @input="inputChange" />
 				<text class="textClass">元</text>
 			</view>
 		</view>
-		<view style="margin-top: 20rpx;">
-			<image @click="finish" style="width: 750rpx; height: 195rpx;" src="../../static/driver/finishButton.png"></image>
-		</view>
+		<image @click="finish" style="width: 750rpx; height: 195rpx; margin-top: 20rpx;" src="../../static/driver/finishButton.png"></image>
 	</view>
 </template>
 
@@ -37,12 +35,33 @@
 	export default {
 		data() {
 			return {
-				highspeedFee: "",
-				pakingFee: "",
-				otherFee: "",
+				highspeedFee: "0",
+				pakingFee: "0",
+				otherFee: "0",
 			}
 		},
 		methods: {
+			judgeNum(val) { //只能输入数字
+				var regPos = /^\d+(\.\d+)?$/; //非负浮点数
+				if (regPos.test(val)) {
+					return true;
+				} else {
+					return false;
+				}
+			},
+			inputChange(e) {
+				var num = e.detail.value;
+				if (this.judgeNum(num)) {
+
+				} else {
+					uni.showToast({
+						title: '请输入正确的费用',
+						icon: 'none',
+					})
+				}
+				const key = e.currentTarget.dataset.key;
+				this[key] = e.detail.value;
+			},
 			finish() {
 				var that = this;
 				const {
@@ -53,43 +72,20 @@
 				var highspeed = this.highspeedFee;
 				var paking = this.pakingFee;
 				var other = this.otherFee;
-				if ((highspeed == null || highspeed == "") || (paking == null || paking == "") || (other == null || other == "")) {
-					uni.showToast({
-						title: '请输入费用',
-						icon: "none"
-					})
-				} else {
+				//if ((highspeed == null || highspeed == "") || (paking == null || paking == "") || (other == null || other == "")) {
+				if (that.judgeNum(highspeed) && that.judgeNum(paking) && that.judgeNum(other)) {
 					uni.redirectTo({
 						url: '/pages/driver/orderComplete',
 					})
-
-				}
-			},
-			judgeNum(val){  //只能输入数字
-				var regPos = /^\d+(\.\d+)?$/; //非负浮点数
-				    var regNeg = /^(-(([0-9]+\.[0-9]*[1-9][0-9]*)|([0-9]*[1-9][0-9]*\.[0-9]+)|([0-9]*[1-9][0-9]*)))$/; //负浮点数
-				    if(regPos.test(val) || regNeg.test(val)) {
-				        return true;
-				    } else {
-				        return false;
-				    }
-			},
-			inputChange(e) {
-				var num=e.detail.value;
-				if(this.judgeNum(num)){
-					
-				}else{
+				} else {
 					uni.showToast({
-						title : '请输入正确的费用',
-						icon : 'none',
+						title: '请输入正确的费用',
+						icon: "none"
 					})
 				}
-				const key = e.currentTarget.dataset.key;
-				this[key] = e.detail.value;
 			},
 		}
 	}
-	
 </script>
 
 <style>

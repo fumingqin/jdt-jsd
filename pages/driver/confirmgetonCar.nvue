@@ -150,7 +150,7 @@
 			confirmgettoDestination() {
 				//取消由 setInterval 设置的定时器
 				clearInterval(this.directionInterval);
-				uni.navigateTo({
+				uni.redirectTo({
 					url: '/pages/driver/otherExpenses',
 				})
 			},

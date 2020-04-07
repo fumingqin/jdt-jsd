@@ -51,6 +51,11 @@
 		onReady() {},
 		onLoad(option) {
 			this.carType = option.cartype;
+			/* if(uni.getStorageSync('CarType') == this.carType){
+				uni.navigateTo({
+					url:'./taxiDriver',
+				});
+			} */
 		},
 		methods: {
 			async load() {
@@ -97,7 +102,7 @@
 										url: '/pages/driver/taxiDriver',
 									})
 								}
-							})
+							});
 						} else {
 							uni.showToast({
 								title: '请输入车牌号',
