@@ -69,14 +69,10 @@
 			</view>
 
 			<view>
-				<!-- <button style="width: 698rpx;height: 105rpx;background-color: #FC6A6C;border-color:#FC6A6C;margin-left: 28rpx; border-radius:20rpx; position: fixed; padding: 6rpx;bottom: 90rpx;"
-				 @longpress="confirmgettoDestination"> -->
-				<!-- 	<text style="color: #FFFFFF;">长按确认到达目的地</text>
-				</button> -->
-				<view style="width: 698rpx; margin-left: 32rpx;margin-top: 30rpx;position: fixed;bottom:50rpx ;">
-					<move-verify @result='verifyResult' ref="verifyElement"></move-verify>
-					<!-- <button  @longpress ="ce" >555</button> -->
-				</view>
+				<button style="width: 698rpx;height: 105rpx;background-color: #FC6A6C;border-color:#FC6A6C;margin-left: 28rpx; border-radius:20rpx; position: fixed; padding: 6rpx;bottom: 90rpx;"
+				 @longpress="confirmgettoDestination">
+					<text style="color: #FFFFFF;">长按确认到达目的地</text>
+				</button>
 			</view>
 		</view>
 	</view>
@@ -85,11 +81,9 @@
 <script>
 	import taxi from '../../common/Czc.js';
 	import uniIcons from "@/components/uni-icons/uni-icons.vue";
-	import moveVerify from "@/components/helang-moveVerify/helang-moveVerify.vue";
 	export default {
 		components: {
 			uniIcons,
-			"move-verify": moveVerify
 		},
 		data() {
 			return {
