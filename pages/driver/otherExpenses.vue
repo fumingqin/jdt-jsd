@@ -59,7 +59,7 @@
 						icon: "none"
 					})
 				} else {
-					uni.navigateTo({
+					uni.redirectTo({
 						url: '/pages/driver/orderComplete',
 					})
 
