@@ -1,6 +1,6 @@
 <template>
 	<view class="pathway" @touchend="onEnd" id="pathway">
-		<view  style="background-color: #494647;width: 700rpx;height: 100rpx;" :style="{'transform':'translateX('+oldx+'px)'}" >
+		<view  style="background-color: #494647;width: 700rpx;height: 105rpx;" :style="{'transform':'translateX('+oldx+'px)'}" >
 			<!-- <text style="color: #FFFFFF;line-height: 100rpx;">右滑确认乘客已上车</text> -->
 		</view>
 		<view class="tips">
@@ -96,25 +96,27 @@
 
 <style scoped lang="scss">
 	.pathway {
-		height: 100rpx;
+		height: 105rpx;
 		width: 698rpx;
 		// background-color: #7ac23c;
 		background-color:rgba(250,116,101,1);
 		position: fixed;
 		// overflow: hidden;
 		flex-wrap:nowrap;
-		border-radius: 20rpx;
+		// border-radius: 20rpx;
 		z-index:999;
 		text-overflow: clip;
+		bottom:50rpx;
+		left: 32rpx;
 		}
 		/* 提示信息 */
 		.tips {
 			position:fixed;
 			// top: 0;
-			bottom: 220rpx;
-			left: 0;
+			bottom:50rpx;
+			left: 32rpx;
 			width: 700rpx;
-			 line-height: 100rpx;
+			 line-height: 105rpx;
 			text-align: center;
 			color: #7ac23c;
 			font-size: 32rpx;
@@ -125,9 +127,8 @@
 		.track {
 			position: fixed;
 			// top: 0;
-			bottom: 220rpx;
-			left: 28rpx;
-			right: 28rpx;
+			bottom:50rpx;
+			left: 60rpx;
 			right: 50rpx;
 			// background-color: #494647;
 			// width: 700rpx;
@@ -141,18 +142,18 @@
 		.movable-area {
 			position: fixed;
 			// top: 0;
-			bottom: 220rpx;
-			left: 28rpx;
-			right: 28rpx;
-			height: 100rpx;
+			bottom:50rpx;
+			left: 32rpx;
+			// right: 28rpx;
+			height: 105rpx;
 			width: 698rpx;
 			background-color: none;
 			z-index: 5;
 		}
 		
 		.movable-view {
-			height: 100rpx;
-			width: 100rpx;
+			height: 105rpx;
+			width: 130rpx;
 			box-sizing: border-box;
 			background-color: #fff;
 			border-width: 1px;
