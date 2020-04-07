@@ -57,8 +57,8 @@
 				<text style="width:160rpx;height:40rpx;font-size:32rpx;font-family:Source Han Sans SC;font-weight:300;color:rgba(44,45,45,1);line-height:42rpx;">{{CarType}}</text>
 			</view>
 			<view style="display: flex; margin-left: 4rpx;">
-				<button class="upWork" :class="!IsWork?'BtnStyle':''" @click="changeWorkState(true)">上班</button>
-				<button class="downWork" :class="IsWork?'BtnStyle':''" @click="changeWorkState(false)">下班</button>
+				<button class="upWork" :disabled="IsWork" :class="!IsWork?'BtnStyle':''" @click="changeWorkState(true)">上班</button>
+				<button class="downWork" :disabled="!IsWork" :class="IsWork?'BtnStyle':''" @click="changeWorkState(false)">下班</button>
 			</view>
 		</view>
 		<!-- 消息提示 -->
@@ -118,14 +118,13 @@
 
 			changeWorkState: function(iswork) {
 				var that = this;
-				that.IsWork = iswork;
+				if(!iswork){
+					//下班才变色
+					that.IsWork = iswork;
+				}
 				if (iswork) {
 					uni.navigateTo({
 						url: '/pages/driver/bindCoachCode1',
-					});
-					uni.setStorage({
-						key: 'iswork',
-						data: true
 					});
 				} else {
 					uni.removeStorage({
