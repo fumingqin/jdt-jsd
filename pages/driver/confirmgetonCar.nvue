@@ -33,12 +33,13 @@
 				</view>
 				<image style="width: 60rpx;height: 60rpx; left: 220rpx; top: -12rpx;" src="../../static/driver/phone.png" @click="call"></image>
 			</view>
-			<view>
+			<!-- <view>
 				<button style="width: 698rpx;height: 105rpx;background-color: #FC6A6C;border-color:#FC6A6C;color: #FFFFFF;margin-left: 28rpx; border-radius:20rpx; position: fixed; padding: 6rpx;bottom: 90rpx;"
 				 @longpress="confirmgetonCar">
 					<text style="color: #FFFFFF;">长按确认乘客已上车</text>
 				</button>
-			</view>
+			</view> -->
+			<move-verify @result='verifyResult' ref="verifyElement"></move-verify>
 		</view>
 		<view v-if="status === 1" style="position: fixed;bottom: 220rpx; ">
 			<image src="../../static/driver/police.png" style="width: 120rpx;height: 120rpx;margin-left: 10rpx;" @click="callPolice"></image>
@@ -68,12 +69,13 @@
 				</view>
 			</view>
 
-			<view>
+			<!-- <view>
 				<button style="width: 698rpx;height: 105rpx;background-color: #FC6A6C;border-color:#FC6A6C;margin-left: 28rpx; border-radius:20rpx; position: fixed; padding: 6rpx;bottom: 90rpx;"
 				 @longpress="confirmgettoDestination">
 					<text style="color: #FFFFFF;">长按确认到达目的地</text>
 				</button>
-			</view>
+			</view> -->
+			<move-verify @result='verifyResult' ref="verifyElement" @click="confirmgettoDestination" ></move-verify>
 		</view>
 	</view>
 </template>
@@ -81,9 +83,11 @@
 <script>
 	import taxi from '../../common/Czc.js';
 	import uniIcons from "@/components/uni-icons/uni-icons.vue";
+	import moveVerify from "@/components/helang-moveVerify/helang-moveVerify.vue";
 	export default {
 		components: {
 			uniIcons,
+			"move-verify":moveVerify,
 		},
 		data() {
 			return {
