@@ -54,7 +54,7 @@
 			</view>
 			<view style="margin: -12rpx 42rpx;display: flex;flex-direction: row;">
 				<text style="width:160rpx;height:40rpx;font-size:32rpx;font-family:Source Han Sans SC;font-weight:300;color:rgba(44,45,45,1);line-height:42rpx;">{{Work}}</text>
-				<text style="width:160rpx;height:40rpx;font-size:32rpx;font-family:Source Han Sans SC;font-weight:300;color:rgba(44,45,45,1);line-height:42rpx;">{{Car}}</text>
+				<text style="width:160rpx;height:40rpx;font-size:32rpx;font-family:Source Han Sans SC;font-weight:300;color:rgba(44,45,45,1);line-height:42rpx;">{{CarType}}</text>
 			</view>
 			<view style="display: flex; margin-left: 4rpx;">
 				<button class="upWork" :class="!IsWork?'BtnStyle':''" @click="changeWorkState(true)">上班</button>
@@ -82,25 +82,29 @@
 			return {
 				Address: '搜索您要去的地方',
 				Work: '所属工作:',
-				Car: '',
+				CarType: '',
 				Message: '丰泽区云鹿口有一名乘客等待上车...',
 				IsWork: false,
 			}
 		},
 		onLoad() {
-
+			let that = this;
+			getApp().globalData.constantly();
 		},
 		onShow() {
 			var that = this;
 			uni.getStorage({
 				key: 'CarType',
 				success(res) {
-					console.log(res.data)
-					that.Car = res.data;
+					that.CarType = res.data;
+					if (res.data != '') {
+						that.IsWork = true;
+					}
 				}
-			})
+			});
 		},
 		methods: {
+
 			qrcode() {
 				uni.scanCode({
 					onlyFromCamera: true,
@@ -111,22 +115,50 @@
 					}
 				})
 			},
+
 			changeWorkState: function(iswork) {
 				var that = this;
 				that.IsWork = iswork;
-				if(iswork){
+				if (iswork) {
 					uni.navigateTo({
-						url:'/pages/driver/bindCoachCode1',
-					})
+						url: '/pages/driver/bindCoachCode1',
+					});
+					uni.setStorage({
+						key: 'iswork',
+						data: true
+					});
+				} else {
+					uni.removeStorage({
+						key: 'CarType',
+						success: function(res) {
+							that.CarType = '';
+						}
+					});
 				}
 			},
-			setPlateNumber: function(url, cartype) {
-				uni.navigateTo({
-					url: url + '?cartype=' + cartype,
-					animationType: 'pop-in',
-					animationDuration: 200
-				})
-			}
+
+			setPlateNumber: function(url, carType) {
+				var that = this;
+ 
+				if (that.CarType == '') {
+					uni.navigateTo({
+						url: url + '?cartype=' + carType,
+						animationType: 'pop-in',
+						animationDuration: 200
+					});
+				} else if (that.CarType == carType) {
+					uni.navigateTo({
+						url: '../driver/taxiDriver'
+					})
+				} else {
+					uni.showToast({
+						title: '您已在' + that.CarType + '绑定车牌',
+						icon: "none"
+					})
+
+				}
+			},
+
 		}
 
 	}
