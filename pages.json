@@ -7,7 +7,7 @@
 			}
 		},
 		{
-			"path": "pages/driver/userLogin",
+			"path": "pages/grzx/userLogin",
 			"style": {
 				"navigationStyle": "custom"
 			}
@@ -48,6 +48,10 @@
 				"navigationStyle": "custom"
 			}
 		}
+        ,{
+            "path" : "pages/CTKYDriver/buyTicket",
+            "style" : {}
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

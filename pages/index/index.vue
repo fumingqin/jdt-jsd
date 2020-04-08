@@ -120,20 +120,31 @@
 				var that = this;
 				if(!iswork){
 					//下班才变色
-					that.IsWork = iswork;
+					uni.showModal({
+					    content: '您是否确认下班',
+					    success: function (res) {
+					        if (res.confirm) {
+								that.IsWork = iswork;
+								//点击下班变色移除缓存
+								uni.removeStorage({
+									key: 'CarType',
+									success: function(res) {
+										that.CarType = '';
+									}
+								});
+					            console.log('用户点击确定');
+					        } else if (res.cancel) {
+					            console.log('用户点击取消');
+								
+					        }
+					    }
+					});
 				}
 				if (iswork) {
 					uni.navigateTo({
 						url: '/pages/driver/bindCoachCode1',
 					});
-				} else {
-					uni.removeStorage({
-						key: 'CarType',
-						success: function(res) {
-							that.CarType = '';
-						}
-					});
-				}
+				} 
 			},
 
 			setPlateNumber: function(url, carType) {

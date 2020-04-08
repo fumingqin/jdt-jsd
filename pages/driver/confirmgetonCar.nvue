@@ -81,6 +81,7 @@
 <script>
 	import taxi from '../../common/Czc.js';
 	import uniIcons from "@/components/uni-icons/uni-icons.vue";
+	import Map from '../../common/my-openMap/openMap.js';
 	export default {
 		components: {
 			uniIcons,
@@ -123,7 +124,8 @@
 			});
 		},
 		methods: {
-			confirmgetonCar() {//确认乘客上车
+
+			confirmgetonCar() { //确认乘客上车
 				this.status = 1;
 				var that = this;
 				that.markers = [];
@@ -145,7 +147,7 @@
 					that.setMarker(2, 118.611339, 24.885683, '../../static/driver/End.png');
 					that.getDirectionDriving(that.longitude + ',' + that.latitude, '118.611339, 24.885683');
 				}, 10000);
-
+				Map.openMap(24.943068, 118.609035, '清源山', 'gcj02');
 			},
 			confirmgettoDestination() {
 				//取消由 setInterval 设置的定时器
