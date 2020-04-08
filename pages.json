@@ -51,7 +51,13 @@
         ,{
             "path" : "pages/CTKYDriver/buyTicket",
             "style" : {}
-        }
+        },
+		{
+		    "path" : "pages/CTKYDriver/orderComplete",
+		    "style" : {
+				"navigationStyle": "custom"
+			}
+		}
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
