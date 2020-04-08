@@ -4,8 +4,8 @@
 			<!-- <text style="color: #FFFFFF;line-height: 100rpx;">右滑确认乘客已上车</text> -->
 		</view>
 		<view class="tips">
-			<text v-if="isOk" class="tips" style="color: #FFFFFF;">确认上车</text>
-			<text v-else class="tips" style="color: #FFFFFF;line-height: 100rpx;">右滑确认乘客已上车</text>
+			<text v-if="isOk" class="tips" style="color: #FFFFFF;">{{daoda}}</text>
+			<text v-else class="tips" style="color: #FFFFFF;line-height: 100rpx;">{{shangche}}</text>
 		</view>
 		<view class="track">
 		</view>
@@ -22,6 +22,10 @@
 <script>
 	export default {
 		name: 'move-verify',
+		props:{
+			shangche:"右滑确认乘客已上车",
+			daoda:"确认上车"
+		},
 		data() {
 			return {
 				x: 0,
@@ -30,6 +34,8 @@
 				size: {},
 				count:0,
 				isMove:false,
+				// shangche:"右滑确认乘客已上车",
+				// daoda:"确认上车"
 			};
 		},
 		mounted() {
