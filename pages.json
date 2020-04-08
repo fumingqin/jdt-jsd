@@ -48,6 +48,10 @@
 				"navigationStyle": "custom"
 			}
 		}
+        ,{
+            "path" : "pages/CTKYDriver/buyTicket",
+            "style" : {}
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
