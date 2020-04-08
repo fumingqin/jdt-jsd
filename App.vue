@@ -39,7 +39,6 @@
 		onLaunch: function() {
 			let that = this;
 			let userInfo = uni.getStorageSync('userInfo') || '';
-			
 			if(userInfo.nickName){
 				//如果有登录缓存则开启定时器。
 				that.constantly();
