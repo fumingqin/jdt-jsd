@@ -64,6 +64,12 @@
 				"navigationStyle":"custom"
 			}
         }
+        ,{
+            "path" : "pages/CTKYDriver/index",
+            "style" : {
+				"navigationStyle":"custom"
+			}
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
