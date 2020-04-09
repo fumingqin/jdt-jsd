@@ -50,7 +50,10 @@
 		}
         ,{
             "path" : "pages/CTKYDriver/buyTicket",
-            "style" : {}
+          
+            "style" : {
+				"navigationStyle": "custom"
+			}
         },
 		{
 		    "path" : "pages/CTKYDriver/orderComplete",
@@ -70,6 +73,24 @@
 				"navigationStyle": "custom"
 			}
 		}
+        ,{
+            "path" : "pages/CTKYDriver/chooseSite",
+            "style" : {
+				"navigationStyle":"custom"
+			}
+        }
+        ,{
+            "path" : "pages/CTKYDriver/checkTicket",
+            "style" : {
+				"navigationStyle": "custom"
+			}
+        }    
+		 ,{
+            "path" : "pages/CTKYDriver/index",
+            "style" : {
+				"navigationStyle":"custom"
+			}
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
