@@ -50,7 +50,10 @@
 		}
         ,{
             "path" : "pages/CTKYDriver/buyTicket",
-            "style" : {}
+          
+            "style" : {
+				"navigationStyle": "custom"
+			}
         },
 		{
 		    "path" : "pages/CTKYDriver/orderComplete",
@@ -65,6 +68,12 @@
 			}
         }
         ,{
+            "path" : "pages/CTKYDriver/checkTicket",
+            "style" : {
+				"navigationStyle": "custom"
+			}
+        }    
+		 ,{
             "path" : "pages/CTKYDriver/index",
             "style" : {
 				"navigationStyle":"custom"
