@@ -22,7 +22,7 @@
 		<!-- 五个模块 -->
 		<view class="bottomContent" style="width: 100%;">
 			<view style="display: flex;flex-direction: row;width: 700rpx;text-align: center;margin-top:50rpx;margin-left: 24rpx;">
-				<view class="tabItem" @click="setPlateNumber('../driver/bindCoachCode','客车')">
+				<view class="tabItem" @click="setPlateNumber('../CTKYDriver/buyTicket','客车')">
 					<image class="tabItem-image" src="../../static/index/KC.png"></image>
 					<text class="tabItem-font">客车</text>
 				</view>

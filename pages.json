@@ -50,7 +50,15 @@
 		}
         ,{
             "path" : "pages/CTKYDriver/buyTicket",
-            "style" : {}
+            "style" : {
+				"navigationStyle": "custom"
+			}
+        }
+        ,{
+            "path" : "pages/CTKYDriver/checkTicket",
+            "style" : {
+				"navigationStyle": "custom"
+			}
         }
     ],
 	"globalStyle": {
