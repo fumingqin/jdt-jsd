@@ -89,7 +89,7 @@
 		},
 		onLoad() {
 			let that = this;
-			getApp().globalData.constantly();
+			/* getApp().globalData.constantly(); */
 		},
 		onShow() {
 			var that = this;
