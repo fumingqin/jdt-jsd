@@ -97,9 +97,16 @@
 								key: 'CarType',
 								data: that.carType1,
 								success() {
-									uni.navigateTo({
+									if(that.carType1=="出租车"){
+										uni.navigateTo({
 										url: '/pages/driver/taxiDriver',
 									})
+									}
+									if(that.carType1=="包车"){
+										uni.navigateTo({
+										url: '/pages/BCDriver/bcDriver',
+									})
+									}
 								}
 							})
 						} else {
@@ -116,9 +123,16 @@
 								key: 'CarType',
 								data: that.carType1,
 								success() {
-									uni.navigateTo({
+									if(that.carType1=="出租车"){
+										uni.navigateTo({
 										url: '/pages/driver/taxiDriver',
 									})
+									}
+									if(that.carType1=="包车"){
+										uni.navigateTo({
+										url: '/pages/BCDriver/bcDriver',
+									})
+									}
 								}
 							})
 						} else {

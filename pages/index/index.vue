@@ -30,7 +30,7 @@
 					<image class="tabItem-image" src="../../static/index/WLYC.png"></image>
 					<text class="tabItem-font">出租车</text>
 				</view>
-				<view class="tabItem" @click="setPlateNumber('../driver/bindCoachCode','公交车')">
+				<view class="tabItem" @click="setPlateNumber('','公交车')">
 					<image class="tabItem-image" src="../../static/index/GJCX.png"></image>
 					<text class="tabItem-font">公交车</text>
 				</view>
@@ -38,7 +38,7 @@
 					<image class="tabItem-image" src="../../static/index/BCFW.png"></image>
 					<text class="tabItem-font">包车</text>
 				</view>
-				<view class="tabItem" @click="setPlateNumber('../driver/bindCoachCode','旅游')">
+				<view class="tabItem" @click="setPlateNumber('','旅游')">
 					<image class="tabItem-image" src="../../static/index/LVFW.png"></image>
 					<text class="tabItem-font">旅游</text>
 				</view>
@@ -149,7 +149,12 @@
 
 			setPlateNumber: function(url, carType) {
 				var that = this;
- 
+                if(url==''){
+					uni.showToast({
+						title: '暂未开放',
+						icon: "none"
+					})
+				}
 				if (that.CarType == '') {
 					uni.navigateTo({
 						url: url + '?cartype=' + carType,
@@ -157,9 +162,16 @@
 						animationDuration: 200
 					});
 				} else if (that.CarType == carType) {
-					uni.navigateTo({
-						url: '../driver/taxiDriver'
+					if(that.CarType=="出租车"){
+						uni.navigateTo({
+						url: '/pages/driver/taxiDriver',
 					})
+					}
+					if(that.CarType=="包车"){
+						uni.navigateTo({
+						url: '/pages/BCDriver/bcDriver',
+					})
+					}
 				} else {
 					uni.showToast({
 						title: '您已在' + that.CarType + '绑定车牌',
