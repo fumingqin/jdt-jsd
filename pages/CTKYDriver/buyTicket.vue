@@ -105,6 +105,9 @@
 			}
 		},
 		methods: {
+			goBack: function() { //返回上一页
+				uni.navigateBack();
+			},
 			checknum: function() {
 				console.log(this.num)
 				if (this.num < 1 || this.num == '') {

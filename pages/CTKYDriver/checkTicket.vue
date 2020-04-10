@@ -4,7 +4,7 @@
 			<view class="head">
 				<view class="status_bar"></view>
 				<view class="headbar">
-					<uni-icons type="scan" size="24" color="#FFF"></uni-icons>
+					<uni-icons type="scan" size="24" color="#FFF" @click="qrcode"></uni-icons>
 					<view class="title">检票</view>
 					<view></view>
 				</view>
@@ -14,8 +14,8 @@
 					<view style="width: 349rpx;"><button :class="IsCheck?'':'btnclick'" @click="change(false)">未检票数</button></view>
 					<view style="width: 349rpx;"><button :class="!IsCheck?'':'btnclick'" @click="change(true)">已检票数</button></view>
 				</view>
-				<scroll-view>
-					<view style="background-color: #FFFFFF;margin-top: 20rpx;border-radius: 20rpx;" v-for="(item,index) in ticketArr" :key="index">
+				<scroll-view :style="{height:scrollheight}" :scroll-y="true" style="border-radius:20rpx ;" v-if="!IsCheck">
+					<view style="background-color: #FFFFFF;border-radius: 20rpx;margin-top: 20rpx;" v-for="(item,index) in ticketArr" :key="index">
 						<view style="padding: 35rpx 35rpx 0 35rpx;">
 							<view style="display: flex;justify-content: space-between;font-size: 32rpx;padding-bottom: 30rpx;border-bottom: solid 1px #EAEAEA;">
 								<view>
@@ -50,12 +50,65 @@
 								</view>
 							</view>
 						</view>
-						<view style="display: flex;font-size: 30rpx;color: #666666;justify-content:flex-end;padding: 10rpx 35rpx 35rpx 0;">
-							<view style="padding-right: 30rpx;"><button style="width: 200rpx;background-color: #FFF;" >过站未检</button></view>
-							<view><button style="width: 200rpx;background-color: #FFF;">联系电话</button></view>
+						<view style="display: flex;color: #666666;justify-content:flex-end;padding: 10rpx 35rpx 35rpx 0;">
+							<view style="padding-right: 30rpx;"><button style="width: 200rpx;background-color: #FFF;font-size: 30rpx;" >过站未检</button></view>
+							<view><button style="width: 200rpx;background-color: #FFF;font-size: 30rpx;">联系电话</button></view>
 						</view>
 					</view>
 				</scroll-view>
+				
+				<scroll-view :style="{height:scrollheight}" :scroll-y="true" style="border-radius:20rpx ;" v-if="IsCheck">
+					<view style="background-color: #FFFFFF;margin-top: 20rpx;border-radius: 20rpx;" v-for="(item,index) in hascheckArr" :key="index">
+						<view style="padding: 35rpx 35rpx 0 35rpx;">
+							<view style="display: flex;justify-content: space-between;font-size: 32rpx;padding-bottom: 30rpx;border-bottom: solid 1px #EAEAEA;">
+								<view>
+									上车点：{{item.startPoint}}
+								</view>
+								<view>
+									下车点：{{item.endPoint}}
+								</view>
+							</view>
+							<view style="padding: 20rpx 0;font-size: 32rpx;font-weight: 200;display: flex;flex-direction: column;justify-content: space-between;height: 290rpx;">
+								<view style="display: flex;justify-content: space-between;">
+									<view style="display: flex;flex-direction: column;justify-content: space-between;height: 110rpx;">
+										<view>
+											车次信息：{{item.trains}}
+										</view>
+										<view>
+											车票号：{{item.ticketNo}}
+										</view>
+									</view>
+									<view>
+										<image src="../../static/CTKYDriver/Checked.png" style="width: 104rpx;height: 104rpx;"></image>
+									</view>
+								</view>
+								<view>
+									旅客姓名：{{item.Name}}
+								</view>
+								<view>
+									旅客身份证：{{item.idCardNo}}
+								</view>
+								<view>
+									座位号：{{item.seatNo}}
+								</view>
+							</view>
+						</view>
+						<view style="display: flex;font-size: 30rpx;color: #666666;justify-content:flex-end;padding: 10rpx 35rpx 35rpx 0;">
+							<view style="padding-right: 30rpx;"><button style="width: 200rpx;background-color: #FFF;font-size: 30rpx;" >过站未检</button></view>
+							<view><button style="width: 200rpx;background-color: #FFF;font-size: 30rpx;">联系电话</button></view>
+						</view>
+					</view>
+				</scroll-view>
+			</view>
+		</view>
+		<view class="tabbarBlock">
+			<view style="display: flex;flex-direction: row;">
+				<view class="tabbarItem" v-for="(item,index) in tabbarArr" :key='index' @click="tabbarClick(item)">
+					<view style="display: flex;flex-direction: column;align-items: center;justify-content: center;">
+						<image :src="item.imageSrc" :style="item.imageStyle"></image>
+					</view>
+					<text :style="item.color">{{item.title}}</text>
+				</view>
 			</view>
 		</view>
 	</view>
@@ -69,6 +122,28 @@
 		},
 		data() {
 			return {
+				tabbarArr: [{
+						title: '首页',
+						color: 'color: #2C2D2D',
+						imageSrc: '../../static/tabbar/index-black.png',
+						imageStyle: 'width: 51rpx;height: 45rpx;',
+						canClick: true
+					},
+					{
+						title: '购票',
+						color: 'color: #2C2D2D',
+						imageSrc: '../../static/tabbar/buy-black.png',
+						imageStyle: 'width: 49rpx;height: 36rpx;',
+						canClick: true
+					},
+					{
+						title: '检票',
+						color: 'color: #FC4646',
+						imageSrc: '../../static/tabbar/check-red.png',
+						imageStyle: 'width: 47rpx;height: 38rpx;',
+						canClick: false
+					}
+				],
 				IsCheck: false,
 				ticketArr:[{
 					startPoint:"茶叶大厦",
@@ -87,13 +162,74 @@
 					 Name:"罗苗",
 					 seatNo:'6',
 					 idCardNo:'3505**********8571'
-				}]
+				}],
+				hascheckArr:[{
+					startPoint:"茶叶大厦",
+					endPoint:"晋江机场",
+					trains:"泉州 - 石狮",
+					 ticketNo:"425111144482716",
+					 Name:"罗东东",
+					 seatNo:'4',
+					 idCardNo:'3505**********8571'
+				},
+				{
+					startPoint:" 丰泽广场",
+					endPoint:"动车站",
+					trains:"泉州 - 石狮",
+					 ticketNo:"425111144482716",
+					 Name:"罗苗",
+					 seatNo:'3',
+					 idCardNo:'3505**********8571'
+				}],
+				scrollheight:''
 			}
 		},
+		mounted() {
+		var that=this;
+			setTimeout(function(){//设置scollerview的高度
+				uni.getSystemInfo({
+					success(res) {
+						that.scrollheight=res.windowHeight-40-195+'px'
+					}
+				})
+			},50)
+			
+		},
 		methods: {
+			qrcode() {
+				uni.scanCode({
+					onlyFromCamera: true,
+					success: function(res) {
+						void plus.runtime.openWeb(res.result, function() {
+							//识别失败
+						});
+					}
+				})
+			},
 			change: function(type) {
 				this.IsCheck = type;
-			}
+			},
+			tabbarClick: function(el) {
+				let url = '';
+				if (el.canClick) {
+					switch (el.title) {
+						case '首页':
+							url = './index';
+							break;
+						case '购票':
+							url = './chooseSite';
+							break;
+						case '检票':
+							url = './checkTicket';
+							break;
+						default:
+							break;
+					};
+					uni.redirectTo({
+						url:url
+					})
+				}
+			},
 		}
 	}
 </script>
@@ -136,6 +272,7 @@
 		background: #FFF;
 		box-shadow: 0px 6px 20px 0px rgba(231, 231, 231, 0.53);
 		border-radius: 20rpx;
+		margin-bottom: 10rpx;
 	}
 
 	.btnarea button {
@@ -154,5 +291,35 @@
 	.btnclick {
 		color: #FC4646;
 		border-bottom: solid 1px #FC4646;
+	}
+	.tabbarBlock {
+		position: fixed;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		padding: 20rpx 0;
+		background-color: #FFF;
+		box-shadow: 0px 8px 20px 0px rgba(172, 172, 172, 0.55);
+		z-index: 99999;
+		height: 40px;
+	}
+	
+	.tabbarItem {
+		width: 250rpx;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+	}
+	
+	 .tabbarItem uni-view { 
+		height: 50rpx;
+		text-align: center;
+	}
+	
+	 .tabbarItem uni-text {
+		font-size: 25rpx;
+		font-family: Source Han Sans SC;
+		font-weight: 400;
 	}
 </style>
