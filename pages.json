@@ -72,8 +72,20 @@
 		    "style" : {
 				"navigationStyle": "custom"
 			}
-		}
-        ,{
+		},
+		{
+		    "path" : "pages/BCDriver/otherExpenses",
+		    "style" : {
+				"navigationStyle": "custom"
+			}
+		},
+		{
+		    "path" : "pages/BCDriver/orderComplete",
+		    "style" : {
+				"navigationStyle": "custom"
+			}
+		},
+		{
             "path" : "pages/CTKYDriver/chooseSite",
             "style" : {
 				"navigationStyle":"custom"

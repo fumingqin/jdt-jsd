@@ -5,19 +5,22 @@
 		</map>
 		<image @click="back" src="../../static/driver/back1.png" style="width: 120rpx;height: 120rpx;position: fixed;top: 50px;left: 1px;"></image>
 		<view v-if="status === 0" style="position: fixed;bottom: 220rpx; ">
-			<image src="../../static/driver/police.png" style="width: 120rpx;height: 120rpx;margin-left: 10rpx;" @click="callPolice"></image>
+			<view style="display: flex;flex-direction: row;">
+				<image src="../../static/driver/police.png" style="width: 120rpx;height: 120rpx;margin-left: 10rpx;" @click="callPolice"></image>
+				<image src="../../static/bcDriver/change.png" style="width: 120rpx;height: 120rpx; margin-left: 480rpx;"></image>
+			</view>
 			<!-- 行程信息 -->
-			<view style="width: 698rpx;height: 223rpx; background-color: #FFFFFF;margin-left: 28rpx; border-radius:20rpx;">
+			<view style="width: 698rpx;height: 170rpx; background-color: #FFFFFF;margin-left: 28rpx; border-radius:20rpx;">
 				<view style="margin-top: 36rpx;margin-left: 38rpx;display: flex;flex-direction: row;">
 					<text style="width:140rpx;height:40rpx;font-size:30rpx;font-family:Source Han Sans SC;color:#666666;line-height:36rpx;">预计里程:</text>
 					<text style="width:140rpx;height:40rpx;font-size:30rpx;font-family:Source Han Sans SC;color:#666666;line-height:36rpx;">{{estimateMileage}}</text>
 					<text style="width:140rpx;height:40rpx;font-size:30rpx;font-family:Source Han Sans SC;color:#666666;line-height:36rpx; margin-left: 40rpx;">预计时长:</text>
 					<text style="width:140rpx;height:40rpx;font-size:30rpx;font-family:Source Han Sans SC;color:#666666;line-height:36rpx;">{{estimateHour}}</text>
 				</view>
-				<view style="margin-top: 20rpx;margin-left: 40rpx;display: flex;flex-direction: row;">
+				<!-- <view style="margin-top: 20rpx;margin-left: 40rpx;display: flex;flex-direction: row;">
 					<text style="width:140rpx;height:40rpx;font-size:30rpx;font-family:Source Han Sans SC;color:#666666;line-height:36rpx;">等待时长:</text>
 					<text style="width:400rpx;height:40rpx;font-size:30rpx;font-family:Source Han Sans SC;color:#666666;line-height:36rpx;">{{waitHour}}</text>
-				</view>
+				</view> -->
 				<view style="margin-top: 20rpx;margin-left: 36rpx;display: flex;flex-direction: row;">
 					<text style="width:110rpx;height:40rpx;font-size:30rpx;font-family:Source Han Sans SC;color:#666666;line-height:36rpx;">上车点:</text>
 					<text style="width:400rpx;height:40rpx;font-size:30rpx;font-family:Source Han Sans SC;color:#666666;line-height:36rpx;">{{beginAddress}}</text>
@@ -36,7 +39,7 @@
 			<view>
 				<button style="width: 698rpx;height: 105rpx;background-color: #FC6A6C;border-color:#FC6A6C;color: #FFFFFF;margin-left: 28rpx; border-radius:20rpx; position: fixed; padding: 6rpx;bottom: 90rpx;"
 				 @longpress="confirmgetonCar">
-					<text style="color: #FFFFFF;">长按确认乘客已上车</text>
+					<text style="color: #FFFFFF;">长按到达上车点</text>
 				</button>
 			</view>
 		</view>
@@ -51,11 +54,11 @@
 					<text style="width:140rpx;height:40rpx;font-size:30rpx;font-family:Source Han Sans SC;color:#666666;line-height:36rpx;">{{estimateHour}}</text>
 				</view>
 				<view style="margin-top: 20rpx;margin-left: 40rpx;display: flex;flex-direction: row;">
-					<text style="width:120rpx;height:40rpx;font-size:30rpx;font-family:Source Han Sans SC;color:#666666;line-height:36rpx;">下车点:</text>
+					<text style="width:120rpx;height:40rpx;font-size:30rpx;font-family:Source Han Sans SC;color:#666666;line-height:36rpx;">目的地:</text>
 					<text style="width:400rpx;height:40rpx;font-size:30rpx;font-family:Source Han Sans SC;color:#666666;line-height:36rpx;">{{endAddress}}</text>
 				</view>
 			</view>
-			<view style="width: 698rpx;height: 164rpx; background-color: #FFFFFF;margin-left: 28rpx; border-radius:20rpx; margin-top: 30rpx;">
+			<!-- <view style="width: 698rpx;height: 164rpx; background-color: #FFFFFF;margin-left: 28rpx; border-radius:20rpx; margin-top: 30rpx;">
 				<view style="margin-top: 36rpx;margin-left: 38rpx;display: flex;flex-direction: row;">
 					<text style="width:140rpx;height:40rpx;font-size:30rpx;font-family:Source Han Sans SC;color:#666666;line-height:36rpx;">已驶里程:</text>
 					<text style="width:140rpx;height:40rpx;font-size:30rpx;font-family:Source Han Sans SC;color:#666666;line-height:36rpx;">{{alreadyMileage}}</text>
@@ -67,11 +70,11 @@
 					<text style="width:400rpx;height:40rpx;font-size:30rpx;font-family:Source Han Sans SC;color:#666666;line-height:36rpx;">{{totalCost}}元</text>
 				</view>
 			</view>
-
+ -->
 			<view>
 				<button style="width: 698rpx;height: 105rpx;background-color: #FC6A6C;border-color:#FC6A6C;margin-left: 28rpx; border-radius:20rpx; position: fixed; padding: 6rpx;bottom: 90rpx;"
 				 @longpress="confirmgettoDestination">
-					<text style="color: #FFFFFF;">长按确认到达目的地</text>
+					<text style="color: #FFFFFF;">长按到达目的地</text>
 				</button>
 			</view>
 		</view>
@@ -97,14 +100,10 @@
 				mapHeight: '',
 				viewHeight: '',
 				estimateMileage: '44 km',
-				alreadyMileage: '44 km',
 				estimateHour: '2小时',
-				alreadyHour: '2.5小时',
-				waitHour: '5分钟',
 				beginAddress: '茶叶大厦',
 				endAddress: '晋江机场',
 				passengerPhone: '15255066261',
-				totalCost: '32.05',
 				resultData: {},
 				status: 0,
 				directionInterval: '',
@@ -153,7 +152,7 @@
 				//取消由 setInterval 设置的定时器
 				clearInterval(this.directionInterval);
 				uni.redirectTo({
-					url: '/pages/driver/otherExpenses',
+					url: '/pages/BCDriver/otherExpenses',
 				})
 			},
 			call: function() {
