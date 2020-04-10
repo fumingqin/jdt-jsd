@@ -11,106 +11,103 @@
 			"style": {
 				"navigationStyle": "custom"
 			}
+		}, {
+			"path": "pages/driver/taxiDriver",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		}, {
+			"path": "pages/driver/orderComplete",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		}, {
+			"path": "pages/driver/otherExpenses",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		}, {
+			"path": "pages/driver/confirmgetonCar",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/driver/bindCoachCode",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/driver/bindCoachCode1",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		}, {
+			"path": "pages/CTKYDriver/buyTicket",
+
+			"style": {
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/CTKYDriver/orderComplete",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/BCDriver/bcDriver",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/BCDriver/specialLineCar",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/BCDriver/otherExpenses",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/BCDriver/orderComplete",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/CTKYDriver/chooseSite",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		}, {
+			"path": "pages/CTKYDriver/checkTicket",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		}, {
+			"path": "pages/CTKYDriver/index",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		}, {
+			"path": "pages/index/Order",
+			"style": {
+				"navigationBarTitleText": "订单",
+				"navigationBarBackgroundColor": "#F6F8FE"
+			}
+		}, {
+			"path": "pages/BCDriver/customizedCar",
+			"style": {
+				"navigationStyle": "custom"
+			}
 		}
-	    ,{
-            "path" : "pages/driver/taxiDriver",
-            "style" : {
-				"navigationStyle": "custom"
-			}
-        }
-        ,{
-            "path" : "pages/driver/orderComplete",
-            "style" : {
-				"navigationStyle": "custom"
-			}
-        }
-        ,{
-            "path" : "pages/driver/otherExpenses",
-            "style" : {
-				"navigationStyle": "custom"
-			}
-        }
-        ,{
-            "path" : "pages/driver/confirmgetonCar",
-            "style" : {
-				"navigationStyle": "custom"
-			}
-        },
-		{
-		    "path" : "pages/driver/bindCoachCode",
-		    "style" : {
-				"navigationStyle": "custom"
-			}
-		},
-		{
-		    "path" : "pages/driver/bindCoachCode1",
-		    "style" : {
-				"navigationStyle": "custom"
-			}
-		}
-        ,{
-            "path" : "pages/CTKYDriver/buyTicket",
-          
-            "style" : {
-				"navigationStyle": "custom"
-			}
-        },
-		{
-		    "path" : "pages/CTKYDriver/orderComplete",
-		    "style" : {
-				"navigationStyle": "custom"
-			}
-		},
-		{
-		    "path" : "pages/BCDriver/bcDriver",
-		    "style" : {
-				"navigationStyle": "custom"
-			}
-		},
-		{
-		    "path" : "pages/BCDriver/specialLineCar",
-		    "style" : {
-				"navigationStyle": "custom"
-			}
-		},
-		{
-		    "path" : "pages/BCDriver/otherExpenses",
-		    "style" : {
-				"navigationStyle": "custom"
-			}
-		},
-		{
-		    "path" : "pages/BCDriver/orderComplete",
-		    "style" : {
-				"navigationStyle": "custom"
-			}
-		},
-		{
-            "path" : "pages/CTKYDriver/chooseSite",
-            "style" : {
-				"navigationStyle":"custom"
-			}
-        }
-        ,{
-            "path" : "pages/CTKYDriver/checkTicket",
-            "style" : {
-				"navigationStyle": "custom"
-			}
-        }    
-		 ,{
-            "path" : "pages/CTKYDriver/index",
-            "style" : {
-				"navigationStyle":"custom"
-			}
-        }
-        ,{
-            "path" : "pages/index/Order",
-            "style" : {
-				"navigationBarTitleText":"订单",
-				"navigationBarBackgroundColor":"#F6F8FE"
-			}
-        }
-    ],
+	],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "uni-app",
@@ -122,28 +119,29 @@
 		"selectedColor": "#FC4646",
 		"backgroundColor": "#FFFFFF",
 		"borderStyle": "black",
-		"list": [{ 
+		"list": [{
 				"pagePath": "pages/index/index",
-				"iconPath":"static/index/index.png",
-				"selectedIconPath":"static/index/index1.png",
+				"iconPath": "static/index/index.png",
+				"selectedIconPath": "static/index/index1.png",
 				"text": "首页"
 			},
 			{
+
 				"pagePath": "pages/index/Order",
-				"iconPath":"static/index/order.png",
-				"selectedIconPath":"static/index/order1.png",
+				"iconPath": "static/index/order.png",
+				"selectedIconPath": "static/index/order1.png",
 				"text": "订单"
 			},
-			{ 
+			{
 				"pagePath": "pages/index/index",
-				"iconPath":"static/index/revenue.png",
-				"selectedIconPath":"static/index/revenue1.png",
+				"iconPath": "static/index/revenue.png",
+				"selectedIconPath": "static/index/revenue1.png",
 				"text": "营收"
 			},
 			{
 				"pagePath": "pages/index/index",
-				"iconPath":"static/index/user.png",
-				"selectedIconPath":"static/index/user1.png",
+				"iconPath": "static/index/user.png",
+				"selectedIconPath": "static/index/user1.png",
 				"text": "我的"
 			}
 		]

@@ -1,11 +1,10 @@
 <template>
 	<view>
-		<view style="display: flex">
-			<!-- <view>
+		<!-- <view>
 				<image @click="back" src="../../static/driver/back.png" style="width: 18rpx; height: 34rpx; margin:103rpx 26rpx; color: #2C2D2D;"></image>
 			</view> -->
-			<view style="width: 170rpx; height: 52rpx; margin: 92rpx 298rpx;color: #333333; font-size: 38rpx;font-weight:bold;">其他费用</view>
-		</view>
+		<view style="width: 240rpx; height: 52rpx; margin: 100rpx 260rpx;color: #333333; font-size: 38rpx;font-weight:bold;">包车其他费用</view>
+
 		<view style="width: 94%;height: 105rpx; background-color: #FFFFFF;margin-left: 22rpx; border-radius:20rpx; margin-top: 10rpx;">
 			<view style="padding: 30rpx;display: flex;flex-direction: row;">
 				<text style="width:120rpx;height:40rpx;font-size:32rpx;font-family:Source Han Sans SC;font-weight:400;color:rgba(51,51,51,1);line-height:36rpx;">高速费</text>
