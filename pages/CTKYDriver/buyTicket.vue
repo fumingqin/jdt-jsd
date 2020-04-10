@@ -4,7 +4,7 @@
 			<view class="head">
 				<view class="status_bar"></view>
 				<view class="headbar">
-					<uni-icons type="arrowleft" size="24" color="#FFF"></uni-icons>
+					<uni-icons type="arrowleft" size="24" color="#FFF" @click="goback"></uni-icons>
 					<view class="title">购票</view>
 					<view></view>
 				</view>
@@ -105,6 +105,9 @@
 			}
 		},
 		methods: {
+			goBack: function() { //返回上一页
+				uni.navigateBack();
+			},
 			checknum: function() {
 				console.log(this.num)
 				if (this.num < 1 || this.num == '') {

@@ -46,7 +46,7 @@
 					<view style="display: flex;flex-direction: column;align-items: center;justify-content: center;">
 						<image :src="item.imageSrc" :style="item.imageStyle"></image>
 					</view>
-					<text :style="item.color">首页</text>
+					<text :style="item.color">{{item.title}}</text>
 				</view>
 			</view>
 		</view>
@@ -70,7 +70,7 @@
 						color: 'color: #FC4646',
 						imageSrc: '../../static/tabbar/buy-red.png',
 						imageStyle: 'width: 49rpx;height: 36rpx;',
-						canClick: true
+						canClick: false
 					},
 					{
 						title: '检票',
@@ -205,13 +205,13 @@
 				if (el.canClick) {
 					switch (el.title) {
 						case '首页':
-							url = './buyTicket';
+							url = './index';
 							break;
 						case '购票':
 							url = './chooseSite';
 							break;
 						case '检票':
-							url = './buyTicket';
+							url = './checkTicket';
 							break;
 						default:
 							break;
@@ -324,17 +324,23 @@
 	
 	/* 页面底部工具栏样式 */
 	.tabbarBlock {
-		position: absolute;
+		position: fixed;
 		bottom: 0;
 		left: 0;
 		right: 0;
 		padding: 20rpx 0;
+		background-color: #FFF;
 		box-shadow: 0px 8px 20px 0px rgba(172, 172, 172, 0.55);
+		z-index: 99999;
+		height: 40px;
 	}
 	
 	.tabbarItem {
 		width: 250rpx;
-		text-align: center;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
 	}
 	
 	 .tabbarItem uni-view { 

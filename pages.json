@@ -73,6 +73,13 @@
 				"navigationStyle": "custom"
 			}
         }
+        ,{
+            "path" : "pages/index/Order",
+            "style" : {
+				"navigationBarTitleText":"订单",
+				"navigationBarBackgroundColor":"#F6F8FE"
+			}
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
@@ -92,7 +99,7 @@
 				"text": "首页"
 			},
 			{
-				"pagePath": "pages/index/index",
+				"pagePath": "pages/index/Order",
 				"iconPath":"static/index/order.png",
 				"selectedIconPath":"static/index/order1.png",
 				"text": "订单"
