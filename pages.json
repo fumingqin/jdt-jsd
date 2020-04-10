@@ -50,7 +50,7 @@
 		}
         ,{
             "path" : "pages/CTKYDriver/buyTicket",
-           
+          
             "style" : {
 				"navigationStyle": "custom"
 			}
@@ -60,8 +60,32 @@
 		    "style" : {
 				"navigationStyle": "custom"
 			}
-		}
-        ,{
+		},
+		{
+		    "path" : "pages/BCDriver/bcDriver",
+		    "style" : {
+				"navigationStyle": "custom"
+			}
+		},
+		{
+		    "path" : "pages/BCDriver/specialLineCar",
+		    "style" : {
+				"navigationStyle": "custom"
+			}
+		},
+		{
+		    "path" : "pages/BCDriver/otherExpenses",
+		    "style" : {
+				"navigationStyle": "custom"
+			}
+		},
+		{
+		    "path" : "pages/BCDriver/orderComplete",
+		    "style" : {
+				"navigationStyle": "custom"
+			}
+		},
+		{
             "path" : "pages/CTKYDriver/chooseSite",
             "style" : {
 				"navigationStyle":"custom"
@@ -71,6 +95,12 @@
             "path" : "pages/CTKYDriver/checkTicket",
             "style" : {
 				"navigationStyle": "custom"
+			}
+        }    
+		 ,{
+            "path" : "pages/CTKYDriver/index",
+            "style" : {
+				"navigationStyle":"custom"
 			}
         }
         ,{
