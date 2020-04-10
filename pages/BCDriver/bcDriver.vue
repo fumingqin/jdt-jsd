@@ -125,7 +125,7 @@
 			},
 			depart1() {
 				uni.navigateTo({
-					url: '/pages/BCDriver/specialLineCar',
+					url: '/pages/BCDriver/customizedCar',
 				})
 			},
 		}

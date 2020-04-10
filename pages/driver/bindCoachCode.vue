@@ -99,17 +99,17 @@
 								data: that.carType,
 								success() {
 									if(that.carType=="出租车"){
-										uni.navigateTo({
+										uni.redirectTo({
 										url: '/pages/driver/taxiDriver',
 									})
 									}
 									if(that.carType=="包车"){
-										uni.navigateTo({
+										uni.redirectTo({
 										url: '/pages/BCDriver/bcDriver',
 									})
 									}
 									if(that.carType=="客车"){
-										uni.navigateTo({
+										uni.redirectTo({
 										url: '/pages/CTKYDriver/index',
 									})
 									}
@@ -130,13 +130,18 @@
 								data: that.carType,
 								success() {
 									if(that.carType=="出租车"){
-										uni.navigateTo({
+										uni.redirectTo({
 										url: '/pages/driver/taxiDriver',
 									})
 									}
 									if(that.carType=="包车"){
-										uni.navigateTo({
+										uni.redirectTo({
 										url: '/pages/BCDriver/bcDriver',
+									})
+									}
+									if(that.carType=="客车"){
+										uni.redirectTo({
+										url: '/pages/CTKYDriver/index',
 									})
 									}
 								}
