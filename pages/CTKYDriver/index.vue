@@ -241,7 +241,7 @@
 							url = './chooseSite';
 							break;
 						case '检票':
-							url = './buyTicket';
+							url = './checkTicket';
 							break;
 						default:
 							break;
