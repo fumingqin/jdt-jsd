@@ -34,7 +34,7 @@
 				</scroll-view>
 			</view>
 			<view>
-				<button class="finishedButtom" style="width: 100%;">
+				<button :disabled="Disabled" @click="finished" :class="[Disabled?'unfinishedButtom':'finishedButtom']" style="width: 100%;">
 					<text>完成</text>
 				</button>
 			</view>
@@ -81,103 +81,130 @@
 					}
 				],
 				startSite: [{
+						id:'0',
 						name: '茶叶大厦',
 						isActive: false
 					},
 					{
+						id:'0',
 						name: '信和路口',
 						isActive: false
 					},
 					{
+						id:'0',
 						name: '浦西路口',
 						isActive: false
 					},
 					{
+						id:'0',
 						name: '清源山',
 						isActive: false
 					},
 					{
+						id:'0',
 						name: '华侨大学',
 						isActive: false
 					},
 					{
+						id:'0',
 						name: '客运中心站',
 						isActive: false
 					},
 					{
+						id:'0',
 						name: '幸福路口',
 						isActive: false
 					},
 					{
+						id:'0',
 						name: '中骏世界城',
 						isActive: false
 					},
 					{
+						id:'0',
 						name: '海关大楼',
 						isActive: false 
 					},
 					{
+						id:'0',
 						name: '汽车站',
 						isActive: false
 					},
 					{
+						id:'0',
 						name: '万达广场',
 						isActive: false
 					},
 					{
+						id:'0',
 						name: '第一医院',
 						isActive: false
 					}
 				],
 				endSite: [{
+						id:'0',
 						name: '茶叶大厦',
 						isActive: false
 					},
 					{
+						id:'0',
 						name: '信和路口',
 						isActive: false
 					},
 					{
+						id:'0',
 						name: '浦西路口',
 						isActive: false
 					},
 					{
+						id:'0',
 						name: '清源山',
 						isActive: false
 					},
 					{
+						id:'0',
 						name: '华侨大学',
 						isActive: false
 					},
 					{
+						id:'0',
 						name: '客运中心站',
 						isActive: false
 					},
 					{
+						id:'0',
 						name: '幸福路口',
 						isActive: false
 					},
 					{
+						id:'0',
 						name: '中骏世界城',
 						isActive: false
 					},
 					{
+						id:'0',
 						name: '海关大楼',
 						isActive: false
 					},
 					{
+						id:'0',
 						name: '汽车站',
 						isActive: false
 					},
 					{
+						id:'0',
 						name: '万达广场',
 						isActive: false
 					},
 					{
+						id:'0',
 						name: '第一医院',
 						isActive: false
 					}
-				]
+				],
+				chooseStartSite:'',
+				chooseEndSite:'',
+				Disabled:true,
 			}
 		},
 		methods: {
@@ -189,6 +216,12 @@
 					return true
 				});
 				el.isActive = !el.isActive;
+				that.chooseStartSite = el.id;
+				
+				//取消按钮禁用
+				if(that.chooseStartSite != '' && that.chooseEndSite){
+					that.Disabled = false;
+				}
 			},
 			endSiteClick: function(el) {
 				//上车点点击事件
@@ -198,8 +231,20 @@
 					return true
 				});
 				el.isActive = !el.isActive;
+				that.chooseEndSite = el.id;
+				
+				//取消按钮禁用
+				if(that.chooseStartSite != '' && that.chooseEndSite){
+					that.Disabled = false;
+				}
 			},
-
+			
+			finished:function(){
+				uni.navigateTo({
+					url:'./buyTicket'
+				})
+			},
+			
 			tabbarClick: function(el) {
 				let url = '';
 				if (el.canClick) {
@@ -312,6 +357,13 @@
 		margin-bottom: 30rpx;
 		background: linear-gradient(270deg, rgba(249, 92, 117, 1), rgba(250, 116, 101, 1));
 		box-shadow: 0px 7px 38px 8px rgba(216, 48, 75, 0.15);
+		border-radius: 12rpx;
+	}
+	
+	.unfinishedButtom {
+		margin-top: 30rpx;
+		margin-bottom: 30rpx;
+		background: #CBCBCB;
 		border-radius: 12rpx;
 	}
 
