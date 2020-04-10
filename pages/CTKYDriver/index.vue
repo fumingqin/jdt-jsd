@@ -219,7 +219,7 @@
 					},
 				],
 				scrollStationIndex:'id_0',
-				scrollOnOffIndex:'id_1',
+				scrollOnOffIndex:'id_0',
 			}
 		},
 		onLoad() {
@@ -327,19 +327,25 @@
 		color:#FC4646;
 	}
 	
-	/* 页面底部工具栏样式 */
+/* 页面底部工具栏样式 */
 	.tabbarBlock {
-		position: absolute;
+		position: fixed;
 		bottom: 0;
 		left: 0;
 		right: 0;
 		padding: 20rpx 0;
+		background-color: #FFF;
 		box-shadow: 0px 8px 20px 0px rgba(172, 172, 172, 0.55);
+		z-index: 99999;
+		height: 40px;
 	}
 	
 	.tabbarItem {
 		width: 250rpx;
-		text-align: center;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
 	}
 	
 	 .tabbarItem uni-view { 

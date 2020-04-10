@@ -9,7 +9,7 @@
 		<view style="margin-left: 30rpx;margin-right: 30rpx;">
 			<view class="startSiteBlock">
 				<view style="margin-bottom: 30rpx;">
-					<text class="SiteTitleFont">当前上车点</text>
+					<text class="SiteTitleFont">选择上车点</text>
 				</view>
 				<scroll-view style="height: 160px;" :scroll-y='true'>
 					<view class="siteBlock">
@@ -22,7 +22,7 @@
 			</view>
 			<view class="endSiteBlock">
 				<view style="margin-bottom: 30rpx;">
-					<text class="SiteTitleFont">当前上车点</text>
+					<text class="SiteTitleFont">选择下车点</text>
 				</view>
 				<scroll-view style="height: 160px;" :scroll-y='true'>
 					<view class="siteBlock">

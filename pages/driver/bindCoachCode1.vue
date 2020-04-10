@@ -107,6 +107,11 @@
 										url: '/pages/BCDriver/bcDriver',
 									})
 									}
+									if(that.carType=="客车"){
+										uni.navigateTo({
+										url: '/pages/CTKYDriver/index',
+									})
+									}
 								}
 							})
 						} else {
