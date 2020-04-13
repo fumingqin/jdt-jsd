@@ -49,6 +49,7 @@
 </template>
 
 <script>
+	import Map from '../../common/my-openMap/openMap.js';
 	export default {
 		data() {
 			return {
@@ -70,6 +71,7 @@
 				uni.navigateTo({
 					url: '/pages/driver/confirmgetonCar',
 				})
+				Map.openMap(24.943068, 118.609035, '清源山', 'gcj02');
 			},
 		}
 	}
