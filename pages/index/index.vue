@@ -108,7 +108,6 @@
 			});
 		},
 		methods: {
-
 			qrcode() {
 				uni.scanCode({
 					onlyFromCamera: true,
@@ -122,12 +121,12 @@
 
 			changeWorkState: function(iswork) {
 				var that = this;
-				if(!iswork){
+				if (!iswork) {
 					//下班才变色
 					uni.showModal({
-					    content: '您是否确认下班',
-					    success: function (res) {
-					        if (res.confirm) {
+						content: '您是否确认下班',
+						success: function(res) {
+							if (res.confirm) {
 								that.IsWork = iswork;
 								//点击下班变色移除缓存
 								uni.removeStorage({
@@ -136,24 +135,24 @@
 										that.CarType = '';
 									}
 								});
-					            console.log('用户点击确定');
-					        } else if (res.cancel) {
-					            console.log('用户点击取消');
-								
-					        }
-					    }
+								console.log('用户点击确定');
+							} else if (res.cancel) {
+								console.log('用户点击取消');
+
+							}
+						}
 					});
 				}
 				if (iswork) {
 					uni.navigateTo({
 						url: '/pages/driver/bindCoachCode1',
 					});
-				} 
+				}
 			},
 
 			setPlateNumber: function(url, carType) {
 				var that = this;
-                if(url==''){
+				if (url == '') {
 					uni.showToast({
 						title: '暂未开放',
 						icon: "none"
@@ -166,20 +165,20 @@
 						animationDuration: 200
 					});
 				} else if (that.CarType == carType) {
-					if(that.CarType=="出租车"){
+					if (that.CarType == "出租车") {
 						uni.navigateTo({
-						url: '/pages/driver/taxiDriver',
-					})
+							url: '/pages/driver/taxiDriver',
+						})
 					}
-					if(that.CarType=="包车"){
+					if (that.CarType == "包车") {
 						uni.navigateTo({
-						url: '/pages/BCDriver/bcDriver',
-					})
+							url: '/pages/BCDriver/bcDriver',
+						})
 					}
-					if(that.CarType=="客车"){
+					if (that.CarType == "客车") {
 						uni.navigateTo({
-						url: '/pages/CTKYDriver/index',
-					})
+							url: '/pages/CTKYDriver/index',
+						})
 					}
 				} else {
 					uni.showToast({
