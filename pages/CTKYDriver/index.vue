@@ -3,7 +3,7 @@
 		<view class="head">
 			<view class="status_bar"></view>
 			<view class="headbar">
-				<uni-icons type="arrowleft" size="24" color="#FFF"></uni-icons>
+				<uni-icons @click="back" type="arrowleft" size="24" color="#FFF"></uni-icons>
 				<view class="title">客车</view>
 				<view></view>
 			</view>
@@ -241,7 +241,7 @@
 							url = './chooseSite';
 							break;
 						case '检票':
-							url = './buyTicket';
+							url = './checkTicket';
 							break;
 						default:
 							break;
@@ -250,6 +250,12 @@
 						url:url
 					})
 				}
+			},
+			
+			back:function(){
+				uni.switchTab({
+					url:'../index/index'
+				})
 			},
 			
 			//调用语音合成接口

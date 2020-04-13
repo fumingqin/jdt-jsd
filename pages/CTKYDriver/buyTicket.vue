@@ -4,7 +4,7 @@
 			<view class="head">
 				<view class="status_bar"></view>
 				<view class="headbar">
-					<uni-icons type="arrowleft" size="24" color="#FFF"></uni-icons>
+					<uni-icons @click="goBack" type="arrowleft" size="24" color="#FFF"></uni-icons>
 					<view class="title">购票</view>
 					<view></view>
 				</view>
