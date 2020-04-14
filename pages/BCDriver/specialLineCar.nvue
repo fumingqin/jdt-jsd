@@ -7,7 +7,7 @@
 		<view v-if="status === 0" style="position: fixed;bottom: 220rpx; ">
 			<view style="display: flex;flex-direction: row;">
 				<image src="../../static/driver/police.png" style="width: 120rpx;height: 120rpx;margin-left: 10rpx;" @click="callPolice"></image>
-				<image src="../../static/bcDriver/change.png" style="width: 120rpx;height: 120rpx; margin-left: 480rpx;"></image>
+				<image @click="change" src="../../static/bcDriver/change.png" style="width: 120rpx;height: 120rpx; margin-left: 480rpx;"></image>
 			</view>
 			<!-- 行程信息 -->
 			<view style="width: 698rpx;height: 170rpx; background-color: #FFFFFF;margin-left: 28rpx; border-radius:20rpx;">
@@ -248,7 +248,11 @@
 					}
 				});
 			},
-
+			change:function(){
+				uni.navigateTo({
+					url:'./openPopup'
+				})
+			}
 		}
 	}
 </script>

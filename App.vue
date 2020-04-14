@@ -1,21 +1,40 @@
 <script>
+	import homeJS from 'common/Home.js';
+	import utils from '@/components/shoyu-date/utils.filter.js';
+	
 	import {
 		mapMutations
 	} from 'vuex';
 	export default {
+		components:{
+			utils
+		},
 		data: {},
 		globalData: {
 			globalInterval: 0,
+			orderNumber:'0',
 			uploadMyLocation: function() {
+				let that = this;
 				uni.getLocation({
 					type: 'gcj02 ',
-					success: function(res) {
+					success: function(res) {				
 						uni.request({
-							url: '',
+							url: homeJS.Interface.addVehiclePosition.value, 
+							method:'GET',
 							data: {
-								Longitude: res.data.longitude,
-								Latitude: res.data.Latitude,
-								Time: new Date()
+								orderNumber:that.orderNumber,
+								vehicleNumber:'13599291007',
+								lon: res.longitude,
+								lat: res.latitude,
+								speed:res.speed, 
+								reportTime: utils.timeTodate(homeJS.dateFormat.dateformat, new Date().getTime())
+							},
+							success:function(res){
+								console.log(res);
+								console.log(new Date());
+							},
+							fail:function(res){
+								console.log(res);
 							}
 						});
 					}
@@ -25,12 +44,11 @@
 				let that = this;
 				if (that.globalInterval == 0) {
 					that.globalInterval = setInterval(function() {
-						console.log(new Date());
-						/* that.uploadMyLocation(); */
+					    that.uploadMyLocation();
 					}, 10000);
 				}
 			},
-	
+
 		},
 
 		methods: {
