@@ -89,7 +89,7 @@
 		},
 		onLoad() {
 			let that = this;
-			getApp().globalData.constantly();
+			/* getApp().globalData.constantly(); */
 			uni.showToast({
 				title:'已开启',
 				icon:'none'

@@ -1,6 +1,6 @@
 <template>
 	<view class="content">
-		<image src="../../static/grzx/btnReturn.png" class="returnClass" @click="returnClick"></image>
+		<!-- <image src="../../static/grzx/btnReturn.png" class="returnClass" @click="returnClick"></image> -->
 		<form @submit="formSubmit" style="width: 100%;">		
 			<view class="boxClass">
 				<view class="itemClass">
@@ -10,7 +10,7 @@
 				
 				<view class="itemClass borderTop">
 					<text class="fontStyle">性别</text>
-					<picker class="inputClass" name="gender"  mode="selector" @change="genderChange" :range="genderSex" :value="detailInfo.gender">
+					<picker class="inputClass" name="gender"  mode="selector" @change="genderChange" :range="genderSex" :value="gender">
 						{{selector}}
 					</picker>
 				</view>
@@ -49,7 +49,7 @@
 	export default{
 		data(){
 			return{
-				genderSex:['男','女'],
+				genderSex:['请选择','男','女'],
 				selector:'请选择',
 				nickName : '',
 				gender:'',
@@ -72,29 +72,12 @@
 				})
 			},
 			returnClick(){		//返回个人中心
-				//uni.switchTab({
-				// uni.navigateTo({
-				// 	url:'/pages/grzx/user'
-				// })
 				uni.navigateBack();
 			},
 			genderChange : function(e){
-				//console.log(e.detail.value,"sex")
 				this.selector =this.genderSex[e.detail.value]; 
 			},
 			formSubmit(e){
-				e.target.value.phoneNumber=this.phoneNumber;
-				if(e.target.value.gender==0){
-					e.target.value.gender=1;
-				}
-				if(e.target.value.gender==1){
-					e.target.value.gender=2;
-				}
-				console.log(e.target.value)
-				uni.setStorage({
-					key:'userInfo',
-					data:e.target.value,
-				})
 			}
 		}
 	}
@@ -133,7 +116,7 @@
 		display: flex;
 		flex-direction: column;
 		width: 93.07%;
-		margin-top: 192upx;
+		margin-top: 20upx;
 		margin-left: 3.47%;
 		background-color: #FFFFFF;
 		border-radius: 25upx;
