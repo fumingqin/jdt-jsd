@@ -31,7 +31,7 @@
 							},
 							success:function(res){
 								console.log(res);
-								console.log(new Date());
+								// console.log(new Date());
 							},
 							fail:function(res){
 								console.log(res);
