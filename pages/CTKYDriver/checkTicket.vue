@@ -107,7 +107,7 @@
 					<view style="display: flex;flex-direction: column;align-items: center;justify-content: center;">
 						<image :src="item.imageSrc" :style="item.imageStyle"></image>
 					</view>
-					<text :style="item.color">{{item.title}}</text>
+					<text :style="item.color" style="font-size: 25rpx;">{{item.title}}</text>
 				</view>
 			</view>
 		</view>
@@ -283,6 +283,10 @@
 		width: 200rpx;
 	}
 
+	.btnarea button:after {
+		border: none;
+
+	}
 	.btnarea uni-button:after {
 		border: none;
 
@@ -311,13 +315,12 @@
 		align-items: center;
 		justify-content: center;
 	}
-	
-	 .tabbarItem uni-view { 
+	.tabbarItem view {
 		height: 50rpx;
 		text-align: center;
 	}
 	
-	 .tabbarItem uni-text {
+	 .tabbarItem text {
 		font-size: 25rpx;
 		font-family: Source Han Sans SC;
 		font-weight: 400;

@@ -315,19 +315,19 @@
 	}
 	
 	.noticeFont{
-		font-size:28rpx;
+		font-size:26rpx;
 		font-family:Source Han Sans SC;
 		font-weight:300;
 		color:#262626;
 	}
 	.noticeOnFont{
-		font-size:28rpx;
+		font-size:26rpx;
 		font-family:Source Han Sans SC;
 		font-weight:300;
 		color:#5BC12D;
 	}
 	.noticeOffFont{
-		font-size:28rpx;
+		font-size:26rpx;
 		font-family:Source Han Sans SC;
 		font-weight:300;
 		color:#FC4646;
@@ -354,12 +354,12 @@
 		justify-content: center;
 	}
 	
-	 .tabbarItem uni-view { 
+	 .tabbarItem view { 
 		height: 50rpx;
 		text-align: center;
 	}
 	
-	 .tabbarItem uni-text {
+	 .tabbarItem text {
 		font-size: 25rpx;
 		font-family: Source Han Sans SC;
 		font-weight: 400;
