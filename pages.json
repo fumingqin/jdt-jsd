@@ -27,7 +27,8 @@
 		{
 			"path": "pages/grzx/infoManage",  //信息登记	
 			"style": {
-				"navigationStyle": "custom"
+				"navigationBarTitleText": "驾驶员信息",
+				"navigationBarBackgroundColor": "#FFFFFF"
 			}
 		},
 		{
