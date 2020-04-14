@@ -11,7 +11,7 @@
 				<view style="margin-bottom: 30rpx;">
 					<text class="SiteTitleFont">选择上车点</text>
 				</view>
-				<scroll-view style="height: 160px;" :scroll-y='true'>
+				<scroll-view style="height: 300rpx;" :style="{height:siteHeight}"  :scroll-y='true'>
 					<view class="siteBlock">
 						<view v-for="(item,index) in startSite" :key='index' @click="startSiteClick(item)" :class="item.isActive?'activated':'unActivated'"
 						 style="margin-right: 20rpx;margin-bottom: 20rpx;background-color: #E3E3E3;">
@@ -24,7 +24,7 @@
 				<view style="margin-bottom: 30rpx;">
 					<text class="SiteTitleFont">选择下车点</text>
 				</view>
-				<scroll-view style="height: 160px;" :scroll-y='true'>
+				<scroll-view style="height: 300rpx;" :style="{height:siteHeight}" :scroll-y='true'>
 					<view class="siteBlock">
 						<view v-for="(item,index) in endSite" :key='index' @click="endSiteClick(item)" :class="item.isActive?'activated':'unActivated'"
 						 style="margin-right: 20rpx;margin-bottom: 20rpx;">
@@ -205,7 +205,17 @@
 				chooseStartSite:'',
 				chooseEndSite:'',
 				Disabled:true,
+				siteHeight:''
 			}
+		},
+		onShow() {
+			var that=this;
+			uni.getSystemInfo({
+				success(res) {
+					that.siteHeight=res.windowHeight*0.23+'px';
+					console.log(that.siteHeight);
+				}
+			})
 		},
 		methods: {
 			startSiteClick: function(el) {
@@ -318,7 +328,7 @@
 	}
 
 	.SiteTitleFont {
-		font-size: 34rpx;
+		font-size: 32rpx;
 		font-family: Source Han Sans SC;
 		font-weight: 500;
 		color: #333333;
@@ -395,12 +405,12 @@
 		justify-content: center;
 	}
 	
-	 .tabbarItem uni-view { 
+	.tabbarItem view {
 		height: 50rpx;
 		text-align: center;
 	}
 	
-	 .tabbarItem uni-text {
+	 .tabbarItem text {
 		font-size: 25rpx;
 		font-family: Source Han Sans SC;
 		font-weight: 400;

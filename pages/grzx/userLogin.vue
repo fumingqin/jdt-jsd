@@ -39,7 +39,6 @@
 				phoneNumber:'',
 				captchaCode:'',
 				imgHeight:'',
-				loginType:'',
 			}
 		},
 		onLoad() {
@@ -115,31 +114,19 @@
 						uni.getStorage({
 							key:'captchaCode',
 							success(res) {
-								if(captcha==res.data){
-								var randomNum = ('000000' + Math.floor(Math.random() * 999999)).slice(-6);	
-									uni.setStorage({
-										key:'userInfo',
-										data:{
-											phoneNumber:phone,
-											nickName:"用户"+randomNum
-										}
+								if(captcha==res.data.code&&phone==res.data.phone){
+									uni.showToast({
+										title:"登录成功",
+										icon:"none"
 									})
-									uni.getStorage({
-										key:'userInfo',
-										success:function(user){
-											that.login(user.data);
-										}
-									})
-									uni.login({
-										success() {
-											uni.showToast({
-												title:"登录成功"
-											})
-										}
-									})
-									 uni.switchTab({
-										url:'/pages/index/index',
-									}) 
+									
+									// if(that.urlData==1){
+										uni.switchTab({  //返回首页
+											url:'/pages/index/index',
+										}) 
+									// }else{
+									// 	uni.navigateBack();//返回上一页
+									// }
 								}else{
 									uni.showToast({
 										title:"验证码错误",
@@ -150,50 +137,46 @@
 						})
 					}
 				}
-				
 			},
 			getCodeClick(e){	//获取验证码
 				var self=this;
 				const {phoneNumber, captchaCode} = this;		
 				if(self.judgeNum(self.phoneNumber)){
-					var timer=null,second=60; //倒计时的时间
+					var timer=null,second=59; //倒计时的时间
 					if(self.textCode == "获取验证码"){
-					  //获取6位随机数
-					  var randomNum = ('000000' + Math.floor(Math.random() * 999999)).slice(-6);
-					  //短信接口
-					  uni.setStorage({
-							key:'captchaCode',
-							data:randomNum
-					  })
-						uni.request({
-						   url: 'http://111.231.109.113:8000/api/MyTest/SendMessage',
-						   data:{
-							  phoneNumber:self.phoneNumber,
-							  text:'动态验证码：'+randomNum+',如果不是本人请忽略此短信。'
-						   },
-						   method:"GET",
-						   success: function (res) {
-								console.log(res);
-								if(res.data){
-									timer=setInterval(function(){
-									second--;
-									if(second<=0){	
-										self.textCode = "获取验证码";
-										clearInterval(timer);
-										second=60;	
+					  self.textCode = second+"秒后重发";
+					  if(self.textCode == "59秒后重发"){
+						  timer=setInterval(function(){
+						  second--;
+						  if(second<=0){	
+						  	self.textCode = "获取验证码";
+						  	clearInterval(timer);
+						  	second=59;	
+						  }
+						  else{			
+						  	self.textCode = second+"秒后重发";
+						  }},1000)
+						 uni.request({
+							url:'http://218.67.107.93:9210/api/app/getLoginCode?phoneNumber='+self.phoneNumber,
+						    method:"POST",
+							success:(res)=>{
+						 		console.log(res.data.code);
+								uni.setStorage({
+									key:'captchaCode',
+									data:{
+										code:res.data.code,
+										phone:self.phoneNumber,
 									}
-									else{			
-										self.disabled = true;
-										self.textCode = second+"秒后重发";
-									}},1000)
-								}else{
-									uni.showToast({
-										title : '手机号码有误',
-										icon : 'none',
+								})
+								setTimeout(function(){
+									uni.removeStorage({
+										key:'captchaCode',
 									})
-								}
-						   }
-						})	
+								},300000);
+						    }
+						 }) 
+					  }
+							
 					}
 				}else{
 					uni.showToast({
@@ -203,9 +186,7 @@
 				}
 			},
 			returnClick(){		//返回个人中心
-				uni.switchTab({
-					url:'/pages/GRZX/user'
-				})
+				uni.navigateBack();
 			},
 		}
 	}
@@ -221,14 +202,14 @@
 	.returnClass{  //返回按钮
 		width: 2.53%;
 		height: 35upx;
-		top: 80upx;
+		top: 110upx;
 		left: 4.13%;
 		position: absolute;
 	}
 	.logoClass{		//logo的样式
 		width: 32.4%;
 		height: 233upx;
-		top: 147upx;
+		top: 200upx;
 		left: 33.87%;
 		position: absolute;
 	}
@@ -250,7 +231,7 @@
 		width: 90.4%;
 		height: 720upx;
 		position: absolute;
-		top:277upx;
+		top:324upx;
 		left: 4.8%;
 		background-color: white;
 		border-radius: 20upx;

@@ -6,12 +6,39 @@
 				"navigationStyle": "custom"
 			}
 		},
-		{
-			"path": "pages/grzx/userLogin",
+		{  //个人中心开始
+			"path": "pages/grzx/userLogin",  //登录
 			"style": {
 				"navigationStyle": "custom"
 			}
-		}, {
+		},
+		{
+			"path": "pages/grzx/user",  //个人中心
+			"style": {
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/grzx/set",  //设置
+			"style": {
+				"navigationBarTitleText": "设置"
+			}
+		},
+		{
+			"path": "pages/grzx/infoManage",  //信息登记	
+			"style": {
+				"navigationBarTitleText": "驾驶员信息",
+				"navigationBarBackgroundColor": "#FFFFFF"
+			}
+		},
+		{
+			"path": "pages/grzx/licenseManage",  //驾照登记
+			"style": {
+				"navigationBarTitleText": "驾照信息"
+			}
+		},
+		//个人中心结束
+		{
 			"path": "pages/driver/taxiDriver",
 			"style": {
 				"navigationStyle": "custom"
@@ -145,7 +172,7 @@
 				"text": "营收"
 			},
 			{
-				"pagePath": "pages/index/index",
+				"pagePath": "pages/grzx/user",
 				"iconPath": "static/index/user.png",
 				"selectedIconPath": "static/index/user1.png",
 				"text": "我的"
