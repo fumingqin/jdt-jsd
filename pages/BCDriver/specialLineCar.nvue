@@ -78,7 +78,7 @@
 				</button>
 			</view>
 		</view>
-		
+
 		<!--弹出层-->
 		<uni-popup ref='chooseStart' :animation='true' type='center' :maskClick='false'>
 			<!--修改上车点-->
@@ -89,17 +89,17 @@
 					<uni-icons @click="close('chooseStart')" color='#999999' size='24' type='closeempty'></uni-icons>
 				</view>
 				<view>
-					<button class="popupButtonChoose">
-						<text class="popupButtonChooseFont">点击修改上车点</text>
+					<button class="popupButtonChoose" @click="choosemap">
+						<text class="popupButtonChooseFont">{{startPoint}}</text>
 						<uni-icons color='#999999' size='24' type='forward'></uni-icons>
 					</button>
-					<button class="popupButtonOk">
+					<button class="popupButtonOk" @click="Modify('start','chooseStart')">
 						<text class="popupButtonOkFont">确定</text>
 					</button>
 				</view>
 			</view>
 		</uni-popup>
-		
+
 	</view>
 </template>
 
@@ -129,6 +129,7 @@
 				resultData: {},
 				status: 0,
 				directionInterval: '',
+				startPoint: "点击修改上车点",
 			}
 		},
 		onLoad() {
@@ -144,8 +145,30 @@
 				}
 			});
 		},
+		onShow() {
+			var that = this;
+			uni.getStorage({
+				key: "AddressData",
+				success: function(res) {
+					console.log(res);
+					that.startPoint = res.data.addressName;
+					that.AddressArr = res.date;
+				}
+			})
+		},
 		methods: {
-
+			choosemap() { //选择地点
+				uni.navigateTo({
+					url: '../Map/MapIndex'
+				})
+			},
+			Modify(type, name) { //点击确认修改地点
+				var that = this;
+				if (type == "start") { //修改上车点，确认方法
+					that.beginAddress = that.startPoint;
+				} 
+				this.close(name);
+			},
 			confirmgetonCar() { //确认乘客上车
 				this.status = 1;
 				var that = this;
@@ -270,22 +293,22 @@
 					}
 				});
 			},
-			
-			change:function(status){
+
+			change: function(status) {
 				let that = this;
-				switch(status){
+				switch (status) {
 					case 0:
 						that.open('chooseStart');
 						break;
-					/* case 1:
-						that.open('chooseEnd');
-						break;
-					case 2:
-						that.open('chooseReturn');
-						break; */
+						/* case 1:
+							that.open('chooseEnd');
+							break;
+						case 2:
+							that.open('chooseReturn');
+							break; */
 					default:
 						break;
-					
+
 				}
 			},
 			open: function(name) {
@@ -294,6 +317,12 @@
 			},
 			close: function(name) {
 				let that = this;
+				uni.removeStorage({
+					key: "AddressData",
+					success() {
+						that.startPoint = "点击修改上车点";
+					}
+				})
 				that.$refs[name].close();
 			},
 		}
@@ -304,28 +333,28 @@
 	.map {
 		width: 750rpx;
 	}
-	
+
 	.popupBlock {
 		width: 650rpx;
 		padding: 30rpx;
 		background-color: #FFFFFF;
 		border-radius: 12rpx;
 	}
-	
+
 	.popupTitle {
 		margin-bottom: 50rpx;
 		flex-direction: row;
 		align-items: center;
 		justify-content: space-between;
 	}
-	
+
 	.popupTitleFont {
 		font-size: 38rpx;
 		font-family: Source Han Sans SC;
 		font-weight: 400;
 		color: #333333;
 	}
-	
+
 	.popupButtonChoose {
 		flex-direction: row;
 		align-items: center;
@@ -336,14 +365,14 @@
 		border-width: 1rpx;
 		border-radius: 12rpx;
 	}
-	
+
 	.popupButtonChooseFont {
 		font-size: 36rpx;
 		font-family: Source Han Sans SC;
 		font-weight: 400;
 		color: #333333;
 	}
-	
+
 	.popupButtonOk {
 		margin-top: 50rpx;
 		padding: 30rpx;
@@ -351,7 +380,7 @@
 		box-shadow: 0px 7px 38px 8px rgba(216, 48, 75, 0.15);
 		border-radius: 12rpx;
 	}
-	
+
 	.popupButtonOkFont {
 		font-size: 36rpx;
 		font-family: Source Han Sans SC;

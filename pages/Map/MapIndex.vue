@@ -255,7 +255,7 @@
 			},
 			addressSearch() {
 				uni.navigateTo({
-					url: '/pages/Home/MapSearch'
+					url: './MapSearch'
 				})
 			},
 			submit() {
@@ -272,7 +272,7 @@
 					district: address.ad_info.district,
 					city: address.ad_info.city,
 				}
-				uni.setStorageSync({
+				uni.setStorage({
 					key: "AddressData",
 					data: AddressData,
 					success() {
