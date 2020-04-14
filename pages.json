@@ -109,7 +109,9 @@
 		}
 	    ,{
             "path" : "pages/BCDriver/openPopup",
-            "style" : {}
+            "style" : {
+				"navigationStyle": "custom"
+			}
         }
     ],
 	"globalStyle": {
