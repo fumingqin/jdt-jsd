@@ -140,6 +140,14 @@
 				"navigationStyle": "custom"
 			}
         }
+        ,{
+            "path" : "pages/Map/MapIndex",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/Map/MapSearch",
+            "style" : {}
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
