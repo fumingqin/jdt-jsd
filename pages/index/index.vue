@@ -83,17 +83,19 @@
 				Address: '搜索您要去的地方',
 				Work: '所属工作:',
 				CarType: '',
-				Message: '丰泽区云鹿口有一名乘客等待上车...',
+				Message: '丰泽区云鹿口有一名乘客等待上车...', 
 				IsWork: false,
 			}
 		},
 		onLoad() {
 			let that = this;
-			/* getApp().globalData.constantly(); */
+			var arr = [];
+			getApp().globalData.constantly();
 			uni.showToast({
 				title:'已开启',
 				icon:'none'
 			})
+			
 		},
 		onShow() {
 			var that = this;

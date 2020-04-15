@@ -71,7 +71,6 @@
 				uni.navigateTo({
 					url: '/pages/driver/confirmgetonCar',
 				})
-				Map.openMap(24.943068, 118.609035, '清源山', 'gcj02');
 			},
 		}
 	}

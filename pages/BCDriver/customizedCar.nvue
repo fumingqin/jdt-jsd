@@ -275,6 +275,7 @@
 				resultData: {},
 				status: 0,
 				directionInterval: '',
+				status:0,
 			}
 		},
 		onLoad() {
@@ -289,8 +290,19 @@
 					that.viewHeight = (res.windowHeight * 0.4) + 'px'
 				}
 			});
+			that.getOrderDetail();
 		},
 		methods: {
+			getOrderDetail:function(){
+				let that = this;
+				that.status = 0;
+				
+				//刚接单
+				if(that.status == 0){
+					Map.openMap(24.943068, 118.609035, '清源山', 'gcj02');
+					
+				}
+			},
 			//确认乘客上车
 			confirmgetonCar() {
 				this.status = 1;
@@ -317,7 +329,7 @@
 				Map.openMap(24.943068, 118.609035, '清源山', 'gcj02');
 			},
 			//确认到达
-			confirmgettoDestination() {
+			confirmgettoDestination:function() {
 				let that = this;
 				//取消由 setInterval 设置的定时器
 				clearInterval(this.directionInterval);
@@ -328,7 +340,7 @@
 				}) */
 			},
 			//返程结束
-			endofReturn() {
+			endofReturn:function() {
 				uni.redirectTo({
 					url: '/pages/BCDriver/otherExpenses',
 				})

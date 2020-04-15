@@ -143,10 +143,20 @@
 					that.viewHeight = (res.windowHeight * 0.4) + 'px'
 				}
 			});
+			that.getOrderDetail();
 		},
 		methods: {
-
-			confirmgetonCar() { //确认乘客上车
+			getOrderDetail:function(){
+				let that = this;
+				that.status = 0;
+				
+				//刚接单
+				if(that.status == 0){
+					Map.openMap(24.943068, 118.609035, '清源山', 'gcj02');
+					
+				}
+			},
+			confirmgetonCar:function() { //确认乘客上车
 				this.status = 1;
 				var that = this;
 				that.markers = [];
@@ -170,7 +180,7 @@
 				}, 10000);
 				Map.openMap(24.943068, 118.609035, '清源山', 'gcj02');
 			},
-			confirmgettoDestination() {
+			confirmgettoDestination:function() {
 				//取消由 setInterval 设置的定时器
 				clearInterval(this.directionInterval);
 				uni.redirectTo({
