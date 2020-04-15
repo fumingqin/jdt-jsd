@@ -140,6 +140,26 @@
 				"navigationStyle": "custom"
 			}
         }
+        ,{
+            "path" : "pages/Map/MapIndex",
+            "style" : {
+				"navigationBarTitleText": "hello",
+				"app-plus": {
+					"titleNView": {
+						"buttons": [{
+							"text": "确定",
+							"type": "transparent",
+							"fontSize": "16px",
+							"width":"77px"
+						}]
+					}
+				}
+			}
+        }
+        ,{
+            "path" : "pages/Map/MapSearch",
+            "style" : {}
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
