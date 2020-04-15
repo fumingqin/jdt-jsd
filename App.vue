@@ -6,9 +6,6 @@
 		mapMutations
 	} from 'vuex';
 	export default {
-		components:{
-			utils
-		},
 		data: {},
 		globalData: {
 			globalInterval: 0,
@@ -63,7 +60,7 @@
 			let userInfo = uni.getStorageSync('userInfo') || '';
 			if (userInfo.nickName) {
 				//如果有登录缓存则开启定时器。
-				that.constantly();
+				/* that.constantly(); */
 			}
 
 			if (userInfo.nickName) {
