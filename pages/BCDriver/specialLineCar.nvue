@@ -159,7 +159,7 @@
 		},
 		methods: {
 		
-					getOrderDetail:function(){
+			getOrderDetail:function(){
 				let that = this;
 				that.status = 0;
 				

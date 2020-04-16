@@ -67,7 +67,6 @@
 					<text style="width:400rpx;height:40rpx;font-size:30rpx;font-family:Source Han Sans SC;color:#666666;line-height:36rpx;">{{totalCost}}元</text>
 				</view>
 			</view>
-
 			<view>
 				<button style="width: 698rpx;height: 105rpx;background-color: #FC6A6C;border-color:#FC6A6C;margin-left: 28rpx; border-radius:20rpx; position: fixed; padding: 6rpx;bottom: 90rpx;"
 				 @longpress="confirmGetToDestination">
@@ -75,6 +74,26 @@
 				</button>
 			</view>
 		</view>
+		
+		<uni-popup ref='callPolice' :animation='true' type='center' :maskClick='false'>
+			<!--一键报警-->
+			<view class="popupBlock" style="margin: 0 auto;">
+				<view class="popupTitle">
+					<view style="width: 72rpx;"></view>
+					<text class="popupTitleFont">一键报警</text>
+					<uni-icons @click="cancle" color='#999999' size='24' type='closeempty'></uni-icons>
+				</view>
+				<view>
+					<picker @change='pickerChange' mode="selector" :value="pickerValue"  :range='callPoliceArr' style="align-items: center;">
+						<text class="popupTitleFont">{{reason}}</text>
+					</picker>
+					<textarea name='remark' v-model="remark" placeholder="备注,可不填"></textarea>
+					<button @click="sendCall" class="popupButtonOk">
+						<text class="popupButtonOkFont">确定</text>
+					</button>
+				</view>
+			</view>
+		</uni-popup>
 	</view>
 </template>
 
@@ -82,9 +101,11 @@
 	import taxi from '../../common/Czc.js';
 	import uniIcons from "@/components/uni-icons/uni-icons.vue";
 	import Map from '../../common/my-openMap/openMap.js';
+	import uniPopup from "@/components/uni-popup/uni-popup.vue"
 	export default {
 		components: {
 			uniIcons,
+			uniPopup
 		},
 		data() {
 			return {
@@ -109,6 +130,13 @@
 				status: 0,
 				directionInterval: 0,
 				orderInterval:0,
+				callPoliceArr:[
+					'车辆损坏',
+					'身体不适'
+				],
+				reason:'请选择报警原因',
+				pickerValue:-1,
+				remark:''
 			}
 		},
 		onLoad() {
@@ -132,7 +160,7 @@
 				let that = this;
 				that.status = 0;
 				if(that.status == 0){
-					Map.openMap(24.943068, 118.609035, '清源山', 'gcj02');
+					/* Map.openMap(24.943068, 118.609035, '清源山', 'gcj02'); */
 				}else if(that.status == 1){
 					
 					
@@ -193,26 +221,48 @@
 					phoneNumber: that.passengerPhone
 				});
 			},
+			
+			//picker相关
 			callPolice: function() {
-				//一键报警
 				let that = this;
-				uni.showToast({
-					title: 'callPolice'
-				});
-				uni.getLocation({
-					type: 'gcj02',
-					geocode: true,
-					success: function(res) {
-						console.log(res.address);
-						console.log(res.latitude);
-						console.log(res.longitude);
-					}
-				});
+				that.$refs.callPolice.open();
 			},
+			cancle:function(){
+				let that = this;
+				that.$refs.callPolice.close();
+			},
+			pickerChange:function(e){
+				let that = this;
+				console.log(e);
+				that.pickerValue = e.detail.value;
+				that.reason = that.callPoliceArr[e.detail.value];
+			},
+			sendCall:function(){
+				let that = this;
+				if(that.pickerValue < 0){
+					uni.showToast({
+						title:'请选择一个原因',
+						icon:'none'
+					});
+					return;
+				}
+				//发送
+				console.log(that.reason);
+				console.log(that.remark);
+				uni.showToast({
+					title:'发送成功',
+					icon:'none',
+					success:function(){
+						that.cancle();
+					}
+				})
+			},
+			
 			back: function() {
 				var that = this;
 				uni.navigateBack({});
 			},
+			
 			setMarker: function(id, lon, lat, iconPath) {
 				var width = 20;
 				var height = 20;
@@ -278,7 +328,6 @@
 					}
 				});
 			},
-
 		}
 	}
 </script>
@@ -286,5 +335,59 @@
 <style lang="scss">
 	.map {
 		width: 750rpx;
+	}
+	
+	.popupBlock {
+		width: 650rpx;
+		padding: 30rpx;
+		background-color: #FFFFFF;
+		border-radius: 12rpx;
+	}
+	
+	.popupTitle {
+		margin-bottom: 50rpx;
+		flex-direction: row;
+		align-items: center;
+		justify-content: space-between;
+	}
+	
+	.popupTitleFont {
+		font-size: 38rpx;
+		font-family: Source Han Sans SC;
+		font-weight: 400;
+		color: #333333;
+	}
+	
+	.popupButtonChoose {
+		flex-direction: row;
+		align-items: center;
+		justify-content: space-between;
+		padding: 30rpx;
+		background-color: #FFFFFF;
+		border-color: #AAAAAA;
+		border-width: 1rpx;
+		border-radius: 12rpx;
+	}
+	
+	.popupButtonChooseFont {
+		font-size: 36rpx;
+		font-family: Source Han Sans SC;
+		font-weight: 400;
+		color: #333333;
+	}
+	
+	.popupButtonOk {
+		margin-top: 50rpx;
+		padding: 30rpx;
+		background-color: #FC6A6C;
+		box-shadow: 0px 7px 38px 8px rgba(216, 48, 75, 0.15);
+		border-radius: 12rpx;
+	}
+	
+	.popupButtonOkFont {
+		font-size: 36rpx;
+		font-family: Source Han Sans SC;
+		font-weight: 400;
+		color: #FFFFFF;
 	}
 </style>
