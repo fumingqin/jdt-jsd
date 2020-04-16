@@ -176,7 +176,7 @@
 			},
 			Modify(type, name) { //点击确认修改地点
 				var that = this;
-				if (type == "start") { //修改上车点，确认方法
+				if (type == "start"&&that.startPoint!="点击修改上车点") { //修改上车点，确认方法
 					that.beginAddress = that.startPoint;
 				} 
 				this.close(name);
