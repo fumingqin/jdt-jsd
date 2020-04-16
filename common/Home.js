@@ -8,7 +8,8 @@ const Interface = {
 	
 	addVehiclePosition : {
 		value: Url + '/api/zhcx/addVehiclePosition',
-		name:'司机端定时实时上报',
+		name:'司机端定时实时上报位置',
+		method:'GET',//GET-POST
 		pages:[]
 	},
 }
