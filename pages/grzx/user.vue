@@ -4,7 +4,7 @@
 			<image src="../../static/grzx/backImg.png" class="imgClass"></image>
 			<!-- #ifdef MP-WEIXIN -->
 			<image src="../../static/grzx/set.png" class="setClass" @click="navTo('/pages/grzx/set')"></image>
-			<image src="../../static/grzx/info.png" class="infoClass" @click="navTo('/pages/grzx/myNews')"></image>
+			<!-- <image src="../../static/grzx/info.png" class="infoClass" @click="navTo('/pages/grzx/myNews')"></image> -->
 			<!-- #endif -->
 			<view class="userInfoClass" @click="checkLogin">
 				<image class="portraitClass" :src=" userInfo.avatarUrl || '/static/grzx/missing-face.png'"></image>
@@ -62,9 +62,9 @@
 				})
 			}
 			if(index === 1){
-				uni.navigateTo({
-					url:'/pages/grzx/myNews'
-				})
+				// uni.navigateTo({
+				// 	url:'/pages/grzx/myNews'
+				// })
 			}
 			if(index === 2){
 				uni.scanCode({
