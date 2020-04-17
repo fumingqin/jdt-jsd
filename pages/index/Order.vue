@@ -164,11 +164,10 @@
 								</view>
 							</view>
 						</view>
-						<view class="one" v-if="item.IsShow">
+						<uni-transition class="one" v-if="item.IsShow" :modeClass="ani" :show="true" :duration="300">
 							详情
-							<view class="one0">
-							</view>
-						</view>
+							<view class="one0"></view>
+						</uni-transition>
 					</view>
 				</view>
 				<!-- 包车结束 -->
@@ -319,11 +318,12 @@
 								</view>
 							</view>
 						</view>
-						<view class="one" v-if="item.IsShow">
+						
+						<uni-transition class="one" v-if="item.IsShow" :modeClass="ani" :show="true" :duration="300">
 							详情
 							<view class="one0">
 							</view>
-						</view>
+						</uni-transition>
 					</view>
 				</view>
 				<!-- 包车结束 -->
@@ -587,10 +587,15 @@
 </template>
 
 <script>
+	import uniTransition from '@/components/uni-transition/uni-transition.vue'
 	export default {
+		components: {
+			uniTransition
+		},
 		data() {
 			return {
 				carTypeid: 0,
+				ani: ['slide-top','zoom-in'],
 				current: 0,
 				orderArr: [{ //客车
 						carType: '客车-传统',
@@ -758,11 +763,12 @@
 						that.carTypeid = 4;
 					}
 				}
-			})
+			});
 		},
 		methods: {
 			tabclick: function(e) {
 				this.current = e;
+				console.log("测试")
 			},
 			show: function(el) {
 				el.IsShow = !el.IsShow

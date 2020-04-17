@@ -6,9 +6,6 @@
 		mapMutations
 	} from 'vuex';
 	export default {
-		components:{
-			utils
-		},
 		data: {},
 		globalData: {
 			globalInterval: 0,
@@ -17,21 +14,24 @@
 				let that = this;
 				uni.getLocation({
 					type: 'gcj02 ',
-					success: function(res) {				
+					success: function(res) {	
+						console.log( res.longitude);
+						console.log( res.latitude);
+					
 						uni.request({
 							url: homeJS.Interface.addVehiclePosition.value, 
-							method:'GET',
+							method:homeJS.Interface.addVehiclePosition.method,
 							data: {
+								driverID:'0',
 								orderNumber:that.orderNumber,
-								vehicleNumber:'13599291007',
+								vehicleNumber:'13599291007',//车牌号
 								lon: res.longitude,
 								lat: res.latitude,
 								speed:res.speed, 
 								reportTime: utils.timeTodate(homeJS.dateFormat.dateformat, new Date().getTime())
 							},
 							success:function(res){
-								console.log(res);
-								console.log(new Date());
+									console.log(res);
 							},
 							fail:function(res){
 								console.log(res);
@@ -48,6 +48,10 @@
 					}, 10000);
 				}
 			},
+			closeUpload:function(){
+				let that = this;
+				clearInterval(that.globalInterval);
+			}
 
 		},
 
@@ -59,7 +63,7 @@
 			let userInfo = uni.getStorageSync('userInfo') || '';
 			if (userInfo.nickName) {
 				//如果有登录缓存则开启定时器。
-				that.constantly();
+				/* that.constantly(); */
 			}
 
 			if (userInfo.nickName) {

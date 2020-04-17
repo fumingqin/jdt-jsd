@@ -7,7 +7,7 @@
 		<view v-if="status === 0" style="position: fixed;bottom: 220rpx; ">
 			<view style="display: flex;flex-direction: row;">
 				<image src="../../static/driver/police.png" style="width: 120rpx;height: 120rpx;margin-left: 10rpx;" @click="callPolice"></image>
-				<image @click="change" src="../../static/bcDriver/change.png" style="width: 120rpx;height: 120rpx; margin-left: 480rpx;"></image>
+				<image @click="change(status)" src="../../static/bcDriver/change.png" style="width: 120rpx;height: 120rpx; margin-left: 480rpx;"></image>
 			</view>
 			<!-- 行程信息 -->
 			<view style="width: 698rpx;height: 170rpx; background-color: #FFFFFF;margin-left: 28rpx; border-radius:20rpx;">
@@ -78,6 +78,28 @@
 				</button>
 			</view>
 		</view>
+
+		<!--弹出层-->
+		<uni-popup ref='chooseStart' :animation='true' type='center' :maskClick='false'>
+			<!--修改上车点-->
+			<view class="popupBlock" style="margin: 0 auto;">
+				<view class="popupTitle">
+					<view style="width: 72rpx;"></view>
+					<text class="popupTitleFont">请选择上车点</text>
+					<uni-icons @click="close('chooseStart')" color='#999999' size='24' type='closeempty'></uni-icons>
+				</view>
+				<view>
+					<button class="popupButtonChoose" @click="choosemap">
+						<text class="popupButtonChooseFont">{{startPoint}}</text>
+						<uni-icons color='#999999' size='24' type='forward'></uni-icons>
+					</button>
+					<button class="popupButtonOk" @click="Modify('start','chooseStart')">
+						<text class="popupButtonOkFont">确定</text>
+					</button>
+				</view>
+			</view>
+		</uni-popup>
+
 	</view>
 </template>
 
@@ -107,6 +129,7 @@
 				resultData: {},
 				status: 0,
 				directionInterval: '',
+				startPoint: "点击修改上车点",
 			}
 		},
 		onLoad() {
@@ -121,9 +144,43 @@
 					that.viewHeight = (res.windowHeight * 0.4) + 'px'
 				}
 			});
+			that.getOrderDetail();
+		},
+		onShow() {
+			var that = this;
+			uni.getStorage({
+				key: "AddressData",
+				success: function(res) {
+					console.log(res);
+					that.startPoint = res.data.addressName;
+					that.AddressArr = res.date;
+				}
+			})
 		},
 		methods: {
-
+		
+			getOrderDetail:function(){
+				let that = this;
+				that.status = 0;
+				
+				//刚接单
+				if(that.status == 0){
+					Map.openMap(24.943068, 118.609035, '清源山', 'gcj02');
+					
+				}
+			},
+			choosemap() { //选择地点
+				uni.navigateTo({
+					url: '../Map/MapIndex'
+				})
+			},
+			Modify(type, name) { //点击确认修改地点
+				var that = this;
+				if (type == "start"&&that.startPoint!="点击修改上车点") { //修改上车点，确认方法
+					that.beginAddress = that.startPoint;
+				} 
+				this.close(name);
+			},
 			confirmgetonCar() { //确认乘客上车
 				this.status = 1;
 				var that = this;
@@ -148,7 +205,7 @@
 				}, 10000);
 				Map.openMap(24.943068, 118.609035, '清源山', 'gcj02');
 			},
-			confirmgettoDestination() {
+			confirmgettoDestination:function() {
 				//取消由 setInterval 设置的定时器
 				clearInterval(this.directionInterval);
 				uni.redirectTo({
@@ -248,11 +305,38 @@
 					}
 				});
 			},
-			change:function(){
-				uni.navigateTo({
-					url:'./openPopup'
+
+			change: function(status) {
+				let that = this;
+				switch (status) {
+					case 0:
+						that.open('chooseStart');
+						break;
+						/* case 1:
+							that.open('chooseEnd');
+							break;
+						case 2:
+							that.open('chooseReturn');
+							break; */
+					default:
+						break;
+
+				}
+			},
+			open: function(name) {
+				let that = this;
+				that.$refs[name].open();
+			},
+			close: function(name) {
+				let that = this;
+				uni.removeStorage({
+					key: "AddressData",
+					success() {
+						that.startPoint = "点击修改上车点";
+					}
 				})
-			}
+				that.$refs[name].close();
+			},
 		}
 	}
 </script>
@@ -260,5 +344,59 @@
 <style lang="scss">
 	.map {
 		width: 750rpx;
+	}
+
+	.popupBlock {
+		width: 650rpx;
+		padding: 30rpx;
+		background-color: #FFFFFF;
+		border-radius: 12rpx;
+	}
+
+	.popupTitle {
+		margin-bottom: 50rpx;
+		flex-direction: row;
+		align-items: center;
+		justify-content: space-between;
+	}
+
+	.popupTitleFont {
+		font-size: 38rpx;
+		font-family: Source Han Sans SC;
+		font-weight: 400;
+		color: #333333;
+	}
+
+	.popupButtonChoose {
+		flex-direction: row;
+		align-items: center;
+		justify-content: space-between;
+		padding: 30rpx;
+		background-color: #FFFFFF;
+		border-color: #AAAAAA;
+		border-width: 1rpx;
+		border-radius: 12rpx;
+	}
+
+	.popupButtonChooseFont {
+		font-size: 36rpx;
+		font-family: Source Han Sans SC;
+		font-weight: 400;
+		color: #333333;
+	}
+
+	.popupButtonOk {
+		margin-top: 50rpx;
+		padding: 30rpx;
+		background-color: #FC6A6C;
+		box-shadow: 0px 7px 38px 8px rgba(216, 48, 75, 0.15);
+		border-radius: 12rpx;
+	}
+
+	.popupButtonOkFont {
+		font-size: 36rpx;
+		font-family: Source Han Sans SC;
+		font-weight: 400;
+		color: #FFFFFF;
 	}
 </style>
