@@ -160,7 +160,7 @@
 				let that = this;
 				that.status = 0;
 				if(that.status == 0){
-					/* Map.openMap(24.943068, 118.609035, '清源山', 'gcj02'); */
+					Map.openMap(24.943068, 118.609035, '清源山', 'gcj02');
 				}else if(that.status == 1){
 					
 					
