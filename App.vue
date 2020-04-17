@@ -20,19 +20,18 @@
 					
 						uni.request({
 							url: homeJS.Interface.addVehiclePosition.value, 
-							method:'GET',
+							method:homeJS.Interface.addVehiclePosition.method,
 							data: {
+								driverID:'0',
 								orderNumber:that.orderNumber,
-								vehicleNumber:'13599291007',
+								vehicleNumber:'13599291007',//车牌号
 								lon: res.longitude,
 								lat: res.latitude,
 								speed:res.speed, 
 								reportTime: utils.timeTodate(homeJS.dateFormat.dateformat, new Date().getTime())
 							},
 							success:function(res){
-								if(res.state){
 									console.log(res);
-								}
 							},
 							fail:function(res){
 								console.log(res);
@@ -49,6 +48,10 @@
 					}, 10000);
 				}
 			},
+			closeUpload:function(){
+				let that = this;
+				clearInterval(that.globalInterval);
+			}
 
 		},
 

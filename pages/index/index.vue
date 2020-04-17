@@ -63,17 +63,17 @@
 		</view>
 		
 		<!-- 客车提醒 -->
-		<scroll-view :scroll-y="true" style="height: 320rpx; margin-top: 20rpx;" v-if="CarType=='客车'">
+		<scroll-view :scroll-y="true" style="height: 270rpx; margin-top: 20rpx;" v-if="CarType=='客车'">
 		<!-- 消息提示 -->
 		<view style="width: 94%;height: 185rpx; background-color: #FFFFFF;margin-left: 22rpx; border-radius:20rpx;">
 			<view style="padding: 40rpx;display: flex;flex-direction: row;">
 				<view>
 					<image style="width: 38rpx;height: 38rpx;" src="../../static/index/messageTips.png"></image>
 				</view>
-				<text style="width:145rpx;height:34rpx;font-size:36rpx;font-family:Source Han Sans SC;font-weight:bold;color:rgba(44,45,45,1);line-height:42rpx; margin-left: 10rpx;">消息提示</text>
+				<text style="height:40rpx;font-size:36rpx;font-family:Source Han Sans SC;font-weight:bold;color:rgba(44,45,45,1);line-height:42rpx; margin-left: 10rpx;">消息提示</text>
 			</view>
 			<view style="margin: -12rpx 42rpx;display: flex;flex-direction: row;">
-				<text style="width:560rpx;height:40rpx;font-size:32rpx;font-family:Source Han Sans SC;font-weight:300;color:rgba(44,45,45,1);line-height:42rpx;">{{Message}}</text>
+				<text style="height:40rpx;font-size:32rpx;font-family:Source Han Sans SC;font-weight:300;color:rgba(44,45,45,1);line-height:42rpx;">{{Message}}</text>
 			</view>
 		</view>
 		<!-- 发车提示 -->
@@ -82,10 +82,10 @@
 				<view>
 					<image style="width: 38rpx;height: 38rpx;" src="../../static/index/messageTips.png"></image>
 				</view>
-				<text style="width:250rpx;height:34rpx;font-size:36rpx;font-family:Source Han Sans SC;font-weight:bold;color:rgba(44,45,45,1);line-height:42rpx; margin-left: 10rpx;">客运-发车提醒</text>
+				<text style="height:40rpx;font-size:36rpx;font-family:Source Han Sans SC;font-weight:bold;color:rgba(44,45,45,1);line-height:42rpx; margin-left: 10rpx;">客运-发车提醒</text>
 			</view>
 			<view style="margin: -12rpx 42rpx;display: flex;flex-direction: row;">
-				<text style="width:630rpx;height:40rpx;font-size:32rpx;font-family:Source Han Sans SC;font-weight:300;color:rgba(44,45,45,1);line-height:42rpx;">{{kyMessage}}</text>
+				<text style="height:40rpx;font-size:32rpx;font-family:Source Han Sans SC;font-weight:300;color:rgba(44,45,45,1);line-height:42rpx;">{{kyMessage}}</text>
 			</view>
 		</view>
 		</scroll-view>
@@ -95,10 +95,10 @@
 				<view>
 					<image style="width: 38rpx;height: 38rpx;" src="../../static/index/messageTips.png"></image>
 				</view>
-				<text style="width:260rpx;height:34rpx;font-size:36rpx;font-family:Source Han Sans SC;font-weight:bold;color:rgba(44,45,45,1);line-height:42rpx; margin-left: 10rpx;">出租车-订单提醒</text>
+				<text style="height:40rpx;font-size:36rpx;font-family:Source Han Sans SC;font-weight:bold;color:rgba(44,45,45,1);line-height:42rpx; margin-left: 10rpx;">出租车-订单提醒</text>
 			</view>
 			<view style="margin: -12rpx 42rpx;display: flex;flex-direction: row;">
-				<text style="width:620rpx;height:40rpx;font-size:32rpx;font-family:Source Han Sans SC;font-weight:300;color:rgba(44,45,45,1);line-height:42rpx;">{{czcMessage}}</text>
+				<text style="height:40rpx;font-size:32rpx;font-family:Source Han Sans SC;font-weight:300;color:rgba(44,45,45,1);line-height:42rpx;">{{czcMessage}}</text>
 			</view>
 		</view>
 		<!-- 包车提醒 -->
@@ -107,10 +107,10 @@
 				<view>
 					<image style="width: 38rpx;height: 38rpx;" src="../../static/index/messageTips.png"></image>
 				</view>
-				<text style="width:260rpx;height:34rpx;font-size:36rpx;font-family:Source Han Sans SC;font-weight:bold;color:rgba(44,45,45,1);line-height:42rpx; margin-left: 10rpx;">包车-发车提醒</text>
+				<text style="height:40rpx;font-size:36rpx;font-family:Source Han Sans SC;font-weight:bold;color:rgba(44,45,45,1);line-height:42rpx; margin-left: 10rpx;">包车-发车提醒</text>
 			</view>
 			<view style="margin: -12rpx 42rpx;display: flex;flex-direction: row;">
-				<text style="width:620rpx;height:40rpx;font-size:32rpx;font-family:Source Han Sans SC;font-weight:300;color:rgba(44,45,45,1);line-height:42rpx;">{{bcMessage}}</text>
+				<text style="height:40rpx;font-size:32rpx;font-family:Source Han Sans SC;font-weight:300;color:rgba(44,45,45,1);line-height:42rpx;">{{bcMessage}}</text>
 			</view>
 		</view>
 	</view>
@@ -124,9 +124,9 @@
 				Work: '所属工作:',
 				CarType: '',
 				Message: '丰泽区云鹿路口有一名乘客等待上车...',
-				kyMessage:'您有一个班次，即将发车，请做好发车准备！',
+				kyMessage:'您有一个班次，即将发车，请做好发车准备',
 				czcMessage:'您有一个订单，即将到达预订时间，请及...',
-				bcMessage:'您有一个包车行程，即将到达预订时间，请...',
+				bcMessage:'您有一个包车行程，即将到达预订时间...',
 				IsWork: false,
 			}
 		},
