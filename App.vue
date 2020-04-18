@@ -30,7 +30,7 @@
 							success:function(res){
 							},
 							fail:function(res){
-								console.log(res);
+								// console.log(res);
 							}
 						});
 					}
@@ -67,7 +67,7 @@
 				uni.getStorage({
 					key: 'userInfo',
 					success: (res) => {
-						console.log(res);
+						// console.log(res);
 						this.login(res.data);
 					}
 				});
