@@ -12,7 +12,7 @@
 					<view></view>
 				</view>
 			</view>
-			<view style="margin: 0 30rpx;">
+			<view style="margin: 0 30rpx;" v-if="current==0">
 				<view style="height: 110rpx;display: flex;align-items: center;justify-content: space-between;padding: 0 40rpx;font-size: 32rpx;background-color: #FFF;border-radius: 20rpx;margin-top: -55rpx;">
 					<view>报表时间</view>
 					<view> {{range[0]}}——{{range[1]}}</view>
@@ -44,14 +44,152 @@
 							</view>
 						</view>
 					</view>
-					<view style="height: 500rpx;background-color: #FFF;border-radius: 20rpx;margin-top: 20rpx;padding: 30rpx;">
+					<view style="background-color: #FFF;border-radius: 20rpx;margin-top: 20rpx;padding: 30rpx;">
 						<view style="display: flex;align-items: center;">
 							<view style="width: 8rpx;height: 34rpx; background-color: #E9554E;"></view>
 							<view style="font-size:36rpx;font-family:Source Han Sans SC;font-weight:bold;color:#2C2D2D;line-height:42rpx;padding-left: 10rpx;">按订单统计</view>
 						</view>
+						<view style="padding-top: 20rpx;">
+							<view style="width: 630rpx;color: #2C2D2D;font-size: 30rpx;">
+								<view style="display: flex;height: 75rpx;align-items: center;background-color: #FFC7C5;border:solid 1px #E9554E;">
+									<view style="width: 150rpx;text-align: center;">岗位</view>
+									<view style="width: 220rpx;text-align: center;">日期</view>
+									<view style="width: 115rpx;text-align: center;">订单数</view>
+									<view style="width: 145rpx;text-align: center;">收益(元)</view>
+								</view>
+								<view style="display: flex;align-items: center;border: solid 1rpx #ADADAD;border-top: none;border-bottom: none;"
+								 v-for="(orderitem,index) in array" :key="index">
+									<view style="width: 150rpx;display: flex;justify-content: center;align-items: center;border-bottom:solid 1rpx #ADADAD;"
+									 :style="{height:(orderitem.orderArr.length*76)+'rpx'}">{{orderitem.title}}</view>
+									<view>
+										<view style="display: flex;border-bottom: solid 1rpx #ADADAD;" v-for="(item,index) in orderitem.orderArr"
+										 :key="index">
+											<view style="width: 220rpx;text-align: center;height: 75rpx;line-height: 75rpx;border-left: solid 1rpx #ADADAD;">{{item.datetime}}</view>
+											<view style="width: 115rpx;text-align: center;height: 75rpx;line-height: 75rpx;border-left: solid 1rpx #ADADAD;">{{item.orderNum}}</view>
+											<view style="width: 145rpx;text-align: center;height: 75rpx;line-height: 75rpx;border-left: solid 1rpx #ADADAD;">{{item.earning}}</view>
+										</view>
+									</view>
+								</view>
+
+								<view>
+									<view style="display: flex;border: solid 1rpx #ADADAD;border-top: none;">
+										<view style="width: 370rpx;text-align: center;height: 75rpx;line-height: 75rpx;">总计</view>
+										<view style="width: 115rpx;text-align: center;height: 75rpx;border-left: solid 1rpx #ADADAD;line-height: 75rpx;">38</view>
+										<view style="width: 145rpx;text-align: center;height: 75rpx;border-left: solid 1rpx #ADADAD;line-height: 75rpx;">45821</view>
+									</view>
+								</view>
+							</view>
+						</view>
 					</view>
 				</scroll-view>
 			</view>
+			<view style="margin: 0 30rpx;" v-if="current==1">
+				<view style="height: 110rpx;display: flex;align-items: center;justify-content: space-between;padding: 0 40rpx;font-size: 32rpx;background-color: #FFF;border-radius: 20rpx;margin-top: -55rpx;">
+					<view @click="changeDate('cut')">前一天</view>
+					<view style="display: flex;justify-content: space-between;align-items: center;">
+						<view> {{date}}</view>
+						<view style="padding: 0 10rpx; border-right: solid 1px #000000;">{{week}}</view>
+						<view @click="onShowDatePicker('date')" style="padding: 0 10rpx;">
+							<image src="../../static/index/calendar.png" style="width: 35rpx;" mode="widthFix" @click="onShowDatePicker('date')"></image>
+						</view>
+					</view>
+					<view @click="changeDate('add')">后一天</view>
+				</view>
+				<view style="background-color: #FFF;border-radius: 20rpx;margin-top: 20rpx;padding: 30rpx;height: 70px;">
+					<view style="display: flex;align-items: center;color:#2C2D2D;line-height:42rpx;font-family:Source Han Sans SC;">
+						<view style="width: 8rpx;height: 34rpx; background-color: #E9554E;"></view>
+						<view style="font-size:36rpx;font-weight:bold;padding-left: 10rpx;">总收益(元)</view>
+					</view>
+					<view style="font-size:66rpx;text-align: center;padding-top: 10rpx;">1852.12</view>
+				</view>
+				<view style="background-color: #FFF;border-radius: 20rpx;margin-top: 20rpx;padding: 30rpx;">
+					<view style="display: flex;align-items: center;">
+						<view style="width: 8rpx;height: 34rpx; background-color: #E9554E;"></view>
+						<view style="font-size:36rpx;font-family:Source Han Sans SC;font-weight:bold;color:#2C2D2D;line-height:42rpx;padding-left: 10rpx;">收支明细</view>
+					</view>
+					<scroll-view :scroll-y="true" :style="{height:paymentscrollHeight}">
+						<view class="paymentDetail" v-for="(item,index) in busDetailArr" :key="index">
+							<view>
+								<view style="font-size: 32rpx;">{{item.paymentName}}</view>
+								<view style="color: #999999;font-size: 30rpx;">{{item.paymentTime}}</view>
+							</view>
+							<view style="font-size: 34rpx;">{{item.amount}}</view>
+						</view>
+					</scroll-view>
+				</view>
+			</view>
+		<view style="margin: 0 30rpx;" v-if="current==2">
+				<view style="height: 110rpx;display: flex;align-items: center;justify-content: space-between;padding: 0 40rpx;font-size: 32rpx;background-color: #FFF;border-radius: 20rpx;margin-top: -55rpx;">
+					<view @click="changeDate('cut')">前一天</view>
+					<view style="display: flex;justify-content: space-between;align-items: center;">
+						<view> {{date}}</view>
+						<view style="padding: 0 10rpx; border-right: solid 1px #000000;">{{week}}</view>
+						<view @click="onShowDatePicker('date')" style="padding: 0 10rpx;">
+							<image src="../../static/index/calendar.png" style="width: 35rpx;" mode="widthFix" @click="onShowDatePicker('date')"></image>
+						</view>
+					</view>
+					<view @click="changeDate('add')">后一天</view>
+				</view>
+				<view style="background-color: #FFF;border-radius: 20rpx;margin-top: 20rpx;padding: 30rpx;height: 70px;">
+					<view style="display: flex;align-items: center;color:#2C2D2D;line-height:42rpx;font-family:Source Han Sans SC;">
+						<view style="width: 8rpx;height: 34rpx; background-color: #E9554E;"></view>
+						<view style="font-size:36rpx;font-weight:bold;padding-left: 10rpx;">总收益(元)</view>
+					</view>
+					<view style="font-size:66rpx;text-align: center;padding-top: 10rpx;">185.54</view>
+				</view>
+				<view style="background-color: #FFF;border-radius: 20rpx;margin-top: 20rpx;padding: 30rpx;">
+					<view style="display: flex;align-items: center;">
+						<view style="width: 8rpx;height: 34rpx; background-color: #E9554E;"></view>
+						<view style="font-size:36rpx;font-family:Source Han Sans SC;font-weight:bold;color:#2C2D2D;line-height:42rpx;padding-left: 10rpx;">收支明细</view>
+					</view>
+					<scroll-view :scroll-y="true" :style="{height:paymentscrollHeight}">
+						<view class="paymentDetail" v-for="(item,index) in taxiDetailArr" :key="index">
+							<view>
+								<view style="font-size: 32rpx;">{{item.paymentName}}</view>
+								<view style="color: #999999;font-size: 30rpx;">{{item.paymentTime}}</view>
+							</view>
+							<view style="font-size: 34rpx;">{{item.amount}}</view>
+						</view>
+					</scroll-view>
+				</view>
+			</view>
+		
+		<view style="margin: 0 30rpx;" v-if="current==3">
+				<view style="height: 110rpx;display: flex;align-items: center;justify-content: space-between;padding: 0 40rpx;font-size: 32rpx;background-color: #FFF;border-radius: 20rpx;margin-top: -55rpx;">
+					<view @click="changeDate('cut')">前一天</view>
+					<view style="display: flex;justify-content: space-between;align-items: center;">
+						<view> {{date}}</view>
+						<view style="padding: 0 10rpx; border-right: solid 1px #000000;">{{week}}</view>
+						<view @click="onShowDatePicker('date')" style="padding: 0 10rpx;">
+							<image src="../../static/index/calendar.png" style="width: 35rpx;" mode="widthFix" @click="onShowDatePicker('date')"></image>
+						</view>
+					</view>
+					<view @click="changeDate('add')">后一天</view>
+				</view>
+				<view style="background-color: #FFF;border-radius: 20rpx;margin-top: 20rpx;padding: 30rpx;height: 70px;">
+					<view style="display: flex;align-items: center;color:#2C2D2D;line-height:42rpx;font-family:Source Han Sans SC;">
+						<view style="width: 8rpx;height: 34rpx; background-color: #E9554E;"></view>
+						<view style="font-size:36rpx;font-weight:bold;padding-left: 10rpx;">总收益(元)</view>
+					</view>
+					<view style="font-size:66rpx;text-align: center;padding-top: 10rpx;">152.54</view>
+				</view>
+				<view style="background-color: #FFF;border-radius: 20rpx;margin-top: 20rpx;padding: 30rpx;">
+					<view style="display: flex;align-items: center;">
+						<view style="width: 8rpx;height: 34rpx; background-color: #E9554E;"></view>
+						<view style="font-size:36rpx;font-family:Source Han Sans SC;font-weight:bold;color:#2C2D2D;line-height:42rpx;padding-left: 10rpx;">收支明细</view>
+					</view>
+					<scroll-view :scroll-y="true" :style="{height:paymentscrollHeight}">
+						<view class="paymentDetail" v-for="(item,index) in charterDetailArr" :key="index">
+							<view>
+								<view style="font-size: 32rpx;">{{item.paymentName}}</view>
+								<view style="color: #999999;font-size: 30rpx;">{{item.paymentTime}}</view>
+							</view>
+							<view style="font-size: 34rpx;">{{item.amount}}</view>
+						</view>
+					</scroll-view>
+				</view>
+			</view>
+		
 		</view>
 		<mx-date-picker :show="showPicker" :type="type" :value="value" :show-tips="true" :show-seconds="true" @confirm="onSelected"
 		 @cancel="onSelected" />
@@ -70,45 +208,230 @@
 		},
 		data() {
 			return {
-				current: 0,
+				current: 1,
 				scrollHeight: "",
+				paymentscrollHeight:"",
 				showPicker: false,
-				date: '2019/01/01',
+				date: '2020/01/01',
 				time: '15:00:12',
+				week: "",
 				datetime: '2019/01/01 15:00:12',
 				range: ['2020/01/01', '2020/01/02'],
 				rangetime: ['2019/01/08 14:00', '2019/01/16 13:59'],
 				type: 'rangetime',
 				value: '',
-				histogramData: {//柱状图
+				histogramData: { //柱状图
 					categories: ['客车', '出租车', '包车'],
 					series: [{
-							name:'',
-							data: [{
-									name:"chus",
-									value: 111.4,
-									color: "#FE9908"
-								},
-								{
-									value: 60,
-									color: "#E9554E"
-								},
-								{
-									value: 70,
-									color: "#76BD48"
-								},
-							],
+						name: '',
+						data: [{
+								name: "chus",
+								value: 111.4,
+								color: "#FE9908"
+							},
+							{
+								value: 60,
+								color: "#E9554E"
+							},
+							{
+								value: 70,
+								color: "#76BD48"
+							},
+						],
+					}, ]
+				},
+				lineData2: { //数字的图--折线图数据
+					categories: ['4月12号', '4月13号', '4月14号', '4月15号', '4月16号', '4月17号'],
+					series: [{
+							name: '客车',
+							data: [35, 50, 10, 35, 50, 10],
+							color: '#FE9908',
+							legendShape: 'line'
 						},
+						{
+							name: '出租车',
+							data: [70, 90,60],
+							color: '#E9554E',
+							legendShape: 'line'
+						},
+						{
+							name: '包车',
+							data: [100, 14, 50],
+							color: '#76BD48',
+							legendShape: 'line'
+						}
 					]
 				},
-				lineData2: {//数字的图--折线图数据
-					categories: ['4月14号','4月15号','4月16号','4月14号','4月15号','4月16号'],
-					series: [
-						{ name: '客车', data: [35,50,10,35,50,10],color: '#FE9908',legendShape:'line' },
-						{ name: '出租车', data: [70,90,50],color: '#E9554E',legendShape:'line' },
-						{ name: '包车', data: [100,14,50],color: '#76BD48',legendShape:'line' }
+				array: [{
+						title: '客车',
+						orderArr: [{
+							datetime: '2020.04.08', //日期
+							orderNum: 10, //订单数
+							earning: 500, //收益
+						}]
+					},
+					{
+						title: '出租车',
+						orderArr: [{
+								datetime: '2020.04.06', //日期
+								orderNum: 10, //订单数
+								earning: 500, //收益
+							},
+							{
+								datetime: '2020.04.07', //日期
+								orderNum: 10, //订单数
+								earning: 500, //收益
+							},
+							{
+								datetime: '2020.04.08', //日期
+								orderNum: 10, //订单数
+								earning: 500, //收益
+							}
+						]
+					},
+					{
+						title: '包车',
+						orderArr: [{
+								datetime: '2020.04.06', //日期
+								orderNum: 10, //订单数
+								earning: 500, //收益
+							},
+							{
+								datetime: '2020.04.07', //日期
+								orderNum: 10, //订单数
+								earning: 500, //收益
+							},
+							{
+								datetime: '2020.04.08', //日期
+								orderNum: 10, //订单数
+								earning: 500, //收益
+							}
+						]
+					}
+				],
+				busDetailArr: [{//客车明细
+						paymentName: "车费抽成",
+						amount: 115.35,
+						paymentTime: "2020.4.11 6:20"
+					},
+					{
+						paymentName: "车费抽成",
+						amount: 85.63,
+						paymentTime: "2020.4.11 9:50"
+					},
+					{
+						paymentName: "车费抽成",
+						amount: 96.3,
+						paymentTime: "2020.4.11 11:20"
+					},
+					{
+						paymentName: "车费抽成",
+						amount: 42.52,
+						paymentTime: "2020.4.11 12:40"
+					},
+					{
+						paymentName: "车费抽成",
+						amount: 50.6,
+						paymentTime: "2020.4.11 14:36"
+					},
+					{
+						paymentName: "车费抽成",
+						amount: 50.6,
+						paymentTime: "2020.4.11 15:36"
+					},
+					{
+						paymentName: "车费抽成",
+						amount: 50.6,
+						paymentTime: "2020.4.11 21:36"
+					},
+					{
+						paymentName: "车费抽成",
+						amount: 50.6,
+						paymentTime: "2020.4.11 15:36"
+					}
+				],
+			taxiDetailArr: [{//出租车明细
+						paymentName: "车费抽成",
+						amount: 115.35,
+						paymentTime: "2020.4.11 8:20"
+					},
+					{
+						paymentName: "车费抽成",
+						amount: 85.63,
+						paymentTime: "2020.4.11 8:50"
+					},
+					{
+						paymentName: "车费抽成",
+						amount: 96.3,
+						paymentTime: "2020.4.11 11:20"
+					},
+					{
+						paymentName: "车费抽成",
+						amount: 42.52,
+						paymentTime: "2020.4.11 12:40"
+					},
+					{
+						paymentName: "车费抽成",
+						amount: 50.6,
+						paymentTime: "2020.4.11 15:36"
+					},
+					{
+						paymentName: "车费抽成",
+						amount: 50.6,
+						paymentTime: "2020.4.11 15:36"
+					},
+					{
+						paymentName: "车费抽成",
+						amount: 50.6,
+						paymentTime: "2020.4.11 15:36"
+					},
+					{
+						paymentName: "车费抽成",
+						amount: 50.6,
+						paymentTime: "2020.4.11 15:36"
+					}
+				],
+				charterDetailArr: [{//包车明细
+							paymentName: "车费抽成",
+							amount: 115.35,
+							paymentTime: "2020.4.11 8:20"
+						},
+						{
+							paymentName: "车费抽成",
+							amount: 85.63,
+							paymentTime: "2020.4.11 8:50"
+						},
+						{
+							paymentName: "车费抽成",
+							amount: 96.3,
+							paymentTime: "2020.4.11 11:20"
+						},
+						{
+							paymentName: "车费抽成",
+							amount: 42.52,
+							paymentTime: "2020.4.11 12:40"
+						},
+						{
+							paymentName: "车费抽成",
+							amount: 50.6,
+							paymentTime: "2020.4.11 15:36"
+						},
+						{
+							paymentName: "车费抽成",
+							amount: 50.6,
+							paymentTime: "2020.4.11 15:36"
+						},
+						{
+							paymentName: "车费抽成",
+							amount: 50.6,
+							paymentTime: "2020.4.11 15:36"
+						},
+						{
+							paymentName: "车费抽成",
+							amount: 50.6,
+							paymentTime: "2020.4.11 15:36"
+						}
 					]
-				},
 			}
 		},
 		onLoad() {
@@ -119,7 +442,8 @@
 
 			uni.getSystemInfo({
 				success(res) {
-					that.scrollHeight = res.windowHeight - 145 - 25 + "px";
+					that.scrollHeight = res.windowHeight - 170 + "px";
+					that.paymentscrollHeight=res.windowHeight - 340 + "px"
 				}
 			})
 		},
@@ -150,6 +474,44 @@
 				var end = enddate.getFullYear() + '/' + endMonth + '/' + endDate;
 				var begin = begindate.getFullYear() + '/' + beginMonth + '/' + beginDate;
 				this.range = [begin, end];
+				this.date = end;
+				this.changeweek(enddate.getDay());
+			},
+			changeweek: function(value) { //星期转换
+				if (value == 0) {
+					this.week = "周日";
+				} else if (value == 1) {
+					this.week = "周一";
+				} else if (value == 2) {
+					this.week = "周二";
+				} else if (value == 3) {
+					this.week = "周三";
+				} else if (value == 4) {
+					this.week = "周四";
+				} else if (value == 5) {
+					this.week = "周五";
+				} else if (value == 6) {
+					this.week = "周六";
+				}
+			},
+			changeDate: function(type) { //日期加减一天
+				var nowDate = new Date(this.date);
+				var newDate;
+				if (type == "add") {
+					newDate = new Date(nowDate.setDate(nowDate.getDate() + 1))
+				} else if (type == "cut") {
+					newDate = new Date(nowDate.setDate(nowDate.getDate() - 1))
+				}
+				var newMonth = newDate.getMonth() + 1;
+				var newDatetime = newDate.getDate();
+				if (newMonth < 10) {
+					newMonth = '0' + newMonth;
+				}
+				if (newDatetime < 10) {
+					newDatetime = '0' + newDatetime
+				}
+				this.date = newDate.getFullYear() + '/' + newMonth + '/' + newDatetime;
+				this.changeweek(newDate.getDay());
 			},
 			onShowDatePicker(type) { //显示
 				this.type = type;
@@ -160,8 +522,11 @@
 				this.showPicker = false;
 				if (e) {
 					this[this.type] = e.value;
+					if (this.current != 0) {
+						this.changeweek(new Date(e.value).getDay());
+					}
 				}
-			}
+			},
 		}
 	}
 </script>
@@ -210,5 +575,14 @@
 	.tabactive {
 		border-bottom: solid 1px #FFFFFF;
 		color: #FFFFFF;
+	}
+
+	.paymentDetail {
+		display: flex;
+		padding: 20rpx 30rpx;
+		border-bottom: solid 0.1px #E6E6E6;
+		color: #2C2D2D;
+		justify-content: space-between;
+		align-items: center;
 	}
 </style>
