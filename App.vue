@@ -15,9 +15,6 @@
 				uni.getLocation({
 					type: 'gcj02 ',
 					success: function(res) {	
-						console.log( res.longitude);
-						console.log( res.latitude);
-					
 						uni.request({
 							url: homeJS.Interface.addVehiclePosition.value, 
 							method:homeJS.Interface.addVehiclePosition.method,
@@ -31,7 +28,6 @@
 								reportTime: utils.timeTodate(homeJS.dateFormat.dateformat, new Date().getTime())
 							},
 							success:function(res){
-									console.log(res);
 							},
 							fail:function(res){
 								console.log(res);

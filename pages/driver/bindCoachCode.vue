@@ -44,7 +44,7 @@
 				vals: "",
 				keyMode: 'car',
 				keyType: 0,
-				plateNumber: "",
+				vehicleNumber: "",
 				keyTitle: '汽车键盘',
 			}
 		},
@@ -71,7 +71,7 @@
 					.test(str);
 			},
 			goBack: function() {
-				uni.clearStorageSync('CarType');
+				uni.clearStorageSync('vehicleInfo');
 				uni.navigateBack();
 			},
 			onClickItem(e) { //tab点击事件
@@ -82,21 +82,25 @@
 				that.$refs.code.clear();
 			},
 			getCode(val) {
-				this.plateNumber = val;
+				this.vehicleNumber = val;
 				console.log(val + '车牌');
 			},
 			Confirm(e) {
 				var that = this;
 				const {
-					plateNumber
+					vehicleNumber
 				} = this;
-				var plate = this.plateNumber;
+				var plate = this.vehicleNumber;
 				if (that.isLicensePlate(plate)) {
+					//燃油汽车
 					if (this.current == 0) {
 						if (plate.length == 7) {
 							uni.setStorage({
-								key: 'CarType',
-								data: that.carType,
+								key: 'vehicleInfo',
+								data: {
+									carType:that.carType,
+									cehicleNumber:that.vehicleNumber
+								},
 								success() {
 									if(that.carType=="出租车"){
 										uni.redirectTo({
@@ -123,11 +127,15 @@
 							})
 						}
 					}
+					//新能源汽车
 					if (this.current == 1) {
 						if (plate.length == 8) {
 							uni.setStorage({
-								key: 'CarType',
-								data: that.carType,
+								key: 'vehicleInfo',
+								data: {
+									CarType:that.carType,
+									vehicleNumber:that.vehicleNumber
+								},
 								success() {
 									if(that.carType=="出租车"){
 										uni.redirectTo({
