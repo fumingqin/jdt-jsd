@@ -203,7 +203,31 @@
             "style" : {
 				"navigationStyle": "custom"
 			}
-        }
+        },
+		{
+		    "path" : "pages/driver/orderDetail",
+		    "style" : {
+				"navigationStyle": "custom"
+			}
+		}
+        ,{
+            "path" : "pages/driver/remindSuccess",
+            "style" : {
+				"navigationStyle": "custom"
+			}
+        },
+		{
+		    "path" : "pages/BCDriver/dzOrderDetail",
+		    "style" : {
+				"navigationStyle": "custom"
+			}
+		},
+		{
+		    "path" : "pages/BCDriver/zxOrderDetail",
+		    "style" : {
+				"navigationStyle": "custom"
+			}
+		}
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
