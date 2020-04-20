@@ -75,6 +75,12 @@
 				"navigationBarTitleText": "关于App"
 			}
 		},
+		{  
+			"path": "pages/grzx/selectOperation",  //选择登陆还是注册
+			"style": {
+				//"navigationStyle": "custom"
+			}
+		},
 		//个人中心结束
 		{
 			"path": "pages/driver/taxiDriver",
@@ -231,7 +237,7 @@
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
-		"navigationBarTitleText": "uni-app",
+		//"navigationBarTitleText": "uni-app",
 		"navigationBarBackgroundColor": "#F8F8F8",
 		"backgroundColor": "#F8F8F8"
 	},
