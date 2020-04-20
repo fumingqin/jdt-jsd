@@ -59,19 +59,60 @@
 				Hour: '2小时',
 				beginAddress: '茶叶大厦',
 				endAddress: '晋江机场',
+				orderArr:[],
 			}
 		},
+		onLoad() {
+			let that = this;
+			that.gerOrder();
+		},
 		methods: {
+			//本页面统一调用此方法
+			showToast:function(title,icon='none'){
+				uni.showToast({
+					title:title,
+					icon:icon
+				});
+			},
 			back: function() {
 				uni.switchTab({
 					url: '/pages/index/index',
 				})
 			},
-			receipt() {
+			receipt:function() {
 				uni.navigateTo({
 					url: '/pages/driver/confirmgetonCar',
 				})
 			},
+			gerOrder:function(){
+				let that = this;
+				let userInfo = uni.getStorageSync('userInfo') || '';
+				let vehicleInfo = uni.getStorageSync("vehicleInfo")||'';
+				if(userInfo == ''){
+					that.showToast('请先登录');
+				} else if(vehicleInfo == '') {
+					that.showToast('请先上班');
+				} else {
+					console.log(vehicleInfo.vehicleNumber);
+					uni.request({
+						url:that.$taxi.Interface.GetCanReceiptExpressOrder_Driver.value,
+						method:that.$taxi.Interface.GetCanReceiptExpressOrder_Driver.method,
+						data:{
+							driverId:userInfo.userId,
+							vehicleNumber:vehicleInfo.vehicleNumber
+						},
+						success:function(res){
+							let data = res.data.data;
+							that.orderArr = data;
+							console.log(JSON.stringify(that.orderArr) );
+						},
+						fail:function(res){
+							console.log(res);
+						}
+					})
+				}
+			},
+		
 		}
 	}
 </script>

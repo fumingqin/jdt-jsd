@@ -132,20 +132,19 @@
 		},
 		onLoad() {
 			let that = this;
+			//添加司机缓存,可删
+			uni.setStorageSync("userInfo",{userId:'1111',userName:'施远君'});
+			
+			
 			var arr = [];
 			getApp().globalData.constantly();
-			uni.showToast({
-				title:'已开启',
-				icon:'none'
-			})
-			
 		},
 		onShow() {
 			var that = this;
 			uni.getStorage({
-				key: 'CarType',
+				key: 'vehicleInfo',
 				success(res) {
-					that.CarType = res.data;
+					that.CarType = res.data.carType;
 					if (res.data != '') {
 						that.IsWork = true;
 					}
@@ -175,7 +174,7 @@
 								that.IsWork = iswork;
 								//点击下班变色移除缓存
 								uni.removeStorage({
-									key: 'CarType',
+									key: 'vehicleInfo',
 									success: function(res) {
 										that.CarType = '';
 									}

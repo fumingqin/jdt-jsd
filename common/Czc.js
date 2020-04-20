@@ -19,11 +19,31 @@ const InterfaceAddress = [
 	'http://111.231.109.113:8002/api/zhcx/getLonLatRangeVehiclePosition',
 ]
 
-const Interface = []
-
+//接口对象
+const Interface = {
+	GetCanReceiptExpressOrder_Driver : {
+		value: Url + '/api/taxi/GetCanReceiptExpressOrder_Driver',
+		name:'司机端-出租车-获取可接订单',
+		method:'POST',//GET-POST
+		pages:[]
+	},
+	ReceiptExpressOrder_Driver : {
+		value: Url + '/api/taxi/ReceiptExpressOrder_Driver',
+		name:'司机端-出租车-接单',
+		method:'POST',//GET-POST
+		pages:[]
+	},
+	CancelExpressOrderByOrderNum_Driver : {
+		value: Url + '/api/taxi/CancelExpressOrderByOrderNum_Driver',
+		name:'司机端-出租车-取消订单',
+		method:'POST',//GET-POST
+		pages:[]
+	},
+}
 
 // 接口声明区
 export default {
 	GaoDeWebKey,
-	InterfaceAddress
+	InterfaceAddress,
+	Interface
 }

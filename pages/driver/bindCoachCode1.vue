@@ -41,7 +41,7 @@
 				imgHeight: "",
 				current: 0,
 				items: ['燃油汽车', '新能源汽车'],
-				plateNumber: "",
+				vehicleNumber: "",
 				carType: ['客车', '出租车', '公交车', '包车', '旅游'],
 				carType1: '',
 				selector: '请选择 >',
@@ -65,7 +65,7 @@
 				});
 			},
 			goBack: function() {
-				uni.clearStorageSync('CarType');
+				uni.clearStorageSync('vehicleInfo');
 				uni.navigateBack();
 			},
 			onClickItem(e) { //tab点击事件
@@ -76,7 +76,7 @@
 				that.$refs.code.clear();
 			},
 			getCode(val) {
-				this.plateNumber = val;
+				this.vehicleNumber = val;
 			},
 			isLicensePlate: function(str) { //验证是不车牌
 				return /^(([京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼使领][A-Z](([0-9]{5}[DF])|([DF]([A-HJ-NP-Z0-9])[0-9]{4})))|([京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼使领][A-Z][A-HJ-NP-Z0-9]{4}[A-HJ-NP-Z0-9挂学警港澳使领]))$/
@@ -85,17 +85,21 @@
 			Confirm(e) {
 				var that = this;
 				const {
-					plateNumber,
+					vehicleNumber,
 					carType1
 				} = this;
-				var plate = this.plateNumber;
+				var plate = this.vehicleNumber;
 				var cartype1 = this.carType1;
 				if (that.isLicensePlate(plate)) {
+					//燃油汽车
 					if (this.current == 0) {
 						if ((plate.length == 7) && (cartype1 != null && cartype1 != "")) {
 							uni.setStorage({
-								key: 'CarType',
-								data: that.carType1,
+								key: 'vehicleInfo',
+								data: {
+									carType: that.carType1,
+									vehicleNumber : that.vehicleNumber 
+								},
 								success() {
 									if(that.carType1=="出租车"){
 										uni.redirectTo({
@@ -122,11 +126,15 @@
 
 						}
 					}
+					//新能源汽车
 					if (this.current == 1) {
 						if ((plate.length == 8) && (cartype1 != null && cartype1 != "")) {
 							uni.setStorage({
-								key: 'CarType',
-								data: that.carType1,
+								key: 'vehicleInfo',
+								data: {
+									CarType: that.carType1,
+									vehicleNumber : that.vehicleNumber 
+								},
 								success() {
 									if(that.carType1=="出租车"){
 										uni.redirectTo({

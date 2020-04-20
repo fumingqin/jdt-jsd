@@ -204,6 +204,36 @@
             "path" : "pages/Map/MapSearch",
             "style" : {}
         }
+        ,{
+            "path" : "pages/index/Revenue",
+            "style" : {
+				"navigationStyle": "custom"
+			}
+        },
+		{
+		    "path" : "pages/driver/orderDetail",
+		    "style" : {
+				"navigationStyle": "custom"
+			}
+		}
+        ,{
+            "path" : "pages/driver/remindSuccess",
+            "style" : {
+				"navigationStyle": "custom"
+			}
+        },
+		{
+		    "path" : "pages/BCDriver/dzOrderDetail",
+		    "style" : {
+				"navigationStyle": "custom"
+			}
+		},
+		{
+		    "path" : "pages/BCDriver/zxOrderDetail",
+		    "style" : {
+				"navigationStyle": "custom"
+			}
+		}
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
@@ -230,7 +260,7 @@
 				"text": "订单"
 			},
 			{
-				"pagePath": "pages/index/index",
+				"pagePath": "pages/index/Revenue",
 				"iconPath": "static/index/revenue.png",
 				"selectedIconPath": "static/index/revenue1.png",
 				"text": "营收"
