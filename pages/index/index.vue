@@ -221,7 +221,7 @@
 					}
 					if (that.CarType == "客车") {
 						uni.navigateTo({
-							url: '/pages/CTKYDriver/index',
+							url: '/pages/CTKYDriver/selectOrder',
 						})
 					}
 				} else {

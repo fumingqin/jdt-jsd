@@ -748,18 +748,18 @@
 		onShow() {
 			var that = this;
 			uni.getStorage({
-				key: "CarType",
+				key: "vehicleInfo",
 				success(res) {
-					if (res.data == "出租车") {
+					if (res.data.carType == "出租车") {
 						that.carTypeid = 1;
 					}
-					if (res.data == "客车") {
+					if (res.data.carType == "客车") {
 						that.carTypeid = 2;
 					}
-					if (res.data == "包车") {
+					if (res.data.carType == "包车") {
 						that.carTypeid = 3;
 					}
-					if (res.data == "旅游") {
+					if (res.data.carType == "旅游") {
 						that.carTypeid = 4;
 					}
 				}
@@ -768,7 +768,6 @@
 		methods: {
 			tabclick: function(e) {
 				this.current = e;
-				console.log("测试")
 			},
 			show: function(el) {
 				el.IsShow = !el.IsShow
