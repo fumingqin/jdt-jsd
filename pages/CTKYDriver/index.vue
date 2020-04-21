@@ -253,8 +253,9 @@
 			},
 			
 			back:function(){
-				uni.switchTab({
-					url:'../index/index'
+				uni.navigateTo({
+					url:'./selectOrder',
+					animationType:"slide-in-left"
 				})
 			},
 			
