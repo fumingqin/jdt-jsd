@@ -18,7 +18,7 @@
 		<!-- 接单信息 -->
 		<view v-for='(item, index) in orderArr'  :key='index' style="width: 94%;height: 475rpx; background-color: #FFFFFF;margin-left: 22rpx; border-radius:20rpx; margin-top: 30rpx;">
 			<view style="padding: 40rpx;display: flex;flex-direction: row;">
-				<text class="destinationArea" style="">目的区域:</text>
+				<text class="destinationArea" style="width:160rpx;">目的区域:</text>
 				<text class="destinationArea" style="margin-left: 10rpx;">{{item.destinationArea}}</text>
 			</view>
 			<view style="margin: -10rpx 44rpx;display: flex;flex-direction: row;">
@@ -33,11 +33,11 @@
 			</view>
 			<view style="margin: -10rpx 40rpx;display: flex;flex-direction: row;">
 				<text class="fontClass" style="width:110rpx;height:40rpx;">上车点:</text>
-				<text class="fontClass" style="width:400rpx;height:40rpx;">{{item.startAddress}}</text>
+				<text class="fontClass" style="height:40rpx;">{{item.startAddress}}</text>
 			</view>
 			<view style="margin: 20rpx 40rpx;display: flex;flex-direction: row;">
 				<text class="fontClass" style="width:110rpx;height:40rpx;">下车点:</text>
-				<text class="fontClass" style="width:400rpx;height:40rpx;">{{item.endAddress}}</text>
+				<text class="fontClass" style="height:40rpx;">{{item.endAddress}}</text>
 			</view>
 			<view style="display: flex; margin-left: 4rpx;">
 				<button @click="receipt(item)" style="width:278rpx;height:90rpx;border-radius:12rpx; margin-top: 20rpx; font-size: 34rpx;text-align: center;background-color: #ED766C; border: 1px solid #ED766C; color: #FFFFFF; align-items: center;">
@@ -224,7 +224,6 @@
 		background-color: #F5F9FC;
 	}
 	.destinationArea{
-		width:160rpx;
 		height:40rpx;
 		font-size:36rpx;
 		font-family:Source Han Sans SC;
