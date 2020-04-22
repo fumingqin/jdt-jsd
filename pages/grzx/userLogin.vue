@@ -93,7 +93,7 @@
 				this.logining=true;
 				//登录成功开启定时器。
 				if(this.logining){
-					getApp().globalData.constantly();
+					
 				}
 				var that=this;
 				const {phoneNumber, captchaCode} = this;		

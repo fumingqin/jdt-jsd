@@ -12,6 +12,13 @@ const Interface = {
 		method:'GET',//GET-POST
 		pages:[]
 	},
+	DriverVehicleBinding_Check:{
+		value:Url + '/api/person/DriverVehicleBinding_Check',
+		name:'司机端-全局',
+		method:'POST',
+		pages:[]
+	},
+	
 }
 
 const dateFormat = {
