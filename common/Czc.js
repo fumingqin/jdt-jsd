@@ -18,6 +18,19 @@ const InterfaceAddress = [
 	//根据经纬度获取附近一定范围的经纬度
 	'http://111.231.109.113:8002/api/zhcx/getLonLatRangeVehiclePosition',
 ]
+const delayTime = {
+	getOrderDelay : {
+		name:'司机端-出租车-可接订单',
+		interface:'GetCanReceiptExpressOrder_Driver',
+		page:[
+			'/driver/taxiDriver'
+		], 
+		time:5000 
+	}
+}
+	
+
+
 
 //接口对象
 const Interface = {
@@ -39,17 +52,25 @@ const Interface = {
 		method:'POST',//GET-POST
 		pages:[]
 	},
-	InputAmountExpressOrder_Driver:{
+	RefuseExpressOrderByOrderNumDriverID_Driver : {
+		value: Url + '/api/taxi/RefuseExpressOrderByOrderNumDriverID_Driver',
+		name:'司机端-出租车-拒接订单',
+		method:'POST',//GET-POST
+		pages:[]
+	},
+InputAmountExpressOrder_Driver:{
 		value: Url + '/api/taxi/CancelExpressOrderByOrderNum_Driver',
 		name:'司机端-出租车-订单支付',
 		method:'POST',//GET-POST
 		pages:[]
 	}
+	
 }
 
 // 接口声明区
 export default {
 	GaoDeWebKey,
 	InterfaceAddress,
-	Interface
+	Interface,
+	delayTime
 }

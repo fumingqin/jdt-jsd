@@ -4,7 +4,7 @@
 		 :polyline="polyline" :markers="markers" :show-location="true">
 		</map>
 		<image @click="back" src="../../static/driver/back1.png" style="width: 120rpx;height: 120rpx;position: fixed;top: 50px;left: 1px;"></image>
-		<view v-if="status === 0" style="position: fixed;bottom: 220rpx; ">
+		<view v-if="state === 0" style="position: fixed;bottom: 220rpx; ">
 			<image src="../../static/driver/police.png" style="width: 120rpx;height: 120rpx;margin-left: 10rpx;" @click="callPolice"></image>
 			<!-- 行程信息 -->
 			<view style="width: 698rpx;height: 223rpx; background-color: #FFFFFF;margin-left: 28rpx; border-radius:20rpx;">
@@ -40,7 +40,7 @@
 				</button>
 			</view>
 		</view>
-		<view v-if="status === 1" style="position: fixed;bottom: 220rpx; ">
+		<view v-if="state === 1" style="position: fixed;bottom: 220rpx; ">
 			<image src="../../static/driver/police.png" style="width: 120rpx;height: 120rpx;margin-left: 10rpx;" @click="callPolice"></image>
 			<!-- 行程信息 -->
 			<view style="width: 698rpx;height: 164rpx; background-color: #FFFFFF;margin-left: 28rpx; border-radius:20rpx;">
@@ -127,7 +127,7 @@
 				passengerPhone: '15255066261',
 				totalCost: '32.05',
 				resultData: {},
-				status: 0,
+				state: 0,
 				directionInterval: 0,
 				orderInterval:0,
 				callPoliceArr:[
@@ -158,22 +158,46 @@
 			getOrderDetail:function(){
 				
 				let that = this;
-				that.status = 0;
-				if(that.status == 0){
+				that.state = 0;
+				if(that.state == 0){
+					
+				}else if(that.state == 1){
+					
+					
+				}else if(that.state == 2){
 					Map.openMap(24.943068, 118.609035, '清源山', 'gcj02');
-				}else if(that.status == 1){
 					
 					
+				}else if(that.state == 3){
 					
-				}else if(that.status == 2){
+					
+				}else if(that.state == 4){
+					
+					
+				}else if(that.state == 5){
+					
+					
+				}else if(that.state == 6){
+					
+					
+				}else if(that.state == 7){
+					
+					
+				}else if(that.state == 8){
+					
+					
+				}else if(that.state == 9){
 					
 				}
 			},
+			
+			
+			
 			realGetOrderDetail:function(){
 				let that = this;
 				that.orderInterval = setInterval(function(){
-					that.status = 0;
-					if(that.status == -1){
+					that.state = 0;
+					if(that.state == -1){
 						clearInterval(that.orderInterval);
 						uni.showToast({
 							title:'用户已取消订单',
@@ -184,7 +208,7 @@
 			},
 			
 			confirmgetonCar:function() { //确认乘客上车
-				this.status = 1;
+				this.state = 1;
 				var that = this;
 				that.markers = [];
 				that.polyline = [];

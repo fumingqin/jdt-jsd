@@ -15,7 +15,7 @@
 				<validCode ref="code" :maxlength="8" :isPwd="false" @finish="getCode"></validCode>
 			</view>
 			<view style="margin-top: 37upx;margin-left: 53upx;margin-right: 53upx; color: #FFFFFF;font-size: 36upx;font-family: SourceHanSansSC-Regular;text-align: left;">
-				所选工作：{{carType}}
+				所选工作：{{vehicleType}}
 			</view>
 			<view style="margin-top: 100upx;margin-left: 53upx;margin-right: 53upx; color: #FFFFFF;font-size: 30upx;font-family: SourceHanSansSC-Normal;text-align: left;">
 				提示：请确保您填写的车牌号的正确性，以免后续造成不必要麻烦。
@@ -37,10 +37,11 @@
 		},
 		data() {
 			return {
+				driverId: '',
 				imgHeight: "",
 				current: 0,
 				items: ['燃油汽车', '新能源汽车'],
-				carType: "",
+				vehicleType: "",
 				vals: "",
 				keyMode: 'car',
 				keyType: 0,
@@ -50,20 +51,30 @@
 		},
 		onReady() {},
 		onLoad(option) {
-			this.carType = option.cartype;
-			/* if(uni.getStorageSync('CarType') == this.carType){
-				uni.navigateTo({
-					url:'./taxiDriver',
-				});
-			} */
+			let that = this;
+			this.vehicleType = option.vehicleType;
+			var userInfo = uni.getStorageSync('userInfo') || '';
+			if (userInfo) {
+				that.driverId = userInfo.driverId;
+			} else {
+				uni.navigateBack({});
+			}
 		},
 		methods: {
-			async load() {
+			/* async load() {
 				var that = this;
+				console.log(1);
 				uni.getSystemInfo({
 					success: function(res) { // res - 各种参数
 						that.imgHeight = res.windowHeight;
 					}
+				});
+			}, */
+			//本页面统一调用此方法
+			showToast:function(title,icon='none'){
+				uni.showToast({
+					title:title,
+					icon:icon
 				});
 			},
 			isLicensePlate: function(str) { //验证是不车牌
@@ -87,86 +98,63 @@
 			},
 			Confirm(e) {
 				var that = this;
-				const {
-					vehicleNumber
-				} = this;
+				getApp().globalData.vehicleNumber = that.vehicleNumber;
+				getApp().globalData.constantly();
 				var plate = this.vehicleNumber;
-				if (that.isLicensePlate(plate)) {
-					//燃油汽车
-					if (this.current == 0) {
-						if (plate.length == 7) {
-							uni.setStorage({
-								key: 'vehicleInfo',
-								data: {
-									carType:that.carType,
-									cehicleNumber:that.vehicleNumber
-								},
-								success() {
-									if(that.carType=="出租车"){
-										uni.redirectTo({
-										url: '/pages/driver/taxiDriver',
-									})
-									}
-									if(that.carType=="包车"){
-										uni.redirectTo({
-										url: '/pages/BCDriver/bcDriver',
-									})
-									}
-									if(that.carType=="客车"){
-										uni.redirectTo({
-										url: '/pages/CTKYDriver/selectOrder',
-									})
-									}
-									
-								}
-							});
-						} else {
-							uni.showToast({
-								title: '请输入车牌号',
-								icon: "none"
-							})
-						}
-					}
-					//新能源汽车
-					if (this.current == 1) {
-						if (plate.length == 8) {
-							uni.setStorage({
-								key: 'vehicleInfo',
-								data: {
-									CarType:that.carType,
-									vehicleNumber:that.vehicleNumber
-								},
-								success() {
-									if(that.carType=="出租车"){
-										uni.redirectTo({
-										url: '/pages/driver/taxiDriver',
-									})
-									}
-									if(that.carType=="包车"){
-										uni.redirectTo({
-										url: '/pages/BCDriver/bcDriver',
-									})
-									}
-									if(that.carType=="客车"){
-										uni.redirectTo({
-										url: '/pages/CTKYDriver/index',
-									})
-									}
-								}
-							})
-						} else {
-							uni.showToast({
-								title: '请输入车牌号',
-								icon: "none"
-							})
 
-						}
+				if (that.isLicensePlate(plate)) {
+					if ((this.current == 0 && plate.length == 7) || (this.current == 1 && plate == 8)) {
+						console.log(that.driverId);
+						uni.request({
+							url: that.$home.Interface.DriverVehicleBinding_Check.value,
+							method: that.$home.Interface.DriverVehicleBinding_Check.method,
+							data: {
+								vehicleNumber: that.vehicleNumber,
+								driverId: that.driverId,
+								vehicleType: that.vehicleType
+							},
+							success: function(res) {
+								console.log(res);
+								if (res.data.status) {
+									uni.setStorage({
+										key: 'vehicleInfo',
+										data: {
+											vehicleType: that.vehicleType,
+											vehicleNumber: that.vehicleNumber
+										},
+										success() {
+											if (that.vehicleType == "出租车") {
+												uni.redirectTo({
+													url: '/pages/driver/taxiDriver',
+												})
+											}
+											if (that.vehicleType == "包车") {
+												uni.redirectTo({
+													url: '/pages/BCDriver/bcDriver',
+												})
+											}
+											if (that.vehicleType == "客车") {
+												uni.redirectTo({
+													url: '/pages/CTKYDriver/index',
+												})
+											}
+
+										}
+									});
+								} else {
+									that.showToast(res.data.msg);
+								}
+							},
+							fail: function(res) {
+								that.showToast('网络连接失败');
+								console.log(res);
+							}
+						})
+					} else {
+						that.showToast('请输入正确车牌号');
 					}
 				} else {
-					uni.showToast({
-						title: "请输入正确车牌号",
-						icon: "none"
-					})
+					that.showToast('请输入正确车牌号');
 				}
 			},
 		}
