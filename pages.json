@@ -75,6 +75,12 @@
 				"navigationBarTitleText": "关于App"
 			}
 		},
+		{  
+			"path": "pages/grzx/selectOperation",  //选择登陆还是注册
+			"style": {
+				//"navigationStyle": "custom"
+			}
+		},
 		//个人中心结束
 		{
 			"path": "pages/driver/taxiDriver",
@@ -200,6 +206,42 @@
         }
         ,{
             "path" : "pages/index/Revenue",
+            "style" : {
+				"navigationStyle": "custom"
+			}
+        },
+		{
+		    "path" : "pages/driver/orderDetail",
+		    "style" : {
+				"navigationStyle": "custom"
+			}
+		}
+        ,{
+            "path" : "pages/driver/remindSuccess",
+            "style" : {
+				"navigationStyle": "custom"
+			}
+        },
+		{
+		    "path" : "pages/BCDriver/dzOrderDetail",
+		    "style" : {
+				"navigationStyle": "custom"
+			}
+		},
+		{
+		    "path" : "pages/BCDriver/zxOrderDetail",
+		    "style" : {
+				"navigationStyle": "custom"
+			}
+		},
+		{
+		    "path" : "pages/CTKYDriver/kyOrderDetail",
+		    "style" : {
+				"navigationStyle": "custom"
+			}
+		}
+        ,{
+            "path" : "pages/CTKYDriver/selectOrder",
             "style" : {
 				"navigationStyle": "custom"
 			}

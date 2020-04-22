@@ -63,7 +63,7 @@
 		</view>
 		
 		<!-- 客车提醒 -->
-		<scroll-view :scroll-y="true" style="height: 270rpx; margin-top: 20rpx;" v-if="vehicleType=='客车'">
+		<scroll-view :scroll-y="true" style="height: 326rpx; margin-top: 20rpx;" v-if="vehicleType=='客车'">
 		<!-- 消息提示 -->
 		<view style="width: 94%;height: 185rpx; background-color: #FFFFFF;margin-left: 22rpx; border-radius:20rpx;">
 			<view style="padding: 40rpx;display: flex;flex-direction: row;">
@@ -219,7 +219,7 @@
 					}
 					if (that.vehicleType == "客车") {
 						uni.navigateTo({
-							url: '/pages/CTKYDriver/index',
+							url: '/pages/CTKYDriver/selectOrder',
 						})
 					}
 				} else {
