@@ -39,6 +39,12 @@ const Interface = {
 		method:'POST',//GET-POST
 		pages:[]
 	},
+	InputAmountExpressOrder_Driver:{
+		value: Url + '/api/taxi/CancelExpressOrderByOrderNum_Driver',
+		name:'司机端-出租车-订单支付',
+		method:'POST',//GET-POST
+		pages:[]
+	}
 }
 
 // 接口声明区

@@ -95,7 +95,7 @@
 					</view>
 					<view @click="changeDate('add')">后一天</view>
 				</view>
-				<view style="background-color: #FFF;border-radius: 20rpx;margin-top: 20rpx;padding: 30rpx;height: 70px;">
+				<view style="background-color: #FFF;border-radius: 20rpx;margin-top: 20rpx;padding: 30rpx;height: 140rpx;">
 					<view style="display: flex;align-items: center;color:#2C2D2D;line-height:42rpx;font-family:Source Han Sans SC;">
 						<view style="width: 8rpx;height: 34rpx; background-color: #E9554E;"></view>
 						<view style="font-size:36rpx;font-weight:bold;padding-left: 10rpx;">总收益(元)</view>
@@ -130,7 +130,7 @@
 					</view>
 					<view @click="changeDate('add')">后一天</view>
 				</view>
-				<view style="background-color: #FFF;border-radius: 20rpx;margin-top: 20rpx;padding: 30rpx;height: 70px;">
+				<view style="background-color: #FFF;border-radius: 20rpx;margin-top: 20rpx;padding: 30rpx;height: 140rpx;">
 					<view style="display: flex;align-items: center;color:#2C2D2D;line-height:42rpx;font-family:Source Han Sans SC;">
 						<view style="width: 8rpx;height: 34rpx; background-color: #E9554E;"></view>
 						<view style="font-size:36rpx;font-weight:bold;padding-left: 10rpx;">总收益(元)</view>
@@ -166,7 +166,7 @@
 					</view>
 					<view @click="changeDate('add')">后一天</view>
 				</view>
-				<view style="background-color: #FFF;border-radius: 20rpx;margin-top: 20rpx;padding: 30rpx;height: 70px;">
+				<view style="background-color: #FFF;border-radius: 20rpx;margin-top: 20rpx;padding: 30rpx;height: 140rpx;">
 					<view style="display: flex;align-items: center;color:#2C2D2D;line-height:42rpx;font-family:Source Han Sans SC;">
 						<view style="width: 8rpx;height: 34rpx; background-color: #E9554E;"></view>
 						<view style="font-size:36rpx;font-weight:bold;padding-left: 10rpx;">总收益(元)</view>
@@ -198,7 +198,7 @@
 
 <script>
 	import MxDatePicker from "@/components/mx-datepicker/mx-datepicker.vue";
-	import HistogramChart from '@/components/stan-ucharts/HistogramChart.vue';
+	import HistogramChart from '@/components/stan-ucharts/HistogramChart.vue';//
 	import LineChart from '@/components/stan-ucharts/LineChart.vue';
 	export default {
 		components: {
