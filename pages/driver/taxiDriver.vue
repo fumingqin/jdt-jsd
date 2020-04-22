@@ -7,11 +7,14 @@
 			<view style="width: 200rpx; height: 36rpx; margin: 92rpx 212rpx;color: #333333; font-size: 38rpx;font-weight:bold;">出租车司机</view>
 		</view>
 		<!-- 今日接单量 -->
-		<view style="width: 94%;height: 105rpx; background-color: #FFFFFF;margin-left: 22rpx; border-radius:20rpx; margin-top: -50rpx;">
-			<view style="padding: 30rpx;display: flex;flex-direction: row;">
-				<text style="width:340rpx;height:40rpx;font-size:36rpx;font-family:Source Han Sans SC;font-weight:bold;color:rgba(44,45,45,1);line-height:42rpx; margin-left: 10rpx;">今日接单量</text>
-				<view>
-					<image style="width: 14rpx;height: 26rpx; margin-left: 270rpx;" src="../../static/driver/right.png"></image>
+		<view style="width: 94%;background-color: #FFFFFF;border-radius:20rpx; margin-top: -64rpx;margin-left: 22rpx;">
+			<view style="padding: 30rpx;display: flex;justify-content: space-between;align-items: center;">
+				<text style="font-size:36rpx;font-family:Source Han Sans SC;font-weight:bold;color:rgba(44,45,45,1);line-height:42rpx;">今日接单量</text>
+				<view style="display: flex;align-items: center;">
+					<view style="margin:0 20rpx;width: 40rpx;height: 40rpx;border-radius: 100px;background: linear-gradient(270deg,rgba(250,116,101,1),rgba(249,92,117,1));font-size: 26rpx;color: #FFF;text-align: center;font-weight: 600;">
+						{{classNum}}
+					</view>
+					<image style="width: 14rpx;height: 26rpx;" src="../../static/driver/right.png"></image>
 				</view>
 			</view>
 		</view>
@@ -19,11 +22,11 @@
 		<view style="width: 94%;height: 475rpx; background-color: #FFFFFF;margin-left: 22rpx; border-radius:20rpx; margin-top: 30rpx;">
 			<view style="padding: 40rpx;display: flex;flex-direction: row;">
 				<text style="width:160rpx;height:40rpx;font-size:36rpx;font-family:Source Han Sans SC;font-weight:bold;color:rgba(44,45,45,1);line-height:36rpx;">目的区域:</text>
-				<text style="width:160rpx;height:40rpx;font-size:36rpx;font-family:Source Han Sans SC;font-weight:bold;color:rgba(44,45,45,1);line-height:36rpx; margin-left: 10rpx;">{{Area}}</text>
+				<text style="height:40rpx;font-size:36rpx;font-family:Source Han Sans SC;font-weight:bold;color:rgba(44,45,45,1);line-height:36rpx; margin-left: 10rpx;">{{Area}}</text>
 			</view>
 			<view style="margin: -10rpx 44rpx;display: flex;flex-direction: row;">
 				<text style="width:140rpx;height:40rpx;font-size:30rpx;font-family:Source Han Sans SC;color:#666666;line-height:36rpx;">客户类型:</text>
-				<text style="width:140rpx;height:40rpx;font-size:30rpx;font-family:Source Han Sans SC;color:#666666;line-height:36rpx;">{{Member}}</text>
+				<text style="height:40rpx;font-size:30rpx;font-family:Source Han Sans SC;color:#666666;line-height:36rpx;">{{Member}}</text>
 			</view>
 			<view style="margin: 20rpx 44rpx;display: flex;flex-direction: row;">
 				<text style="width:140rpx;height:40rpx;font-size:30rpx;font-family:Source Han Sans SC;color:#666666;line-height:36rpx;">预计里程:</text>
@@ -33,11 +36,11 @@
 			</view>
 			<view style="margin: -10rpx 40rpx;display: flex;flex-direction: row;">
 				<text style="width:110rpx;height:40rpx;font-size:30rpx;font-family:Source Han Sans SC;color:#666666;line-height:36rpx;">上车点:</text>
-				<text style="width:400rpx;height:40rpx;font-size:30rpx;font-family:Source Han Sans SC;color:#666666;line-height:36rpx;">{{beginAddress}}</text>
+				<text style="height:40rpx;font-size:30rpx;font-family:Source Han Sans SC;color:#666666;line-height:36rpx;">{{beginAddress}}</text>
 			</view>
 			<view style="margin: 20rpx 40rpx;display: flex;flex-direction: row;">
 				<text style="width:110rpx;height:40rpx;font-size:30rpx;font-family:Source Han Sans SC;color:#666666;line-height:36rpx;">下车点:</text>
-				<text style="width:400rpx;height:40rpx;font-size:30rpx;font-family:Source Han Sans SC;color:#666666;line-height:36rpx;">{{endAddress}}</text>
+				<text style="height:40rpx;font-size:30rpx;font-family:Source Han Sans SC;color:#666666;line-height:36rpx;">{{endAddress}}</text>
 			</view>
 			<view style="display: flex; margin-left: 4rpx;">
 				<button @click="receipt" style="width:278rpx;height:90rpx;border-radius:12rpx; margin-top: 20rpx; font-size: 34rpx;text-align: center;background-color: #ED766C; border: 1px solid #ED766C; color: #FFFFFF; align-items: center;">接单</button>
@@ -57,6 +60,7 @@
 				Member: '会员/普通',
 				Mileage: '44 km',
 				Hour: '2小时',
+				classNum:1,
 				beginAddress: '茶叶大厦',
 				endAddress: '晋江机场',
 				orderArr:[],
