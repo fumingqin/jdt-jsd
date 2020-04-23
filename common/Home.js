@@ -1,5 +1,8 @@
 //司机端全局参数定义
+import Vue from 'vue'
+import Vuex from 'vuex'
 
+Vue.use(Vuex)
 //接口域名
 const Url = 'http://111.231.109.113:8002';
 
@@ -18,6 +21,12 @@ const Interface = {
 		method:'POST',
 		pages:[]
 	},
+	addDriverOneTouchAlarm:{
+		value:Url + '/api/taxi/addDriverOneTouchAlarm',
+		name:'司机端-出租车-一键报警',
+		method:'POST',
+		page:[]
+	}
 	
 }
 
@@ -29,4 +38,5 @@ const dateFormat = {
 export default {
 	Interface,
 	dateFormat
+	
 }

@@ -121,7 +121,7 @@
 							switch(item.orderType){
 								case '实时':
 									uni.navigateTo({
-										url: '/pages/driver/confirmgetonCar',
+										url: '/pages/driver/confirmgetonCar?orderNumber=' + item.orderNumber,
 									});
 									break;
 								case '预约':

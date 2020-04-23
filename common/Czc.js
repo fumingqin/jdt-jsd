@@ -58,7 +58,12 @@ const Interface = {
 		method:'POST',//GET-POST
 		pages:[]
 	},
-	
+	SearchExpressOrderByOrderNum_Driver:{
+		value:Url + '/api/taxi/SearchExpressOrderByOrderNum_Passenger',
+		name:'旅客端-等车时候根据订单号查询出租车快车订单',
+		method:'POST',
+		page:[""]
+	},
 }
 
 // 接口声明区
