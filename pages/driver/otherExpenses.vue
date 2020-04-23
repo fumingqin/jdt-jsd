@@ -36,16 +36,17 @@
 	export default {
 		data() {
 			return {
-				highspeedFee: "0",
-				pakingFee: "0",
-				otherFee: "0",
-				FactPayPrice:"0",
+				highspeedFee: "0",//高速费
+				pakingFee: "0",//停车费
+				otherFee: "0",//其他费用
+				FactPayPrice: "0",//总金额
+				payType:"线下支付",//支付类型
 			}
 		},
 		methods: {
 			inputChange(e) {
 				var num = e.detail.value;
-				if (num>0) {
+				if (num > 0) {
 
 				} else {
 					uni.showToast({
@@ -58,10 +59,26 @@
 			},
 			finish() {
 				var that = this;
-				if (this.FactPayPrice>0) {
-					uni.redirectTo({
-						url: '/pages/driver/orderComplete',
-					})
+				if (this.FactPayPrice > 0) {
+					uni.request({
+						url: that.$taxi.Interface.InputAmountExpressOrder_Driver.value,
+						method: that.$taxi.Interface.InputAmountExpressOrder_Driver.method,
+						data: {
+							orderNumber: "2020042215102602631635",//订单编号
+							FactPayPrice: this.FactPayPrice,
+							payType: this.payType,
+						},
+						success(res) {
+							uni.redirectTo({
+								url: '/pages/driver/orderComplete',
+							})
+						},
+						fail: function(res) {
+							that.showToast('网络连接失败');
+							console.log(res);
+						}
+					});
+
 				} else {
 					uni.showToast({
 						title: '费用不能小于0',
