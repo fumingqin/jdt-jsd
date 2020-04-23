@@ -234,13 +234,15 @@
 						} else if (that.state == 2) {
 							//司机已出发 
 							//Map.openMap(that.startLat, that.startLon, that.startAddress, 'gcj02');
-							//规划司机到出发地路程
 							that.realGetOrderDetail();
+							//规划司机到出发地路程
+							that.setConfirmgetonCar();
 						} else if (that.state == 3) {
 							//司机已到出发地
 
 						} else if (that.state == 4) {
 							//订单执行中（接到旅客）
+							that.setConfirmgetonCar();
 
 						} else if (that.state == 5) {
 							//待支付
@@ -255,7 +257,7 @@
 
 						} else if (that.state == 8) {
 							//乘客取消订单
-
+							
 
 						} else if (that.state == 9) {
 							//支付失败
@@ -293,8 +295,8 @@
 				//Map.openMap(that.endLat, that.endLon, that.endAddress, 'gcj02');
 			},
 			setConfirmgetonCar:function(){
+				//确认乘客上车后
 				let that = this;
-				
 				clearInterval(that.orderInterval);
 				that.markers = [];
 				that.polyline = [];
@@ -354,6 +356,7 @@
 						type: 'gcj02',
 						geocode: true,
 						success: function(res) {
+							console.log(res);
 							resolve(res);
 						},
 						fail: function(rej) {
@@ -361,6 +364,7 @@
 						}
 					});
 				}).then(resolve => {
+					console.log(resolve);
 					uni.request({
 						url: $home.Interface.addDriverOneTouchAlarm.value,
 						method: $home.Interface.addDriverOneTouchAlarm.method,
@@ -368,7 +372,7 @@
 							orderNumber: that.orderNumber,
 							lon: resolve.longitude,
 							lat: resolve.latitude,
-							address: resolve.address.city,
+							address: that.packAddress(resolve.address), 
 							alarmReason: that.alarmReason,
 							driverNumber: that.driverId,
 							alarmRemark: that.alarmRemark //报警备注
@@ -474,7 +478,17 @@
 				let time = (estimateTime / 60) > 1 ? ((estimateTime / 60) + '小时') : (estimateTime + '分钟');
 
 				return time
-			}
+			},
+			packAddress:function(value){//组装地址
+				var country = value.country=='undefined'?'': value.country;//国家
+				var province = value.country=='undefined'?'': value.province;//省份
+				var city = value.country=='undefined'?'': value.city;//城市
+				var district = value.country=='undefined'?'': value.district;//区
+				var street = value.country=='undefined'?'': value.street;//街道
+				var streetNum = value.country=='undefined'?'': value.streetNum;//门牌
+				var poiName = value.country=='undefined'?'': value.poiName;//POI
+				return country + province + city + district + street + streetNum + poiName;
+			},
 		}
 	}
 </script>

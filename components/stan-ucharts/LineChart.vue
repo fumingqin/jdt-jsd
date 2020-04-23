@@ -114,7 +114,7 @@ export default {
 			xAxis: {
 				//	X轴配置
 				type: 'grid',
-				rotateLabel: true, //X轴刻度（数值）标签是否旋转（仅在文案超过单屏宽度时有效）
+				rotateLabel: false, //X轴刻度（数值）标签是否旋转（仅在文案超过单屏宽度时有效）
 				itemCount: 4, //X轴可见区域数据数量（即X轴数据密度），配合拖拽滚动使用（即仅在启用enableScroll时有效）
 				// labelCount:Number,//X轴可见区域标签数量（即X轴数刻度标签单屏幕限制显示的数量）
 				scrollShow: false, //是否显示滚动条，配合拖拽滚动使用（即仅在启用enableScroll时有效）
@@ -126,7 +126,7 @@ export default {
 				calibration: true, //坐标轴刻度线是否显示 注v1.9.0有效
 				gridColor: '#cccccc', //X轴网格颜色 例如#7cb5ec
 				gridType: 'dash', //	X轴网格线型 'solid'为实线、'dash'为虚线`
-				gridEval: 2, //X轴网格线显示间隔，即假设为2时，是隔一个刻度显示间隔
+				gridEval: 1, //X轴网格线显示间隔，即假设为2时，是隔一个刻度显示间隔
 				dashLength: 4, //X轴网格为虚线时，单段虚线长度
 				fontColor: '#666666', //X轴数据点颜色
 				boundaryGap: 'center', //折线图、区域图起画点结束点方法：center为单元格中间起画，justify为0点起画即两端对齐
