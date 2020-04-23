@@ -143,6 +143,7 @@
 </template>
 
 <script>
+	import Voice from '../../js_sdk/QuShe-baiduYY/QS-baiduyy/QS-baiduyy.js'
 	export default {
 		data() {
 			return {
@@ -228,6 +229,7 @@
 				that.scrollStationIndex = "id_5";
 				that.scrollOnOffIndex = "id_5";
 			},10000);
+			that.baiduPlayer('请注意，瑞士花园有4个乘客等待下车');
 		},
 		methods: {
 			tabbarClick: function(el) {
@@ -253,26 +255,86 @@
 			},
 			
 			back:function(){
-				uni.switchTab({
-					url:'../index/index'
+				uni.navigateTo({
+					url:'./selectOrder',
+					animationType:"slide-in-left"
 				})
 			},
 			
 			//调用语音合成接口
-			baiduPlayer:function(){
-				var main = plus.android.runtimeMainActivity();  
-				var SpeechUtility = plus.android.importClass('com.iflytek.cloud.SpeechUtility');  
-				var SpeechConstant = plus.android.importClass('com.iflytek.cloud.SpeechConstant');  
-				SpeechUtility.createUtility(main,"appid=5e902d4d");  
-				var SynthesizerPlayer = plus.android.importClass('com.iflytek.cloud.SpeechSynthesizer');  
-				var mTts = SynthesizerPlayer.createSynthesizer(main, null);   
-				mTts.setParameter(SpeechConstant.VOICE_NAME, "catherine");//设置发音人  
-				mTts.setParameter(SpeechConstant.SPEED, "50");//设置语速    
-				mTts.setParameter(SpeechConstant.VOLUME, "80");//设置音量，范围0~100    
-				mTts.setParameter(SpeechConstant.ENGINE_TYPE, SpeechConstant.TYPE_CLOUD); //设置云端   
-				mTts.startSpeaking('语音播报',null);   
-				console.log(1);
+			baiduPlayer: function(tex) {
+				let that = this;
+				Voice(tex);
+				//that.getBDVoicToken(tex);
 			},
+			//百度语音接口，可用，但未改成js文件。		
+			/* getBDVoicToken: function(tex) {
+				let that = this;
+				const APIKey = 'McfIsVog3Q5AsTxtTGOsoFOs';
+				const SecretKey = 'fEVIpjVvDXh4BIwWGtg9oOkFV71K1tlv';
+			
+				uni.request({ // 强烈建议此接口由后端访问并且维护token有效期，否则前端每次访问都会刷新token
+					//此url为专门插件测试预览用的key和secret key， 请替换为自己申请的key
+					url: 'https://openapi.baidu.com/oauth/2.0/token',
+					method: 'GET', //建议使用post访问
+					data: {
+						grant_type: 'client_credentials',
+						client_id: APIKey,
+						client_secret: SecretKey
+					},
+					success: function(res) {
+						console.log(res);
+						if (res.data && res.data.access_token) {
+							let tok = res.data.access_token;
+							that.tts(tex, tok);
+						} else {
+			
+						}
+					},
+					fail: function(res) {
+						console.log(res);
+					},
+				})
+			},
+			tts: function(objs, tok) {
+				let that = this;
+				objs = {
+					voiceSet: {
+						tex: objs
+					}
+				};
+				const data = {
+					tok,
+					cuid: tok,
+					ctp: 1,
+					lan: 'zh',
+					...objs.voiceSet
+				}
+				that.getVoiceUrl(data, objs.audioSet);
+			},
+			getVoiceUrl: function(param, options) {
+				let that = this;
+				const getAudioUrl = 'https://tsn.baidu.com/text2audio';
+				let audio = uni.createInnerAudioContext();
+				that.setAudioSet(options, audio);
+				// 序列化参数列表
+				let fd = [];
+				for (let k in param) {
+					fd.push(k + '=' + encodeURIComponent(encodeURIComponent(param[k])));
+				}
+				console.log(fd);
+				audio.src = `${getAudioUrl}?${fd.join('&')}`;
+				audio.play();
+			},
+			setAudioSet: function(options, audio) {
+				if (options) {
+					audio.volume = options.volume || 1;
+					audio.startTime = options.startTime || 0;
+					audio.loop = options.loop || false;
+					audio.obeyMuteSwitch = options.obeyMuteSwitch && typeof(options.obeyMuteSwitch) == 'boolean' ? options.obeyMuteSwitch :
+						true;
+				}
+			} */
 		}
 	}
 </script>

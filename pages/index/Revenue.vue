@@ -60,7 +60,7 @@
 								<view style="display: flex;align-items: center;border: solid 1rpx #ADADAD;border-top: none;border-bottom: none;"
 								 v-for="(orderitem,index) in array" :key="index">
 									<view style="width: 150rpx;display: flex;justify-content: center;align-items: center;border-bottom:solid 1rpx #ADADAD;"
-									 :style="{height:(orderitem.orderArr.length*76)+'rpx'}">{{orderitem.title}}</view>
+									 :style="{height:(orderitem.orderArr.length*76)+'rpx'}">{{orderitem.type}}</view>
 									<view>
 										<view style="display: flex;border-bottom: solid 1rpx #ADADAD;" v-for="(item,index) in orderitem.orderArr"
 										 :key="index">
@@ -95,7 +95,7 @@
 					</view>
 					<view @click="changeDate('add')">后一天</view>
 				</view>
-				<view style="background-color: #FFF;border-radius: 20rpx;margin-top: 20rpx;padding: 30rpx;height: 70px;">
+				<view style="background-color: #FFF;border-radius: 20rpx;margin-top: 20rpx;padding: 30rpx;height: 140rpx;">
 					<view style="display: flex;align-items: center;color:#2C2D2D;line-height:42rpx;font-family:Source Han Sans SC;">
 						<view style="width: 8rpx;height: 34rpx; background-color: #E9554E;"></view>
 						<view style="font-size:36rpx;font-weight:bold;padding-left: 10rpx;">总收益(元)</view>
@@ -130,7 +130,7 @@
 					</view>
 					<view @click="changeDate('add')">后一天</view>
 				</view>
-				<view style="background-color: #FFF;border-radius: 20rpx;margin-top: 20rpx;padding: 30rpx;height: 70px;">
+				<view style="background-color: #FFF;border-radius: 20rpx;margin-top: 20rpx;padding: 30rpx;height: 140rpx;">
 					<view style="display: flex;align-items: center;color:#2C2D2D;line-height:42rpx;font-family:Source Han Sans SC;">
 						<view style="width: 8rpx;height: 34rpx; background-color: #E9554E;"></view>
 						<view style="font-size:36rpx;font-weight:bold;padding-left: 10rpx;">总收益(元)</view>
@@ -166,7 +166,7 @@
 					</view>
 					<view @click="changeDate('add')">后一天</view>
 				</view>
-				<view style="background-color: #FFF;border-radius: 20rpx;margin-top: 20rpx;padding: 30rpx;height: 70px;">
+				<view style="background-color: #FFF;border-radius: 20rpx;margin-top: 20rpx;padding: 30rpx;height: 140rpx;">
 					<view style="display: flex;align-items: center;color:#2C2D2D;line-height:42rpx;font-family:Source Han Sans SC;">
 						<view style="width: 8rpx;height: 34rpx; background-color: #E9554E;"></view>
 						<view style="font-size:36rpx;font-weight:bold;padding-left: 10rpx;">总收益(元)</view>
@@ -198,7 +198,7 @@
 
 <script>
 	import MxDatePicker from "@/components/mx-datepicker/mx-datepicker.vue";
-	import HistogramChart from '@/components/stan-ucharts/HistogramChart.vue';
+	import HistogramChart from '@/components/stan-ucharts/HistogramChart.vue';//
 	import LineChart from '@/components/stan-ucharts/LineChart.vue';
 	export default {
 		components: {
@@ -208,7 +208,7 @@
 		},
 		data() {
 			return {
-				current: 1,
+				current: 0,
 				scrollHeight: "",
 				paymentscrollHeight:"",
 				showPicker: false,
@@ -263,7 +263,7 @@
 					]
 				},
 				array: [{
-						title: '客车',
+						type: '客车',
 						orderArr: [{
 							datetime: '2020.04.08', //日期
 							orderNum: 10, //订单数
@@ -271,7 +271,7 @@
 						}]
 					},
 					{
-						title: '出租车',
+						type: '出租车',
 						orderArr: [{
 								datetime: '2020.04.06', //日期
 								orderNum: 10, //订单数
@@ -290,7 +290,7 @@
 						]
 					},
 					{
-						title: '包车',
+						type: '包车',
 						orderArr: [{
 								datetime: '2020.04.06', //日期
 								orderNum: 10, //订单数

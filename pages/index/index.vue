@@ -54,7 +54,7 @@
 			</view>
 			<view style="margin: -12rpx 42rpx;display: flex;flex-direction: row;">
 				<text style="width:160rpx;height:40rpx;font-size:32rpx;font-family:Source Han Sans SC;font-weight:300;color:rgba(44,45,45,1);line-height:42rpx;">{{Work}}</text>
-				<text style="width:160rpx;height:40rpx;font-size:32rpx;font-family:Source Han Sans SC;font-weight:300;color:rgba(44,45,45,1);line-height:42rpx;">{{CarType}}</text>
+				<text style="width:160rpx;height:40rpx;font-size:32rpx;font-family:Source Han Sans SC;font-weight:300;color:rgba(44,45,45,1);line-height:42rpx;">{{vehicleType}}</text>
 			</view>
 			<view style="display: flex; margin-left: 4rpx;">
 				<button class="upWork" :disabled="IsWork" :class="!IsWork?'BtnStyle':''" @click="changeWorkState(true)">上班</button>
@@ -63,7 +63,7 @@
 		</view>
 		
 		<!-- 客车提醒 -->
-		<scroll-view :scroll-y="true" style="height: 270rpx; margin-top: 20rpx;" v-if="CarType=='客车'">
+		<scroll-view :scroll-y="true" style="height: 326rpx; margin-top: 20rpx;" v-if="vehicleType=='客车'">
 		<!-- 消息提示 -->
 		<view style="width: 94%;height: 185rpx; background-color: #FFFFFF;margin-left: 22rpx; border-radius:20rpx;">
 			<view style="padding: 40rpx;display: flex;flex-direction: row;">
@@ -90,7 +90,7 @@
 		</view>
 		</scroll-view>
 		<!-- 出租车提醒 -->
-		<view v-if="CarType=='出租车'" style="width: 94%;height: 185rpx; background-color: #FFFFFF;margin-left: 22rpx; border-radius:20rpx;margin-top: 20rpx;">
+		<view v-if="vehicleType=='出租车'" style="width: 94%;height: 185rpx; background-color: #FFFFFF;margin-left: 22rpx; border-radius:20rpx;margin-top: 20rpx;">
 			<view style="padding: 40rpx;display: flex;flex-direction: row;">
 				<view>
 					<image style="width: 38rpx;height: 38rpx;" src="../../static/index/messageTips.png"></image>
@@ -102,7 +102,7 @@
 			</view>
 		</view>
 		<!-- 包车提醒 -->
-		<view v-if="CarType=='包车'" style="width: 94%;height: 185rpx; background-color: #FFFFFF;margin-left: 22rpx; border-radius:20rpx;margin-top: 20rpx;">
+		<view v-if="vehicleType=='包车'" style="width: 94%;height: 185rpx; background-color: #FFFFFF;margin-left: 22rpx; border-radius:20rpx;margin-top: 20rpx;">
 			<view style="padding: 40rpx;display: flex;flex-direction: row;">
 				<view>
 					<image style="width: 38rpx;height: 38rpx;" src="../../static/index/messageTips.png"></image>
@@ -122,7 +122,7 @@
 			return {
 				Address: '搜索您要去的地方',
 				Work: '所属工作:',
-				CarType: '',
+				vehicleType: '',
 				Message: '丰泽区云鹿路口有一名乘客等待上车...',
 				kyMessage:'您有一个班次，即将发车，请做好发车准备',
 				czcMessage:'您有一个订单，即将到达预订时间，请及...',
@@ -133,19 +133,17 @@
 		onLoad() {
 			let that = this;
 			//添加司机缓存,可删
-			uni.setStorageSync("userInfo",{userId:'1111',userName:'施远君'});
-			
-			
-			var arr = [];
-			getApp().globalData.constantly();
+			uni.setStorageSync("userInfo",{driverId:'2000001',userName:'张三',phoneNumber:'15860185985'});
 		},
 		onShow() {
 			var that = this;
 			uni.getStorage({
 				key: 'vehicleInfo',
 				success(res) {
-					that.CarType = res.data.carType;
+					that.vehicleType = res.data.vehicleType;
 					if (res.data != '') {
+						getApp().globalData.vehicleNumber=res.data.vehicleNumber;
+						getApp().globalData.constantly();
 						that.IsWork = true;
 					}
 				}
@@ -176,12 +174,12 @@
 								uni.removeStorage({
 									key: 'vehicleInfo',
 									success: function(res) {
-										that.CarType = '';
+										that.vehicleType = '';
+										getApp().globalData.vehicleNumber = '';
+										getApp().globalData.closeUpload();
 									}
 								});
-								console.log('用户点击确定');
 							} else if (res.cancel) {
-								console.log('用户点击取消');
 
 							}
 						}
@@ -194,7 +192,7 @@
 				}
 			},
 
-			setPlateNumber: function(url, carType) {
+			setPlateNumber: function(url, vehicleType) {
 				var that = this;
 				if (url == '') {
 					uni.showToast({
@@ -202,31 +200,31 @@
 						icon: "none"
 					})
 				}
-				if (that.CarType == '') {
+				if (that.vehicleType == '') {
 					uni.navigateTo({
-						url: url + '?cartype=' + carType,
+						url: url + '?vehicleType=' + vehicleType,
 						animationType: 'pop-in',
 						animationDuration: 200
 					});
-				} else if (that.CarType == carType) {
-					if (that.CarType == "出租车") {
+				} else if (that.vehicleType == vehicleType) {
+					if (that.vehicleType == "出租车") {
 						uni.navigateTo({
 							url: '/pages/driver/taxiDriver',
 						})
 					}
-					if (that.CarType == "包车") {
+					if (that.vehicleType == "包车") {
 						uni.navigateTo({
 							url: '/pages/BCDriver/bcDriver',
 						})
 					}
-					if (that.CarType == "客车") {
+					if (that.vehicleType == "客车") {
 						uni.navigateTo({
-							url: '/pages/CTKYDriver/index',
+							url: '/pages/CTKYDriver/selectOrder',
 						})
 					}
 				} else {
 					uni.showToast({
-						title: '您已在' + that.CarType + '绑定车牌',
+						title: '您已在' + that.vehicleType + '绑定车牌',
 						icon: "none"
 					})
 
