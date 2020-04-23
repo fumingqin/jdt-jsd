@@ -44,7 +44,9 @@
 			},
 			//--------注册---------
 			registerClick(){
-				
+				uni.navigateTo({
+					url:'/pages/grzx/registerPage1',
+				})
 			},
 		}
 	}

@@ -1,43 +1,43 @@
 <template>
 	<view class="content" v-bind:style="{height:imgHeight+'px'}">
 		<!-- 背景图 -->
-		<image src="../../static/login/backgroudimg.png" style="width: 100%; position: absolute; bottom: 0; height: 100%;"></image>
-		<image src="../../static/login/back.png" class="returnClass" @click="returnClick"></image>
+		<image src="../../static/grzx/backgroudimg.png" style="width: 100%; position: absolute; bottom: 0; height: 100%;"></image>
+		<image src="../../static/grzx/back.png" class="returnClass" @click="returnClick"></image>
 		
 		<!-- 手机号+密码登录 -->
 		<view class="inputContent" v-if="type==1">
 			<view class="inputItem phoneNum">
-				<image src="../../static/login/phone.png" class="iconClass1"></image>
+				<image src="../../static/grzx/phone.png" class="iconClass1"></image>
 				<input type="number" placeholder="手机号码" maxlength="11" class="inputClass" data-key="phoneNumber" @input="inputChange1" />
 			</view>
 			<view class="inputItem Captcha">
-				<image src="../../static/login/code.png" class="iconClass2"></image>
+				<image src="../../static/grzx/password.png" class="iconClass2"></image>
 				<input type="number" placeholder="请输入密码" class="inputClass" data-key="captchaCode" @input="inputChange2" />
 			</view>
 			<text class="switchClass" @click="switchClick">切换登录方式</text>
-			<image src="../../static/login/btnLogin.png" class="btnLogin" ></image>
+			<image src="../../static/grzx/btnLogin.png" class="btnLogin" ></image>
 			<text class="fontStyle" @click="pwdClick">登录</text>
 		</view>
 		
 		<!-- 手机号+验证码登录 -->
 		<view class="inputContent" v-if="type==2">
 			<view class="inputItem phoneNum">
-				<image src="../../static/login/phone.png" class="iconClass1"></image>
+				<image src="../../static/grzx/phone.png" class="iconClass1"></image>
 				<input type="number" placeholder="手机号码" maxlength="11" class="inputClass" data-key="phoneNumber" @input="inputChange1" />
 			</view>
 			<view class="inputItem Captcha">
-				<image src="../../static/login/code.png" class="iconClass2"></image>
+				<image src="../../static/grzx/code.png" class="iconClass2"></image>
 				<input type="number" placeholder="输入验证码" maxlength="6" class="inputClass" data-key="captchaCode" @input="inputChange2" />
 			</view>
 			<!-- 发送验证码 -->
 			<view class="getCode style1" @click="getCodeClick" id="Code">{{textCode}}</view>
-			<image src="../../static/login/btnLogin.png" class="btnLogin" ></image>
+			<image src="../../static/grzx/btnLogin.png" class="btnLogin" ></image>
 			<text class="switchClass" @click="switchClick">切换登录方式</text>
 			<text class="fontStyle" @click="codeClick">确定</text>
 		</view>
 		
 		<!-- logo -->
-		<image src="../../static/login/logo.png" class="logoClass"></image>
+		<image src="../../static/grzx/logo.png" class="logoClass"></image>
 	</view>
 </template>
 
@@ -137,22 +137,25 @@
 										title:"登录成功",
 										icon:"none"
 									})
-									
-									// if(that.urlData==1){
-										uni.switchTab({  //返回首页
-											url:'/pages/index/index',
-										}) 
-									// }else{
-									// 	uni.navigateBack();//返回上一页
-									// }
+									uni.switchTab({  //返回首页
+										url:'/pages/index/index',
+									}) 
 								}else{
 									uni.showToast({
 										title:"验证码错误",
 										icon:"none"
 									})
 								}
+							},
+							fail(){
+								uni.showToast({
+									title:"验证码已过期，请重新获取",
+									icon:"none"
+								})
+								
 							}
 						})
+					
 					}
 				}
 			},
@@ -175,8 +178,11 @@
 						  	self.textCode = second+"秒后重发";
 						  }},1000)
 						 uni.request({
-							url:'http://218.67.107.93:9210/api/app/getLoginCode?phoneNumber='+self.phoneNumber,
-						    method:"POST",
+							url:'http://111.231.109.113:8002/api/person/getLoginCode',
+						    data:{
+								phoneNumber:self.phoneNumber,
+							},
+							method:"POST",
 							success:(res)=>{
 						 		console.log(res.data.code);
 								uni.setStorage({
@@ -337,8 +343,8 @@
 	.switchClass{ //切换登录方式
 		position: absolute;
 		top:440upx;
-		left: 8%;
+		left: 65%; //8%;
 		font-size: 30upx;
-		color: #ED1C24;
+		color: #333333;
 	}
 </style>

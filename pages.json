@@ -81,6 +81,30 @@
 				//"navigationStyle": "custom"
 			}
 		},
+		{
+			"path": "pages/grzx/registerPage1", //注册
+			"style": {
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/grzx/registerPage2",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/grzx/registerPage3",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/grzx/successPage",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		},
 		//个人中心结束
 		{
 			"path": "pages/driver/taxiDriver",
