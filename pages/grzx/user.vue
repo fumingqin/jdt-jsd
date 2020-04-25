@@ -7,7 +7,7 @@
 			<!-- <image src="../../static/grzx/info.png" class="infoClass" @click="navTo('/pages/grzx/myNews')"></image> -->
 			<!-- #endif -->
 			<view class="userInfoClass" @click="checkLogin">
-				<image class="portraitClass" :src=" userInfo.avatarUrl || '/static/grzx/missing-face.png'"></image>
+				<image class="portraitClass" :src=" userInfo.avatarUrl || '/static/grzx/touxiang.png'"></image>
 				<text class="usernameClass">{{userInfo.nickName || '请登录'}}</text>
 			</view>
 		</view>
