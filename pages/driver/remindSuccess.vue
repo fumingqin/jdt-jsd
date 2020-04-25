@@ -4,7 +4,7 @@
 		<image style="width: 100%; height: 294rpx;" src="../../static/index/bgimage1.png"></image>
 		<view style="position: fixed;top: 80rpx;left: 34rpx;right: 0px;align-items: center; display: flex;flex-direction: row;">
 			<view>
-				<image @click="back" src="../../static/login/back.png" style="width: 16rpx; height: 34rpx;"></image>
+				<image @click="back" src="../../static/grzx/back.png" style="width: 16rpx; height: 34rpx;"></image>
 			</view>
 			<view style="width: 180rpx; height: 56rpx;font-family:Source Han Sans SC;color: #FFFFFF; font-size: 38rpx;font-weight:bold; margin-left: 244rpx;">提醒成功</view>
 		</view>
