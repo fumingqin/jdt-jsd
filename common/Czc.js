@@ -64,9 +64,21 @@ const Interface = {
 		method: 'POST', //GET-POST
 		pages: []
 	},
-	SearchExpressOrderByOrderNum_Driver:{
-		value:Url + '/api/taxi/SearchExpressOrderByOrderNum_Passenger',
-		name:'旅客端-等车时候根据订单号查询出租车快车订单',
+	GetExpressOrderByOrderNumber_Driver:{
+		value:Url + '/api/taxi/GetExpressOrderByOrderNumber_Driver',
+		name:'司机端-出租车-根据司机Id和订单Id获取订单详情',
+		method:'POST',
+		page:["/dirver/confirmgetonCar"]
+	},
+	RunExpressOrder_Driver:{
+		value:Url + '/api/taxi/RunExpressOrder_Driver',
+		name:'司机端-出租车-长按按钮出发',
+		method:'POST',
+		page:[""]
+	},
+	FinishExpressOrder_Driver:{
+		value:Url + '/api/taxi/FinishExpressOrder_Driver',
+		name:'司机端-出租车-长按到达目的地',
 		method:'POST',
 		page:[""]
 	},

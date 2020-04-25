@@ -128,12 +128,14 @@
 				czcMessage:'您有一个订单，即将到达预订时间，请及...',
 				bcMessage:'您有一个包车行程，即将到达预订时间...',
 				IsWork: false,
+				userInfo:''
 			}
 		},
 		onLoad() {
 			let that = this;
 			//添加司机缓存,可删
 			uni.setStorageSync("userInfo",{driverId:'2000001',userName:'张三',phoneNumber:'15860185985'});
+			that.userInfo = uni.getStorageSync('userInfo');
 		},
 		onShow() {
 			var that = this;
@@ -169,16 +171,47 @@
 						content: '您是否确认下班',
 						success: function(res) {
 							if (res.confirm) {
-								that.IsWork = iswork;
-								//点击下班变色移除缓存
-								uni.removeStorage({
-									key: 'vehicleInfo',
-									success: function(res) {
-										that.vehicleType = '';
-										getApp().globalData.vehicleNumber = '';
-										getApp().globalData.closeUpload();
-									}
+								uni.showLoading({
+									mask:true
 								});
+								uni.request({
+									url:that.$home.Interface.GooffWork_Driver.value,
+									method:that.$home.Interface.GooffWork_Driver.method,
+									data:{
+										driverId: that.userInfo.driverId
+									},
+									success:function(res){
+										console.log(res);
+										uni.hideLoading();
+										if(res.data.status){
+											that.IsWork = iswork;
+											//点击下班变色移除缓存
+											uni.removeStorage({
+												key: 'vehicleInfo',
+												success: function(res) {
+													that.vehicleType = '';
+													getApp().globalData.vehicleNumber = '';
+													getApp().globalData.closeUpload();
+												}
+											});
+										}else{
+											uni.showToast({
+												title:res.data.msg,
+												icon:'none'
+											})
+										}
+									},
+									fail:function(res){
+										console.log(res);
+										uni.hideLoading();
+										uni.showToast({
+											title:'网络连接失败',
+											icon:'none'
+										})
+									}
+								})
+								
+								
 							} else if (res.cancel) {
 
 							}

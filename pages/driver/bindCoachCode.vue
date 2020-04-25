@@ -98,13 +98,15 @@
 			},
 			Confirm(e) {
 				var that = this;
+				uni.showLoading({
+					mask:true
+				});
 				getApp().globalData.vehicleNumber = that.vehicleNumber;
 				getApp().globalData.constantly();
 				var plate = this.vehicleNumber;
-
+				
 				if (that.isLicensePlate(plate)) {
 					if ((this.current == 0 && plate.length == 7) || (this.current == 1 && plate == 8)) {
-						console.log(that.driverId);
 						uni.request({
 							url: that.$home.Interface.DriverVehicleBinding_Check.value,
 							method: that.$home.Interface.DriverVehicleBinding_Check.method,
@@ -114,7 +116,7 @@
 								vehicleType: that.vehicleType
 							},
 							success: function(res) {
-								console.log(res);
+								uni.hideLoading();
 								if (res.data.status) {
 									uni.setStorage({
 										key: 'vehicleInfo',
@@ -146,6 +148,7 @@
 								}
 							},
 							fail: function(res) {
+								uni.hideLoading();
 								that.showToast('网络连接失败');
 								console.log(res);
 							}
