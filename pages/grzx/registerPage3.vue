@@ -4,25 +4,28 @@
 		<image src="../../static/grzx/btnReturn.png" class="returnClass" @click="returnClick"></image>
 		<image src="../../static/grzx/nav3.png" class="navClass"></image>
 		
-		<view class="boxClass">
+		<view class="boxClass mt">
 			<text class="fontClass">驾龄</text>
-			<input class="inputClass"  name="userdrivingAge"  placeholder="请输入您的驾龄" v-model="userdrivingAge" />
+			<input class="inputClass1" type="number" name="userdrivingAge"  placeholder="请输入" v-model="userdrivingAge" @blur="inputChange"/>
+			<text>年</text>
 		</view>
 		<view class="boxClass">
 			<text class="fontClass">驾照证号</text>
-			<input class="inputClass" maxlength="18"  name="userlicenseNum"  placeholder="请输入驾照证号(身份证号)" v-model="userlicenseNum" />
+			<input class="inputClass2" maxlength="18"  name="userlicenseNum"  placeholder="请输入驾照证号(身份证号)" v-model="userlicenseNum" />
 		</view>
-		<view v-if="type1==0" @click="getFront" class="boxStyle1">
+		<!-- 驾照主页 -->
+		<view v-if="type1==0" @click="getFront" class="boxStyle">
 			<image src="../../static/grzx/licensefront.png" style="width: 100%;height: 100%;"></image>
 		</view>
-		<view v-if="type1==1" @click="getFront" class="boxStyle2">
-			<image :src="userlicenseFront" name="userlicenseFront" style="width: 100%;height: 100%;"></image>
+		<view v-if="type1==1" @click="getFront" class="boxStyle">
+			<image :src="userlicenseFront" name="userlicenseFront" style="width: 100%;height: 100%;" mode="aspectFill"></image>
 		</view>
 		<text class="fontStyle">驾照主页</text>
-		<view v-if="type2==0" @click="getBack" class="boxStyle1">
-			<image src="../../static/grzx/licenseback.png" style="width: 100%;height: 100%;" mode="aspectFill"></image>
+		<!-- 驾照副页 -->
+		<view v-if="type2==0" @click="getBack" class="boxStyle">
+			<image src="../../static/grzx/licenseback.png" style="width: 100%;height: 100%;"></image>
 		</view>
-		<view v-if="type2==1" @click="getBack" class="boxStyle2">
+		<view v-if="type2==1" @click="getBack" class="boxStyle">
 			<image :src="userlicenseBack" name="userlicenseBack"  mode="aspectFill" style="width: 100%;height: 100%;"></image>
 		</view>
 		<text class="fontStyle">驾照副页</text>
@@ -52,6 +55,25 @@
 			
 		},
 		methods:{
+			//-----------只能输入数字------------
+			judgeNum(val){  
+				var regPos = /^\d+(\.\d+)?$/; //非负浮点数
+				    var regNeg = /^(-(([0-9]+\.[0-9]*[1-9][0-9]*)|([0-9]*[1-9][0-9]*\.[0-9]+)|([0-9]*[1-9][0-9]*)))$/; //负浮点数
+				    if(regPos.test(val) || regNeg.test(val)) {
+				        return true;
+				    } else {
+				        return false;
+				    }
+			},
+			//-----------驾龄输入离开时执行------------
+			inputChange(){
+				if(!this.judgeNum(this.userdrivingAge)&&this.userdrivingAge!=""&&this.userdrivingAge!=null){
+					uni.showToast({
+						title : '请输入正确的驾龄，只允许输入数字',
+						icon : 'none',
+					})
+				}
+			},
 			//-----------返回------------
 			returnClick(){
 				uni.navigateBack();
@@ -101,14 +123,22 @@
 			},
 			//-----------提交数据------------
 			submitClick(){
-				console.log(this.userdrivingAge)
-				console.log(this.userlicenseNum)
-				console.log(this.frontImg)
-				console.log(this.backImg)
+				// console.log(this.userdrivingAge)
+				// console.log(this.userlicenseNum)
+				// console.log(this.frontImg)
+				// console.log(this.backImg)
+				var that=this;
+				var list1=uni.getStorageSync('registerList1')
+				var list2=uni.getStorageSync('registerList2')
 				if(this.userdrivingAge==""||this.userdrivingAge==null){
 					uni.showToast({
 						title:'请输入您的驾龄',
 						icon:'none',
+					})
+				}else if(!this.judgeNum(this.userdrivingAge)){
+					uni.showToast({
+						title : '请输入正确的驾龄，只允许输入数字',
+						icon : 'none',
 					})
 				}else if(this.userlicenseNum==""||this.userlicenseNum==null){
 					uni.showToast({
@@ -122,7 +152,7 @@
 					})
 				}else if(this.frontImg==""||this.frontImg==null){
 					uni.showToast({
-						title:'请输入上传驾照的首页',
+						title:'请输入上传驾照的主页',
 						icon:'none',
 					})
 				}else if(this.backImg==""||this.backImg==null){
@@ -131,12 +161,33 @@
 						icon:'none',
 					})
 				}else{
-					
+					uni.request({
+						url:'http://111.231.109.113:8002/api/person/Register_Driver',
+						data:{
+							phoneNumber:list1.phoneNumber,
+							password:list1.password,
+							userName:list2.userName,
+							userPortrait:list2.userPortrait,
+							userSex:list2.userSex,
+							autograph:list2.userCompany,
+							userlicenseGrade:list2.userlicenseGrade,
+							userdrivingAge:that.userdrivingAge,
+							userlicenseNum:that.userlicenseNum,
+							userlicenseFront:that.frontImg,
+							userlicenseBack:that.backImg,
+							userauditState:0,
+						},
+						method:'POST',
+						success(res) {
+							console.log(res,"提交成功")
+						}
+					})
 				}
 			}
 		}
 	}
 </script>
+
 
 <style lang="scss">
 	page{
@@ -167,9 +218,11 @@
 	.navClass{	//导航
 		width: 90%;
 		height: 75upx;
-		margin-left: 5%;
-		margin-top: 170upx;
-		//position: absolute;
+		// margin-left: 5%;
+		// margin-top: 170upx;
+		left: 5%;
+		top:170upx;
+		position: fixed;
 	}
 	.boxClass{
 		background-color: #FFFFFF;
@@ -182,12 +235,23 @@
 		margin-top: 24upx;
 		border-radius: 26upx;
 	}
+	.mt{
+		margin-top:270upx;
+	}
 	.fontClass{	//姓名，性别，公司，驾照等级
 		font-size: 30upx;
 		color: #2C2D2D;
 		margin-left: 6%;
 	}
-	.inputClass{
+	.inputClass1{ 	//输入驾龄
+		color: #2C2D2D;
+		width: 14%;
+		//border: 1upx solid #000000;
+		margin-left: 7%;
+		margin-top: 33upx;
+		font-size: 30upx;
+	}
+	.inputClass2{ //输入驾照证号
 		color: #2C2D2D;
 		width: 66%;
 		// border: 1upx solid #000000;
@@ -195,13 +259,13 @@
 		margin-top: 33upx;
 		font-size: 30upx;
 	}
-	.boxStyle1{
-		width: 98%;
-		height: 400upx;
-		margin-top: 20upx;
-		margin-left: 1%;
-	}
-	.boxStyle2{
+	// .boxStyle1{
+	// 	width: 98%;
+	// 	height: 400upx;
+	// 	margin-top: 20upx;
+	// 	margin-left: 1%;
+	// }
+	.boxStyle{
 		width: 90%;
 		height: 400upx;
 		margin-top: 20upx;
