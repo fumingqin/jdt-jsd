@@ -12,7 +12,7 @@
 			</view>
 			<view class="inputItem Captcha">
 				<image src="../../static/grzx/password.png" class="iconClass2"></image>
-				<input type="number" placeholder="请输入密码" class="inputClass" data-key="captchaCode" @input="inputChange2" />
+				<input type="password" placeholder="请输入密码" class="inputClass" data-key="password" @input="inputChange2" />
 			</view>
 			<text class="switchClass" @click="switchClick">切换登录方式</text>
 			<image src="../../static/grzx/btnLogin.png" class="btnLogin" ></image>
@@ -52,6 +52,7 @@
 				type:1,  //1为密码登录，2为验证码登录
 				textCode:"获取验证码",
 				phoneNumber:'',
+				password:'',
 				captchaCode:'',
 				imgHeight:'',
 			}
@@ -61,6 +62,7 @@
 		},
 		methods: {
 			...mapMutations(['login']),
+			//--------------加载数据-------------
 			async load(){
 				var that=this;
 				uni.getSystemInfo({
@@ -69,7 +71,8 @@
 				       }
 				});
 			},
-			judgeNum(val){  //只能输入数字
+			//--------------只能输入数字-------------
+			judgeNum(val){  
 				var regPos = /^\d+(\.\d+)?$/; //非负浮点数
 				    var regNeg = /^(-(([0-9]+\.[0-9]*[1-9][0-9]*)|([0-9]*[1-9][0-9]*\.[0-9]+)|([0-9]*[1-9][0-9]*)))$/; //负浮点数
 				    if(regPos.test(val) || regNeg.test(val)) {
@@ -104,15 +107,39 @@
 				const key = e.currentTarget.dataset.key;
 				this[key] = e.detail.value;
 			},
+			//--------------密码登录-------------
 			pwdClick(){
-				
+				uni.showLoading({
+					title:'登录中...'
+				})
+				var that=this;
+				console.log(that.phoneNumber)
+				console.log(that.password)
+				uni.request({
+					url:'http://111.231.109.113:8002/api/person/LoginByPassWord_Driver',
+					data:{
+						phoneNumber:that.phoneNumber,
+						password:that.password,
+					},
+					method:'POST',
+					success(res) {
+						console.log(res)
+						if(res.data.msg=='登入成功'){
+							that.getuserInfo(that.phoneNumber);
+						}else{
+							uni.showToast({
+								title:'密码错误或手机号不对',
+								icon:'none',
+							})
+						}
+					}
+				})
 			},
-			codeClick(){	 //验证码登录
-				this.logining=true;
-				//登录成功开启定时器。
-				if(this.logining){
-					
-				}
+			//--------------验证码登录-------------
+			codeClick(){
+				uni.showLoading({
+					title:'登录中...'
+				})
 				var that=this;
 				const {phoneNumber, captchaCode} = this;		
 				var phone=this.phoneNumber;
@@ -133,13 +160,7 @@
 							key:'captchaCode',
 							success(res) {
 								if(captcha==res.data.code&&phone==res.data.phone){
-									uni.showToast({
-										title:"登录成功",
-										icon:"none"
-									})
-									uni.switchTab({  //返回首页
-										url:'/pages/index/index',
-									}) 
+									that.getuserInfo(phone);
 								}else{
 									uni.showToast({
 										title:"验证码错误",
@@ -159,7 +180,47 @@
 					}
 				}
 			},
-			getCodeClick(e){	//获取验证码
+			//--------------获取用户信息-------------
+			getuserInfo(e){
+				var that=this;
+				uni.request({
+					url:'http://111.231.109.113:8002/api/person/GetDetailInfo_Driver',
+					data:{
+						phoneNumber:e
+					},
+					method:'POST',
+					success(res) {
+						console.log(res,'res')
+						uni.hideLoading();
+						if(res.data.data.userauditState=='1'||res.data.data.userauditState==1){
+							uni.setStorageSync('userInfo',res.data.data)
+							that.logining=true;
+							that.login(res.data.data)
+							uni.showToast({
+								title:"登录成功",
+								icon:"success"
+							})
+							setTimeout(function(){
+								uni.switchTab({  //返回首页
+									url:'/pages/index/index',
+								}) 
+							},500);
+						}else if(res.data.data.userauditState=='0'||res.data.data.userauditState==0){
+							uni.showToast({
+								title:'您的信息正在审核中',
+								icon:'none'
+							})
+						}else if(res.data.data.userauditState=='2'||res.data.data.userauditState==2){
+							uni.showToast({
+								title:'您的信息审核不通过，请重新注册',
+								icon:'none'
+							})
+						}
+					}
+				})
+			},
+			//--------------获取验证码-------------
+			getCodeClick(e){
 				var self=this;
 				const {phoneNumber, captchaCode} = this;		
 				if(self.judgeNum(self.phoneNumber)){
@@ -184,11 +245,11 @@
 							},
 							method:"POST",
 							success:(res)=>{
-						 		console.log(res.data.code);
+						 		console.log(res.data.data);
 								uni.setStorage({
 									key:'captchaCode',
 									data:{
-										code:res.data.code,
+										code:res.data.data,
 										phone:self.phoneNumber,
 									}
 								})
@@ -209,10 +270,11 @@
 					})
 				}
 			},
-			returnClick(){		//返回个人中心
+			//--------------返回个人中心-------------
+			returnClick(){		
 				uni.navigateBack();
 			},
-			//切换登录方式
+			//--------------切换登录方式-------------
 			switchClick(){
 				if(this.type==1){
 					this.type=2;

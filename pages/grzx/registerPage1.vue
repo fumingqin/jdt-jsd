@@ -57,7 +57,12 @@
 			},
 			//------------离开手机号输入框时执行-----------
 			leavePhone(){
-				if(this.phoneNumber.length!=11){
+				if(this.phoneNumber.length==null||this.phoneNumber.length==""){
+					uni.showToast({
+						title:'请输入手机号码',
+						icon:'none',
+					})
+				}else if(this.phoneNumber.length!=11){
 					uni.showToast({
 						title:'请输入正确的手机号码',
 						icon:'none',
@@ -66,11 +71,12 @@
 			},
 			//------------离开密码输入框时执行-----------
 			leavePwd(){
-				if(this.password.length<6)
-				uni.showToast({
-					title:'密码的长度过短，请输入6-20位的密码',
-					icon:'none',
-				})
+				if(this.password.length<6){
+					uni.showToast({
+						title:'密码的长度过短，请输入6-20位的密码',
+						icon:'none',
+					})
+				}
 			},
 			//------------返回上一页-----------
 			returnClick(){
@@ -128,6 +134,7 @@
 			},
 			//------------下一步-----------
 			nextClick(){
+				var codeList=uni.getStorageSync('captchaCode');
 				var phone=this.phoneNumber;
 				var pwd=this.password;
 				var num=this.code;
@@ -156,18 +163,46 @@
 						title:'请输入验证码',
 						icon:'none',
 					})
-				}else{
-					uni.getStorage({
-						key:'captchaCode',
-						success:function(res){
-							if(phone==res.data.phone&&num==res.data.code){
-								uni.setStorage({
-									key:'registerList',
-									
-								})
-							}
-						}
+				}else if(codeList==""){
+					uni.showToast({
+						title:'验证码已过期，请重新获取',
+						icon:'none',
 					})
+				}else{
+					if(phone==codeList.phone&&num==codeList.code){
+						uni.request({
+							url:'http://111.231.109.113:8002/api/person/LoginByCheckCode_Driver',
+							data:{
+								phoneNumber:phone,
+							},
+							method:'POST',
+							success(res1) {
+								if(res1.data.data==null||res1.data.data==""||res1.data.msg=="未存在该账号或者密码错误"){
+									var list={
+										phoneNumber:phone,
+										password:pwd,
+									}
+									uni.setStorageSync('registerList1',list)
+									uni.removeStorage({
+										key:'captchaCode',
+									})
+									uni.navigateTo({
+										url:'/pages/grzx/registerPage2'
+									})
+								}else{
+									uni.showToast({
+										title:'该用户已注册',
+										icon:'none',
+									})
+								}
+							}
+						})
+					}else{
+						uni.showToast({
+							title:'验证码输入错误，请重新输入',
+							icon:'none',
+						})
+					}
 				}
 			},
 		}

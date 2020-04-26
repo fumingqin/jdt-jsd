@@ -1,14 +1,14 @@
 <template>
 	<view class="container">
 		
-		<view class="list-cell m-t b-b">
+		<!-- <view class="list-cell m-t b-b">
 			<text class="cell-tit">推送设置</text>
 			<switch :checked="statu.check1" color="#fa436a" @change="switchChange" />
 		</view>
 		<view class="list-cell b-b b-l">
 			<text class="cell-tit">视频自动播放</text>
 			<switch :checked="statu.check2"  color="#fa436a" @change="playChange" />
-		</view>
+		</view> -->
 		
 		<view class="list-cell m-t b-b" @click="clearStorage" hover-class="cell-hover" :hover-stay-time="50">
 			<text class="cell-tit">清除缓存</text>
@@ -87,7 +87,7 @@
 					    		this.logout();
 					    		setTimeout(()=>{
 					    			uni.switchTab({
-					    				url:'/pages/GRZX/user'
+					    				url:'/pages/grzx/user'
 					    			})
 					    		}, 200)
 					    	}

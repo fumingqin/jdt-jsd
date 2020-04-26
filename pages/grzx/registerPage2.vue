@@ -65,7 +65,16 @@
 			//-----------返回------------
 			returnClick(){
 				uni.navigateBack();
-				console.log("返回");
+				// uni.showModal({
+				//     content: '确定要返回到选择界面',
+				//     success: (e)=>{
+				//     	if(e.confirm){
+				//     		uni.navigateBack({
+				//     			delta: 2
+				//     		});
+				//     	}
+				//     }
+				// });
 			},
 			//-----------性别选择------------
 			radioClick:function(e){
@@ -104,21 +113,17 @@
 						icon:'none'
 					})
 				}else{
-					uni.setStorage({
-						key:'registerList',
-						data:{
-							userPortrait:this.userPortrait,
-							userName:this.userName,
-							userSex:this.userSex,
-							userCompany:this.userCompany,
-							userlicenseGrade:this.userlicenseGrade,
-						},
-						success() {
-							uni.navigateTo({
-								url:'/pages/grzx/registerPage3',
-							})
-						}
-					})	
+					var list={
+						userPortrait:this.userPortrait,
+						userName:this.userName,
+						userSex:this.userSex,
+						userCompany:this.userCompany,
+						userlicenseGrade:this.userlicenseGrade,
+					}
+					uni.setStorageSync('registerList2',list)
+					uni.navigateTo({
+						url:'/pages/grzx/registerPage3',
+					})
 				}	
 			},
 			//-----------上传头像------------
