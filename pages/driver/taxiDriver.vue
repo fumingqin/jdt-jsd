@@ -23,7 +23,7 @@
 			</view>
 			<view style="margin: -10rpx 44rpx;display: flex;flex-direction: row;">
 				<text class="userType">客户类型:</text>
-				<text class="userType">普通</text>
+				<text class="userType">{{formatUserType(item.userType)}}</text>
 			</view>
 			<view style="margin: 20rpx 44rpx;display: flex;flex-direction: row;">
 				<text class="fontClass" style="width:140rpx;height:40rpx;">预计里程:</text>
@@ -214,6 +214,25 @@
 				let time = (estimateTime/60) > 1 ? ((estimateTime/60) +'小时') :  (estimateTime + '分钟');
 				
 				return time
+			},
+			formatUserType:function(userType){
+				switch(userType){
+					case 0 : 
+						return '普通用户';
+						break;
+					case 1:
+						return '普通会员';
+						break;
+					case 2:
+						return '超级会员';
+						break;
+					case 3:
+						return '其他用户';
+						break;
+					case 9:
+						return '体验用户';
+						break;
+				}
 			}
 		}
 	}

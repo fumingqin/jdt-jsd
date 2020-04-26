@@ -16,7 +16,7 @@
 				</view>
 				<view style="margin-top: 20rpx;margin-left: 40rpx;display: flex;flex-direction: row;">
 					<text style="width:140rpx;height:40rpx;font-size:30rpx;font-family:Source Han Sans SC;color:#666666;line-height:36rpx;">等待时长:</text>
-					<text style="width:400rpx;height:40rpx;font-size:30rpx;font-family:Source Han Sans SC;color:#666666;line-height:36rpx;">{{waitHour}}</text>
+					<text style="width:400rpx;height:40rpx;font-size:30rpx;font-family:Source Han Sans SC;color:#666666;line-height:36rpx;">{{waitTime}}</text>
 				</view>
 				<view style="margin-top: 20rpx;margin-left: 36rpx;display: flex;flex-direction: row;">
 					<text style="width:110rpx;height:40rpx;font-size:30rpx;font-family:Source Han Sans SC;color:#666666;line-height:36rpx;">上车点:</text>
@@ -57,10 +57,10 @@
 			</view>
 			<view style="width: 698rpx; background-color: #FFFFFF;margin-left: 28rpx; border-radius:20rpx; margin-top: 30rpx;padding-bottom: 30rpx;">
 				<view style="margin-top: 36rpx;margin-left: 38rpx;display: flex;flex-direction: row;">
-					<text style="width:140rpx;height:40rpx;font-size:30rpx;font-family:Source Han Sans SC;color:#666666;line-height:36rpx;">已驶里程:</text>
-					<text style="width:140rpx;height:40rpx;font-size:30rpx;font-family:Source Han Sans SC;color:#666666;line-height:36rpx;">{{alreadyMileage}}</text>
-					<text style="width:140rpx;height:40rpx;font-size:30rpx;font-family:Source Han Sans SC;color:#666666;line-height:36rpx; margin-left: 40rpx;">已驶时长:</text>
-					<text style="width:140rpx;height:40rpx;font-size:30rpx;font-family:Source Han Sans SC;color:#666666;line-height:36rpx;">{{alreadyHour}}</text>
+					<!-- <text style="width:140rpx;height:40rpx;font-size:30rpx;font-family:Source Han Sans SC;color:#666666;line-height:36rpx;margin-right: 40rpx">已驶里程:</text>
+					<text style="width:140rpx;height:40rpx;font-size:30rpx;font-family:Source Han Sans SC;color:#666666;line-height:36rpx;">{{alreadyMileage}}</text> -->
+					<text style="width:140rpx;height:40rpx;font-size:30rpx;font-family:Source Han Sans SC;color:#666666;line-height:36rpx;">已驶时长:</text>
+					<text style="width:140rpx;height:40rpx;font-size:30rpx;font-family:Source Han Sans SC;color:#666666;line-height:36rpx;">{{alreadyTime}}</text>
 				</view>
 				<!-- <view style="margin-top: 20rpx;margin-left: 40rpx;display: flex;flex-direction: row;">
 					<text style="width:120rpx;height:40rpx;font-size:30rpx;font-family:Source Han Sans SC;color:#666666;line-height:36rpx;">总费用:</text>
@@ -120,6 +120,7 @@
 				viewHeight: '',
 				directionInterval: 0,
 				orderInterval: 0,
+				waitTimeInterval:0,
 				callPoliceArr: [
 					'车辆损坏',
 					'身体不适'
@@ -144,15 +145,20 @@
 				estimatePrice: '', //预计价格
 				estimateDistance: '', //预计里程
 				estimateTime: '', //预计时长
-				alreadyHour: '', //已驶时长
+				alreadyTime: '0分钟', //已驶时长
 				alreadyMileage: '', //已驶里程
-				waitHour: '', //等待时长
+				waitTime: '0分钟', //等待时长
+				initialMin:'',
 				totalCost: '', //总价
 			}
 		},
 		onLoad(option) {
 			var that = this;
 			that.orderNumber = option.orderNumber;
+			var userInfo = uni.getStorageSync('userInfo') || '';
+			if (userInfo) {
+				that.driverId = userInfo.driverId;
+			}
 			uni.getSystemInfo({
 				//设置地图高度为可使用的高度
 				success: function(res) {
@@ -161,10 +167,7 @@
 				}
 			});
 			that.setOrderStatus();
-			var userInfo = uni.getStorageSync('userInfo') || '';
-			if (userInfo) {
-				that.driverId = userInfo.driverId;
-			}
+			
 		},
 		methods: {
 			//本页面统一调用此方法
@@ -179,10 +182,11 @@
 				let that = this;
 				return new Promise((resolve, reject) => {
 					uni.request({
-						url: $taxi.Interface.SearchExpressOrderByOrderNum_Driver.value,
-						method: $taxi.Interface.SearchExpressOrderByOrderNum_Driver.method,
+						url: $taxi.Interface.GetExpressOrderByOrderNumber_Driver.value,
+						method: $taxi.Interface.GetExpressOrderByOrderNumber_Driver.method,
 						data: {
-							OrderNumber: that.orderNumber
+							ordernumber: that.orderNumber,
+							driverId:that.driverId 
 						},
 						success: function(res) {
 							let data = res.data.data;
@@ -224,7 +228,11 @@
 				})
 				that.getOrder().then(res => {
 					uni.hideLoading();
+					var data = res.data.data;
 					if (res.data.status) {
+						that.markers = [];
+						that.setMarker(1, that.startLon, that.startLat, '../../static/driver/Start.png');
+						that.setMarker(2, that.endLon, that.endLat, '../../static/driver/End.png');
 						if (that.state == 0) {
 							//等待接单
 
@@ -233,35 +241,35 @@
 							that.realGetOrderDetail();
 						} else if (that.state == 2) {
 							//司机已出发 
-							//Map.openMap(that.startLat, that.startLon, that.startAddress, 'gcj02');
+							Map.openMap(that.startLat, that.startLon, that.startAddress, 'gcj02');
 							that.realGetOrderDetail();
 							//规划司机到出发地路程
-							that.setConfirmgetonCar();
+							that.setToStart();
+							console.log(new Date(data.receiptTime.replace('T', ' ').replace(/-/g,'/')));
+							that.mathwaitTime(new Date(data.receiptTime.replace('T', ' ').replace(/-/g,'/'))); 
 						} else if (that.state == 3) {
 							//司机已到出发地
-
+							//预留
 						} else if (that.state == 4) {
 							//订单执行中（接到旅客）
 							that.setConfirmgetonCar();
-
+							console.log(new Date(data.runTime.replace('T', ' ').replace(/-/g,'/'))); 
+							that.mathwaitTime(new Date(data.runTime.replace('T', ' ').replace(/-/g,'/'))); 
 						} else if (that.state == 5) {
 							//待支付
 
 						} else if (that.state == 6) {
 							//支付完成
 
-
 						} else if (that.state == 7) {
 							//司机取消订单
 
-
 						} else if (that.state == 8) {
 							//乘客取消订单
-							
 
 						} else if (that.state == 9) {
 							//支付失败
-
+							
 						}
 					}
 				}).catch(rej =>{
@@ -272,37 +280,79 @@
 
 
 			realGetOrderDetail: function() {
+				//循环查找订单数据
 				let that = this;
-				that.orderInterval = setInterval(function() {
-					that.getOrder().then(res =>{
-						if (that.state == 8) {
-							clearInterval(that.orderInterval);
-							that.showToast('用户已取消订单');
-							setTimeout(function(){
-								uni.redirectTo({
-									url:'./taxiDriver'
-								});
-							},1500);
-						}
-					});
-				}, 10000);
+				if( that.orderInterval == 0){
+					that.orderInterval = setInterval(function() {
+						that.getOrder().then(res =>{
+							if (that.state == 8) {
+								clearInterval(that.orderInterval);
+								that.showToast('用户已取消订单');
+								setTimeout(function(){
+									uni.redirectTo({
+										url:'./taxiDriver'
+									});
+								},1500);
+							}
+						});
+					}, 10000);
+				}
 			},
-
-			confirmgetonCar: function() { //确认乘客上车
+			setToStart:function(){
 				let that = this;
-				that.setConfirmgetonCar();
-				that.state = 4;
-				//Map.openMap(that.endLat, that.endLon, that.endAddress, 'gcj02');
+				uni.getLocation({
+					type:'gcj02',
+					success:function(res){
+						that.getDirectionDriving(res.longitude + ',' + res.latitude,that.startLon + ',' + that.startLat);
+					}
+				});
+			},
+			
+			confirmgetonCar: function() { //长按确认乘客上车
+				let that = this;
+				uni.showLoading({
+					mask:true
+				});
+				uni.request({
+					url:$taxi.Interface.RunExpressOrder_Driver.value,
+					method:$taxi.Interface.RunExpressOrder_Driver.method,
+					data:{
+						orderNumber:that.orderNumber
+					},
+					success:function(res){
+						uni.hideLoading();
+						if(res.data.status){
+							that.setConfirmgetonCar();
+							that.state = 4;
+							Map.openMap(that.endLat, that.endLon, that.endAddress, 'gcj02');
+						} else {
+							that.showToast(res.data.msg);
+						}
+					},
+					fail:function(res){
+						uni.hideLoading();
+						console.log(res);
+						that.showToast('网络连接失败');
+					}
+				})
+				
+				
+				
 			},
 			setConfirmgetonCar:function(){
-				//确认乘客上车后
+				//确认乘客上车
 				let that = this;
 				clearInterval(that.orderInterval);
-				that.markers = [];
-				that.polyline = [];
-				that.setMarker(1, that.startLon, that.startLat, '../../static/driver/Start.png');
-				that.setMarker(2, that.endLon, that.endLat, '../../static/driver/End.png');
-				that.getDirectionDriving(that.startLon+ ',' + that.startLat, that.endLon + ',' + that.endLat);
+				that.orderInterval = 0;
+				clearInterval(that.waitTimeInterval);
+				that.waitTimeInterval = 0;
+				that.polyline = []; 
+				uni.getLocation({
+					type:'gcj02',
+					success:function(res){
+						that.getDirectionDriving(res.longitude + ',' + res.latitude,that.endLon + ',' + that.endLat);
+					}
+				});
 				that.directionInterval = setInterval(function() { //获取司机的实时位置并规划到终点的路线
 					that.polyline = [];
 					uni.getLocation({
@@ -310,18 +360,44 @@
 						success: function(res) {
 							that.longitude = res.longitude;
 							that.latitude = res.latitude;
-							that.getDirectionDriving(that.longitude + ',' + that.latitude, that.endLon + ',' + that.endLat);
+							that.getDirectionDriving(res.longitude + ',' + res.latitude,that.endLon + ',' + that.endLat);
 						} 
 					})
 				}, 10000);
 			},
-			confirmGetToDestination: function() {//长按确认到达目的地
+			confirmGetToDestination: function() {
+				//长按确认到达目的地
 				let that = this;
-				//取消由 setInterval 设置的定时器
-				clearInterval(this.directionInterval);
-				uni.redirectTo({
-					url: '/pages/driver/otherExpenses',
+				uni.showLoading({
+					mask:true
+				});
+				uni.request({
+					url:$taxi.Interface.FinishExpressOrder_Driver.value,
+					method:$taxi.Interface.FinishExpressOrder_Driver.method,
+					data:{
+						orderNumber:that.orderNumber
+					},
+					success:function(res){
+						uni.hideLoading();
+						if(res.data.status){
+							//取消由 setInterval 设置的定时器
+							clearInterval(this.directionInterval);
+							getApp().globalData.orderNumber = 0;
+							uni.redirectTo({
+								url: '/pages/driver/otherExpenses?orderNumber=' + that.orderNumber,
+							})
+						} else {
+							that.showToast(res.data.msg);
+						}
+					},
+					fail:function(res){
+						uni.hideLoading();
+						console.log(res);
+						that.showToast('网络连接失败');
+					}
 				})
+				
+				
 			},
 			call: function() {
 				//呼叫乘客
@@ -364,7 +440,6 @@
 						}
 					});
 				}).then(resolve => {
-					console.log(resolve);
 					uni.request({
 						url: $home.Interface.addDriverOneTouchAlarm.value,
 						method: $home.Interface.addDriverOneTouchAlarm.method,
@@ -472,14 +547,16 @@
 				});
 			},
 			formatEstimateDistance: function(estimateDistance) {
+				//公里数
 				return estimateDistance + '公里';
 			},
 			formatEstimateTime: function(estimateTime) {
+				//格式化时间
 				let time = (estimateTime / 60) > 1 ? ((estimateTime / 60) + '小时') : (estimateTime + '分钟');
-
 				return time
 			},
-			packAddress:function(value){//组装地址
+			packAddress:function(value){
+				//组装地址
 				var country = value.country=='undefined'?'': value.country;//国家
 				var province = value.country=='undefined'?'': value.province;//省份
 				var city = value.country=='undefined'?'': value.city;//城市
@@ -489,6 +566,22 @@
 				var poiName = value.country=='undefined'?'': value.poiName;//POI
 				return country + province + city + district + street + streetNum + poiName;
 			},
+			mathwaitTime:function(startTime){
+				let that = this;
+			    var initialSec = new Date().getTime() - startTime.getTime(); 
+				that.initialMin = parseInt(initialSec / 1000 / 60) ;
+				that.waitTime = (parseInt(that.initialMin/60) + '小时') + (that.initialMin % 60 + '分钟') 
+				if(that.waitTimeInterval == 0){
+					that.waitTimeInterval = setInterval(function(){
+						that.initialMin = that.initialMin + 1;
+						that.waitTime = (parseInt(that.initialMin/60) + '小时') + (that.initialMin % 60 + '分钟');
+						that.alreadyTime = (parseInt(that.initialMin/60) + '小时') + (that.initialMin % 60 + '分钟')
+						//						that.waitTime = that.initialMin / 60 > 0 ? (parseInt(that.initialMin/60) + '小时') + (that.initialMin % 60 + '分钟') : that.initialMin + '分钟'
+					},60000);
+					console.log('打开定时器：' + that.waitTimeInterval);
+				}
+			}
+			//计算等待时间
 		}
 	}
 </script>

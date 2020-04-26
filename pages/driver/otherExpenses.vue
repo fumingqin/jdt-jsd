@@ -41,7 +41,12 @@
 				otherFee: "0",//其他费用
 				FactPayPrice: "0",//总金额
 				payType:"线下支付",//支付类型
+				orderNumber:''
 			}
+		},
+		onLoad(option) {
+			let that = this;
+			that.orderNumber = option.orderNumber;
 		},
 		methods: {
 			inputChange(e) {
@@ -64,7 +69,7 @@
 						url: that.$taxi.Interface.InputAmountExpressOrder_Driver.value,
 						method: that.$taxi.Interface.InputAmountExpressOrder_Driver.method,
 						data: {
-							orderNumber: "2020042215102602631635",//订单编号
+							orderNumber: that.orderNumber,//订单编号
 							FactPayPrice: this.FactPayPrice,
 							payType: this.payType,
 						},
