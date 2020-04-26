@@ -16,7 +16,7 @@
 			</view>
 			<view style="margin-top: 37upx;margin-left: 53upx;margin-right: 53upx; color: #FFFFFF;font-size: 36upx;font-family: SourceHanSansSC-Regular;text-align: left; display: flex;">
 				<text>所选工作:</text>
-				<picker @change="selectorChange" mode="selector" :range="carType" name="carType">
+				<picker @change="selectorChange" mode="selector" :range="vehicleTypeArr" name="vehicleTypeArr">
 					<view style="margin-left: 20rpx;">{{selector}}</view>
 				</picker>
 			</view>
@@ -39,22 +39,29 @@
 		data() {
 			return {
 				imgHeight: "",
+				driverId: '',
 				current: 0,
 				items: ['燃油汽车', '新能源汽车'],
-				plateNumber: "",
-				carType: ['客车', '出租车', '公交车', '包车', '旅游'],
-				carType1: '',
+				vehicleNumber: "",
+				vehicleTypeArr: ['客车', '出租车', '公交车', '包车', '旅游'],
+				vehicleType: '',
 				selector: '请选择 >',
 			}
 		},
 		onLoad() {
-
+			let that = this;
+			var userInfo = uni.getStorageSync('userInfo') || '';
+			if (userInfo) {
+				that.driverId = userInfo.driverId;
+			} else {
+				uni.navigateBack({});
+			}
 		},
 		methods: {
 			//选择车类型
 			selectorChange: function(e) {
-				this.selector = this.carType[e.target.value];
-				this.carType1 = this.carType[e.target.value];
+				this.selector = this.vehicleTypeArr[e.target.value];
+				this.vehicleType = this.vehicleTypeArr[e.target.value];
 			},
 			async load() {
 				var that = this;
@@ -64,8 +71,14 @@
 					}
 				});
 			},
+			showToast:function(title,icon='none'){
+				uni.showToast({
+					title:title,
+					icon:icon
+				});
+			},
 			goBack: function() {
-				uni.clearStorageSync('CarType');
+				uni.clearStorageSync('vehicleInfo');
 				uni.navigateBack();
 			},
 			onClickItem(e) { //tab点击事件
@@ -76,7 +89,7 @@
 				that.$refs.code.clear();
 			},
 			getCode(val) {
-				this.plateNumber = val;
+				this.vehicleNumber = val;
 			},
 			isLicensePlate: function(str) { //验证是不车牌
 				return /^(([京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼使领][A-Z](([0-9]{5}[DF])|([DF]([A-HJ-NP-Z0-9])[0-9]{4})))|([京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼使领][A-Z][A-HJ-NP-Z0-9]{4}[A-HJ-NP-Z0-9挂学警港澳使领]))$/
@@ -84,81 +97,73 @@
 			},
 			Confirm(e) {
 				var that = this;
-				const {
-					plateNumber,
-					carType1
-				} = this;
-				var plate = this.plateNumber;
-				var cartype1 = this.carType1;
+				uni.showLoading({
+					mask:true
+				});
+				getApp().globalData.vehicleNumber = that.vehicleNumber;
+				getApp().globalData.constantly();
+				var plate = this.vehicleNumber;
+				var vehicleType = this.vehicleType;
 				if (that.isLicensePlate(plate)) {
-					if (this.current == 0) {
-						if ((plate.length == 7) && (cartype1 != null && cartype1 != "")) {
-							uni.setStorage({
-								key: 'CarType',
-								data: that.carType1,
-								success() {
-									if(that.carType1=="出租车"){
-										uni.redirectTo({
-										url: '/pages/driver/taxiDriver',
-									})
+					//燃油汽车
+					if(vehicleType != null && vehicleType != ""){
+						
+						if ((this.current == 0 && plate.length == 7) || (this.current == 1 && plate == 8)) {
+							uni.request({
+								url: that.$home.Interface.DriverVehicleBinding_Check.value,
+								method: that.$home.Interface.DriverVehicleBinding_Check.method,
+								data: {
+									vehicleNumber: that.vehicleNumber,
+									driverId: that.driverId,
+									vehicleType: that.vehicleType
+								},
+								success: function(res) {
+									uni.hideLoading();
+									if (res.data.status) {
+										uni.setStorage({
+											key: 'vehicleInfo',
+											data: {
+												vehicleType: that.vehicleType,
+												vehicleNumber: that.vehicleNumber
+											},
+											success() {
+												if (that.vehicleType == "出租车") {
+													uni.redirectTo({
+														url: '/pages/driver/taxiDriver',
+													})
+												}
+												if (that.vehicleType == "包车") {
+													uni.redirectTo({
+														url: '/pages/BCDriver/bcDriver',
+													})
+												}
+												if (that.vehicleType == "客车") {
+													uni.redirectTo({
+														url: '/pages/CTKYDriver/index',
+													})
+												}
+						
+											}
+										});
+									} else {
+										that.showToast(res.data.msg);
 									}
-									if(that.carType1=="包车"){
-										uni.redirectTo({
-										url: '/pages/BCDriver/bcDriver',
-									})
-									}
-									if(that.carType1=="客车"){
-										uni.redirectTo({
-										url: '/pages/CTKYDriver/index',
-									})
-									}
+								},
+								fail: function(res) {
+									uni.hideLoading();
+									that.showToast('网络连接失败');
+									console.log(res);
 								}
 							})
 						} else {
-							uni.showToast({
-								title: '请输入车牌号和选择车类型',
-								icon: "none"
-							})
-
+							that.showToast('请输入正确车牌号');
 						}
+					} else {
+						that.showToast('请选择车类型');
 					}
-					if (this.current == 1) {
-						if ((plate.length == 8) && (cartype1 != null && cartype1 != "")) {
-							uni.setStorage({
-								key: 'CarType',
-								data: that.carType1,
-								success() {
-									if(that.carType1=="出租车"){
-										uni.redirectTo({
-										url: '/pages/driver/taxiDriver',
-									})
-									}
-									if(that.carType1=="包车"){
-										uni.redirectTo({
-										url: '/pages/BCDriver/bcDriver',
-									})
-									}
-									if(that.carType1=="客车"){
-										uni.redirectTo({
-										url: '/pages/CTKYDriver/index',
-									})
-									}
-								}
-							})
-						} else {
-							uni.showToast({
-								title: '请输入车牌号和选择车类型',
-								icon: "none"
-							})
-
-						}
-
-					}
+				
 				} else {
-					uni.showToast({
-						title: "请输入正确车牌号",
-						icon: "none"
-					})
+					that.showToast('请输入正确车牌号');
 				}
 			},
 		}

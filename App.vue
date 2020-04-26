@@ -10,31 +10,31 @@
 		globalData: {
 			globalInterval: 0,
 			orderNumber:'0',
+			vehicleNumber:'',
+			driverID:0,
 			uploadMyLocation: function() {
 				let that = this;
 				uni.getLocation({
 					type: 'gcj02 ',
-					success: function(res) {	
-						console.log( res.longitude);
-						console.log( res.latitude);
+					success: function(res) {
 					
 						uni.request({
 							url: homeJS.Interface.addVehiclePosition.value, 
 							method:homeJS.Interface.addVehiclePosition.method,
 							data: {
-								driverID:'0',
 								orderNumber:that.orderNumber,
-								vehicleNumber:'13599291007',//车牌号
+								driverID:that.driverID,
+								vehicleNumber:that.vehicleNumber,//车牌号
 								lon: res.longitude,
 								lat: res.latitude,
-								speed:res.speed, 
+								speed:res.speed,
 								reportTime: utils.timeTodate(homeJS.dateFormat.dateformat, new Date().getTime())
 							},
 							success:function(res){
-									console.log(res);
+								console.log(res);
 							},
 							fail:function(res){
-								console.log(res);
+								// console.log(res);
 							}
 						});
 					}
@@ -51,6 +51,7 @@
 			closeUpload:function(){
 				let that = this;
 				clearInterval(that.globalInterval);
+				that.globalInterval = 0; 
 			}
 
 		},
@@ -71,7 +72,7 @@
 				uni.getStorage({
 					key: 'userInfo',
 					success: (res) => {
-						console.log(res);
+						// console.log(res);
 						this.login(res.data);
 					}
 				});

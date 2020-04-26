@@ -7,8 +7,8 @@
 			<!-- <image src="../../static/grzx/info.png" class="infoClass" @click="navTo('/pages/grzx/myNews')"></image> -->
 			<!-- #endif -->
 			<view class="userInfoClass" @click="checkLogin">
-				<image class="portraitClass" :src=" userInfo.avatarUrl || '/static/grzx/missing-face.png'"></image>
-				<text class="usernameClass">{{userInfo.nickName || '请登录'}}</text>
+				<image class="portraitClass" :src=" userInfo.userPortrait || '/static/grzx/touxiang.png'"></image>
+				<text class="usernameClass">{{userInfo.userName || '请登录'}}</text>
 			</view>
 		</view>
 		<view class="serviceBox">
@@ -18,7 +18,7 @@
 				<text class="fontStyle">QQ客服</text>
 				<image src="../../static/grzx/tubiao_Right.png" class="btnClass"></image>
 			</view>
-			<view class="boxClass borderTop" @click="infoClick">
+			<!-- <view class="boxClass borderTop" @click="infoClick">
 				<image src="../../static/grzx/tubiao_zhengzhao.png" class="iconClass3"></image>
 				<text class="fontStyle">信息登记</text>
 				<image src="../../static/grzx/tubiao_Right.png" class="btnClass"></image>
@@ -27,7 +27,7 @@
 				<image src="../../static/grzx/tubiao_zhengzhao.png" class="iconClass3"></image>
 				<text class="fontStyle">驾照登记</text>
 				<image src="../../static/grzx/tubiao_Right.png" class="btnClass"></image>
-			</view>
+			</view> -->
 		</view>
 	</view>
 </template>
@@ -105,7 +105,7 @@
 					})
 					setTimeout(function(){
 						uni.navigateTo({	
-							url  : '/pages/grzx/userLogin'
+							url  : '/pages/grzx/selectOperation'
 						}) 
 					},500);
 				}else{
