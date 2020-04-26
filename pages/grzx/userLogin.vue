@@ -12,7 +12,7 @@
 			</view>
 			<view class="inputItem Captcha">
 				<image src="../../static/grzx/password.png" class="iconClass2"></image>
-				<input type="number" placeholder="请输入密码" class="inputClass" data-key="password" @input="inputChange2" />
+				<input type="password" placeholder="请输入密码" class="inputClass" data-key="password" @input="inputChange2" />
 			</view>
 			<text class="switchClass" @click="switchClick">切换登录方式</text>
 			<image src="../../static/grzx/btnLogin.png" class="btnLogin" ></image>
@@ -62,6 +62,7 @@
 		},
 		methods: {
 			...mapMutations(['login']),
+			//--------------加载数据-------------
 			async load(){
 				var that=this;
 				uni.getSystemInfo({
@@ -70,7 +71,8 @@
 				       }
 				});
 			},
-			judgeNum(val){  //只能输入数字
+			//--------------只能输入数字-------------
+			judgeNum(val){  
 				var regPos = /^\d+(\.\d+)?$/; //非负浮点数
 				    var regNeg = /^(-(([0-9]+\.[0-9]*[1-9][0-9]*)|([0-9]*[1-9][0-9]*\.[0-9]+)|([0-9]*[1-9][0-9]*)))$/; //负浮点数
 				    if(regPos.test(val) || regNeg.test(val)) {
@@ -105,6 +107,7 @@
 				const key = e.currentTarget.dataset.key;
 				this[key] = e.detail.value;
 			},
+			//--------------密码登录-------------
 			pwdClick(){
 				uni.showLoading({
 					title:'登录中...'
@@ -132,7 +135,8 @@
 					}
 				})
 			},
-			codeClick(){	 //验证码登录
+			//--------------验证码登录-------------
+			codeClick(){
 				uni.showLoading({
 					title:'登录中...'
 				})
@@ -215,7 +219,8 @@
 					}
 				})
 			},
-			getCodeClick(e){	//获取验证码
+			//--------------获取验证码-------------
+			getCodeClick(e){
 				var self=this;
 				const {phoneNumber, captchaCode} = this;		
 				if(self.judgeNum(self.phoneNumber)){
@@ -265,10 +270,11 @@
 					})
 				}
 			},
-			returnClick(){		//返回个人中心
+			//--------------返回个人中心-------------
+			returnClick(){		
 				uni.navigateBack();
 			},
-			//切换登录方式
+			//--------------切换登录方式-------------
 			switchClick(){
 				if(this.type==1){
 					this.type=2;
