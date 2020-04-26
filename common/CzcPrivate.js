@@ -67,7 +67,7 @@ const Interface = {
 	},
 	RunExpressOrder_Driver:{
 		value:Url + '/api/taxi/RunExpressOrder_Driver',
-		name:'司机端-出租车-长按确认乘客上车',
+		name:'司机端-出租车-长按按钮出发',
 		method:'POST',
 		page:[""]
 	},
@@ -77,12 +77,6 @@ const Interface = {
 		method:'POST',
 		page:[""]
 	},
-	SetoutExpressOrder_Driver:{
-		value:Url + '/api/taxi/SetoutExpressOrder_Driver',
-		name:'司机端-出租车-长按发车',
-		method:'POST',
-		page:[]
-	}
 }
 
 // 接口声明区

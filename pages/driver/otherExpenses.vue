@@ -47,6 +47,7 @@
 		onLoad(option) {
 			let that = this;
 			that.orderNumber = option.orderNumber;
+			console.log(that.orderNumber);
 		},
 		methods: {
 			inputChange(e) {
@@ -74,6 +75,7 @@
 							payType: this.payType,
 						},
 						success(res) {
+							console.log(res);
 							uni.redirectTo({
 								url: '/pages/driver/orderComplete',
 							})
