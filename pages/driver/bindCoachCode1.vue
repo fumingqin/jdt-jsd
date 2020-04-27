@@ -40,6 +40,7 @@
 			return {
 				imgHeight: "",
 				driverId: '',
+				driverName:'',
 				current: 0,
 				items: ['燃油汽车', '新能源汽车'],
 				vehicleNumber: "",
@@ -53,6 +54,7 @@
 			var userInfo = uni.getStorageSync('userInfo') || '';
 			if (userInfo) {
 				that.driverId = userInfo.driverId;
+				that.driverName = userInfo.userName;
 			} else {
 				uni.navigateBack({});
 			}
@@ -115,7 +117,8 @@
 								data: {
 									vehicleNumber: that.vehicleNumber,
 									driverId: that.driverId,
-									vehicleType: that.vehicleType
+									vehicleType: that.vehicleType,
+									driverName:that.driverName
 								},
 								success: function(res) {
 									uni.hideLoading();
@@ -139,7 +142,7 @@
 												}
 												if (that.vehicleType == "客车") {
 													uni.redirectTo({
-														url: '/pages/CTKYDriver/index',
+														url: '/pages/CTKYDriver/selectOrder',
 													})
 												}
 						

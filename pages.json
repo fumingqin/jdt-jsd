@@ -270,6 +270,10 @@
 				"navigationStyle": "custom"
 			}
         }
+        ,{
+            "path" : "pages/ZXC/CzcPrivate",
+            "style" : {}
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

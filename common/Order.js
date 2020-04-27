@@ -21,3 +21,8 @@ const Interface = {
 		pages: []
 	},
 }
+
+// 接口声明区
+export default {
+	Interface,
+}

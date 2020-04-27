@@ -261,17 +261,13 @@
 				})
 			},
 			
-			
 			/* arriveReport:function(){
 				
 				uni.getLocation({
 					type:'gcj02',
 				}).then(res => {
 					
-					
-					
 				});
-				
 				
 			}, */
 			

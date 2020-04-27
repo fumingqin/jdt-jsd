@@ -10,60 +10,9 @@
 				</view>
 			</view>
 			<view style="padding: 10rpx 0; margin-top: 50rpx;" v-if="current==0">
-				<!-- 客车开始 -->
-				<view style="margin-top: 20rpx;" v-for="(item,index) in orderArr" :key="index" v-if="carTypeid==2">
-					<view class="booktime" v-if="item.ordertype==1">
-						预订日期：{{item.date}}
-					</view>
-					<view class="order">
-						<view style="padding: 35rpx 30rpx;">
-							<view style="display: flex;justify-content: space-between;align-items: center;">
-								<view style="display: flex;align-items: center;">
-									<image src="../../static/index/CPDG.png" style="width: 50rpx;" mode="widthFix"></image>
-									<view class="ordertitle">{{item.carType}}</view>
-								</view>
-								<view class="orderstatus" v-if="item.status==1">未发车</view>
-								<view class="orderstatus" v-if="item.status==2">进行中</view>
-								<view class="orderstatus" v-if="item.status==3">已完成</view>
-								<view class="orderstatus" v-if="item.status==4">已取消</view>
-							</view>
-							<view style="padding-left: 45rpx;padding-top: 10rpx;" class="orderstatus">
-								<view>出发时间：{{item.startTime}}</view>
-								<view>出发地：{{item.startPoint}}</view>
-								<view>目的地：{{item.endPoint}}</view>
-								<view style="display: flex;">
-									<view>
-										已检：{{item.checkedNum}}
-									</view>
-									<view style="padding-left: 40rpx;">
-										未检：{{item.nocheckedNum}}
-									</view>
-								</view>
-							</view>
-							<view class="btnarea">
-								<view v-if="item.status==2">
-									<button>检票</button>
-								</view>
-								<view>
-									<button>详情</button>
-								</view>
-								<view v-if="item.status==1">
-									<button style="background-color: #FC4646;color: #FFF;">购票</button>
-								</view>
-								<view v-if="item.status==1">
-									<button style="background-color: #FC4646;color: #FFF;">发车</button>
-								</view>
-							</view>
-							<view>
-
-							</view>
-						</view>
-					</view>
-				</view>
-				<!-- 客车结束 -->
-				<!-- 出租车开始 -->
-				<view v-if="carTypeid==1">
-					<view style="margin-top: 20rpx;" v-for="(item,index) in orderArr1" :key="index">
+				<view v-for="(item,index) in orderArr" :key="index">
+					<!-- 客车开始 -->
+					<view v-if="item.title == '客运'" style="margin-top: 20rpx;">
 						<view class="booktime" v-if="item.ordertype==1">
 							预订日期：{{item.date}}
 						</view>
@@ -71,7 +20,7 @@
 							<view style="padding: 35rpx 30rpx;">
 								<view style="display: flex;justify-content: space-between;align-items: center;">
 									<view style="display: flex;align-items: center;">
-										<image src="../../static/index/Car1.png" style="width: 50rpx;" mode="widthFix"></image>
+										<image src="../../static/index/CPDG.png" style="width: 50rpx;" mode="widthFix"></image>
 										<view class="ordertitle">{{item.carType}}</view>
 									</view>
 									<view class="orderstatus" v-if="item.status==1">未发车</view>
@@ -80,44 +29,92 @@
 									<view class="orderstatus" v-if="item.status==4">已取消</view>
 								</view>
 								<view style="padding-left: 45rpx;padding-top: 10rpx;" class="orderstatus">
-									<view style="display: flex;justify-content: space-between;">
+									<view>出发时间：{{item.startTime}}</view>
+									<view>出发地：{{item.startPoint}}</view>
+									<view>目的地：{{item.endPoint}}</view>
+									<view style="display: flex;">
 										<view>
-											客户类型：{{item.userType}}
+											已检：{{item.checkedNum}}
 										</view>
 										<view style="padding-left: 40rpx;">
-											￥{{item.price}}
+											未检：{{item.nocheckedNum}}
 										</view>
 									</view>
-									<view>出发时间：{{item.startTime}}</view>
-									<view>上车点：{{item.startPoint}}</view>
-									<view>目的地：{{item.endPoint}}</view>
+								</view>
+								<view class="btnarea">
+									<view v-if="item.status==2">
+										<button>检票</button>
+									</view>
+									<view>
+										<button>详情</button>
+									</view>
+									<view v-if="item.status==1">
+										<button style="background-color: #FC4646;color: #FFF;">购票</button>
+									</view>
+									<view v-if="item.status==1">
+										<button style="background-color: #FC4646;color: #FFF;">发车</button>
+									</view>
+								</view>
+								<view>
+
+								</view>
+							</view>
+						</view>
+					</view>
+					<!-- 客车结束 -->
+					<!-- 出租车开始 -->
+					<view v-if="item.title == '出租车'" style="margin-top: 20rpx;">
+						<view class="booktime" v-if="item.orderType == '预约'">
+							预订日期：{{taxiFormatTime(item.appointmentTime)}}
+						</view>
+						<view class="order">
+							<view style="padding: 35rpx 30rpx;">
+								<view style="display: flex;justify-content: space-between;align-items: center;">
+									<view style="display: flex;align-items: center;">
+										<image src="../../static/index/Car1.png" style="width: 50rpx;" mode="widthFix"></image>
+										<view class="ordertitle">{{item.title}}</view>
+									</view>
+									<view class="orderstatus">{{item.orderState}}</view>
+
+								</view>
+								<view style="padding-left: 45rpx;padding-top: 10rpx;" class="orderstatus">
+									<view>订单号：{{item.orderNumber}}</view>
+									<view style="display: flex;justify-content: space-between;">
+										<view>
+											客户类型：{{taxiFormatUserType(item.userType)}}
+										</view>
+										<view v-if="item.state == 6" style="padding-left: 40rpx;">
+											￥{{item.factPayPrice}}
+										</view>
+									</view>
+									<view>出发时间：{{taxiFormatTime(item.runTime)}}</view>
+									<view>上车点：{{item.startAddress}}</view>
+									<view>目的地：{{item.endAddress}}</view>
 
 								</view>
 								<view class="btnarea">
-									<view v-if="item.status==1">
-										<button style="width: auto;">联系乘客</button>
+									<view v-if="item.state==1 || item.state==2">
+										<button @click="toCallPassenger(item)" style="width: auto;">联系乘客</button>
 									</view>
-									<view>
-										<button style="width: auto;">取消</button>
+									<view v-if="item.state==1 || item.state==2">
+										<button @click="toCancle(item)" style="width: auto;">取消</button>
 									</view>
-									<view>
-										<button style="width: auto;">详情</button>
+									<view v-if="item.state != 1">
+										<button @click="toDetail(item)" style="width: auto;">详情</button>
 									</view>
-									<view v-if="item.status==3">
-										<button style="background-color: #FC4646;color: #FFF;width: auto;">到达</button>
+									<view v-if="item.state == 1">
+										<button @click="toDepart(item)" style="background-color: #FC4646;color: #FFF;width: auto;">发车</button>
 									</view>
-									<view v-if="item.status==1">
-										<button style="background-color: #FC4646;color: #FFF;width: auto;">上车</button>
+									<view v-if="item.state == 4">
+										<button @click="toArrive(item)" style="background-color: #FC4646;color: #FFF;width: auto;">到达</button>
 									</view>
 								</view>
 							</view>
 						</view>
 					</view>
-				</view>
-				<!-- 出租车结束 -->
-				<!-- 包车开始 -->
-				<view v-if="carTypeid==3">
-					<view style="margin-top: 20rpx;position: relative;" v-for="(item,index) in orderArr2" :key="index">
+					<!-- 出租车结束 -->
+					<!-- 包车开始 -->
+					<view v-if="item.title == '包车'" style="margin-top: 20rpx;position: relative;">
 						<view class="booktime" v-if="item.ordertype==1">
 							预订日期：{{item.date}}
 						</view>
@@ -169,61 +166,14 @@
 							<view class="one0"></view>
 						</uni-transition>
 					</view>
+					<!-- 包车结束 -->
 				</view>
-				<!-- 包车结束 -->
 			</view>
-			<view style="padding: 10rpx 0; margin-top: 50rpx;" v-if="current==1">
-				<!-- 客车开始 -->
-				<view style="margin-top: 20rpx;" v-for="(item,index) in orderArr" :key="index" v-if="carTypeid==2">
-					<view class="booktime" v-if="item.ordertype==1">
-						预订日期：{{item.date}}
-					</view>
-					<view class="order">
-						<view style="padding: 35rpx 30rpx;">
-							<view style="display: flex;justify-content: space-between;align-items: center;">
-								<view style="display: flex;align-items: center;">
-									<image src="../../static/index/CPDG.png" style="width: 50rpx;" mode="widthFix"></image>
-									<view class="ordertitle">{{item.carType}}</view>
-								</view>
-								<view class="orderstatus">进行中</view>
-							</view>
-							<view style="padding-left: 45rpx;padding-top: 10rpx;" class="orderstatus">
-								<view>出发时间：{{item.startTime}}</view>
-								<view>出发地：{{item.startPoint}}</view>
-								<view>目的地：{{item.endPoint}}</view>
-								<view style="display: flex;">
-									<view>
-										已检：{{item.checkedNum}}
-									</view>
-									<view style="padding-left: 40rpx;">
-										未检：{{item.nocheckedNum}}
-									</view>
-								</view>
-							</view>
-							<view class="btnarea">
-								<view v-if="item.status==2">
-									<button>检票</button>
-								</view>
-								<view>
-									<button>详情</button>
-								</view>
-								<view v-if="item.status==1">
-									<button style="background-color: #FC4646;color: #FFF;">购票</button>
-								</view>
-								<view v-if="item.status==1">
-									<button style="background-color: #FC4646;color: #FFF;">发车</button>
-								</view>
-							</view>
-							<view>
 
-							</view>
-						</view>
-					</view>
-				</view>
-				<!-- 客车结束 -->
-				<!-- 出租车开始 -->
-				<view v-if="carTypeid==1">
-					<view style="margin-top: 20rpx;" v-for="(item,index) in orderArr1" :key="index">
+			<view style="padding: 10rpx 0; margin-top: 50rpx;" v-if="current==1">
+				<view v-for="(item,index) in underwayArr" :key="index">
+					<!-- 客车开始 -->
+					<view v-if="item.title == '客运'" style="margin-top: 20rpx;">
 						<view class="booktime" v-if="item.ordertype==1">
 							预订日期：{{item.date}}
 						</view>
@@ -231,50 +181,100 @@
 							<view style="padding: 35rpx 30rpx;">
 								<view style="display: flex;justify-content: space-between;align-items: center;">
 									<view style="display: flex;align-items: center;">
-										<image src="../../static/index/Car1.png" style="width: 50rpx;" mode="widthFix"></image>
+										<image src="../../static/index/CPDG.png" style="width: 50rpx;" mode="widthFix"></image>
 										<view class="ordertitle">{{item.carType}}</view>
 									</view>
-									<view class="orderstatus">进行中</view>
+									<view class="orderstatus" v-if="item.status==1">未发车</view>
+									<view class="orderstatus" v-if="item.status==2">进行中</view>
+									<view class="orderstatus" v-if="item.status==3">已完成</view>
+									<view class="orderstatus" v-if="item.status==4">已取消</view>
 								</view>
 								<view style="padding-left: 45rpx;padding-top: 10rpx;" class="orderstatus">
-									<view style="display: flex;justify-content: space-between;">
+									<view>出发时间：{{item.startTime}}</view>
+									<view>出发地：{{item.startPoint}}</view>
+									<view>目的地：{{item.endPoint}}</view>
+									<view style="display: flex;">
 										<view>
-											客户类型：{{item.userType}}
+											已检：{{item.checkedNum}}
 										</view>
 										<view style="padding-left: 40rpx;">
-											￥{{item.price}}
+											未检：{{item.nocheckedNum}}
 										</view>
 									</view>
-									<view>出发时间：{{item.startTime}}</view>
-									<view>上车点：{{item.startPoint}}</view>
-									<view>目的地：{{item.endPoint}}</view>
-
 								</view>
 								<view class="btnarea">
-									<view v-if="item.status==1">
-										<button style="width: auto;">联系乘客</button>
+									<view v-if="item.status==2">
+										<button>检票</button>
 									</view>
 									<view>
-										<button style="width: auto;">取消</button>
-									</view>
-									<view>
-										<button style="width: auto;">详情</button>
-									</view>
-									<view v-if="item.status==3">
-										<button style="background-color: #FC4646;color: #FFF;width: auto;">到达</button>
+										<button>详情</button>
 									</view>
 									<view v-if="item.status==1">
-										<button style="background-color: #FC4646;color: #FFF;width: auto;">上车</button>
+										<button style="background-color: #FC4646;color: #FFF;">购票</button>
+									</view>
+									<view v-if="item.status==1">
+										<button style="background-color: #FC4646;color: #FFF;">发车</button>
+									</view>
+								</view>
+								<view>
+
+								</view>
+							</view>
+						</view>
+					</view>
+					<!-- 客车结束 -->
+					<!-- 出租车开始 -->
+					<view v-if="item.title == '出租车'" style="margin-top: 20rpx;">
+						<view class="booktime" v-if="item.orderType == '预约'">
+							预订日期：{{taxiFormatTime(item.appointmentTime)}}
+						</view>
+						<view class="order">
+							<view style="padding: 35rpx 30rpx;">
+								<view style="display: flex;justify-content: space-between;align-items: center;">
+									<view style="display: flex;align-items: center;">
+										<image src="../../static/index/Car1.png" style="width: 50rpx;" mode="widthFix"></image>
+										<view class="ordertitle">{{item.title}}</view>
+									</view>
+									<view class="orderstatus">{{item.orderState}}</view>
+
+								</view>
+								<view style="padding-left: 45rpx;padding-top: 10rpx;" class="orderstatus">
+									<view>订单号：{{item.orderNumber}}</view>
+									<view style="display: flex;justify-content: space-between;">
+										<view>
+											客户类型：{{taxiFormatUserType(item.userType)}}
+										</view>
+										<view v-if="item.state == 6" style="padding-left: 40rpx;">
+											￥{{item.factPrice}}
+										</view>
+									</view>
+									<view>出发时间：{{taxiFormatTime(item.runTime)}}</view>
+									<view>上车点：{{item.startAddress}}</view>
+									<view>目的地：{{item.endAddress}}</view>
+								</view>
+								<view class="btnarea">
+									<view v-if="item.state==1 || item.state==2">
+										<button @click="toCallPassenger(item)" style="width: auto;">联系乘客</button>
+									</view>
+									<view v-if="item.state==1 || item.state==2">
+										<button @click="toCancle(item)" style="width: auto;">取消</button>
+									</view>
+									<view v-if="item.state != 1">
+										<button @click="toDetail(item)" style="width: auto;">详情</button>
+									</view>
+									<view v-if="item.state == 1">
+										<button @click="toDepart(item)" style="background-color: #FC4646;color: #FFF;width: auto;">发车</button>
+									</view>
+									<view v-if="item.state == 4">
+										<button @click="toArrive(item)" style="background-color: #FC4646;color: #FFF;width: auto;">到达</button>
 									</view>
 								</view>
 							</view>
 						</view>
 					</view>
-				</view>
-				<!-- 出租车结束 -->
-				<!-- 包车开始 -->
-				<view v-if="carTypeid==3">
-					<view style="margin-top: 20rpx;position: relative;" v-for="(item,index) in orderArr2" :key="index">
+					<!-- 出租车结束 -->
+					<!-- 包车开始 -->
+					<view v-if="item.title == '包车'" style="margin-top: 20rpx;position: relative;">
 						<view class="booktime" v-if="item.ordertype==1">
 							预订日期：{{item.date}}
 						</view>
@@ -285,7 +285,10 @@
 										<image src="../../static/index/BCFW.png" style="width: 50rpx;" mode="widthFix"></image>
 										<view class="ordertitle">{{item.carType}}</view>
 									</view>
+									<view class="orderstatus" v-if="item.status==1">未发车</view>
 									<view class="orderstatus" v-if="item.status==2">进行中</view>
+									<view class="orderstatus" v-if="item.status==3">已完成</view>
+									<view class="orderstatus" v-if="item.status==4">已取消</view>
 									<view class="orderstatus" v-if="item.status==5">返程中</view>
 								</view>
 								<view style="padding-left: 45rpx;padding-top: 10rpx;" class="orderstatus">
@@ -318,68 +321,19 @@
 								</view>
 							</view>
 						</view>
-						
 						<uni-transition class="one" v-if="item.IsShow" :modeClass="ani" :show="true" :duration="300">
 							详情
-							<view class="one0">
-							</view>
+							<view class="one0"></view>
 						</uni-transition>
 					</view>
+					<!-- 包车结束 -->
 				</view>
-				<!-- 包车结束 -->
 			</view>
+
 			<view style="padding: 10rpx 0; margin-top: 50rpx;" v-if="current==2">
-				<!-- 客车开始 -->
-				<view style="margin-top: 20rpx;" v-for="(item,index) in orderArr" :key="index" v-if="carTypeid==2">
-					<view class="booktime" v-if="item.ordertype==1">
-						预订日期：{{item.date}}
-					</view>
-					<view class="order">
-						<view style="padding: 35rpx 30rpx;">
-							<view style="display: flex;justify-content: space-between;align-items: center;">
-								<view style="display: flex;align-items: center;">
-									<image src="../../static/index/CPDG.png" style="width: 50rpx;" mode="widthFix"></image>
-									<view class="ordertitle">{{item.carType}}</view>
-								</view>
-								<view class="orderstatus">已完成</view>
-							</view>
-							<view style="padding-left: 45rpx;padding-top: 10rpx;" class="orderstatus">
-								<view>出发时间：{{item.startTime}}</view>
-								<view>出发地：{{item.startPoint}}</view>
-								<view>目的地：{{item.endPoint}}</view>
-								<view style="display: flex;">
-									<view>
-										已检：{{item.checkedNum}}
-									</view>
-									<view style="padding-left: 40rpx;">
-										未检：{{item.nocheckedNum}}
-									</view>
-								</view>
-							</view>
-							<view class="btnarea">
-								<view v-if="item.status==2">
-									<button>检票</button>
-								</view>
-								<view>
-									<button>详情</button>
-								</view>
-								<view v-if="item.status==1">
-									<button style="background-color: #FC4646;color: #FFF;">购票</button>
-								</view>
-								<view v-if="item.status==1">
-									<button style="background-color: #FC4646;color: #FFF;">发车</button>
-								</view>
-							</view>
-							<view>
-
-							</view>
-						</view>
-					</view>
-				</view>
-				<!-- 客车结束 -->
-				<!-- 出租车开始 -->
-				<view v-if="carTypeid==1">
-					<view style="margin-top: 20rpx;" v-for="(item,index) in orderArr1" :key="index">
+				<view v-for="(item,index) in finishedArr" :key="index">
+					<!-- 客车开始 -->
+					<view v-if="item.title == '客运'" style="margin-top: 20rpx;">
 						<view class="booktime" v-if="item.ordertype==1">
 							预订日期：{{item.date}}
 						</view>
@@ -387,41 +341,89 @@
 							<view style="padding: 35rpx 30rpx;">
 								<view style="display: flex;justify-content: space-between;align-items: center;">
 									<view style="display: flex;align-items: center;">
-										<image src="../../static/index/Car1.png" style="width: 50rpx;" mode="widthFix"></image>
+										<image src="../../static/index/CPDG.png" style="width: 50rpx;" mode="widthFix"></image>
 										<view class="ordertitle">{{item.carType}}</view>
 									</view>
-									<view class="orderstatus">已完成</view>
+									<view class="orderstatus" v-if="item.status==1">未发车</view>
+									<view class="orderstatus" v-if="item.status==2">进行中</view>
+									<view class="orderstatus" v-if="item.status==3">已完成</view>
+									<view class="orderstatus" v-if="item.status==4">已取消</view>
 								</view>
 								<view style="padding-left: 45rpx;padding-top: 10rpx;" class="orderstatus">
-									<view style="display: flex;justify-content: space-between;">
+									<view>出发时间：{{item.startTime}}</view>
+									<view>出发地：{{item.startPoint}}</view>
+									<view>目的地：{{item.endPoint}}</view>
+									<view style="display: flex;">
 										<view>
-											客户类型：{{item.userType}}
+											已检：{{item.checkedNum}}
 										</view>
 										<view style="padding-left: 40rpx;">
-											￥{{item.price}}
+											未检：{{item.nocheckedNum}}
 										</view>
 									</view>
-									<view>出发时间：{{item.startTime}}</view>
-									<view>上车点：{{item.startPoint}}</view>
-									<view>目的地：{{item.endPoint}}</view>
+								</view>
+								<view class="btnarea">
+									<view v-if="item.status==2">
+										<button>检票</button>
+									</view>
+									<view>
+										<button>详情</button>
+									</view>
+									<view v-if="item.status==1">
+										<button style="background-color: #FC4646;color: #FFF;">购票</button>
+									</view>
+									<view v-if="item.status==1">
+										<button style="background-color: #FC4646;color: #FFF;">发车</button>
+									</view>
+								</view>
+								<view>
+
+								</view>
+							</view>
+						</view>
+					</view>
+					<!-- 客车结束 -->
+					<!-- 出租车开始 -->
+					<view v-if="item.title == '出租车'" style="margin-top: 20rpx;">
+						<view class="booktime" v-if="item.orderType == '预约'">
+							预订日期：{{taxiFormatTime(item.appointmentTime)}}
+						</view>
+						<view class="order">
+							<view style="padding: 35rpx 30rpx;">
+								<view style="display: flex;justify-content: space-between;align-items: center;">
+									<view style="display: flex;align-items: center;">
+										<image src="../../static/index/Car1.png" style="width: 50rpx;" mode="widthFix"></image>
+										<view class="ordertitle">{{item.title}}</view>
+									</view>
+									<view class="orderstatus">{{item.orderState}}</view>
+
+								</view>
+								<view style="padding-left: 45rpx;padding-top: 10rpx;" class="orderstatus">
+									<view>订单号：{{item.orderNumber}}</view>
+									<view style="display: flex;justify-content: space-between;">
+										<view>
+											客户类型：{{taxiFormatUserType(item.userType)}}
+										</view>
+										<view v-if="item.state == 6" style="padding-left: 40rpx;">
+											￥{{item.factPayPrice}}
+										</view>
+									</view>
+									<view>出发时间：{{taxiFormatTime(item.runTime)}}</view>
+									<view>上车点：{{item.startAddress}}</view>
+									<view>目的地：{{item.endAddress}}</view>
 
 								</view>
 								<view class="btnarea">
-									<view v-if="item.status==1">
-										<button style="width: auto;">联系乘客</button>
-									</view>
-									<view>
-										<button style="width: auto;">详情</button>
+									<view v-if="item.state != 1">
+										<button @click="toDetail(item)" style="width: auto;">详情</button>
 									</view>
 								</view>
 							</view>
 						</view>
 					</view>
-				</view>
-				<!-- 出租车结束 -->
-				<!-- 包车开始 -->
-				<view v-if="carTypeid==3">
-					<view style="margin-top: 20rpx;" v-for="(item,index) in orderArr2" :key="index">
+					<!-- 出租车结束 -->
+					<!-- 包车开始 -->
+					<view v-if="item.title == '包车'" style="margin-top: 20rpx;position: relative;">
 						<view class="booktime" v-if="item.ordertype==1">
 							预订日期：{{item.date}}
 						</view>
@@ -432,7 +434,11 @@
 										<image src="../../static/index/BCFW.png" style="width: 50rpx;" mode="widthFix"></image>
 										<view class="ordertitle">{{item.carType}}</view>
 									</view>
-									<view class="orderstatus">已完成</view>
+									<view class="orderstatus" v-if="item.status==1">未发车</view>
+									<view class="orderstatus" v-if="item.status==2">进行中</view>
+									<view class="orderstatus" v-if="item.status==3">已完成</view>
+									<view class="orderstatus" v-if="item.status==4">已取消</view>
+									<view class="orderstatus" v-if="item.status==5">返程中</view>
 								</view>
 								<view style="padding-left: 45rpx;padding-top: 10rpx;" class="orderstatus">
 									<view style="display: flex;justify-content: space-between;">
@@ -448,60 +454,35 @@
 									<view>目的地：{{item.endPoint}}</view>
 									<view>包车天数：{{item.charterDays}}天</view>
 								</view>
-								<view class="btnarea">
+								<view class="btnarea" style="justify-content: space-between;">
+									<view v-if="item.status==1" @click="show(item)" style="color: #999;">
+										...
+									</view>
 									<view v-if="item.status==1">
 										<button style="width: auto;">联系乘客</button>
 									</view>
-									<view>
-										<button style="width: auto;">详情</button>
+									<view v-if="item.status==1">
+										<button style="width: auto;">更换目的地</button>
+									</view>
+									<view v-if="item.status==1">
+										<button style="background-color: #FC4646;color: #FFF;width: auto;">返程</button>
 									</view>
 								</view>
 							</view>
 						</view>
+						<uni-transition class="one" v-if="item.IsShow" :modeClass="ani" :show="true" :duration="300">
+							详情
+							<view class="one0"></view>
+						</uni-transition>
 					</view>
+					<!-- 包车结束 -->
 				</view>
-				<!-- 包车结束 -->
 			</view>
+
 			<view style="padding: 10rpx 0; margin-top: 50rpx;" v-if="current==3">
-				<!-- 客车开始 -->
-				<view style="margin-top: 20rpx;" v-for="(item,index) in orderArr" :key="index" v-if="carTypeid==2">
-					<view class="booktime" v-if="item.ordertype==1">
-						预订日期：{{item.date}}
-					</view>
-					<view class="order">
-						<view style="padding: 35rpx 30rpx;">
-							<view style="display: flex;justify-content: space-between;align-items: center;">
-								<view style="display: flex;align-items: center;">
-									<image src="../../static/index/CPDG.png" style="width: 50rpx;" mode="widthFix"></image>
-									<view class="ordertitle">{{item.carType}}</view>
-								</view>
-								<view class="orderstatus">已取消</view>
-							</view>
-							<view style="padding-left: 45rpx;padding-top: 10rpx;" class="orderstatus">
-								<view>出发时间：{{item.startTime}}</view>
-								<view>出发地：{{item.startPoint}}</view>
-								<view>目的地：{{item.endPoint}}</view>
-								<view style="display: flex;">
-									<view>
-										已检：{{item.checkedNum}}
-									</view>
-									<view style="padding-left: 40rpx;">
-										未检：{{item.nocheckedNum}}
-									</view>
-								</view>
-							</view>
-							<view class="btnarea">
-								<view>
-									<button>详情</button>
-								</view>
-							</view>
-						</view>
-					</view>
-				</view>
-				<!-- 客车结束 -->
-				<!-- 出租车开始 -->
-				<view v-if="carTypeid==1">
-					<view style="margin-top: 20rpx;" v-for="(item,index) in orderArr1" :key="index">
+				<view v-for="(item,index) in cancleArr" :key="index">
+					<!-- 客车开始 -->
+					<view v-if="item.title == '客运'" style="margin-top: 20rpx;">
 						<view class="booktime" v-if="item.ordertype==1">
 							预订日期：{{item.date}}
 						</view>
@@ -509,38 +490,86 @@
 							<view style="padding: 35rpx 30rpx;">
 								<view style="display: flex;justify-content: space-between;align-items: center;">
 									<view style="display: flex;align-items: center;">
-										<image src="../../static/index/Car1.png" style="width: 50rpx;" mode="widthFix"></image>
+										<image src="../../static/index/CPDG.png" style="width: 50rpx;" mode="widthFix"></image>
 										<view class="ordertitle">{{item.carType}}</view>
 									</view>
-									<view class="orderstatus">已取消</view>
+									<view class="orderstatus" v-if="item.status==1">未发车</view>
+									<view class="orderstatus" v-if="item.status==2">进行中</view>
+									<view class="orderstatus" v-if="item.status==3">已完成</view>
+									<view class="orderstatus" v-if="item.status==4">已取消</view>
 								</view>
 								<view style="padding-left: 45rpx;padding-top: 10rpx;" class="orderstatus">
-									<view style="display: flex;justify-content: space-between;">
+									<view>出发时间：{{item.startTime}}</view>
+									<view>出发地：{{item.startPoint}}</view>
+									<view>目的地：{{item.endPoint}}</view>
+									<view style="display: flex;">
 										<view>
-											客户类型：{{item.userType}}
+											已检：{{item.checkedNum}}
 										</view>
 										<view style="padding-left: 40rpx;">
-											￥{{item.price}}
+											未检：{{item.nocheckedNum}}
 										</view>
 									</view>
-									<view>出发时间：{{item.startTime}}</view>
-									<view>上车点：{{item.startPoint}}</view>
-									<view>目的地：{{item.endPoint}}</view>
+								</view>
+								<view class="btnarea">
+									<view v-if="item.status==2">
+										<button>检票</button>
+									</view>
+									<view>
+										<button>详情</button>
+									</view>
+									<view v-if="item.status==1">
+										<button style="background-color: #FC4646;color: #FFF;">购票</button>
+									</view>
+									<view v-if="item.status==1">
+										<button style="background-color: #FC4646;color: #FFF;">发车</button>
+									</view>
+								</view>
+								<view>
+
+								</view>
+							</view>
+						</view>
+					</view>
+					<!-- 客车结束 -->
+					<!-- 出租车开始 -->
+					<view v-if="item.title == '出租车'" style="margin-top: 20rpx;">
+						<view class="booktime" v-if="item.orderType == '预约'">
+							预订日期：{{taxiFormatTime(item.appointmentTime)}}
+						</view>
+						<view class="order">
+							<view style="padding: 35rpx 30rpx;">
+								<view style="display: flex;justify-content: space-between;align-items: center;">
+									<view style="display: flex;align-items: center;">
+										<image src="../../static/index/Car1.png" style="width: 50rpx;" mode="widthFix"></image>
+										<view class="ordertitle">{{item.title}}</view>
+									</view>
+									<view class="orderstatus">{{item.orderState}}</view>
+
+								</view>
+								<view style="padding-left: 45rpx;padding-top: 10rpx;" class="orderstatus">
+									<view>订单号：{{item.orderNumber}}</view>
+									<view style="display: flex;justify-content: space-between;">
+										<view>
+											客户类型：{{taxiFormatUserType(item.userType)}}
+										</view>
+									</view>
+									<view>出发时间：{{taxiFormatTime(item.runTime)}}</view>
+									<view>上车点：{{item.startAddress}}</view>
+									<view>目的地：{{item.endAddress}}</view>
 
 								</view>
 								<view class="btnarea">
-									<view>
-										<button style="width: auto;">详情</button>
+									<view v-if="item.state != 1">
+										<button @click="toDetail(item)" style="width: auto;">详情</button>
 									</view>
 								</view>
 							</view>
 						</view>
 					</view>
-				</view>
-				<!-- 出租车结束 -->
-				<!-- 包车开始 -->
-				<view v-if="carTypeid==3">
-					<view style="margin-top: 20rpx;" v-for="(item,index) in orderArr2" :key="index">
+					<!-- 出租车结束 -->
+					<!-- 包车开始 -->
+					<view v-if="item.title == '包车'" style="margin-top: 20rpx;position: relative;">
 						<view class="booktime" v-if="item.ordertype==1">
 							预订日期：{{item.date}}
 						</view>
@@ -551,7 +580,11 @@
 										<image src="../../static/index/BCFW.png" style="width: 50rpx;" mode="widthFix"></image>
 										<view class="ordertitle">{{item.carType}}</view>
 									</view>
-									<view class="orderstatus">已取消</view>
+									<view class="orderstatus" v-if="item.status==1">未发车</view>
+									<view class="orderstatus" v-if="item.status==2">进行中</view>
+									<view class="orderstatus" v-if="item.status==3">已完成</view>
+									<view class="orderstatus" v-if="item.status==4">已取消</view>
+									<view class="orderstatus" v-if="item.status==5">返程中</view>
 								</view>
 								<view style="padding-left: 45rpx;padding-top: 10rpx;" class="orderstatus">
 									<view style="display: flex;justify-content: space-between;">
@@ -567,19 +600,29 @@
 									<view>目的地：{{item.endPoint}}</view>
 									<view>包车天数：{{item.charterDays}}天</view>
 								</view>
-								<view class="btnarea">
+								<view class="btnarea" style="justify-content: space-between;">
+									<view v-if="item.status==1" @click="show(item)" style="color: #999;">
+										...
+									</view>
 									<view v-if="item.status==1">
 										<button style="width: auto;">联系乘客</button>
 									</view>
-									<view>
-										<button style="width: auto;">详情</button>
+									<view v-if="item.status==1">
+										<button style="width: auto;">更换目的地</button>
+									</view>
+									<view v-if="item.status==1">
+										<button style="background-color: #FC4646;color: #FFF;width: auto;">返程</button>
 									</view>
 								</view>
 							</view>
 						</view>
+						<uni-transition class="one" v-if="item.IsShow" :modeClass="ani" :show="true" :duration="300">
+							详情
+							<view class="one0"></view>
+						</uni-transition>
 					</view>
+					<!-- 包车结束 -->
 				</view>
-				<!-- 包车结束 -->
 			</view>
 		</view>
 	</view>
@@ -595,155 +638,18 @@
 		data() {
 			return {
 				carTypeid: 0,
-				ani: ['slide-top','zoom-in'],
+				ani: ['slide-top', 'zoom-in'],
 				current: 0,
-				orderArr: [{ //客车
-						carType: '客车-传统',
-						status: 1,
-						date: '04-08',
-						ordertype: 0,
-						startTime: '2020-03-08 20:00 ',
-						startPoint: '泉州客运中心',
-						endPoint: '晋江国际机场',
-						checkedNum: '10人',
-						nocheckedNum: '20人'
-					},
-					{
-						carType: '客车-定制',
-						status: 2,
-						date: '04-08',
-						ordertype: 1,
-						startTime: '2020-03-08 20:00 ',
-						startPoint: '泉州客运中心',
-						endPoint: '晋江国际机场',
-						checkedNum: '10人',
-						nocheckedNum: '20人'
-					},
-					{
-						carType: '客车-传统',
-						status: 3,
-						date: '04-08',
-						ordertype: 1,
-						startTime: '2020-03-08 20:00 ',
-						startPoint: '泉州客运中心',
-						endPoint: '晋江国际机场',
-						checkedNum: '10人',
-						nocheckedNum: '20人'
-					},
-					{
-						carType: '客车-定制',
-						status: 4,
-						date: '04-08',
-						ordertype: 0,
-						startTime: '2020-03-08 20:00 ',
-						startPoint: '泉州客运中心',
-						endPoint: '晋江国际机场',
-						checkedNum: '10人',
-						nocheckedNum: '20人'
-					}
-				],
-				orderArr1: [{ //出租车
-						carType: '出租车',
-						status: 1,
-						date: '04-08',
-						ordertype: 0,
-						startTime: '2020-03-08 20:00 ',
-						startPoint: '泉州客运中心',
-						endPoint: '晋江国际机场',
-						userType: '普通',
-						price: '50.5',
-					},
-					{
-						carType: '出租车',
-						status: 2,
-						date: '04-08',
-						ordertype: 1,
-						startTime: '2020-03-08 20:00 ',
-						startPoint: '泉州客运中心',
-						endPoint: '晋江国际机场',
-						userType: '会员',
-						price: '666.5',
-					},
-					{
-						carType: '出租车',
-						status: 3,
-						date: '04-10',
-						ordertype: 1,
-						startTime: '2020-03-08 20:00 ',
-						startPoint: '泉州客运中心',
-						endPoint: '晋江国际机场',
-						userType: '普通',
-						price: '50.5',
-					},
-					{
-						carType: '出租车',
-						status: 4,
-						date: '04-08',
-						ordertype: 0,
-						startTime: '2020-03-08 20:00 ',
-						startPoint: '泉州客运中心',
-						endPoint: '晋江国际机场',
-						userType: '会员',
-						price: '55.5',
-					}
-				],
-
-				orderArr2: [{ //包车
-						carType: '包车-定制',
-						status: 1,
-						date: '04-08',
-						ordertype: 0,
-						startTime: '2020-03-08 20:00 ',
-						startPoint: '泉州客运中心',
-						endPoint: '晋江国际机场',
-						userType: '普通',
-						price: '50.5',
-						charterDays: 1,
-						IsShow: false
-					},
-					{
-						carType: '包车-专线',
-						status: 2,
-						date: '04-08',
-						ordertype: 1,
-						startTime: '2020-03-08 20:00 ',
-						startPoint: '泉州客运中心',
-						endPoint: '晋江国际机场',
-						userType: '会员',
-						price: '666.5',
-						charterDays: 1.5,
-						IsShow: false
-					},
-					{
-						carType: '包车-定制',
-						status: 3,
-						date: '04-10',
-						ordertype: 1,
-						startTime: '2020-03-08 20:00 ',
-						startPoint: '泉州客运中心',
-						endPoint: '晋江国际机场',
-						userType: '普通',
-						price: '50.5',
-						charterDays: 2,
-						IsShow: false
-					},
-					{
-						carType: '包车-定制',
-						status: 4,
-						date: '04-08',
-						ordertype: 0,
-						startTime: '2020-03-08 20:00 ',
-						startPoint: '泉州客运中心',
-						endPoint: '晋江国际机场',
-						userType: '会员',
-						price: '55.5',
-						charterDays: 3,
-						IsShow: false
-					}
-				]
-
-
+				orderArr: [],
+				underwayArr: [], //进行中
+				finishedArr: [], //已完成
+				cancleArr: [], //已取消
+				userInfo: '',
 			}
+		},
+		onLoad() {
+			let that = this;
+			that.userInfo = uni.getStorageSync('userInfo');
 		},
 		onShow() {
 			var that = this;
@@ -764,13 +670,232 @@
 					}
 				}
 			});
+			that.getTaxiOrder();
+			console.log('show');
+		},
+		onPullDownRefresh() {
+			var that = this;
+			that.getTaxiOrder();
 		},
 		methods: {
+			showToast: function(title, icon = 'none') {
+				uni.showToast({
+					title: title,
+					icon: icon
+				});
+			},
 			tabclick: function(e) {
 				this.current = e;
 			},
 			show: function(el) {
 				el.IsShow = !el.IsShow
+			},
+			getTaxiOrder: function() {
+				let that = this;
+				uni.showLoading({
+					mask:true
+				})
+				uni.request({
+					url: that.$order.Interface.GetExpressOrderByDriverID_Driver.value,
+					method: that.$order.Interface.GetExpressOrderByDriverID_Driver.method,
+					data: {
+						driverId: that.userInfo.driverId,
+						state: -1
+					},
+					success: function(res) {
+						uni.hideLoading();
+						if (res.data.status) {
+							that.orderArr = [];
+							for (let item of res.data.data) {
+								var obj = {
+									title: '出租车',
+									orderType: item.orderType, //实时/预约
+									appointmentTime: item.appointmentTime, //预约时间
+									userType: item.userType, //用户类型：普通/会员
+									runTime: item.runTime, //出发时间
+									endAddress: item.endAddress,
+									startAddress: item.startAddress,
+									orderState: that.taxiFormatState(item.state),
+									factPrice: item.factPrice,
+									factPayPrice: item.factPayPrice,
+									orderNumber: item.orderNumber,
+									state: item.state,
+									passengersPhone: item.passengersPhone
+								};
+								that.orderArr.push(obj);
+							};
+							that.underwayArr = that.orderArr.filter(x => {
+								return x.orderState == '进行中';
+							});
+							that.finishedArr = that.orderArr.filter(x => {
+								return x.orderState == '已完成';
+							});
+							that.cancleArr = that.orderArr.filter(x => {
+								return x.orderState == '已取消';
+							});
+						} else {
+							that.showToast(res.data.msg);
+						}
+					},
+					fail: function(res) {
+						console.log(res);
+						that.showToast('网络连接失败');
+						uni.hideLoading();
+					}
+				})
+			},
+			getCzcPrivateOrder: function() {
+
+			},
+
+
+
+			//详情
+			toDetail: function(item) {
+				let that = this;
+				if (item.title == '出租车') {
+					if (item.state == 0 || item.state == 1 || item.state == 2 || item.state == 3 || item.state == 4) {
+						uni.navigateTo({
+							url: '../driver/confirmgetonCar?orderNumber=' + item.orderNumber
+						});
+					} else {
+						uni.navigateTo({
+							url: '../driver/orderDetail?orderNumber=' + item.orderNumber
+						});
+					}
+
+				}
+			},
+			//联系乘客
+			toCallPassenger: function(item) {
+				let that = this;
+				uni.makePhoneCall({
+					phoneNumber: item.passengersPhone
+				});
+			},
+			//到达
+			toArrive: function(item) {
+				let that = this;
+				uni.showLoading({
+					mask:true
+				})
+				uni.request({
+					url: that.$taxi.Interface.FinishExpressOrder_Driver.value,
+					method: that.$taxi.Interface.FinishExpressOrder_Driver.method,
+					data: {
+						orderNumber: item.orderNumber
+					},
+					success: function(res) {0
+						console.log(res);
+						uni.hideLoading();
+						if (res.data.status) {
+							that.showToast('到达成功');
+							uni.navigateTo({
+								url: '/pages/driver/otherExpenses?orderNumber=' + item.orderNumber,
+							})
+						} else {
+							that.showToast(res.data.msg);
+						}
+					},
+					fail: function(res) {
+						console.log(res);
+						uni.hideLoading();
+						that.showToast('网络连接失败');
+					}
+				})
+			},
+			//出发
+			toDepart: function(item) {
+				let that = this;
+				uni.showLoading({
+					mask:true
+				});
+				uni.request({
+					url: that.$taxi.Interface.SetoutExpressOrder_Driver.value,
+					method: that.$taxi.Interface.SetoutExpressOrder_Driver.method,
+					data: {
+						orderNumber: item.orderNumber
+					},
+					success: function(res) {
+						console.log(res);
+						uni.hideLoading();
+						if (res.data.status) {
+							uni.navigateTo({
+								url: '../driver/confirmgetonCar?orderNumber=' + item.orderNumber
+							});
+						} else {
+							that.showToast(res.data.msg);
+						}
+					},
+					fail: function(res) {
+						console.log(res);
+						uni.hideLoading();
+						that.showToast('网络连接失败');
+					}
+				});
+			},
+			//取消
+			toCancle: function(item) {
+				let that = this;
+				uni.showLoading({
+					mask: true
+				})
+				uni.request({
+					url: that.$taxi.Interface.CancelExpressOrderByOrderNum_Driver.value,
+					method: that.$taxi.Interface.CancelExpressOrderByOrderNum_Driver.method,
+					data: {
+						orderNumber: item.orderNumber
+					},
+					success: function(res) {
+						console.log(res);
+						uni.hideLoading();
+						if (res.data.status) {
+							that.showToast('订单已取消');
+
+						} else {
+							that.showToast(res.data.msg);
+						}
+					},
+					fail: function(res) {
+						uni.hideLoading();
+						console.log(res);
+						that.showToast('网络连接失败');
+					}
+				});
+			},
+
+			// 出租车格式化
+			taxiFormatState: function(state) {
+				if (state == 6) {
+					return '已完成';
+				} else if (state == 0 || state == 1 || state == 2 || state == 3 || state == 4 || state == 5 || state == 9) {
+					return '进行中';
+				} else if (state == 8) {
+					return '已取消';
+				} else {
+					return '';
+				}
+			},
+			taxiFormatUserType: function(userType) {
+				if (userType == 0) {
+					return '普通用户';
+				} else if (userType == 1) {
+					return '普通会员';
+				} else if (userType == 2) {
+					return '超级会员';
+				} else if (userType == 3) {
+					return '其他用户';
+				} else if (userType == 9) {
+					return '体验会员';
+				}
+			},
+			taxiFormatTime: function(time) {
+				var dateTime = time.replace('T', ' ');
+				if (dateTime.indexOf('1900') > -1) {
+					return '';
+				} else {
+					return dateTime;
+				}
 			}
 		}
 	}
@@ -795,7 +920,7 @@
 	}
 
 	.booktime {
-		width: 220rpx;
+		width: 375rpx;
 		background-color: #06B4FD;
 		color: #FFF;
 		font-size: 24rpx;

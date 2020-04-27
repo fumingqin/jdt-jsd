@@ -38,6 +38,7 @@
 		data() {
 			return {
 				driverId: '',
+				driverName:'',
 				imgHeight: "",
 				current: 0,
 				items: ['燃油汽车', '新能源汽车'],
@@ -47,6 +48,7 @@
 				keyType: 0,
 				vehicleNumber: "",
 				keyTitle: '汽车键盘',
+				
 			}
 		},
 		onReady() {},
@@ -56,6 +58,7 @@
 			var userInfo = uni.getStorageSync('userInfo') || '';
 			if (userInfo) {
 				that.driverId = userInfo.driverId;
+				that.driverName = userInfo.userName
 			} else {
 				uni.navigateBack({});
 			}
@@ -113,7 +116,8 @@
 							data: {
 								vehicleNumber: that.vehicleNumber,
 								driverId: that.driverId,
-								vehicleType: that.vehicleType
+								vehicleType: that.vehicleType,
+								driverName:that.driverName
 							},
 							success: function(res) {
 								uni.hideLoading();
@@ -137,7 +141,7 @@
 											}
 											if (that.vehicleType == "客车") {
 												uni.redirectTo({
-													url: '/pages/CTKYDriver/index',
+													url: '/pages/CTKYDriver/selectOrder',
 												})
 											}
 
