@@ -44,6 +44,9 @@
 			...mapState(['hasLogin','userInfo'])
 		},
 		onLoad(){
+			
+		},
+		onShow() {
 			this.load();
 		},
 		methods:{
@@ -68,13 +71,10 @@
 						that.statu.check2=res2.data;
 					}
 				})
-				uni.getStorageInfo({
-					success: function (res3) {
-						console.log(res3,"res3");
-						console.log(res3.currentSize,"currentSize");
-						that.currentSize=res3.currentSize;
-					}
-				});
+				const res = uni.getStorageInfoSync();
+				console.log(res,"res3");
+				console.log(res.currentSize,"currentSize");
+				that.currentSize=res.currentSize;
 			},
 			//退出登录
 			toLogout(){
@@ -107,11 +107,18 @@
 				
 			},
 			clearStorage(){
+				var user=uni.getStorageSync('userInfo');
+				var info=uni.getStorageSync('vehicleInfo');
 				uni.showModal({
 				    content: '是否清除数据',
 				    success: (e)=>{
 				    	if(e.confirm){
 							uni.clearStorage();
+							uni.setStorageSync('userInfo',user);
+							uni.setStorageSync('vehicleInfo',info);
+							uni.redirectTo({
+								url:'/pages/grzx/set'
+							})
 				    	}
 				    }
 				});

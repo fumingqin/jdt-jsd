@@ -109,9 +109,9 @@
 						}) 
 					},500);
 				}else{
-					uni.navigateTo({
-						url :'/pages/grzx/personal'
-					})  
+					// uni.navigateTo({
+					// 	url :'/pages/grzx/personal'
+					// })  
 				}
 			},
 			scanClick(){
