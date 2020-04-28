@@ -18,8 +18,10 @@ function getBDVoicToken() {
 			method: 'GET', //建议使用post访问
 			data:{
 				grant_type:'client_credentials',
-				client_id:'McfIsVog3Q5AsTxtTGOsoFOs',
-				client_secret:'fEVIpjVvDXh4BIwWGtg9oOkFV71K1tlv'
+				//client_id:'McfIsVog3Q5AsTxtTGOsoFOs',
+				client_id:'H62OlQX3QzbleVABxivZiXmL',
+				//client_secret:'fEVIpjVvDXh4BIwWGtg9oOkFV71K1tlv'
+				client_secret:'z3QdeO6eyWO61EHudwp7Bs7V5hOyzOij'
 			},
 			//data: 'grant_type=client_credentials&client_id=jtwoB9xzRnv3qltcfqL0pk1t&client_secret=A16UKHBKVeAh68kuGGSPqnemCVyPDmgb',
 			/* header: {

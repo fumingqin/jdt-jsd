@@ -38,6 +38,7 @@
 		data() {
 			return {
 				driverId: '',
+				driverName:'',
 				imgHeight: "",
 				current: 0,
 				items: ['燃油汽车', '新能源汽车'],
@@ -47,6 +48,7 @@
 				keyType: 0,
 				vehicleNumber: "",
 				keyTitle: '汽车键盘',
+				
 			}
 		},
 		onReady() {},
@@ -56,6 +58,7 @@
 			var userInfo = uni.getStorageSync('userInfo') || '';
 			if (userInfo) {
 				that.driverId = userInfo.driverId;
+				that.driverName = userInfo.userName
 			} else {
 				uni.navigateBack({});
 			}
@@ -98,23 +101,26 @@
 			},
 			Confirm(e) {
 				var that = this;
+				uni.showLoading({
+					mask:true
+				});
 				getApp().globalData.vehicleNumber = that.vehicleNumber;
 				getApp().globalData.constantly();
 				var plate = this.vehicleNumber;
-
+				
 				if (that.isLicensePlate(plate)) {
 					if ((this.current == 0 && plate.length == 7) || (this.current == 1 && plate == 8)) {
-						console.log(that.driverId);
 						uni.request({
 							url: that.$home.Interface.DriverVehicleBinding_Check.value,
 							method: that.$home.Interface.DriverVehicleBinding_Check.method,
 							data: {
 								vehicleNumber: that.vehicleNumber,
 								driverId: that.driverId,
-								vehicleType: that.vehicleType
+								vehicleType: that.vehicleType,
+								driverName:that.driverName
 							},
 							success: function(res) {
-								console.log(res);
+								uni.hideLoading();
 								if (res.data.status) {
 									uni.setStorage({
 										key: 'vehicleInfo',
@@ -146,6 +152,7 @@
 								}
 							},
 							fail: function(res) {
+								uni.hideLoading();
 								that.showToast('网络连接失败');
 								console.log(res);
 							}

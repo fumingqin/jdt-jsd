@@ -31,7 +31,7 @@
 								reportTime: utils.timeTodate(homeJS.dateFormat.dateformat, new Date().getTime())
 							},
 							success:function(res){
-								console.log(res);
+								//console.log(res);
 							},
 							fail:function(res){
 								// console.log(res);
@@ -62,12 +62,12 @@
 		onLaunch: function() {
 			let that = this;
 			let userInfo = uni.getStorageSync('userInfo') || '';
-			if (userInfo.nickName) {
+			if (userInfo.driverId) {
 				//如果有登录缓存则开启定时器。
 				/* that.constantly(); */
 			}
 
-			if (userInfo.nickName) {
+			if (userInfo.driverId) {
 				//更新登陆状态
 				uni.getStorage({
 					key: 'userInfo',

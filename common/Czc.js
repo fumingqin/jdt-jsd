@@ -1,11 +1,6 @@
 /* 接口参数区 */
 // 示例
 
-const GaoDeWebKey = [
-	"2348ba1d476b5e44917533b65583f969",
-	"1df2cef2c0e71acc0ed1e90d5bf6431a"
-]
-
 //接口域名
 const Url = 'http://111.231.109.113:8002';
 
@@ -63,13 +58,41 @@ const Interface = {
 		name: '司机端-出租车-订单支付',
 		method: 'POST', //GET-POST
 		pages: []
+	},
+	GetExpressOrderByOrderNumber_Driver:{
+		value:Url + '/api/taxi/GetExpressOrderByOrderNumber_Driver',
+		name:'司机端-出租车-根据司机Id和订单Id获取订单详情',
+		method:'POST',
+		page:["/dirver/confirmgetonCar"]
+	},
+	RunExpressOrder_Driver:{
+		value:Url + '/api/taxi/RunExpressOrder_Driver',
+		name:'司机端-出租车-长按确认乘客上车',
+		method:'POST',
+		page:[""]
+	},
+	FinishExpressOrder_Driver:{
+		value:Url + '/api/taxi/FinishExpressOrder_Driver',
+		name:'司机端-出租车-长按到达目的地',
+		method:'POST',
+		page:[""]
+	},
+	SetoutExpressOrder_Driver:{
+		value:Url + '/api/taxi/SetoutExpressOrder_Driver',
+		name:'司机端-出租车-长按发车',
+		method:'POST',
+		page:[]
+	},
+	GetExpressOrderCountByDriverID_Driver:{
+		value:Url + '/api/taxi/GetExpressOrderCountByDriverID_Driver',
+		name:'司机端-出租车-长按发车',
+		method:'POST',
+		page:[]
 	}
-
 }
 
 // 接口声明区
 export default {
-	GaoDeWebKey,
 	InterfaceAddress,
 	Interface,
 	delayTime

@@ -261,12 +261,26 @@
 				})
 			},
 			
+			/* arriveReport:function(){
+				
+				uni.getLocation({
+					type:'gcj02',
+				}).then(res => {
+					
+				});
+				
+			}, */
+			
+			
 			//调用语音合成接口
 			baiduPlayer: function(tex) {
 				let that = this;
 				Voice(tex);
 				//that.getBDVoicToken(tex);
 			},
+			
+			
+			
 			//百度语音接口，可用，但未改成js文件。		
 			/* getBDVoicToken: function(tex) {
 				let that = this;

@@ -1,43 +1,43 @@
 <template>
 	<view class="content" v-bind:style="{height:imgHeight+'px'}">
 		<!-- 背景图 -->
-		<image src="../../static/login/backgroudimg.png" style="width: 100%; position: absolute; bottom: 0; height: 100%;"></image>
-		<image src="../../static/login/back.png" class="returnClass" @click="returnClick"></image>
+		<image src="../../static/grzx/backgroudimg.png" style="width: 100%; position: absolute; bottom: 0; height: 100%;"></image>
+		<image src="../../static/grzx/back.png" class="returnClass" @click="returnClick"></image>
 		
 		<!-- 手机号+密码登录 -->
 		<view class="inputContent" v-if="type==1">
 			<view class="inputItem phoneNum">
-				<image src="../../static/login/phone.png" class="iconClass1"></image>
-				<input type="number" placeholder="手机号码" maxlength="11" class="inputClass" data-key="phoneNumber" @input="inputChange1" />
+				<image src="../../static/grzx/phone.png" class="iconClass1"></image>
+				<input type="number" placeholder="手机号码" maxlength="11" class="inputClass" name="phoneNumber" data-key="phoneNumber" @input="inputChange1" :value="phoneNumber"/>
 			</view>
 			<view class="inputItem Captcha">
-				<image src="../../static/login/code.png" class="iconClass2"></image>
-				<input type="number" placeholder="请输入密码" class="inputClass" data-key="captchaCode" @input="inputChange2" />
+				<image src="../../static/grzx/password.png" class="iconClass2"></image>
+				<input type="password" placeholder="请输入密码" class="inputClass" name="password" data-key="password" @input="inputChange2" :value="password"/>
 			</view>
 			<text class="switchClass" @click="switchClick">切换登录方式</text>
-			<image src="../../static/login/btnLogin.png" class="btnLogin" ></image>
+			<image src="../../static/grzx/btnLogin.png" class="btnLogin" ></image>
 			<text class="fontStyle" @click="pwdClick">登录</text>
 		</view>
 		
 		<!-- 手机号+验证码登录 -->
 		<view class="inputContent" v-if="type==2">
 			<view class="inputItem phoneNum">
-				<image src="../../static/login/phone.png" class="iconClass1"></image>
-				<input type="number" placeholder="手机号码" maxlength="11" class="inputClass" data-key="phoneNumber" @input="inputChange1" />
+				<image src="../../static/grzx/phone.png" class="iconClass1"></image>
+				<input type="number" placeholder="手机号码" maxlength="11" class="inputClass" name="phoneNumber" data-key="phoneNumber" @input="inputChange1" :value="phoneNumber"/>
 			</view>
 			<view class="inputItem Captcha">
-				<image src="../../static/login/code.png" class="iconClass2"></image>
-				<input type="number" placeholder="输入验证码" maxlength="6" class="inputClass" data-key="captchaCode" @input="inputChange2" />
+				<image src="../../static/grzx/code.png" class="iconClass2"></image>
+				<input type="number" placeholder="输入验证码" maxlength="4" class="inputClass" name="captchaCode" data-key="captchaCode" @input="inputChange2" :value="captchaCode"/>
 			</view>
 			<!-- 发送验证码 -->
 			<view class="getCode style1" @click="getCodeClick" id="Code">{{textCode}}</view>
-			<image src="../../static/login/btnLogin.png" class="btnLogin" ></image>
+			<image src="../../static/grzx/btnLogin.png" class="btnLogin" ></image>
 			<text class="switchClass" @click="switchClick">切换登录方式</text>
 			<text class="fontStyle" @click="codeClick">确定</text>
 		</view>
 		
 		<!-- logo -->
-		<image src="../../static/login/logo.png" class="logoClass"></image>
+		<image src="../../static/grzx/logo.png" class="logoClass"></image>
 	</view>
 </template>
 
@@ -52,6 +52,7 @@
 				type:1,  //1为密码登录，2为验证码登录
 				textCode:"获取验证码",
 				phoneNumber:'',
+				password:'',
 				captchaCode:'',
 				imgHeight:'',
 			}
@@ -61,6 +62,7 @@
 		},
 		methods: {
 			...mapMutations(['login']),
+			//--------------加载数据-------------
 			async load(){
 				var that=this;
 				uni.getSystemInfo({
@@ -69,7 +71,8 @@
 				       }
 				});
 			},
-			judgeNum(val){  //只能输入数字
+			//--------------只能输入数字-------------
+			judgeNum(val){  
 				var regPos = /^\d+(\.\d+)?$/; //非负浮点数
 				    var regNeg = /^(-(([0-9]+\.[0-9]*[1-9][0-9]*)|([0-9]*[1-9][0-9]*\.[0-9]+)|([0-9]*[1-9][0-9]*)))$/; //负浮点数
 				    if(regPos.test(val) || regNeg.test(val)) {
@@ -104,15 +107,39 @@
 				const key = e.currentTarget.dataset.key;
 				this[key] = e.detail.value;
 			},
+			//--------------密码登录-------------
 			pwdClick(){
-				
+				uni.showLoading({
+					title:'登录中...'
+				})
+				var that=this;
+				console.log(that.phoneNumber)
+				console.log(that.password)
+				uni.request({
+					url:'http://111.231.109.113:8002/api/person/LoginByPassWord_Driver',
+					data:{
+						phoneNumber:that.phoneNumber,
+						password:that.password,
+					},
+					method:'POST',
+					success(res) {
+						console.log(res)
+						if(res.data.msg=='登入成功'){
+							that.getuserInfo(that.phoneNumber);
+						}else{
+							uni.showToast({
+								title:'密码错误或手机号不对',
+								icon:'none',
+							})
+						}
+					}
+				})
 			},
-			codeClick(){	 //验证码登录
-				this.logining=true;
-				//登录成功开启定时器。
-				if(this.logining){
-					
-				}
+			//--------------验证码登录-------------
+			codeClick(){
+				uni.showLoading({
+					title:'登录中...'
+				})
 				var that=this;
 				const {phoneNumber, captchaCode} = this;		
 				var phone=this.phoneNumber;
@@ -133,30 +160,84 @@
 							key:'captchaCode',
 							success(res) {
 								if(captcha==res.data.code&&phone==res.data.phone){
-									uni.showToast({
-										title:"登录成功",
-										icon:"none"
-									})
-									
-									// if(that.urlData==1){
-										uni.switchTab({  //返回首页
-											url:'/pages/index/index',
-										}) 
-									// }else{
-									// 	uni.navigateBack();//返回上一页
-									// }
+									that.getuserInfo(phone);
 								}else{
 									uni.showToast({
 										title:"验证码错误",
 										icon:"none"
 									})
 								}
+							},
+							fail(){
+								uni.showToast({
+									title:"验证码已过期，请重新获取",
+									icon:"none"
+								})
+								
 							}
 						})
+					
 					}
 				}
 			},
-			getCodeClick(e){	//获取验证码
+			//--------------获取用户信息-------------
+			getuserInfo(e){
+				var that=this;
+				uni.request({
+					url:'http://111.231.109.113:8002/api/person/GetDetailInfo_Driver',
+					data:{
+						phoneNumber:e
+					},
+					method:'POST',
+					success(res) {
+						console.log(res,'res1')
+						uni.hideLoading();
+						if(res.data.data.userauditState=='1'||res.data.data.userauditState==1){
+							uni.setStorageSync('userInfo',res.data.data)
+							that.logining=true;
+							that.login(res.data.data)
+							uni.showToast({
+								title:"登录成功",
+								icon:"success"
+							})
+							setTimeout(function(){
+								uni.switchTab({  //返回首页
+									url:'/pages/index/index',
+								}) 
+							},500);
+						}else if(res.data.data.userauditState=='0'||res.data.data.userauditState==0){
+							uni.showToast({
+								title:'您的信息正在审核中',
+								icon:'none'
+							})
+						}else if(res.data.data.userauditState=='2'||res.data.data.userauditState==2){
+							uni.showToast({
+								title:'您的信息审核不通过，请重新注册',
+								icon:'none'
+							})
+						}
+					}
+				})
+			},
+			//--------------获取车辆信息-------------
+			getvehicleInfo(id){
+				uni.request({
+					url:'',
+					data:{
+						driverId:id,
+					},
+					method:'POST',
+					success(res) {
+						console.log(res,'vehicleInfo')
+						uni.setStorageSync('vehicleInfo',{
+							vehicleType: '',
+							vehicleNumber: '',
+						})
+					}
+				})
+			},
+			//--------------获取验证码-------------
+			getCodeClick(e){
 				var self=this;
 				const {phoneNumber, captchaCode} = this;		
 				if(self.judgeNum(self.phoneNumber)){
@@ -175,14 +256,17 @@
 						  	self.textCode = second+"秒后重发";
 						  }},1000)
 						 uni.request({
-							url:'http://218.67.107.93:9210/api/app/getLoginCode?phoneNumber='+self.phoneNumber,
-						    method:"POST",
+							url:'http://111.231.109.113:8002/api/person/getLoginCode',
+						    data:{
+								phoneNumber:self.phoneNumber,
+							},
+							method:"POST",
 							success:(res)=>{
-						 		console.log(res.data.code);
+						 		console.log(res.data.data);
 								uni.setStorage({
 									key:'captchaCode',
 									data:{
-										code:res.data.code,
+										code:res.data.data,
 										phone:self.phoneNumber,
 									}
 								})
@@ -203,11 +287,14 @@
 					})
 				}
 			},
-			returnClick(){		//返回个人中心
+			//--------------返回个人中心-------------
+			returnClick(){		
 				uni.navigateBack();
 			},
-			//切换登录方式
+			//--------------切换登录方式-------------
 			switchClick(){
+				this.password='';
+				this.captchaCode='';
 				if(this.type==1){
 					this.type=2;
 				}else{
@@ -233,8 +320,8 @@
 		position: absolute;
 	}
 	.logoClass{		//logo的样式
-		width: 32.4%;
-		height: 233upx;
+		width: 34.4%;
+		height: 250upx;
 		top: 200upx;
 		left: 33.87%;
 		position: absolute;
@@ -260,7 +347,7 @@
 		top:324upx;
 		left: 4.8%;
 		background-color: white;
-		border-radius: 20upx;
+		border-radius: 50upx;
 	}
 	.inputItem{		//输入区域的样式
 		width: 87.6%;
@@ -337,8 +424,8 @@
 	.switchClass{ //切换登录方式
 		position: absolute;
 		top:440upx;
-		left: 8%;
+		left: 65%; //8%;
 		font-size: 30upx;
-		color: #ED1C24;
+		color: #333333;
 	}
 </style>

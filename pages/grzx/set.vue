@@ -1,14 +1,14 @@
 <template>
 	<view class="container">
 		
-		<view class="list-cell m-t b-b">
+		<!-- <view class="list-cell m-t b-b">
 			<text class="cell-tit">推送设置</text>
 			<switch :checked="statu.check1" color="#fa436a" @change="switchChange" />
 		</view>
 		<view class="list-cell b-b b-l">
 			<text class="cell-tit">视频自动播放</text>
 			<switch :checked="statu.check2"  color="#fa436a" @change="playChange" />
-		</view>
+		</view> -->
 		
 		<view class="list-cell m-t b-b" @click="clearStorage" hover-class="cell-hover" :hover-stay-time="50">
 			<text class="cell-tit">清除缓存</text>
@@ -44,6 +44,9 @@
 			...mapState(['hasLogin','userInfo'])
 		},
 		onLoad(){
+			
+		},
+		onShow() {
 			this.load();
 		},
 		methods:{
@@ -68,13 +71,10 @@
 						that.statu.check2=res2.data;
 					}
 				})
-				uni.getStorageInfo({
-					success: function (res3) {
-						console.log(res3,"res3");
-						console.log(res3.currentSize,"currentSize");
-						that.currentSize=res3.currentSize;
-					}
-				});
+				const res = uni.getStorageInfoSync();
+				console.log(res,"res3");
+				console.log(res.currentSize,"currentSize");
+				that.currentSize=res.currentSize;
 			},
 			//退出登录
 			toLogout(){
@@ -87,7 +87,7 @@
 					    		this.logout();
 					    		setTimeout(()=>{
 					    			uni.switchTab({
-					    				url:'/pages/GRZX/user'
+					    				url:'/pages/grzx/user'
 					    			})
 					    		}, 200)
 					    	}
@@ -107,11 +107,18 @@
 				
 			},
 			clearStorage(){
+				var user=uni.getStorageSync('userInfo');
+				var info=uni.getStorageSync('vehicleInfo');
 				uni.showModal({
 				    content: '是否清除数据',
 				    success: (e)=>{
 				    	if(e.confirm){
 							uni.clearStorage();
+							uni.setStorageSync('userInfo',user);
+							uni.setStorageSync('vehicleInfo',info);
+							uni.redirectTo({
+								url:'/pages/grzx/set'
+							})
 				    	}
 				    }
 				});

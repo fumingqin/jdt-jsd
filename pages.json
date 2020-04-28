@@ -78,7 +78,31 @@
 		{  
 			"path": "pages/grzx/selectOperation",  //选择登陆还是注册
 			"style": {
-				//"navigationStyle": "custom"
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/grzx/registerPage1", //注册
+			"style": {
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/grzx/registerPage2",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/grzx/registerPage3",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/grzx/successPage",
+			"style": {
+				"navigationStyle": "custom"
 			}
 		},
 		//个人中心结束
@@ -169,6 +193,7 @@
 		}, {
 			"path": "pages/index/Order",
 			"style": {
+				"enablePullDownRefresh":true,
 				"navigationBarTitleText": "订单",
 				"navigationBarBackgroundColor": "#F6F8FE"
 			}
@@ -246,6 +271,18 @@
 				"navigationStyle": "custom"
 			}
         }
+        ,{
+            "path" : "pages/ZXC/CzcPrivate",
+            "style" : {
+				"navigationStyle": "custom"
+			}
+        },
+		{
+			"path" : "pages/ZXC/orderDetail",
+			"style" : {
+				"navigationStyle": "custom"
+			}
+		}
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

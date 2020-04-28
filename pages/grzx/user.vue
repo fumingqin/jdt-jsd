@@ -7,8 +7,8 @@
 			<!-- <image src="../../static/grzx/info.png" class="infoClass" @click="navTo('/pages/grzx/myNews')"></image> -->
 			<!-- #endif -->
 			<view class="userInfoClass" @click="checkLogin">
-				<image class="portraitClass" :src=" userInfo.avatarUrl || '/static/grzx/missing-face.png'"></image>
-				<text class="usernameClass">{{userInfo.nickName || '请登录'}}</text>
+				<image class="portraitClass" :src=" userInfo.userPortrait || '/static/grzx/touxiang.png'"></image>
+				<text class="usernameClass">{{userInfo.userName || '请登录'}}</text>
 			</view>
 		</view>
 		<view class="serviceBox">
@@ -109,9 +109,9 @@
 						}) 
 					},500);
 				}else{
-					uni.navigateTo({
-						url :'/pages/grzx/personal'
-					})  
+					// uni.navigateTo({
+					// 	url :'/pages/grzx/personal'
+					// })  
 				}
 			},
 			scanClick(){
