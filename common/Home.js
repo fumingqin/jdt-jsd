@@ -35,10 +35,14 @@ const Interface = {
 	}
 }
 
+
+
+
 const dateFormat = {
 	dateformat : 'Y-m-d H:i:s'
 }
 
+//经纬度计算距离
 const EARTH_RADIUS = 6378137;
 
 function mathLonLatToDistance(startLon,startLat,endLon,endLat){
@@ -59,6 +63,6 @@ function Rad(lonLat){
 // 接口声明区
 export default {
 	Interface,
-	dateFormat
+	dateFormat,
 	
 }

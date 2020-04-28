@@ -106,6 +106,7 @@
 
 <script>
 	import $CzcPrivate from '../../common/CzcPrivate.js';
+	import $taxi from '../../common/Czc.js'
 	import $home from '../../common/Home.js'
 	import uniIcons from "@/components/uni-icons/uni-icons.vue";
 	import Map from '../../common/my-openMap/openMap.js';
@@ -176,11 +177,11 @@
 			that.setOrderStatus();
 			
 		},
-		onUnload: () => {
+		onUnload() {
 			let that = this;
-			clearInterval(that.directionInterval);
 			clearInterval(that.orderInterval);
 			clearInterval(that.waitTimeInterval);
+			clearInterval(that.directionInterval);
 		},
 		methods: {
 			//本页面统一调用此方法
@@ -195,29 +196,29 @@
 				let that = this;
 				return new Promise((resolve, reject) => {
 					uni.request({
-						url: $CzcPrivate.Interface.GetExpressOrderByOrderNumber_Driver.value,
-						method: $CzcPrivate.Interface.GetExpressOrderByOrderNumber_Driver.method,
+						url: $CzcPrivate.Interface.GetSpecialLineOrderByOrderNumber_Driver.value,
+						method: $CzcPrivate.Interface.GetSpecialLineOrderByOrderNumber_Driver.method,
 						data: {
-							ordernumber: that.orderNumber,
-							driverId:that.driverId 
+							Ordernumber: that.orderNumber,
+							DriverId:that.driverId 
 						},
 						success: function(res) {
-							let data = res.data.data;
+							let data = res.data.data[0];
 							if (res.data.status) {
-								that.startLon = data.startLon;
-								that.startLat = data.startLat;
-								that.startAddress = data.startAddress;
-								that.endLon = data.endLon;
-								that.endLat = data.endLat;
-								that.endAddress = data.endAddress;
-								that.state = data.state;
-								that.orderType = data.orderType;
-								that.passengersPhone = data.passengersPhone;
-								that.vehicleType = data.vehicleType;
-								that.appointmentTime = data.appointmentTime;
-								that.estimatePrice = data.estimatePrice;
-								that.estimateDistance = data.estimateDistance;
-								that.estimateTime = data.estimateTime;
+								that.startLon = data.StartLon;
+								that.startLat = data.StartLat;
+								that.startAddress = data.StartAddress;
+								that.endLon = data.EndLon;
+								that.endLat = data.EndLat;
+								that.endAddress = data.EndAddress;
+								that.state = data.State;
+								that.orderType = data.OrderType;
+								that.passengersPhone = data.PassengersPhone;
+								that.vehicleType = data.VehicleType;
+								that.appointmentTime = data.AppointmentTime;
+								that.estimatePrice = data.EstimatePrice;
+								that.estimateDistance = data.EstimateDistance;
+								that.estimateTime = data.EstimateTime;
 								resolve(res);
 							} else {
 								that.showToast(res.data.msg);
@@ -241,7 +242,7 @@
 				})
 				that.getOrder().then(res => {
 					uni.hideLoading();
-					var data = res.data.data;
+					var data = res.data.data[0];
 					if (res.data.status) {
 						that.markers = [];
 						that.setMarker(1, that.startLon, that.startLat, '../../static/driver/Start.png');
@@ -258,16 +259,16 @@
 							that.realGetOrderDetail();
 							//规划司机到出发地路程
 							that.setToStart();
-							console.log(new Date(data.receiptTime.replace('T', ' ').replace(/-/g,'/')));
-							that.mathwaitTime(new Date(data.receiptTime.replace('T', ' ').replace(/-/g,'/'))); 
+							console.log(new Date(data.ReceiptTime.replace('T', ' ').replace(/-/g,'/')));
+							that.mathwaitTime(new Date(data.ReceiptTime.replace('T', ' ').replace(/-/g,'/').substring(0,18))); 
 						} else if (that.state == 3) {
 							//司机已到出发地
 							//预留
 						} else if (that.state == 4) {
 							//订单执行中（接到旅客）
 							that.setConfirmgetonCar();
-							console.log(new Date(data.runTime.replace('T', ' ').replace(/-/g,'/'))); 
-							that.mathwaitTime(new Date(data.runTime.replace('T', ' ').replace(/-/g,'/'))); 
+							console.log(new Date(data.RunTime.replace('T', ' ').replace(/-/g,'/'))); 
+							that.mathwaitTime(new Date(data.RunTime.replace('T', ' ').replace(/-/g,'/'))); 
 						} else if (that.state == 5) {
 							//待支付
 
@@ -324,10 +325,10 @@
 					mask:true
 				});
 				uni.request({
-					url:$CzcPrivate.Interface.RunExpressOrder_Driver.value,
-					method:$CzcPrivate.Interface.RunExpressOrder_Driver.method,
+					url:$CzcPrivate.Interface.RunSpecialLineOrder_Driver.value,
+					method:$CzcPrivate.Interface.RunSpecialLineOrder_Driver.method,
 					data:{
-						orderNumber:that.orderNumber
+						OrderNumber:that.orderNumber
 					},
 					success:function(res){
 						uni.hideLoading();
@@ -382,10 +383,10 @@
 					mask:true
 				});
 				uni.request({
-					url:$CzcPrivate.Interface.FinishExpressOrder_Driver.value,
-					method:$CzcPrivate.Interface.FinishExpressOrder_Driver.method,
+					url:$CzcPrivate.Interface.FinishSpecialLineOrder_Driver.value,
+					method:$CzcPrivate.Interface.FinishSpecialLineOrder_Driver.method,
 					data:{
-						orderNumber:that.orderNumber
+						OrderNumber:that.orderNumber
 					},
 					success:function(res){
 						uni.hideLoading();
@@ -394,7 +395,7 @@
 							clearInterval(this.directionInterval);
 							getApp().globalData.orderNumber = 0;
 							uni.redirectTo({
-								url: '/pages/driver/otherExpenses?orderNumber=' + that.orderNumber,
+								url: '/pages/driver/orderComplete',
 							})
 						} else {
 							that.showToast(res.data.msg);
@@ -491,8 +492,8 @@
 			cancleOrder:function(){
 				let that = this;
 				uni.request({
-					url:$CzcPrivate.Interface.CancelExpressOrderByOrderNum_Driver.value,
-					method:$CzcPrivate.Interface.CancelExpressOrderByOrderNum_Driver.method,
+					url:$CzcPrivate.Interface.CancelSpecialLineOrderByOrderNum_Driver.value,
+					method:$CzcPrivate.Interface.CancelSpecialLineOrderByOrderNum_Driver.method,
 					data:{
 						OrderNumber:that.orderNumber
 					},
@@ -502,7 +503,7 @@
 							that.showToast('取消成功');
 							setTimeout(function(){
 								uni.redirectTo({
-									url:'./taxiDriver'
+									url:'../driver/taxiDriver'
 								});
 							},1500);
 						} else {
@@ -540,7 +541,7 @@
 				//调用高德api取得路径规划并绘制线路 
 				var that = this;
 				uni.request({
-					url: $CzcPrivate.InterfaceAddress[0],
+					url: $taxi.InterfaceAddress[0],
 					data: {
 						startLonLat: startLonLat,
 						endLonLat: endLonLat,

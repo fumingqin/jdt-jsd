@@ -19,7 +19,7 @@
 		</view>
 		
 		<!-- 出租车-今日接单量 -->
-		<view v-if="buttonActive" style="width: 94%;height: 105rpx; background-color: #FFFFFF;margin-left: 22rpx; border-radius:20rpx;margin-top: 30rpx;">
+		<view v-if="buttonActive" style="width: 94%;height: 105rpx; background-color: #FFFFFF;margin-left: 22rpx; border-radius:20rpx;margin-top: 30rpx;margin-bottom: 30rpx;">
 			<view style="padding: 30rpx;display: flex;flex-direction: row;">
 				<text style="width:340rpx;height:40rpx;font-size:36rpx;font-family:Source Han Sans SC;font-weight:bold;color:rgba(44,45,45,1);line-height:42rpx; margin-left: 10rpx;">今日接单量</text>
 				<view>
@@ -29,7 +29,7 @@
 		</view>
 		
 		<!-- 专线车-今日接单量 -->
-		<view v-if="!buttonActive" style="width: 94%;height: 105rpx; background-color: #FFFFFF;margin-left: 22rpx; border-radius:20rpx;margin-top: 30rpx;">
+		<view v-if="!buttonActive" style="width: 94%;height: 105rpx; background-color: #FFFFFF;margin-left: 22rpx; border-radius:20rpx;margin-top: 30rpx;margin-bottom: 30rpx;">
 			<view style="padding: 30rpx;display: flex;flex-direction: row;">
 				<text style="width:340rpx;height:40rpx;font-size:36rpx;font-family:Source Han Sans SC;font-weight:bold;color:rgba(44,45,45,1);line-height:42rpx; margin-left: 10rpx;">今日接单量</text>
 				<view>
@@ -40,7 +40,7 @@
 		
 	
 		<!-- 接单信息-出租车 -->
-		<view v-if="buttonActive" v-for='(item, index) in orderArr'  :key='index' style="width: 94%;height: 475rpx; background-color: #FFFFFF;margin-left: 22rpx; border-radius:20rpx; margin-top: 30rpx;">
+		<view v-if="buttonActive" v-for='(item, index) in orderArr'  :key='index' style="width: 94%;padding-bottom: 30rpx; background-color: #FFFFFF;margin-left: 22rpx; border-radius:20rpx; margin-bottom: 30rpx;">
 			<view style="padding: 40rpx;display: flex;flex-direction: row;">
 				<text class="destinationArea" style="width:160rpx;">目的区域:</text>
 				<text class="destinationArea" style="margin-left: 10rpx;">{{item.destinationArea}}</text>
@@ -48,6 +48,14 @@
 			<view style="margin: -10rpx 44rpx;display: flex;flex-direction: row;">
 				<text class="userType">客户类型:</text>
 				<text class="userType">{{formatUserType(item.userType)}}</text>
+			</view>
+			<view style="margin: 20rpx 44rpx;display: flex;flex-direction: row;">
+				<text class="fontClass" style="width:140rpx;height:40rpx;">订单类型:</text>
+				<text class="fontClass" style="width:140rpx;height:40rpx;">{{item.orderType}}</text>
+			</view>
+			<view style="margin: 20rpx 44rpx;display: flex;flex-direction: row;" v-if="item.orderType == '预约'">
+				<text class="fontClass" style="width:140rpx;height:40rpx;">预约时间:</text>
+				<text class="fontClass" style="height:40rpx;">{{formatTime(item.appointmentTime)}}</text>
 			</view>
 			<view style="margin: 20rpx 44rpx;display: flex;flex-direction: row;">
 				<text class="fontClass" style="width:140rpx;height:40rpx;">预计里程:</text>
@@ -74,28 +82,32 @@
 		</view>
 		
 		<!-- 接单信息-专线车 -->
-		<view v-if="!buttonActive" v-for='(item, index) in specialLineArr'  :key='index' style="width: 94%;height: 475rpx; background-color: #FFFFFF;margin-left: 22rpx; border-radius:20rpx; margin-top: 30rpx;">
+		<view v-if="!buttonActive" v-for='(item, index) in specialLineArr'  :key='index' style="width: 94%;padding-bottom: 30rpx; background-color: #FFFFFF;margin-left: 22rpx; border-radius:20rpx; margin-top: 30rpx;">
 			<view style="padding: 40rpx;display: flex;flex-direction: row;">
-				<text class="destinationArea" style="width:160rpx;">目的区域:</text>
-				<text class="destinationArea" style="margin-left: 10rpx;">{{item.destinationArea}}</text>
+				<text class="destinationArea">专线名:</text>
+				<text class="destinationArea" style="margin-left: 10rpx;">{{item.StartAddress}}-{{item.EndAddress}}</text>
 			</view>
 			<view style="margin: -10rpx 44rpx;display: flex;flex-direction: row;">
 				<text class="userType">客户类型:</text>
-				<text class="userType">{{formatUserType(item.userType)}}</text>
+				<text class="userType">{{formatUserType(item.UserType)}}</text>
+			</view>
+			<view style="margin: 20rpx 44rpx;display: flex;flex-direction: row;">
+				<text class="userType">预约时间:</text>
+				<text class="userType1">{{formatTime(item.AppointmentTime)}}</text>
 			</view>
 			<view style="margin: 20rpx 44rpx;display: flex;flex-direction: row;">
 				<text class="fontClass" style="width:140rpx;height:40rpx;">预计里程:</text>
-				<text class="fontClass" style="width:140rpx;height:40rpx;">{{formatEstimateDistance(item.estimateDistance)}}</text>
+				<text class="fontClass" style="width:140rpx;height:40rpx;">{{formatEstimateDistance(item.EstimateDistance)}}</text>
 				<text class="fontClass" style="width:140rpx;height:40rpx;margin-left: 40rpx;">预计时长:</text>
-				<text class="fontClass" style="width:140rpx;height:40rpx;">{{formatEstimateTime(item.estimateTime)}}</text>  
+				<text class="fontClass" style="width:140rpx;height:40rpx;">{{formatEstimateTime(item.EstimateTime)}}</text>  
 			</view>
 			<view style="margin: -10rpx 40rpx;display: flex;flex-direction: row;">
 				<text class="fontClass" style="width:110rpx;height:40rpx;">上车点:</text>
-				<text class="fontClass" style="height:40rpx;">{{item.startAddress}}</text>
+				<text class="fontClass" style="height:40rpx;">{{item.StartAddress}}</text>
 			</view>
 			<view style="margin: 20rpx 40rpx;display: flex;flex-direction: row;">
 				<text class="fontClass" style="width:110rpx;height:40rpx;">下车点:</text>
-				<text class="fontClass" style="height:40rpx;">{{item.endAddress}}</text>
+				<text class="fontClass" style="height:40rpx;">{{item.EndAddress}}</text>
 			</view>
 			<view style="display: flex; margin-left: 4rpx;">
 				<button @click="specialLineReceipt(item)" style="width:278rpx;height:90rpx;border-radius:12rpx; margin-top: 20rpx; font-size: 34rpx;text-align: center;background-color: #ED766C; border: 1px solid #ED766C; color: #FFFFFF; align-items: center;">
@@ -111,6 +123,7 @@
 
 <script>
 	import Map from '../../common/my-openMap/openMap.js';
+	import utils from '@/components/shoyu-date/utils.filter.js';
 	export default {
 		data() {
 			return {
@@ -140,6 +153,8 @@
 				that.getOrder(that.userInfo.driverId,that.vehicleInfo.vehicleNumber);
 				that.getSpecialLineOrder(that.userInfo.driverId,that.vehicleInfo.vehicleNumber);
 				that.realTimeOrder(that.userInfo.driverId,that.vehicleInfo.vehicleNumber); 
+				//统计
+				that.getTaxiTodayOrderCount();
 			}
 		},
 		onUnload(){
@@ -215,20 +230,20 @@
 					mask:true
 				});
 				uni.request({
-					url:that.$taxi.Interface.ReceiptExpressOrder_Driver.value,
-					method:that.$taxi.Interface.ReceiptExpressOrder_Driver.method,
+					url:that.$CzcPrivate.Interface.ReceiptSpecialLineOrder_Driver.value,
+					method:that.$CzcPrivate.Interface.ReceiptSpecialLineOrder_Driver.method,
 					data:{
-						OrderNumber:item.orderNumber,
-						driverId:that.userInfo.driverId,
-						driverName:that.userInfo.userName,
-						driverPhone:that.userInfo.phoneNumber,
-						vehicleNumber:that.vehicleInfo.vehicleNumber,
+						OrderNumber:item.OrderNumber,
+						DriverId:that.userInfo.driverId,
+						DriverName:that.userInfo.userName,
+						DriverPhone:that.userInfo.phoneNumber,
+						VehicleNumber:that.vehicleInfo.vehicleNumber,
 					},
 					success:function(res){
 						console.log(res);
 						uni.hideLoading();
 						if(res.data.status){
-							that.showToast('接单成功');
+							that.showToast('接单成功,请到订单列表查看');
 						}else{
 							that.showToast(res.data.msg);
 						}
@@ -276,6 +291,29 @@
 				uni.showLoading({
 					mask:true
 				});
+				uni.request({
+					url:that.$CzcPrivate.Interface.RefuseSpecialLineOrderByOrderNumDriverID_Driver.value,
+					method:that.$CzcPrivate.Interface.RefuseSpecialLineOrderByOrderNumDriverID_Driver.method,
+					data:{
+						OrderNumber:item.OrderNumber,
+						DriverId:that.userInfo.driverId,
+					},
+					success:function(res){
+						//console.log(res);
+						uni.hideLoading();
+						if(res.data.status){
+							that.showToast('已拒绝');
+							that.getOrder(that.userInfo.driverId,that.vehicleInfo.vehicleNumber);
+						}else{
+							that.showToast(res.data.msg);
+						}
+					},
+					fail:function(res){
+						uni.hideLoading();
+						that.showToast('网络连接失败');
+						console.log(res);
+					}
+				})
 			},
 			
 			realTimeOrder:function(userId,vehicleNumber){
@@ -318,11 +356,11 @@
 			getSpecialLineOrder:function(userId,vehicleNumber){
 				let that = this;
 				uni.request({
-					url:that.$taxi.Interface.GetCanReceiptExpressOrder_Driver.value,
-					method:that.$taxi.Interface.GetCanReceiptExpressOrder_Driver.method,
+					url:that.$CzcPrivate.Interface.GetCanReceiptSpecialLineOrder_Driver.value,
+					method:that.$CzcPrivate.Interface.GetCanReceiptSpecialLineOrder_Driver.method,
 					data:{
-						driverId:userId,
-						vehicleNumber:vehicleNumber
+						DriverId:userId,
+						VehicleNumber:vehicleNumber 
 					},
 					success:function(res){
 						uni.hideLoading();
@@ -342,6 +380,26 @@
 				});
 			},
 			
+			getTaxiTodayOrderCount:function(){
+				let that = this;
+				var startDate = that.$myTime.getNowDate();
+				var endDate = that.$myTime.addDay(startDate,1);
+				uni.request({
+					url:that.$taxi.Interface.GetExpressOrderCountByDriverID_Driver.value,
+					method:that.$taxi.Interface.GetExpressOrderCountByDriverID_Driver.method,
+					data:{
+						driverId:that.userInfo.driverId,
+						orderStartTime: utils.timeTodate(that.$home.dateFormat.dateformat, startDate.getTime()),
+						orderEndTime:utils.timeTodate(that.$home.dateFormat.dateformat, endDate.getTime())
+					},
+					success:function(res){
+						console.log(res);
+					},
+					fail:function(res){
+						console.log(res);
+					}
+				})
+			},
 			
 			formatEstimateDistance:function(estimateDistance){
 				return estimateDistance + '公里';
@@ -352,23 +410,20 @@
 				return time
 			},
 			formatUserType:function(userType){
-				switch(userType){
-					case 0 : 
-						return '普通用户';
-						break;
-					case 1:
-						return '普通会员';
-						break;
-					case 2:
-						return '超级会员';
-						break;
-					case 3:
-						return '其他用户';
-						break;
-					case 9:
-						return '体验用户';
-						break;
+				if(userType == 0){
+					return '普通用户';
+				} else if (userType == 1){
+					return '普通会员';
+				} else if (userType == 2){
+					return '超级会员';
+				} else if (userType == 3){
+					return '其他用户';
+				} else if( userType == 9){
+					return '体验用户';
 				}
+			},
+			formatTime:function(time){
+				return time.replace('T',' ');
 			}
 		}
 	}
@@ -388,6 +443,13 @@
 	}
 	.userType{
 		width:140rpx;
+		height:40rpx;
+		font-size:30rpx;
+		font-family:Source Han Sans SC;
+		color:#666666;
+		line-height:36rpx;
+	}
+	.userType1{
 		height:40rpx;
 		font-size:30rpx;
 		font-family:Source Han Sans SC;
