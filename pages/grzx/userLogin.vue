@@ -8,11 +8,11 @@
 		<view class="inputContent" v-if="type==1">
 			<view class="inputItem phoneNum">
 				<image src="../../static/grzx/phone.png" class="iconClass1"></image>
-				<input type="number" placeholder="手机号码" maxlength="11" class="inputClass" data-key="phoneNumber" @input="inputChange1" />
+				<input type="number" placeholder="手机号码" maxlength="11" class="inputClass" name="phoneNumber" data-key="phoneNumber" @input="inputChange1" :value="phoneNumber"/>
 			</view>
 			<view class="inputItem Captcha">
 				<image src="../../static/grzx/password.png" class="iconClass2"></image>
-				<input type="password" placeholder="请输入密码" class="inputClass" data-key="password" @input="inputChange2" />
+				<input type="password" placeholder="请输入密码" class="inputClass" name="password" data-key="password" @input="inputChange2" :value="password"/>
 			</view>
 			<text class="switchClass" @click="switchClick">切换登录方式</text>
 			<image src="../../static/grzx/btnLogin.png" class="btnLogin" ></image>
@@ -23,11 +23,11 @@
 		<view class="inputContent" v-if="type==2">
 			<view class="inputItem phoneNum">
 				<image src="../../static/grzx/phone.png" class="iconClass1"></image>
-				<input type="number" placeholder="手机号码" maxlength="11" class="inputClass" data-key="phoneNumber" @input="inputChange1" />
+				<input type="number" placeholder="手机号码" maxlength="11" class="inputClass" name="phoneNumber" data-key="phoneNumber" @input="inputChange1" :value="phoneNumber"/>
 			</view>
 			<view class="inputItem Captcha">
 				<image src="../../static/grzx/code.png" class="iconClass2"></image>
-				<input type="number" placeholder="输入验证码" maxlength="6" class="inputClass" data-key="captchaCode" @input="inputChange2" />
+				<input type="number" placeholder="输入验证码" maxlength="4" class="inputClass" name="captchaCode" data-key="captchaCode" @input="inputChange2" :value="captchaCode"/>
 			</view>
 			<!-- 发送验证码 -->
 			<view class="getCode style1" @click="getCodeClick" id="Code">{{textCode}}</view>
@@ -190,7 +190,7 @@
 					},
 					method:'POST',
 					success(res) {
-						console.log(res,'res')
+						console.log(res,'res1')
 						uni.hideLoading();
 						if(res.data.data.userauditState=='1'||res.data.data.userauditState==1){
 							uni.setStorageSync('userInfo',res.data.data)
@@ -216,6 +216,23 @@
 								icon:'none'
 							})
 						}
+					}
+				})
+			},
+			//--------------获取车辆信息-------------
+			getvehicleInfo(id){
+				uni.request({
+					url:'',
+					data:{
+						driverId:id,
+					},
+					method:'POST',
+					success(res) {
+						console.log(res,'vehicleInfo')
+						uni.setStorageSync('vehicleInfo',{
+							vehicleType: '',
+							vehicleNumber: '',
+						})
 					}
 				})
 			},
@@ -276,6 +293,8 @@
 			},
 			//--------------切换登录方式-------------
 			switchClick(){
+				this.password='';
+				this.captchaCode='';
 				if(this.type==1){
 					this.type=2;
 				}else{
@@ -301,8 +320,8 @@
 		position: absolute;
 	}
 	.logoClass{		//logo的样式
-		width: 32.4%;
-		height: 233upx;
+		width: 34.4%;
+		height: 250upx;
 		top: 200upx;
 		left: 33.87%;
 		position: absolute;
@@ -328,7 +347,7 @@
 		top:324upx;
 		left: 4.8%;
 		background-color: white;
-		border-radius: 20upx;
+		border-radius: 50upx;
 	}
 	.inputItem{		//输入区域的样式
 		width: 87.6%;

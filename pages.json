@@ -78,8 +78,7 @@
 		{  
 			"path": "pages/grzx/selectOperation",  //选择登陆还是注册
 			"style": {
-				//"navigationStyle": "custom"
-				"navigationBarTitleText": "选择操作"
+				"navigationStyle": "custom"
 			}
 		},
 		{

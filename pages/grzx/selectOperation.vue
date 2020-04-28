@@ -1,14 +1,16 @@
 <template>
 	<view class="content" v-bind:style="{height:imgHeight+'px'}">
 		<!-- 背景图 -->
-		<!-- <image src="../../static/login/backgroudimg.png" style="width: 100%; position: absolute; bottom: 0; height: 100%;"></image>
-		<image src="../../static/login/back.png" class="returnClass" @click="returnClick"></image> -->
-		<view class="loginClass" @click="loginClick">
-			<text class="fontClass">登录</text>
+		<image src="../../static/grzx/backgroudimg.png" style="width: 100%; position: absolute; bottom: 0; height: 100%;"></image>
+		<image src="../../static/grzx/back.png" class="returnClass" @click="returnClick"></image>
+		<view class="boxClass">
+			<image src="../../static/grzx/btnLogin.png" class="loginClass" @click="loginClick"></image>
+			<text class="fontClass" @click="loginClick">登录</text>
+			
+			<!-- <image src="../../static/grzx/btnLogin.png" class="registerClass" ></image> -->
+			<text class="registerClass" @click="registerClick">注册</text>
 		</view>
-		<view class="registerClass" @click="registerClick">
-			<text class="fontClass">注册</text>
-		</view>
+		<image src="../../static/grzx/logo.png" class="logoClass"></image>
 	</view>
 </template>
 
@@ -34,7 +36,10 @@
 			},
 			//--------返回个人中心---------
 			returnClick(){		
-				uni.navigateBack();
+				//uni.navigateBack();
+				uni.switchTab({
+					url:'/pages/grzx/user'
+				});
 			},
 			//--------登录---------
 			loginClick(){
@@ -56,7 +61,7 @@
 	//该界面的全局样式
 	.content {
 		width: 100%;
-		height: 1000upx;
+		//height: 1000upx;
 		position: relative;
 	}
 	.returnClass{  //返回按钮
@@ -67,29 +72,46 @@
 		position: absolute;
 	}
 	.loginClass{ //登录
-		width: 90%;
-		height: 100upx;
-		top: 450upx;
-		left: 5%;
 		position: absolute;
-		text-align: center;
-		border-radius: 55upx;
-		background-color: #08AF2C;
+		top:200upx;
+		left: 0%;
+		width: 100%;
+		height: 180upx;
 	}
 	.registerClass{ //注册
+		position: absolute;
+		top:400upx;
+		left: 5%;
 		width: 90%;
 		height: 100upx;
-		top: 600upx;
-		left: 5%;
-		position: absolute;
+		line-height: 100upx;
+		border-radius: 20upx;
+		border: 1upx solid #666666;
+		color: #333333;
+		font-size: 36upx;
 		text-align: center;
-		border-radius: 55upx;
-		background-color: #13A0DE;
 	}
 	.fontClass{
 		color: #FFFFFF;
-		font-size: 40upx;
-		line-height: 100upx;
-		width: 100%;
+		font-size: 36upx;
+		position: absolute;
+		left: 45%;
+		top: 257upx;
+	}
+	.boxClass{
+		width: 90.4%;
+		height: 720upx;
+		position: absolute;
+		top:324upx;
+		left: 4.8%;
+		background-color: white;
+		border-radius: 50upx;
+	}
+	.logoClass{		//logo的样式
+		width: 34.4%;
+		height: 250upx;
+		top: 200upx;
+		left: 33.87%;
+		position: absolute;
 	}
 </style>
