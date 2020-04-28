@@ -135,7 +135,7 @@
 											}
 											if (that.vehicleType == "客车") {
 												uni.redirectTo({
-													url: '/pages/CTKYDriver/index',
+													url: '/pages/CTKYDriver/selectOrder',
 												})
 											}
 
