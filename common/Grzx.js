@@ -23,6 +23,12 @@ const Interface={
 		method:'POST',
 		pages: [],
 	},
+	getLoginCode:{
+		value:Url+'/api/person/getLoginCode',
+		name:'获取手机验证码',
+		method:'POST',
+		pages: [],
+	}
 }
 
 
