@@ -42,7 +42,7 @@ const dateFormat = {
 	dateformat : 'Y-m-d H:i:s'
 }
 
-//经纬度计算距离
+//经纬度计算距离单位米
 const EARTH_RADIUS = 6378137;
 
 function mathLonLatToDistance(startLon,startLat,endLon,endLat){

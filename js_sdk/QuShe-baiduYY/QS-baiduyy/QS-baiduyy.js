@@ -11,7 +11,7 @@ const getAudioUrl = 'https://tsn.baidu.com/text2audio';
 
 function getBDVoicToken() {
 	return new Promise((rs, rj) => {
-		console.log('准备访问接口获取语音token')
+		//console.log('准备访问接口获取语音token')
 		uni.request({ // 强烈建议此接口由后端访问并且维护token有效期，否则前端每次访问都会刷新token
 			//此url为专门插件测试预览用的key和secret key， 请替换为自己申请的key
 			url: 'https://openapi.baidu.com/oauth/2.0/token',
@@ -28,11 +28,11 @@ function getBDVoicToken() {
 				"content-type": "application/x-www-form-urlencoded"
 			}, */
 			success: (res) => {
-				console.log('访问成功');
+				//console.log('访问成功');
 				rs(res);
 			},
 			fail: (err) => {
-				console.log('访问失败');
+				//console.log('访问失败');
 				rj(err);
 			}
 		})
@@ -69,31 +69,31 @@ export default function openVoice(objs) { // 传入需转为语音的文本内�
 }
 
 function openVoiceFc(objs, returnAudio) {
-	console.log('准备获取语音tok');
+	//console.log('准备获取语音tok');
 	if(returnAudio) {
 		return new Promise((resolve, reject)=>{
 			getBDVoicToken().then(res => {
-				console.log('获取语音tok接口成功');
+				//console.log('获取语音tok接口成功');
 				if (res.data && res.data.access_token) {
-					console.log('token: ' + res.data.access_token);
+					//console.log('token: ' + res.data.access_token);
 					resolve(tts(objs, res.data.access_token, returnAudio));
 				} else {
-					console.log('获取语音tok接口为空');
+					//console.log('获取语音tok接口为空');
 					reject('获取语音tok接口为空');
 				}
 			}).catch(err => {
-				console.log('获取语音tok接口失败');
+				//console.log('获取语音tok接口失败');
 				reject(err||'获取语音tok接口失败');
 			})
 		})
 	}else{
 		getBDVoicToken().then(res => {
-			console.log('获取语音tok接口成功');
+			//console.log('获取语音tok接口成功');
 			if (res.data && res.data.access_token) {
-				console.log('token: ' + res.data.access_token);
+				//console.log('token: ' + res.data.access_token);
 				tts(objs, res.data.access_token);
 			} else {
-				console.log('获取语音tok接口为空');
+				//console.log('获取语音tok接口为空');
 			}
 		}).catch(err => {
 			console.log('获取语音tok接口失败');
@@ -139,22 +139,22 @@ function btts(param, options, audioCallback, lineUp, returnAudio) {
 	
 	if(returnAudio) {
 		audio.onEnded(() => {
-			console.log('音频播放结束');
-			console.log('销毁音频实例');
+			//console.log('音频播放结束');
+			//console.log('销毁音频实例');
 			audio.destroy(); //销毁音频实例
 			audio = null;
 		})
 		audio.onError((e)=>{
 			if (audioCallback && audioCallback.onError && typeof(audioCallback.onError) == 'function') audioCallback.onError(e);
-			console.log('音频播放错误: ' + JSON.stringify(e));
-			console.log('销毁音频实例');
+			//console.log('音频播放错误: ' + JSON.stringify(e));
+			//console.log('销毁音频实例');
 			audio.destroy(); //销毁音频实例
 			audio = null;
 		})
 		return audio;
 	}
 	audio.onPlay(() => {
-		console.log('音频播放开始');
+		//console.log('音频播放开始');
 		if (audioCallback && audioCallback.onPlay && typeof(audioCallback.onPlay) == 'function') audioCallback.onPlay();
 	})
 	audio.onPause(()=>{
@@ -176,26 +176,26 @@ function btts(param, options, audioCallback, lineUp, returnAudio) {
 		if (audioCallback && audioCallback.onSeeked && typeof(audioCallback.onSeeked) == 'function') audioCallback.onSeeked();
 	})
 	audio.onEnded(() => {
-		console.log('音频播放结束');
-		console.log('销毁音频实例');
+		//console.log('音频播放结束');
+		//console.log('销毁音频实例');
 		audio.destroy(); //销毁音频实例
 		audio = null;
 		if (audioCallback && audioCallback.onEnded && typeof(audioCallback.onEnded) == 'function') audioCallback.onEnded();
 		if (lineUp !== false) {
 			if (audioTeam.length > 0) {
-				console.log('队列中');
+				//console.log('队列中');
 				openVoiceFc(audioTeam[0]);
 				audioTeam.splice(0, 1);
 			} else {
-				console.log('队列为零');
+				//console.log('队列为零');
 				audioStartSwitch = false;
 			}
 		}
 	})
 	audio.onError((e)=>{
 		if (audioCallback && audioCallback.onError && typeof(audioCallback.onError) == 'function') audioCallback.onError(e);
-		console.log('音频播放错误: ' + JSON.stringify(e));
-		console.log('销毁音频实例');
+		//console.log('音频播放错误: ' + JSON.stringify(e));
+		//console.log('销毁音频实例');
 		audio.destroy(); //销毁音频实例
 		audio = null;
 	})

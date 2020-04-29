@@ -85,7 +85,7 @@ const Interface = {
 	},
 	GetExpressOrderCountByDriverID_Driver:{
 		value:Url + '/api/taxi/GetExpressOrderCountByDriverID_Driver',
-		name:'司机端-出租车-长按发车',
+		name:'司机端-出租车-统计接单量',
 		method:'POST',
 		page:[]
 	}

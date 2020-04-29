@@ -66,7 +66,7 @@
 					<!-- 出租车开始 -->
 					<view v-if="item.title == '出租车'" style="margin-top: 20rpx;">
 						<view class="booktime" v-if="item.orderType == '预约'">
-							预订日期：{{taxiFormatTime(item.appointmentTime)}}
+							预约日期：{{taxiFormatTime(item.appointmentTime)}}
 						</view>
 						<view class="order">
 							<view style="padding: 35rpx 30rpx;">
@@ -109,6 +109,9 @@
 									<view v-if="item.state == 4">
 										<button @click="toArrive(item)" style="background-color: #FC4646;color: #FFF;width: auto;">到达</button>
 									</view>
+									<view v-if="item.state == 5">
+										<button @click="toInputPrice(item)" style="background-color: #FC4646;color: #FFF;width: auto;">输入价格</button>
+									</view>
 								</view>
 							</view>
 						</view>
@@ -117,7 +120,7 @@
 					<!-- 专线车开始 -->
 					<view v-if="item.title == '专线车'" style="margin-top: 20rpx;">
 						<view class="booktime" v-if="item.orderType == '预约'">
-							预订日期：{{taxiFormatTime(item.appointmentTime)}}
+							预约日期：{{taxiFormatTime(item.appointmentTime)}}
 						</view>
 						<view class="order">
 							<view style="padding: 35rpx 30rpx;">
@@ -277,7 +280,7 @@
 					<!-- 出租车开始 -->
 					<view v-if="item.title == '出租车'" style="margin-top: 20rpx;">
 						<view class="booktime" v-if="item.orderType == '预约'">
-							预订日期：{{taxiFormatTime(item.appointmentTime)}}
+							预约日期：{{taxiFormatTime(item.appointmentTime)}}
 						</view>
 						<view class="order">
 							<view style="padding: 35rpx 30rpx;">
@@ -319,6 +322,9 @@
 									<view v-if="item.state == 4">
 										<button @click="toArrive(item)" style="background-color: #FC4646;color: #FFF;width: auto;">到达</button>
 									</view>
+									<view v-if="item.state == 5">
+										<button @click="toInputPrice(item)" style="background-color: #FC4646;color: #FFF;width: auto;">输入价格</button>
+									</view>
 								</view>
 							</view>
 						</view>
@@ -327,7 +333,7 @@
 					<!-- 专线车开始 -->
 					<view v-if="item.title == '专线车'" style="margin-top: 20rpx;">
 						<view class="booktime" v-if="item.orderType == '预约'">
-							预订日期：{{taxiFormatTime(item.appointmentTime)}}
+							预约日期：{{taxiFormatTime(item.appointmentTime)}}
 						</view>
 						<view class="order">
 							<view style="padding: 35rpx 30rpx;">
@@ -486,7 +492,7 @@
 					<!-- 出租车开始 -->
 					<view v-if="item.title == '出租车'" style="margin-top: 20rpx;">
 						<view class="booktime" v-if="item.orderType == '预约'">
-							预订日期：{{taxiFormatTime(item.appointmentTime)}}
+							预约日期：{{taxiFormatTime(item.appointmentTime)}}
 						</view>
 						<view class="order">
 							<view style="padding: 35rpx 30rpx;">
@@ -525,7 +531,7 @@
 					<!-- 专线车开始 -->
 					<view v-if="item.title == '专线车'" style="margin-top: 20rpx;">
 						<view class="booktime" v-if="item.orderType == '预约'">
-							预订日期：{{taxiFormatTime(item.appointmentTime)}}
+							预约日期：{{taxiFormatTime(item.appointmentTime)}}
 						</view>
 						<view class="order">
 							<view style="padding: 35rpx 30rpx;">
@@ -674,7 +680,7 @@
 					<!-- 出租车开始 -->
 					<view v-if="item.title == '出租车'" style="margin-top: 20rpx;">
 						<view class="booktime" v-if="item.orderType == '预约'">
-							预订日期：{{taxiFormatTime(item.appointmentTime)}}
+							预约日期：{{taxiFormatTime(item.appointmentTime)}}
 						</view>
 						<view class="order">
 							<view style="padding: 35rpx 30rpx;">
@@ -710,7 +716,7 @@
 					<!-- 专线车开始 -->
 					<view v-if="item.title == '专线车'" style="margin-top: 20rpx;">
 						<view class="booktime" v-if="item.orderType == '预约'">
-							预订日期：{{taxiFormatTime(item.appointmentTime)}}
+							预约日期：{{taxiFormatTime(item.appointmentTime)}}
 						</view>
 						<view class="order">
 							<view style="padding: 35rpx 30rpx;">
@@ -824,32 +830,21 @@
 		},
 		onLoad() {
 			let that = this;
-			that.userInfo = uni.getStorageSync('userInfo');
 		},
 		onShow() {
 			var that = this;
-		/* 	uni.getStorage({
-				key: "vehicleInfo",
-				success(res) {
-					if (res.data.carType == "出租车") {
-						that.carTypeid = 1;
-					}
-					if (res.data.carType == "客车") {
-						that.carTypeid = 2;
-					}
-					if (res.data.carType == "包车") {
-						that.carTypeid = 3;
-					}
-					if (res.data.carType == "旅游") {
-						that.carTypeid = 4;
-					}
-				}
-			}); */
-			that.getTaxiOrder();
+			that.userInfo = uni.getStorageSync('userInfo') || '';
+			if(that.userInfo == ''){
+				that.showToast('您未登录');
+			} else {
+				that.getTaxiOrder();
+			}
 		},
 		onPullDownRefresh() {
 			var that = this;
-			that.getTaxiOrder();
+			if(that.userInfo != ''){
+				that.getTaxiOrder();
+			}
 		},
 		methods: {
 			showToast: function(title, icon = 'none') {
@@ -1057,8 +1052,6 @@
 						that.showToast(res.data.msg);
 					}
 				}).catch(rej => {
-					console.log(res);
-					uni.hideLoading();
 					that.showToast('网络连接失败');
 				});
 			},
@@ -1094,7 +1087,6 @@
 					//成功回调
 					console.log(res);
 					if (res.data.status) {
-						uni.hideLoading();
 						if(item.title == '出租车'){
 							uni.navigateTo({
 								url: '../driver/confirmgetonCar?orderNumber=' + item.orderNumber
@@ -1111,8 +1103,6 @@
 					}
 				}).catch(rej => {
 					//失败回调
-					console.log(res);
-					uni.hideLoading();
 					that.showToast('网络连接失败');
 				});
 			},
@@ -1124,9 +1114,12 @@
 						method:method,
 						data:data,
 						success:function(res){
+							uni.hideLoading();
 							resolve(res);
 						},
 						fail:function(res){
+							uni.hideLoading();
+							console.log(url, res);
 							reject(res);
 						}
 					})
@@ -1171,7 +1164,12 @@
 					}
 				});
 			},
-
+			//输入价格
+			toInputPrice :function(item) {
+				uni.navigateTo({
+					url:'../driver/otherExpenses?orderNumber=' + item.orderNumber
+				});
+			},
 			// 出租车格式化
 			taxiFormatState: function(state) {
 				if (state == 6) {

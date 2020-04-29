@@ -61,49 +61,49 @@
 				<button class="downWork" :disabled="!IsWork" :class="IsWork?'BtnStyle':''" @click="changeWorkState(false)">下班</button>
 			</view>
 		</view>
-		
+
 		<!-- 客车提醒 -->
 		<scroll-view :scroll-y="true" style="height: 326rpx; margin-top: 20rpx;" v-if="vehicleType=='客车'">
-		<!-- 消息提示 -->
-		<view style="width: 94%;height: 185rpx; background-color: #FFFFFF;margin-left: 22rpx; border-radius:20rpx;">
-			<view style="padding: 40rpx;display: flex;flex-direction: row;">
-				<view>
-					<image style="width: 38rpx;height: 38rpx;" src="../../static/index/messageTips.png"></image>
+			<!-- 消息提示 -->
+			<view style="width: 94%; background-color: #FFFFFF;margin-left: 22rpx; border-radius:20rpx;">
+				<!-- <view style="padding: 40rpx;display: flex;flex-direction: row;">
+					<view>
+						<image style="width: 38rpx;height: 38rpx;" src="../../static/index/messageTips.png"></image>
+					</view>
+					<text style="height:40rpx;font-size:36rpx;font-family:Source Han Sans SC;font-weight:bold;color:rgba(44,45,45,1);line-height:42rpx; margin-left: 10rpx;">消息提示</text>
 				</view>
-				<text style="height:40rpx;font-size:36rpx;font-family:Source Han Sans SC;font-weight:bold;color:rgba(44,45,45,1);line-height:42rpx; margin-left: 10rpx;">消息提示</text>
+				<view style="margin: -12rpx 42rpx;display: flex;flex-direction: row;">
+					<text style="height:40rpx;font-size:32rpx;font-family:Source Han Sans SC;font-weight:300;color:rgba(44,45,45,1);line-height:42rpx;">{{Message}}</text>
+				</view> -->
 			</view>
-			<view style="margin: -12rpx 42rpx;display: flex;flex-direction: row;">
-				<text style="height:40rpx;font-size:32rpx;font-family:Source Han Sans SC;font-weight:300;color:rgba(44,45,45,1);line-height:42rpx;">{{Message}}</text>
-			</view>
-		</view>
-		<!-- 发车提示 -->
-		<view style="width: 94%;height: 185rpx; background-color: #FFFFFF;margin-left: 22rpx; border-radius:20rpx; margin-top: 20rpx; margin-bottom: 20rpx;">
-			<view style="padding: 40rpx;display: flex;flex-direction: row;">
-				<view>
-					<image style="width: 38rpx;height: 38rpx;" src="../../static/index/messageTips.png"></image>
+			<!-- 发车提示 -->
+			<view style="width: 94%;background-color: #FFFFFF;margin-left: 22rpx; border-radius:20rpx; margin-top: 20rpx; margin-bottom: 20rpx;">
+				<!-- <view style="padding: 40rpx;display: flex;flex-direction: row;">
+					<view>
+						<image style="width: 38rpx;height: 38rpx;" src="../../static/index/messageTips.png"></image>
+					</view>
+					<text style="height:40rpx;font-size:36rpx;font-family:Source Han Sans SC;font-weight:bold;color:rgba(44,45,45,1);line-height:42rpx; margin-left: 10rpx;">客运-发车提醒</text>
 				</view>
-				<text style="height:40rpx;font-size:36rpx;font-family:Source Han Sans SC;font-weight:bold;color:rgba(44,45,45,1);line-height:42rpx; margin-left: 10rpx;">客运-发车提醒</text>
+				<view style="margin: -12rpx 42rpx;display: flex;flex-direction: row;">
+					<text style="height:40rpx;font-size:32rpx;font-family:Source Han Sans SC;font-weight:300;color:rgba(44,45,45,1);line-height:42rpx;">{{kyMessage}}</text>
+				</view> -->
 			</view>
-			<view style="margin: -12rpx 42rpx;display: flex;flex-direction: row;">
-				<text style="height:40rpx;font-size:32rpx;font-family:Source Han Sans SC;font-weight:300;color:rgba(44,45,45,1);line-height:42rpx;">{{kyMessage}}</text>
-			</view>
-		</view>
 		</scroll-view>
 		<!-- 出租车提醒 -->
-		<view v-if="vehicleType=='出租车'" style="width: 94%;height: 185rpx; background-color: #FFFFFF;margin-left: 22rpx; border-radius:20rpx;margin-top: 20rpx;">
-			<view style="padding: 40rpx;display: flex;flex-direction: row;">
+		<view v-if="vehicleType=='出租车'" style="width: 94%;background-color: #FFFFFF;margin-left: 22rpx; border-radius:20rpx;margin-top: 20rpx;">
+			<!-- <view style="padding: 40rpx;display: flex;flex-direction: row;">
 				<view>
 					<image style="width: 38rpx;height: 38rpx;" src="../../static/index/messageTips.png"></image>
 				</view>
-				<text style="height:40rpx;font-size:36rpx;font-family:Source Han Sans SC;font-weight:bold;color:rgba(44,45,45,1);line-height:42rpx; margin-left: 10rpx;">出租车-订单提醒</text>
+				<text style="font-size:36rpx;font-family:Source Han Sans SC;font-weight:bold;color:rgba(44,45,45,1);line-height:42rpx; margin-left: 10rpx;">出租车-订单提醒</text>
 			</view>
-			<view style="margin: -12rpx 42rpx;display: flex;flex-direction: row;">
-				<text style="height:40rpx;font-size:32rpx;font-family:Source Han Sans SC;font-weight:300;color:rgba(44,45,45,1);line-height:42rpx;">{{czcMessage}}</text>
-			</view>
+			<view style="margin: -12rpx 42rpx;display: flex;flex-direction: row;padding-bottom: 40rpx;">
+				<text style="font-size:32rpx;font-family:Source Han Sans SC;font-weight:300;color:rgba(44,45,45,1);line-height:42rpx;">{{czcMessage}}</text>
+			</view> -->
 		</view>
 		<!-- 包车提醒 -->
-		<view v-if="vehicleType=='包车'" style="width: 94%;height: 185rpx; background-color: #FFFFFF;margin-left: 22rpx; border-radius:20rpx;margin-top: 20rpx;">
-			<view style="padding: 40rpx;display: flex;flex-direction: row;">
+		<view v-if="vehicleType=='包车'" style="width: 94%;background-color: #FFFFFF;margin-left: 22rpx; border-radius:20rpx;margin-top: 20rpx;">
+			<!-- <view style="padding: 40rpx;display: flex;flex-direction: row;">
 				<view>
 					<image style="width: 38rpx;height: 38rpx;" src="../../static/index/messageTips.png"></image>
 				</view>
@@ -111,7 +111,7 @@
 			</view>
 			<view style="margin: -12rpx 42rpx;display: flex;flex-direction: row;">
 				<text style="height:40rpx;font-size:32rpx;font-family:Source Han Sans SC;font-weight:300;color:rgba(44,45,45,1);line-height:42rpx;">{{bcMessage}}</text>
-			</view>
+			</view> -->
 		</view>
 	</view>
 </template>
@@ -124,31 +124,31 @@
 				Work: '所属工作:',
 				vehicleType: '',
 				Message: '丰泽区云鹿路口有一名乘客等待上车...',
-				kyMessage:'您有一个班次，即将发车，请做好发车准备',
-				czcMessage:'您有一个订单，即将到达预订时间，请及...',
-				bcMessage:'您有一个包车行程，即将到达预订时间...',
+				kyMessage: '您有一个班次，即将发车，请做好发车准备',
+				czcMessage: '您有一个订单，即将到达预订时间，请及时到达出发地',
+				bcMessage: '您有一个包车行程，即将到达预订时间...',
 				IsWork: false,
-				userInfo:''
+				userInfo: ''
 			}
 		},
 		onLoad() {
 			let that = this;
 			//添加司机缓存,可删
-			uni.setStorageSync('userInfo',{
+			/* uni.setStorageSync('userInfo',{
 				driverId:2000003,
 				userName:'测试用户',
 				phoneNumber:'15297556076'
-			});
-			that.userInfo = uni.getStorageSync('userInfo');
+			}); */
 		},
 		onShow() {
 			var that = this;
+			that.userInfo = uni.getStorageSync('userInfo') || '';
 			uni.getStorage({
 				key: 'vehicleInfo',
 				success(res) {
 					that.vehicleType = res.data.vehicleType;
 					if (res.data != '') {
-						getApp().globalData.vehicleNumber=res.data.vehicleNumber;
+						getApp().globalData.vehicleNumber = res.data.vehicleNumber;
 						getApp().globalData.constantly();
 						that.IsWork = true;
 					}
@@ -176,18 +176,18 @@
 						success: function(res) {
 							if (res.confirm) {
 								uni.showLoading({
-									mask:true
+									mask: true
 								});
 								uni.request({
-									url:that.$home.Interface.GooffWork_Driver.value,
-									method:that.$home.Interface.GooffWork_Driver.method,
-									data:{
+									url: that.$home.Interface.GooffWork_Driver.value,
+									method: that.$home.Interface.GooffWork_Driver.method,
+									data: {
 										driverId: that.userInfo.driverId
 									},
-									success:function(res){
+									success: function(res) {
 										console.log(res);
 										uni.hideLoading();
-										if(res.data.status){
+										if (res.data.status) {
 											that.IsWork = iswork;
 											//点击下班变色移除缓存
 											uni.removeStorage({
@@ -198,24 +198,24 @@
 													getApp().globalData.closeUpload();
 												}
 											});
-										}else{
+										} else {
 											uni.showToast({
-												title:res.data.msg,
-												icon:'none'
+												title: res.data.msg,
+												icon: 'none'
 											})
 										}
 									},
-									fail:function(res){
+									fail: function(res) {
 										console.log(res);
 										uni.hideLoading();
 										uni.showToast({
-											title:'网络连接失败',
-											icon:'none'
+											title: '网络连接失败',
+											icon: 'none'
 										})
 									}
 								})
-								
-								
+
+
 							} else if (res.cancel) {
 
 							}
@@ -237,11 +237,16 @@
 						icon: "none"
 					})
 				}
+				if(that.userInfo == ''){
+					uni.showToast({
+						title:'请先登录',
+						icon:'none'
+					});
+					return;
+				}
 				if (that.vehicleType == '') {
 					uni.navigateTo({
 						url: url + '?vehicleType=' + vehicleType,
-						animationType: 'pop-in',
-						animationDuration: 200
 					});
 				} else if (that.vehicleType == vehicleType) {
 					if (that.vehicleType == "出租车") {

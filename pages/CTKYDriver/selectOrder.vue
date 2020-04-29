@@ -34,7 +34,7 @@
 							<view style="padding-left: 30rpx;">未检：{{item.noCheckedNum}}人</view>
 						</view>
 						<view style="padding: 40rpx 0 20rpx 0;" @click="depart">
-							<button style="height:90rpx;background:linear-gradient(270deg,rgba(249,92,117,1),rgba(250,116,101,1));border-radius:12rpx;color: #FFF;">发车</button>
+							<button style="height:90rpx;background:linear-gradient(270deg,rgba(249,92,117,1),rgba(250,116,101,1));border-radius:12rpx;color: #FFF;">查看详情</button>
 						</view>
 					</view>
 				</view>
@@ -71,8 +71,26 @@
 						noCheckedNum: 0
 					}
 				],
-
+				
+				
+				userInfo:'',
+				vehicleInfo:'',
 			}
+		},
+		onLoad() {
+			let that = this;
+			that.userInfo = uni.getStorageSync('userInfo') || '';
+			that.vehicleInfo = uni.getStorageSync("vehicleInfo")||'';
+			if(that.userInfo == ''){
+				that.showToast('未取得用户信息');
+			}else if(that.vehicleInfo == ''){
+				that.showToast('未取得车辆信息');
+			}else {
+				that.getRunScheduleInfo();
+			}
+		},
+		onShow() {
+			
 		},
 		mounted() {
 			var that = this;
@@ -83,15 +101,50 @@
 			})
 		},
 		methods: {
+			showToast:function(title,icon='none'){
+				uni.showToast({
+					title:title,
+					icon:icon
+				});
+			},
 			back: function() {
+				let that = this;
 				uni.switchTab({
 					url: '/pages/index/index',
 				})
 			},
-			depart() {
+			depart:function() {
+				let that = this;
 				uni.navigateTo({
 					url: '/pages/CTKYDriver/index',
 				})
+			},
+			getRunScheduleInfo:function(){
+				let that = this;
+				uni.showLoading({
+					mask:true
+				});
+				uni.request({
+					url:that.$Ky.Interface.GetRunScheduleInfoByVheicleNumberDriverPhone.value,
+					method:that.$Ky.Interface.GetRunScheduleInfoByVheicleNumberDriverPhone.method,
+					data:{
+						vehicleNumber : that.vehicleInfo.vehicleNumber,
+						phoneNumber : that.userInfo.phoneNumber,
+					},
+					success:function(res){
+						uni.hideLoading();
+						if(res.data.status){
+							
+						} else {
+							that.showToast('未取得订单信息');
+						}
+					},
+					fail:function(res){
+						uni.hideLoading();
+						console.log(res);
+						that.showToast('网络连接失败');
+					}
+				});
 			},
 		}
 	}
