@@ -65,6 +65,9 @@
 			},
 			finish() {
 				var that = this;
+				uni.showLoading({
+					mask:true
+				});
 				if (this.FactPayPrice > 0) {
 					uni.request({
 						url: that.$taxi.Interface.InputAmountExpressOrder_Driver.value,
@@ -75,12 +78,17 @@
 							payType: this.payType,
 						},
 						success(res) {
-							console.log(res);
-							uni.redirectTo({
-								url: '/pages/driver/orderComplete',
-							})
+							uni.hideLoading();
+							if(res.data.status){
+								uni.redirectTo({
+									url: '/pages/driver/orderComplete',
+								});
+							}else{
+								console.log(res);
+							}
 						},
 						fail: function(res) {
+							uni.hideLoading();
 							that.showToast('网络连接失败');
 							console.log(res);
 						}

@@ -157,6 +157,9 @@
 				waitTime: '0分钟', //等待时长
 				initialMin:'',
 				totalCost: '', //总价
+				
+				setoutTime:'',//出发去接旅客的时间
+				runTime:'',//开始执行的时间
 			}
 		},
 		onLoad(option) {
@@ -219,6 +222,8 @@
 								that.estimatePrice = data.estimatePrice;
 								that.estimateDistance = data.estimateDistance;
 								that.estimateTime = data.estimateTime;
+								that.runTime = data.runTime.replace('T', ' ').replace(/-/g,'/');
+								that.setoutTime = data.setoutTime.replace('T', ' ').replace(/-/g,'/');
 								resolve(res);
 							} else {
 								that.showToast(res.data.msg);
@@ -259,16 +264,13 @@
 							that.realGetOrderDetail();
 							//规划司机到出发地路程
 							that.setToStart();
-							console.log(new Date(data.receiptTime.replace('T', ' ').replace(/-/g,'/')));
-							that.mathwaitTime(new Date(data.receiptTime.replace('T', ' ').replace(/-/g,'/'))); 
+							that.mathWaitTime(new Date(that.setoutTime)); 
 						} else if (that.state == 3) {
 							//司机已到出发地
 							//预留
 						} else if (that.state == 4) {
 							//订单执行中（接到旅客）
 							that.setConfirmgetonCar();
-							console.log(new Date(data.runTime.replace('T', ' ').replace(/-/g,'/'))); 
-							that.mathwaitTime(new Date(data.runTime.replace('T', ' ').replace(/-/g,'/'))); 
 						} else if (that.state == 5) {
 							//待支付
 
@@ -332,7 +334,9 @@
 					},
 					success:function(res){
 						uni.hideLoading();
+						let data = res.data.data;
 						if(res.data.status){
+							that.runTime = data.runTime.replace('T', ' ').replace(/-/g,'/');
 							that.setConfirmgetonCar();
 							that.state = 4;
 							Map.openMap(that.endLat, that.endLon, that.endAddress, 'gcj02');
@@ -355,8 +359,7 @@
 				let that = this;
 				clearInterval(that.orderInterval);
 				that.orderInterval = 0;
-				clearInterval(that.waitTimeInterval);
-				that.waitTimeInterval = 0;
+				that.mathWaitTime(new Date(that.runTime));
 				that.polyline = []; 
 				uni.getLocation({
 					type:'gcj02',
@@ -605,20 +608,20 @@
 				var poiName = value.country=='undefined'?'': value.poiName;//POI
 				return country + province + city + district + street + streetNum + poiName;
 			},
-			mathwaitTime:function(startTime){
+			mathWaitTime:function(startTime){
 				let that = this;
 			    var initialSec = new Date().getTime() - startTime.getTime(); 
 				that.initialMin = parseInt(initialSec / 1000 / 60) ;
-				that.waitTime = (parseInt(that.initialMin/60) + '小时') + (that.initialMin % 60 + '分钟') 
-				if(that.waitTimeInterval == 0){
-					that.waitTimeInterval = setInterval(function(){
-						that.initialMin = that.initialMin + 1;
-						that.waitTime = (parseInt(that.initialMin/60) + '小时') + (that.initialMin % 60 + '分钟');
-						that.alreadyTime = (parseInt(that.initialMin/60) + '小时') + (that.initialMin % 60 + '分钟')
-						//						that.waitTime = that.initialMin / 60 > 0 ? (parseInt(that.initialMin/60) + '小时') + (that.initialMin % 60 + '分钟') : that.initialMin + '分钟'
-					},60000);
-					console.log('打开定时器：' + that.waitTimeInterval);
-				}
+				that.waitTime = (parseInt(that.initialMin/60) + '小时') + (that.initialMin % 60 + '分钟'); 
+				that.alreadyTime = (parseInt(that.initialMin/60) + '小时') + (that.initialMin % 60 + '分钟');
+				clearInterval(that.waitTimeInterval);
+				that.waitTimeInterval = setInterval(function(){
+					that.initialMin = that.initialMin + 1;
+					that.waitTime = (parseInt(that.initialMin/60) + '小时') + (that.initialMin % 60 + '分钟');
+					that.alreadyTime = (parseInt(that.initialMin/60) + '小时') + (that.initialMin % 60 + '分钟')
+					//						that.waitTime = that.initialMin / 60 > 0 ? (parseInt(that.initialMin/60) + '小时') + (that.initialMin % 60 + '分钟') : that.initialMin + '分钟'
+				},60000);
+				console.log('打开定时器：' + that.waitTimeInterval);
 			}
 			//计算等待时间
 		}

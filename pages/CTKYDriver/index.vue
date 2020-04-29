@@ -271,6 +271,12 @@
 				
 			}, */
 			
+			mathDistance:function(){
+				
+				
+				
+			},
+			
 			
 			//调用语音合成接口
 			baiduPlayer: function(tex) {

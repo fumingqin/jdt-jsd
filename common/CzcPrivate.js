@@ -82,6 +82,12 @@ const Interface = {
 		name:'司机端-专线车-长按发车',
 		method:'POST',
 		page:[]
+	},
+	GetSpecialOrderCountByDriverID_Driver:{
+		value:Url + '/api/SpecialLine/GetSpecialOrderCountByDriverID_Driver',
+		name:'司机端-专线车-统计接单量',
+		method:'POST',
+		page:[]
 	}
 }
 

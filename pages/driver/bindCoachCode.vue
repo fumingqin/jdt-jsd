@@ -97,7 +97,6 @@
 			},
 			getCode(val) {
 				this.vehicleNumber = val;
-				console.log(val + '车牌');
 			},
 			Confirm(e) {
 				var that = this;

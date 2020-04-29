@@ -152,7 +152,6 @@
 						driverId : that.userInfo.driverId
 					},
 					success:function(res){
-						console.log(res);
 						if(res.data.status){
 							let data = res.data.data;
 							that.startLon = data.startLon;

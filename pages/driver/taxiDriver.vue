@@ -20,22 +20,28 @@
 		
 		<!-- 出租车-今日接单量 -->
 		<view v-if="buttonActive" style="width: 94%;height: 105rpx; background-color: #FFFFFF;margin-left: 22rpx; border-radius:20rpx;margin-top: 30rpx;margin-bottom: 30rpx;">
-			<view style="padding: 30rpx;display: flex;flex-direction: row;">
-				<text style="width:340rpx;height:40rpx;font-size:36rpx;font-family:Source Han Sans SC;font-weight:bold;color:rgba(44,45,45,1);line-height:42rpx; margin-left: 10rpx;">今日接单量</text>
-				<view>
-					<image style="width: 14rpx;height: 26rpx; margin-left: 270rpx;" src="../../static/driver/right.png"></image>
+			<view style="padding: 30rpx;display: flex;justify-content: space-between;align-items: center;">
+				<text style="font-size:36rpx;font-family:Source Han Sans SC;font-weight:bold;color:rgba(44,45,45,1);line-height:42rpx;">今日班次量</text>
+				<view style="display: flex;align-items: center;">
+					<view style="margin:0 20rpx;width: 40rpx;height: 40rpx;border-radius: 100px;background: linear-gradient(270deg,rgba(250,116,101,1),rgba(249,92,117,1));font-size: 26rpx;color: #FFF;text-align: center;font-weight: 600;">
+						{{taxiOrderNum}}
+					</view>
+					<!-- <image style="width: 14rpx;height: 26rpx;" src="../../static/driver/right.png"></image> -->
 				</view>
-			</view> 
+			</view>
 		</view>
 		
 		<!-- 专线车-今日接单量 -->
 		<view v-if="!buttonActive" style="width: 94%;height: 105rpx; background-color: #FFFFFF;margin-left: 22rpx; border-radius:20rpx;margin-top: 30rpx;margin-bottom: 30rpx;">
-			<view style="padding: 30rpx;display: flex;flex-direction: row;">
-				<text style="width:340rpx;height:40rpx;font-size:36rpx;font-family:Source Han Sans SC;font-weight:bold;color:rgba(44,45,45,1);line-height:42rpx; margin-left: 10rpx;">今日接单量</text>
-				<view>
-					<image style="width: 14rpx;height: 26rpx; margin-left: 270rpx;" src="../../static/driver/right.png"></image>
+			<view style="padding: 30rpx;display: flex;justify-content: space-between;align-items: center;">
+				<text style="font-size:36rpx;font-family:Source Han Sans SC;font-weight:bold;color:rgba(44,45,45,1);line-height:42rpx;">今日班次量</text>
+				<view style="display: flex;align-items: center;">
+					<view style="margin:0 20rpx;width: 40rpx;height: 40rpx;border-radius: 100px;background: linear-gradient(270deg,rgba(250,116,101,1),rgba(249,92,117,1));font-size: 26rpx;color: #FFF;text-align: center;font-weight: 600;">
+						{{specialLineOrderNum}}
+					</view>
+					<!-- <image style="width: 14rpx;height: 26rpx;" src="../../static/driver/right.png"></image> -->
 				</view>
-			</view> 
+			</view>
 		</view>
 		
 	
@@ -132,7 +138,9 @@
 				getOrderInterval:0,
 				userInfo:'',
 				vehicleInfo:'',
-				buttonActive:true
+				buttonActive:true,
+				taxiOrderNum:0,
+				specialLineOrderNum:0
 			}
 		},
 		onLoad() {
@@ -155,6 +163,7 @@
 				that.realTimeOrder(that.userInfo.driverId,that.vehicleInfo.vehicleNumber); 
 				//统计
 				that.getTaxiTodayOrderCount();
+				that.getSpecialTodayOrderCount();
 			}
 		},
 		onUnload(){
@@ -393,7 +402,37 @@
 						orderEndTime:utils.timeTodate(that.$home.dateFormat.dateformat, endDate.getTime())
 					},
 					success:function(res){
+						if(res.data.status){
+							let data = res.data.data[0];
+							that.taxiOrderNum = data == undefined ? 0 : data.orderNum;
+						} else {
+							console.log(res);
+						}
+					},
+					fail:function(res){
 						console.log(res);
+					}
+				})
+			},
+			getSpecialTodayOrderCount:function(){
+				let that = this;
+				var startDate = that.$myTime.getNowDate();
+				var endDate = that.$myTime.addDay(startDate,1);
+				uni.request({
+					url:that.$CzcPrivate.Interface.GetSpecialOrderCountByDriverID_Driver.value,
+					method:that.$CzcPrivate.Interface.GetSpecialOrderCountByDriverID_Driver.method,
+					data:{
+						driverId:that.userInfo.driverId,
+						orderStartTime: utils.timeTodate(that.$home.dateFormat.dateformat, startDate.getTime()),
+						orderEndTime:utils.timeTodate(that.$home.dateFormat.dateformat, endDate.getTime())
+					},
+					success:function(res){
+						if(res.data.status){
+							let data = res.data.data[0];
+							that.specialLineOrderNum = data == undefined?0:data.orderNum;
+						} else {
+							console.log(res);
+						}
 					},
 					fail:function(res){
 						console.log(res);
@@ -402,14 +441,13 @@
 			},
 			
 			formatEstimateDistance:function(estimateDistance){
-				return estimateDistance + '公里';
+				return parseFloat(estimateDistance).toFixed(1) + '公里';
 			},
 			formatEstimateTime:function(estimateTime){
 				let time = (estimateTime/60) > 1 ? ((estimateTime/60) +'小时') :  (estimateTime + '分钟');
-				
-				return time
+				return time 
 			},
-			formatUserType:function(userType){
+			formatUserType:function(userType){ 
 				if(userType == 0){
 					return '普通用户';
 				} else if (userType == 1){
