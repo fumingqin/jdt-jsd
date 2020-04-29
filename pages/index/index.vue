@@ -134,7 +134,11 @@
 		onLoad() {
 			let that = this;
 			//添加司机缓存,可删
-			uni.setStorageSync("userInfo",{driverId:'2000001',userName:'张三',phoneNumber:'15860185985'});
+			uni.setStorageSync('userInfo',{
+				driverId:2000003,
+				userName:'测试用户',
+				phoneNumber:'15297556076'
+			});
 			that.userInfo = uni.getStorageSync('userInfo');
 		},
 		onShow() {

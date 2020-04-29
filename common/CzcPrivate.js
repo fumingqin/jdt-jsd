@@ -2,7 +2,7 @@
 // 示例
 
 //接口域名
-const Url = 'http://111.231.109.113:8002';
+const Url = 'http://111.231.109.113:8004';
 
 const InterfaceAddress = [
 	//根据起终点经纬度获取线路规划
@@ -29,54 +29,60 @@ const delayTime = {
 
 //接口对象
 const Interface = {
-	GetCanReceiptExpressOrder_Driver: {
-		value: Url + '/api/taxi/GetCanReceiptExpressOrder_Driver',
-		name: '司机端-出租车-获取可接订单',
+	GetCanReceiptSpecialLineOrder_Driver: {
+		value: Url + '/api/SpecialLine/GetCanReceiptSpecialLineOrder_Driver',
+		name: '司机端-专线车-获取可接订单',
 		method: 'POST', //GET-POST
 		pages: []
 	},
-	ReceiptExpressOrder_Driver: {
-		value: Url + '/api/taxi/ReceiptExpressOrder_Driver',
-		name: '司机端-出租车-接单',
+	ReceiptSpecialLineOrder_Driver: {
+		value: Url + '/api/SpecialLine/ReceiptSpecialLineOrder_Driver',
+		name: '司机端-专线车-接单',
 		method: 'POST', //GET-POST
 		pages: []
 	},
-	CancelExpressOrderByOrderNum_Driver: {
-		value: Url + '/api/taxi/CancelExpressOrderByOrderNum_Driver',
-		name: '司机端-出租车-取消订单',
+	CancelSpecialLineOrderByOrderNum_Driver: {
+		value: Url + '/api/SpecialLine/CancelSpecialLineOrderByOrderNum_Driver',
+		name: '司机端-专线车-取消订单',
 		method: 'POST', //GET-POST
 		pages: []
 	},
-	RefuseExpressOrderByOrderNumDriverID_Driver: {
-		value: Url + '/api/taxi/RefuseExpressOrderByOrderNumDriverID_Driver',
-		name: '司机端-出租车-拒接订单',
+	RefuseSpecialLineOrderByOrderNumDriverID_Driver: {
+		value: Url + '/api/SpecialLine/RefuseSpecialLineOrderByOrderNumDriverID_Driver',
+		name: '司机端-专线车-拒接订单',
 		method: 'POST', //GET-POST
 		pages: []
 	},
-	InputAmountExpressOrder_Driver: {
-		value: Url + '/api/taxi/InputAmountExpressOrder_Driver',
-		name: '司机端-出租车-订单支付',
+	/* InputAmountExpressOrder_Driver: {
+		value: Url + '/api/SpecialLine/InputAmountExpressOrder_Driver',
+		name: '司机端-专线车-司机填入价格',
 		method: 'POST', //GET-POST
 		pages: []
-	},
-	GetExpressOrderByOrderNumber_Driver:{
-		value:Url + '/api/taxi/GetExpressOrderByOrderNumber_Driver',
-		name:'司机端-出租车-根据司机Id和订单Id获取订单详情',
+	}, */
+	GetSpecialLineOrderByOrderNumber_Driver:{
+		value:Url + '/api/SpecialLine/GetSpecialLineOrderByOrderNumber_Driver',
+		name:'司机端-专线车-根据司机Id和订单Id获取订单详情',
 		method:'POST',
 		page:["/dirver/confirmgetonCar"]
 	},
-	RunExpressOrder_Driver:{
-		value:Url + '/api/taxi/RunExpressOrder_Driver',
-		name:'司机端-出租车-长按按钮出发',
+	RunSpecialLineOrder_Driver:{
+		value:Url + '/api/SpecialLine/RunSpecialLineOrder_Driver',
+		name:'司机端-专线车-长按确认乘客上车',
 		method:'POST',
 		page:[""]
 	},
-	FinishExpressOrder_Driver:{
-		value:Url + '/api/taxi/FinishExpressOrder_Driver',
-		name:'司机端-出租车-长按到达目的地',
+	FinishSpecialLineOrder_Driver:{
+		value:Url + '/api/SpecialLine/FinishSpecialLineOrder_Driver',
+		name:'司机端-专线车-长按到达目的地',
 		method:'POST',
 		page:[""]
 	},
+	SetoutSpecialLineOrder_Driver:{
+		value:Url + '/api/SpecialLine/SetoutSpecialLineOrder_Driver',
+		name:'司机端-专线车-长按发车',
+		method:'POST',
+		page:[]
+	}
 }
 
 // 接口声明区

@@ -193,6 +193,7 @@
 		}, {
 			"path": "pages/index/Order",
 			"style": {
+				"enablePullDownRefresh":true,
 				"navigationBarTitleText": "订单",
 				"navigationBarBackgroundColor": "#F6F8FE"
 			}
@@ -272,8 +273,16 @@
         }
         ,{
             "path" : "pages/ZXC/CzcPrivate",
-            "style" : {}
-        }
+            "style" : {
+				"navigationStyle": "custom"
+			}
+        },
+		{
+			"path" : "pages/ZXC/orderDetail",
+			"style" : {
+				"navigationStyle": "custom"
+			}
+		}
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

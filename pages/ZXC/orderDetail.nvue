@@ -83,7 +83,7 @@
 </template>
 
 <script>
-	import $taxi from '../../common/Czc.js';
+	import $CzcPrivate from '../../common/CzcPrivate.js';
 	import uniIcons from "@/components/uni-icons/uni-icons.vue";
 	export default {
 		components: {
@@ -93,8 +93,8 @@
 			return {
 				scale: 14,
 				orderNumber:'',
-				longitude: "118.600608", //地图中心点经度
-				latitude: "24.889217", //地图中心点纬度
+				longitude: "", //地图中心点经度
+				latitude: "", //地图中心点纬度
 				points: [],
 				polyline: [],
 				markers: [],
@@ -145,32 +145,30 @@
 			getOrderDetail:function(){
 				let that = this;
 				uni.request({
-					url:$taxi.Interface.GetExpressOrderByOrderNumber_Driver.value,
-					method:$taxi.Interface.GetExpressOrderByOrderNumber_Driver.method,
+					url:$CzcPrivate.Interface.GetSpecialLineOrderByOrderNumber_Driver.value,
+					method:$CzcPrivate.Interface.GetSpecialLineOrderByOrderNumber_Driver.method,
 					data:{
-						ordernumber : that.orderNumber,
-						driverId : that.userInfo.driverId
+						Ordernumber : that.orderNumber,
+						DriverId : that.userInfo.driverId
 					},
 					success:function(res){
 						console.log(res);
 						if(res.data.status){
-							let data = res.data.data;
-							that.startLon = data.startLon;
-							that.startLat = data.startLat;
-							that.endLon = data.endLon;
-							that.endLat = data.endLat;
+							let data = res.data.data[0];
+							that.startLon = data.StartLon;
+							that.startLat = data.StartLat;
+							that.endLon = data.EndLon;
+							that.endLat = data.EndLat;
 							that.setMarker(1, that.startLon, that.startLat, '../../static/driver/Start.png');
 							that.setMarker(2, that.endLon, that.endLat, '../../static/driver/End.png');
 							that.longitude = that.startLon;
-							that.startLat = that.startLat; 
-							that.state = data.state;
-							that.factPayPrice = data.factPayPrice;
-							that.userType = data.userType;
-							that.estimateDistance = data.estimateDistance;
-							that.runTime = new Date(data.runTime.replace('T', ' ').replace(/-/g,'/')); 
-							that.finishTime = new Date(data.finishTime.replace('T', ' ').replace(/-/g,'/'));
-							console.log(that.runTime);
-							console.log(that.finishTime);
+							that.latitude = that.startLat; 
+							that.state = data.State;
+							that.factPayPrice = data.FactPayPrice;
+							that.userType = data.UserType;
+							that.estimateDistance = data.EstimateDistance;
+							that.runTime = new Date(data.RunTime.replace('T', ' ').replace(/-/g,'/')); 
+							that.finishTime = new Date(data.FinishTime.replace('T', ' ').replace(/-/g,'/'));
 							
 							that.waitTime = that.mathTime(that.runTime,that.finishTime);
 							
@@ -252,7 +250,18 @@
 				that.markers = arr;
 			},
 			formatUserType:function(userType){
-				switch(userType){
+				if(userType == 0){
+					return '普通用户';
+				} else if (userType == 1){
+					return '普通会员';
+				} else if (userType == 2){
+					return '超级会员';
+				} else if (userType == 3){
+					return '其他用户';
+				} else if( userType == 9){
+					return '体验用户';
+				}
+				/* switch(userType){
 					case 0 : 
 						return '普通用户';
 						break;
@@ -268,7 +277,7 @@
 					case 9:
 						return '体验用户';
 						break;
-				}
+				} */
 			}
 		}
 	}
