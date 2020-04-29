@@ -18,7 +18,7 @@
 			<image src="../../static/grzx/licensefront.png" style="width: 100%;height: 100%;"></image>
 		</view>
 		<view v-if="type1==1" @click="getFront" class="boxStyle">
-			<image :src="userlicenseFront" name="userlicenseFront" style="width: 100%;height: 100%;" mode="aspectFill"></image>
+			<image :src="userlicenseFront" name="userlicenseFront" style="width: 100%;height: 100%;border-radius: 26upx;" mode="aspectFill"></image>
 		</view>
 		<text class="fontStyle">驾照主页</text>
 		<!-- 驾照副页 -->
@@ -26,7 +26,7 @@
 			<image src="../../static/grzx/licenseback.png" style="width: 100%;height: 100%;"></image>
 		</view>
 		<view v-if="type2==1" @click="getBack" class="boxStyle">
-			<image :src="userlicenseBack" name="userlicenseBack"  mode="aspectFill" style="width: 100%;height: 100%;"></image>
+			<image :src="userlicenseBack" name="userlicenseBack"  mode="aspectFill" style="width: 100%;height: 100%;border-radius: 26upx;"></image>
 		</view>
 		<text class="fontStyle">驾照副页</text>
 		<view @click="submitClick" class="submitClass">
@@ -127,6 +127,9 @@
 				// console.log(this.userlicenseNum)
 				// console.log(this.frontImg)
 				// console.log(this.backImg)
+				uni.showLoading({
+					title:'提交中...'
+				})
 				var that=this;
 				var list1=uni.getStorageSync('registerList1')
 				var list2=uni.getStorageSync('registerList2')
@@ -162,7 +165,8 @@
 					})
 				}else{
 					uni.request({
-						url:'http://111.231.109.113:8002/api/person/Register_Driver',
+						//url:'http://111.231.109.113:8002/api/person/Register_Driver',
+						url:that.$GrzxInter.Interface.Register_Driver.value,
 						data:{
 							phoneNumber:list1.phoneNumber,
 							password:list1.password,
@@ -177,9 +181,15 @@
 							userlicenseBack:that.backImg,
 							userauditState:0,
 						},
-						method:'POST',
+						method:that.$GrzxInter.Interface.Register_Driver.method,
 						success(res) {
 							console.log(res,"提交成功")
+							uni.removeStorageSync('registerList1');
+							uni.removeStorageSync('registerList2');
+							uni.hideLoading();
+							uni.redirectTo({
+								url:'/pages/grzx/successPage'
+							})
 						}
 					})
 				}
@@ -248,7 +258,12 @@
 		width: 14%;
 		//border: 1upx solid #000000;
 		margin-left: 7%;
+		/* #ifdef MP-WEIXIN */
 		margin-top: 33upx;
+		/* #endif */
+		/* #ifdef APP-PLUS */
+		margin-top: 36upx;
+		/* #endif */
 		font-size: 30upx;
 	}
 	.inputClass2{ //输入驾照证号
@@ -256,7 +271,12 @@
 		width: 66%;
 		// border: 1upx solid #000000;
 		margin-left: 7%;
+		/* #ifdef MP-WEIXIN */
 		margin-top: 33upx;
+		/* #endif */
+		/* #ifdef APP-PLUS */
+		margin-top: 38upx;
+		/* #endif */
 		font-size: 30upx;
 	}
 	// .boxStyle1{

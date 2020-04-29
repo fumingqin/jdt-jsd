@@ -113,15 +113,16 @@
 					title:'登录中...'
 				})
 				var that=this;
-				console.log(that.phoneNumber)
-				console.log(that.password)
+				// console.log(that.phoneNumber)
+				// console.log(that.password)
 				uni.request({
-					url:'http://111.231.109.113:8002/api/person/LoginByPassWord_Driver',
+					//url:'http://111.231.109.113:8002/api/person/LoginByPassWord_Driver',
+					url:that.$GrzxInter.Interface.LoginByPassWord_Driver.value,
 					data:{
 						phoneNumber:that.phoneNumber,
 						password:that.password,
 					},
-					method:'POST',
+					method:that.$GrzxInter.Interface.LoginByPassWord_Driver.method,
 					success(res) {
 						console.log(res)
 						if(res.data.msg=='登入成功'){
@@ -184,11 +185,12 @@
 			getuserInfo(e){
 				var that=this;
 				uni.request({
-					url:'http://111.231.109.113:8002/api/person/GetDetailInfo_Driver',
+					//url:'http://111.231.109.113:8002/api/person/GetDetailInfo_Driver',
+					url:that.$GrzxInter.Interface.GetDetailInfo_Driver.value,
 					data:{
 						phoneNumber:e
 					},
-					method:'POST',
+					method:that.$GrzxInter.Interface.GetDetailInfo_Driver.method,
 					success(res) {
 						console.log(res,'res1')
 						uni.hideLoading();
@@ -200,6 +202,7 @@
 								title:"登录成功",
 								icon:"success"
 							})
+							uni.removeStorageSync('captchaCode'); //清除验证码的缓存
 							setTimeout(function(){
 								uni.switchTab({  //返回首页
 									url:'/pages/index/index',

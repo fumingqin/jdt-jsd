@@ -44,8 +44,8 @@
 				title:'填写资料',
 				photoGraph:'请点击拍照',
 				sexMode :[
-					{title:'女'},
-					{title:'男'}
+					{title:'男'},
+					{title:'女'}
 				],
 				selector:'请选择',
 				gradeBox:['A1','A2','A3','B1','B2','C1','C2','C3'],
@@ -244,7 +244,12 @@
 		width: 80%;
 		// border: 1upx solid #000000;
 		margin-left: 7%;
+		/* #ifdef MP-WEIXIN */
 		margin-top: 31upx;
+		/* #endif */
+		/* #ifdef APP-PLUS */
+		margin-top: 36upx;
+		/* #endif */
 		font-size: 30upx;
 	}
 	.sexClass{
