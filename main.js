@@ -7,6 +7,7 @@ import home from './common/Home.js'    //司机端全局
 import order from './common/Order.js'    //司机端全局
 import GrzxInter from './common/Grzx.js'    //司机端个人中心
 import myTime from './common/myTime.js' //时间Vue.config.productionTip = false
+
 Vue.prototype.$store=store;  //登录
 Vue.prototype.$taxi=taxi;  //出租车
 Vue.prototype.$CzcPrivate=CzcPrivate;  //专线车
