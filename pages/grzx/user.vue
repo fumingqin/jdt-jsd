@@ -121,7 +121,9 @@
 				})
 			},
 			QQClick(){
+				// #ifdef APP-PLUS 
 				plus.runtime.openURL('mqq://im/chat?chat_type=wpa&uin=' + this.QQ + '&version=1&src_type=web ');
+				// #endif
 			},
 			drivingClick(){
 				uni.navigateTo({
