@@ -173,8 +173,7 @@
 								uni.showToast({
 									title:"验证码已过期，请重新获取",
 									icon:"none"
-								})
-								
+								})	
 							}
 						})
 					
