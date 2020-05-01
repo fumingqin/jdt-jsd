@@ -91,6 +91,7 @@
 					    success: (e)=>{
 					    	if(e.confirm){
 					    		this.logout();
+								uni.removeStorageSync('vehicleInfo');
 					    		setTimeout(()=>{
 					    			uni.switchTab({
 					    				url:'/pages/grzx/user'

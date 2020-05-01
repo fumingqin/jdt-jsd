@@ -2,21 +2,21 @@
 	<view class="content">
 		<image src="../../static/grzx/logo_quanzhou.png" class="logoClass"></image>
 		<text class="titleClass">{{title}}</text>
-		<text class="versionClass">{{versionNum}}</text>
+		<text class="versionClass">{{versionNum}}{{version}}</text>
 		<view class="boxClass1">
-			<view class="functionClass" @click="functionClick">
+			<!-- <view class="functionClass" @click="functionClick">
 				<text class="fontClass">{{functionIntroduction}}</text>
 				<image src="../../static/grzx/btnRight.png" class="imgClass1"></image>
-			</view>
+			</view> -->
 			<view class="checkClass" @click="checkClick">
 				<text class="fontClass">{{checkVersion}}</text>
-				<text class="textCLass">{{version}}</text>
-				<image src="../../static/grzx/btnRight.png" class="imgClass2"></image>
+				<!-- <text class="textCLass">{{version}}</text> -->
+				<image src="../../static/grzx/btnRight.png" class="imgClass1"></image>
 			</view>
 		</view>
 		<view class="boxClass2">
-			<text class="agreementClass" @click="agreementClick">{{agreement}}</text>
-			<text class="privacyClass" @click="privacyClick">{{privacy}}</text>
+			<!-- <text class="agreementClass" @click="agreementClick">{{agreement}}</text>
+			<text class="privacyClass" @click="privacyClick">{{privacy}}</text> -->
 			<text class="copyrightClass">{{copyright1}}</text>
 			<text class="copyrightClass">{{copyright2}}</text>
 			<text class="copyrightClass">{{copyright3}}</text>
@@ -29,7 +29,7 @@
 		data(){
 			return{
 				title:'泉州综合出行司机端',
-				versionNum:'Version 1.0.0',
+				versionNum:'Version ',
 				functionIntroduction:'功能介绍',
 				checkVersion:'检查新版本',
 				agreement:'《软件许可及服务协议》',
@@ -37,11 +37,11 @@
 				copyright1:'车联网络科技 版权所有',
 				copyright2:'Copyright©2020 Journey',
 				copyright3:'All Rights Reserved',
-				version:'1.0.0',
+				version:'',
 			}
 		},
 		onLoad(){
-			//this.version=plus.runtime.version;
+			this.version=plus.runtime.version;
 		},
 		methods:{
 			functionClick(){
@@ -51,9 +51,43 @@
 				})
 			},
 			checkClick(){
-				uni.showToast({
-					icon:'none',
-					title:'检查新版本'
+				// uni.showToast({
+				// 	icon:'none',
+				// 	title:'检查新版本'
+				// })
+				var that=this;
+				uni.request({
+					url:that.$GrzxInter.Interface.SearchVersion.value,
+					data:{
+						model:'司机端',
+					},
+					method:that.$GrzxInter.Interface.SearchVersion.method,
+					success(res) {
+						console.log(res)
+						if(that.version!=res.data.data.version){
+							uni.showModal({
+							    content: '是否下载新版本',
+							    success: (e)=>{
+							    	if(e.confirm){
+										//plus.runtime.openURL(res.data.DownLoadUrl);
+										// #ifdef APP-PLUS || H5
+										plus.runtime.openURL("http://27.148.155.9:9248/LoadAppWebsite/泉州综合出行司机端.apk");
+										// #endif
+										// #ifndef APP-PLUS || H5
+										uni.showToast({
+											title:'暂无法下载新版本'
+										})
+										// #endif
+							    	}
+							    }
+							});
+						}else{
+							uni.showToast({
+								icon:'none',
+								title:'当前版本为最新版本'
+							})
+						}
+					}
 				})
 			},
 			agreementClick(){
