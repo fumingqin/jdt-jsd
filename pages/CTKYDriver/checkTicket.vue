@@ -14,6 +14,7 @@
 					<view style="width: 349rpx;"><button :class="IsCheck?'':'btnclick'" @click="change(false)">未检票数</button></view>
 					<view style="width: 349rpx;"><button :class="!IsCheck?'':'btnclick'" @click="change(true)">已检票数</button></view>
 				</view>
+				<!--未检-->
 				<scroll-view :style="{height:scrollheight}" :scroll-y="true" style="border-radius:20rpx ;" v-if="!IsCheck">
 					<view style="background-color: #FFFFFF;border-radius: 20rpx;margin-top: 20rpx;" v-for="(item,index) in ticketArr" :key="index">
 						<view style="padding: 35rpx 35rpx 0 35rpx;">
@@ -56,7 +57,7 @@
 						</view>
 					</view>
 				</scroll-view>
-				
+				<!--已检-->
 				<scroll-view :style="{height:scrollheight}" :scroll-y="true" style="border-radius:20rpx ;" v-if="IsCheck">
 					<view style="background-color: #FFFFFF;margin-top: 20rpx;border-radius: 20rpx;" v-for="(item,index) in hascheckArr" :key="index">
 						<view style="padding: 35rpx 35rpx 0 35rpx;">
@@ -181,30 +182,73 @@
 					 seatNo:'3',
 					 idCardNo:'3505**********8571'
 				}],
-				scrollheight:''
+				scrollheight:'',
+				
+				
+				vehicleInfo:'',
+				userInfo:'',
+				coachid:'',
+				
 			}
 		},
+		onLoad() {
+			let that = this;
+			that.userInfo = uni.getStorageSync('userInfo') || '';
+			that.vehicleInfo = uni.getStorageSync("vehicleInfo")||'';
+			if(that.userInfo == ''){
+				that.showToast('未取得用户信息');
+			}else if(that.vehicleInfo == ''){
+				that.showToast('未取得车辆信息');
+			}else {
+				that.getCoachid();
+			}
+		},
+		onUnload(){
+			let that = this;
+			uni.removeStorageSync('driverCoachid');
+		},
 		mounted() {
-		var that=this;
-			setTimeout(function(){//设置scollerview的高度
-				uni.getSystemInfo({
-					success(res) {
-						that.scrollheight=res.windowHeight-40-195+'px'
-					}
-				})
-			},50)
-			
+			var that=this;
+				setTimeout(function(){//设置scollerview的高度
+					uni.getSystemInfo({
+						success(res) {
+							that.scrollheight=res.windowHeight-40-195+'px'
+						}
+					})
+				},50)
 		},
 		methods: {
-			qrcode() {
+			showToast:function(title,icon='none'){
+				uni.showToast({
+					title:title,
+					icon:icon
+				});
+			},
+			qrcode:function() {
+				let that = this;
+				//扫描二维码
 				uni.scanCode({
 					onlyFromCamera: true,
 					success: function(res) {
-						void plus.runtime.openWeb(res.result, function() {
-							//识别失败
-						});
+						console.log(res.result);
+						let coachid = uni.getStorageSync('driverCoachid') || '';
+						if(coachid == ''){
+							//如果缓存内没有coachid,那重新调接口查。
+							that.getCoachid().then(res =>{
+								if(res.data.msg == '获取成功'){
+									res.data.data;
+									that.checkTicket(res.data.data,res.result);
+								}
+							});
+						} else {
+							//如果缓存内有coachid
+							that.checkTicket(coachid,res.result);
+						}
+					},
+					fail:function(){
+						
 					}
-				})
+				});
 			},
 			change: function(type) {
 				this.IsCheck = type;
@@ -229,6 +273,57 @@
 						url:url
 					})
 				}
+			},
+			
+			
+			
+			
+			getCoachid:function(){
+				let that = this;
+				//获取司机对应caochid；
+				return new Promise((resolve,reject) => {
+					uni.request({
+						url: that.$Ky.Interface.GetCoachIDByVheicleNumberDriverPhone.value,
+						method:that.$Ky.Interface.GetCoachIDByVheicleNumberDriverPhone.method,
+						data:{
+							vehicleNumber : that.vehicleInfo.vehicleNumber,
+							phoneNumber: that.userInfo.phoneNumber
+						},
+						success:function(res){
+							console.log(res);
+							if(res.data.msg == '获取成功'){
+								that.coachid = res.data.data;
+								uni.setStorageSync('driverCoachid',that.coachid);
+							}
+						},
+						fail:function(res){
+							console.log(res);
+							that.showToast('网络连接失败');
+						}
+					});
+				});
+			},
+			
+			checkTicket:function(coachid,tickId){
+				//泉运检票接口
+				let that = this;
+				uni.request({
+					url : that.$Ky.Interface.CheckTicket_ByTicketID.value,
+					method:that.$Ky.Interface.CheckTicket_ByTicketID.method,
+					data:{
+						coachID : coachid,
+						tickId :tickId,
+					},
+					success:function(res){
+						console.log(res);
+					},
+					fail:function(res){
+						console.log(res);
+						that.showToast('网络连接失败');
+					}
+				})
+				
+				
 			},
 		}
 	}
