@@ -33,7 +33,7 @@
 							<view>已检：{{item.checkedNum}}人</view>
 							<view style="padding-left: 30rpx;">未检：{{item.noCheckedNum}}人</view>
 						</view>
-						<view style="padding: 40rpx 0 20rpx 0;" @click="depart">
+						<view style="padding: 40rpx 0 20rpx 0;" @click="depart(item)">
 							<button style="height:90rpx;background:linear-gradient(270deg,rgba(249,92,117,1),rgba(250,116,101,1));border-radius:12rpx;color: #FFF;">查看详情</button>
 						</view>
 					</view>
@@ -49,14 +49,100 @@
 			return {
 				scollerHeight: 0,
 				classNum:5,
-				orderInfo: [{
+				orderInfo: [
+					{
+						ScheduleAndTickets:	{
+							ExecuteScheduleID:'',
+							PlanScheduleCode:'',
+							DriverID:'',
+							DriverName:'',
+							CoachCardNumber:'闽CK1678',
+							LineID:'',
+							LineName:'泉州-石狮',
+							SetoutTime:'07-21 13:00',
+							SetoutStationName:'',
+							FreeSeats:'',
+							Tickets:[
+								{
+									BookTicketAID:'',
+									SeatNumber:'',
+									TicketID:'',
+									PassengerID:'',
+									PassengerName:'',
+									BillNumber:'',
+									StartSiteName:'',
+									EndSiteName:'',
+									StartEndSiteName:'',
+									BuyType:'',
+									Checked:'',//bool
+									TicketType:'',
+									CarryChild:'',//bool
+									PhoneNumber:'',
+								}
+							],
+							SiteTicketList:[{
+								SiteID:'',
+								SiteName:'客运中心站',
+								ThisSiteGetonTicketCount:'',//INT
+								ThisSiteGetonTickets:[{
+									BookTicketAID:'',
+									SeatNumber:'',
+									TicketID:'',
+									PassengerID:'',
+									PassengerName:'',
+									BillNumber:'',
+									StartSiteName:'',
+									EndSiteName:'',
+									StartEndSiteName:'',
+									BuyType:'',
+									Checked:'',//bool
+									TicketType:'',
+									CarryChild:'',//bool
+									PhoneNumber:'',
+								}],
+								ThisSiteGetoffTicketCount:'',//INT
+								ThisSiteGetoffTickets:[{
+									BookTicketAID:'',
+									SeatNumber:'',
+									TicketID:'',
+									PassengerID:'',
+									PassengerName:'',
+									BillNumber:'',
+									StartSiteName:'',
+									EndSiteName:'',
+									StartEndSiteName:'',
+									BuyType:'',
+									Checked:'',//bool
+									TicketType:'',
+									CarryChild:'',//bool
+									PhoneNumber:'',
+								}],
+								Longitude:'',
+								Latitude:'',
+							}],
+							MyLine:{
+								LineID:'',
+								LineName:'',
+								Mileage:'',
+								RunTime:'',//INT
+								StartSiteName:'',
+								EndSiteName:'',
+								StationCompanyCode:'',
+								ViaSiteDesc:'',
+								MyLineSite:[],
+							}
+						},
+					}
+				
+					
+					/* {
 						departureTime: '2020-03-02 8:00', //发车时间
 						beginAddress: '茶叶大厦',//上车点
 						endAddress: '晋江机场',//下车点
 						checkedNum: 10,//已检人数
 						noCheckedNum: 8//未检人数
-					},
-					{
+					}, */
+					/* {
 						departureTime: '2020-03-02 12:20', //发车时间
 						beginAddress: '晋江机场',
 						endAddress: '茶叶大厦',
@@ -69,7 +155,8 @@
 						endAddress: '晋江机场',
 						checkedNum: 10,
 						noCheckedNum: 0
-					}
+					} */
+					
 				],
 				
 				
@@ -113,8 +200,9 @@
 					url: '/pages/index/index',
 				})
 			},
-			depart:function() {
+			depart:function(item) {
 				let that = this;
+				uni.setStorageSync('scheduleInfo',item);
 				uni.navigateTo({
 					url: '/pages/CTKYDriver/index',
 				})
@@ -130,9 +218,12 @@
 					data:{
 						vehicleNumber : that.vehicleInfo.vehicleNumber,
 						phoneNumber : that.userInfo.phoneNumber,
+						//vehicleNumber:'闽CYB103',
+						//phoneNumber:'18965641002'
 					},
 					success:function(res){
 						uni.hideLoading();
+						console.log(res);
 						if(res.data.status){
 							
 						} else {

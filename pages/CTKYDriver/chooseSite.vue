@@ -213,7 +213,6 @@
 			uni.getSystemInfo({
 				success(res) {
 					that.siteHeight=res.windowHeight*0.23+'px';
-					console.log(that.siteHeight);
 				}
 			})
 		},

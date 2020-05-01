@@ -15,7 +15,7 @@
 				<view style="display: flex;flex-direction: column;">
 					<view style="display: flex;flex-direction: row;">
 						<view style="width: 305rpx;">
-							<text class="informationFont">线路：泉州-石狮</text>
+							<text class="informationFont">线路：{{ScheduleAndTickets.LineName}}</text>
 						</view> 
 						<view style="width: 305rpx;">
 							<text class="informationFont">类型：定制快车</text> 
@@ -26,10 +26,10 @@
 				<view style="display: flex;flex-direction: column;">
 					<view style="display: flex;flex-direction: row;">
 						<view style="width: 305rpx;">
-							<text class="informationFont">车牌号：闽CK1678</text>
+							<text class="informationFont">车牌号：{{ScheduleAndTickets.CoachCardNumber}}</text>
 						</view> 
 						<view style="width: 305rpx;">
-							<text class="informationFont">发车时间：07-21 13:00</text> 
+							<text class="informationFont">发车时间：{{ScheduleAndTickets.SetoutTime}}</text> 
 						</view>
 					</view>
 				</view>
@@ -37,10 +37,10 @@
 				<view style="display: flex;flex-direction: column;">
 					<view style="display: flex;flex-direction: row;">
 						<view style="width: 305rpx;">
-							<text class="informationFont">全票人数：5人</text>
+							<text class="informationFont">全票人数：{{formatPersonCount(ScheduleAndTickets.Tickets)}}人</text>
 						</view> 
 						<view style="width: 305rpx;">
-							<text class="informationFont">携童人数：0人</text> 
+							<text class="informationFont">携童人数：{{formatCarryChildCount(ScheduleAndTickets.Tickets)}}人</text> 
 						</view>
 					</view>
 				</view>
@@ -52,7 +52,8 @@
 				<scroll-view style="height: 550rpx;" :scroll-x="true" :scroll-into-view='scrollStationIndex'> 
 					<view style="display: flex;flex-direction: row;">
 						
-						<view style="display: flex;flex-direction: column;width: 100rpx;" id="id_0">
+						<view style="display: flex;flex-direction: column;" id="id_0">
+							<!-- <view style="display: flex;flex-direction: column;width: 100rpx;" id="id_0"> -->
 							<view style="text-align: center;height: 35rpx;">
 							</view>
 							<view style="display: flex;margin-top: 10rpx;margin-bottom: 10rpx;">
@@ -60,9 +61,10 @@
 							</view>
 						</view>
 						
-						<view v-for='(item ,index) in stationArr' :key='index' :id="'id_' + (index + 1)"  style="display: flex;flex-direction: column;width: 100rpx;">
+						<view v-for='(item ,index) in ScheduleAndTickets.SiteTicketList' :key='index' :id="'id_' + (index + 1)"  style="display: flex;flex-direction: column;width: 100rpx;">
 							<view style="text-align: center;height: 50rpx;">
-								<image v-if="item.isArrive"  src="../../static/CTKYDriver/bus.png" style="width: 50rpx;height: 25rpx;"></image>
+								<!-- <image v-if="item.IsArrival"  src="../../static/CTKYDriver/bus.png" style="width: 50rpx;height: 25rpx;"></image> -->
+								<image   src="../../static/CTKYDriver/bus.png" style="width: 50rpx;height: 25rpx;"></image>
 							</view>
 							<view style="display: flex;margin-top: 10rpx;margin-bottom: 10rpx;">
 								<image src="../../static/CTKYDriver/line2.png" style="width: 100rpx;height: 10rpx;"></image>
@@ -72,22 +74,22 @@
 							</view>
 							<view>
 								<view style="width: 20px;margin: 0 auto;text-align: center;line-height: 35rpx;">
-									<text style="font-size:30rpx;font-family:Source Han Sans SC;font-weight:300;color:#333333;">{{item.stationName}}</text>
+									<text style="font-size:30rpx;font-family:Source Han Sans SC;font-weight:300;color:#333333;">{{item.SiteName}}</text>
 								</view>
 							</view>
-							<view v-if="item.onNumber > 0">
+							<view v-if="item.ThisSiteGetonTicketCount > 0">
 								<view  style="width: 30px;margin: 0 auto;text-align: center;margin-top: 30rpx;line-height: 35rpx;">
-									<text style="font-size:30rpx;font-family:Source Han Sans SC;font-weight:300;color:#5BC12D;">{{item.onNumber}}人</text>
+									<text style="font-size:30rpx;font-family:Source Han Sans SC;font-weight:300;color:#5BC12D;">{{item.ThisSiteGetonTicketCount}}人</text>
 								</view>
 							</view>
-							<view v-if="item.offNumber > 0">
+							<view v-if="item.ThisSiteGetoffTicketCount > 0">
 								<view  style="width: 30px;margin: 0 auto;text-align: center;margin-top: 30rpx;line-height: 35rpx;">
-									<text style="font-size:30rpx;font-family:Source Han Sans SC;font-weight:300;color:#fc4646;">{{item.offNumber}}人</text>
+									<text style="font-size:30rpx;font-family:Source Han Sans SC;font-weight:300;color:#fc4646;">{{item.ThisSiteGetoffTicketCount}}人</text>
 								</view>
 							</view>
 						</view>
 						
-						<view style="display: flex;flex-direction: column;width: 100rpx;">
+						<view style="display: flex;flex-direction: column;">
 							<view style="text-align: center;height: 35rpx;">
 							</view>
 							<view style="display: flex;margin-top: 10rpx;margin-bottom: 10rpx;">
@@ -99,24 +101,24 @@
 				
 				<scroll-view :scroll-y="true" style="height: 250rpx;" :scroll-into-view="scrollOnOffIndex">
 					<view style="display: flex;flex-direction: column;">
-						<view v-for="(item , index) in stationArr" :key='index' :id="'id_' + (index+1)">
-							<view v-if="item.onNumber > 0" style="display: flex;flex-direction: row;align-items: center;margin-bottom: 10rpx;">
+						<view v-for="(item , index) in ScheduleAndTickets.SiteTicketList" :key='index' :id="'id_' + (index+1)">
+							<view v-if="item.ThisSiteGetonTicketCount > 0" style="display: flex;flex-direction: row;align-items: center;margin-bottom: 10rpx;">
 								<image src="../../static/CTKYDriver/msg-green.png" style="width: 28rpx;height: 28rpx;margin-right: 10rpx;"></image>
 								<view style="display: flex;">
 									<text class="noticeFont">请注意，</text>
-									<text class="noticeOnFont">{{item.stationName}}</text>
+									<text class="noticeOnFont">{{item.SiteName}}</text>
 									<text class="noticeFont">有</text>
-									<text class="noticeOnFont">{{item.onNumber}}个</text>
+									<text class="noticeOnFont">{{item.ThisSiteGetonTicketCount}}个</text>
 									<text class="noticeFont">乘客等待上车</text>
 								</view>
 							</view>
-							<view v-if="item.offNumber > 0" style="display: flex;flex-direction: row;align-items: center;margin-bottom: 10rpx;">
+							<view v-if="item.ThisSiteGetoffTicketCount > 0" style="display: flex;flex-direction: row;align-items: center;margin-bottom: 10rpx;">
 								<image src="../../static/CTKYDriver/msg-red.png" style="width: 28rpx;height: 28rpx;margin-right: 10rpx;"></image>
 								<view style="display: flex;">
 									<text class="noticeFont">请注意，</text>
-									<text class="noticeOffFont">{{item.stationName}}</text>
+									<text class="noticeOffFont">{{item.SiteName}}</text>
 									<text class="noticeFont">有</text>
-									<text class="noticeOffFont">{{item.offNumber}}个</text>
+									<text class="noticeOffFont">{{item.ThisSiteGetoffTicketCount}}个</text>
 									<text class="noticeFont">乘客等待下车</text>
 								</view>
 							</view>
@@ -221,15 +223,27 @@
 				],
 				scrollStationIndex:'id_0',
 				scrollOnOffIndex:'id_0',
+				distanceInterval:0,
+				
+				ScheduleAndTickets:''
 			}
 		},
 		onLoad() {
 			let that = this;
-			setTimeout(function(){
+			
+			let scheduleInfo = uni.getStorageSync('scheduleInfo') || '';
+			that.ScheduleAndTickets = scheduleInfo.ScheduleAndTickets;
+			console.log(that.ScheduleAndTickets);
+			/* setTimeout(function(){
 				that.scrollStationIndex = "id_5";
 				that.scrollOnOffIndex = "id_5";
-			},10000);
-			that.baiduPlayer('请注意，瑞士花园有4个乘客等待下车');
+			},10000); */
+			that.mathDistance();
+		},
+		onUnload() {
+			let that = this;
+			clearInterval(that.distanceInterval);
+			console.log('已关闭');
 		},
 		methods: {
 			tabbarClick: function(el) {
@@ -261,20 +275,37 @@
 				})
 			},
 			
-			/* arriveReport:function(){
-				
-				uni.getLocation({
-					type:'gcj02',
-				}).then(res => {
-					
-				});
-				
-			}, */
-			
 			mathDistance:function(){
-				
-				
-				
+				let that = this;
+				clearInterval(that.distanceInterval); 
+				that.distanceInterval = setInterval(function(){
+					uni.getLocation({
+						success:function(res){
+							that.ScheduleAndTickets.SiteTicketList.filter(x => {
+								let long = that.$home.mathLonLatToDistance(res.latitude,res.longitude,x.Latitude,x.Longitude);
+								if(long < 500){
+									let str = '请注意' + x.SiteName + '就要到了' ;
+									if(x.ThisSiteGetonTicketCount > 0){
+										str += '上车' + x.ThisSiteGetonTicketCount + '人'
+									}
+									if(x.ThisSiteGetoffTicketCount > 0){
+										str += '下车' + x.ThisSiteGetoffTicketCount + '人'
+									}
+									that.baiduPlayer(str); 
+									console.log(new Date());
+								}
+								return long < 500;
+							});
+						}
+					});
+				},20000);
+			},
+			
+			formatPersonCount:function(arr){
+				return arr.length;
+			},
+			formatCarryChildCount:function(arr){
+				return arr.filter(x => x.CarryChild).length;
 			},
 			
 			

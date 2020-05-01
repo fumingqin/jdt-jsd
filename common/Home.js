@@ -45,7 +45,7 @@ const dateFormat = {
 //经纬度计算距离单位米
 const EARTH_RADIUS = 6378137;
 
-function mathLonLatToDistance(startLon,startLat,endLon,endLat){
+/* function mathLonLatToDistance(startLon,startLat,endLon,endLat){
 	var radStartLon = Rad(startLon);
 	var radStartLat = Rad(startLat);
 	var radEndLon = Rad(endLon);
@@ -53,7 +53,22 @@ function mathLonLatToDistance(startLon,startLat,endLon,endLat){
 	var a = radStartLat - radEndLat;
 	var b = radEndLon - radEndLat; 
 	return  2 * Math.asin(Math.sqrt(Math.pow(Math.sin(a / 2), 2) + Math.cos(radStartLat) * Math.cos(radEndLat) * Math.pow(Math.sin(b / 2), 2))) * EARTH_RADIUS;
-}
+} */
+ function mathLonLatToDistance(lat1,lng1,lat2,lng2){
+        var radLat1 = Rad(lat1);
+        var radLat2 = Rad(lat2);
+        
+        var a = radLat1 - radLat2;
+        var b = Rad(lng1) - Rad(lng2);
+        
+        var s = 2*Math.asin(Math.sqrt(Math.pow(Math.sin(a/2),2) + Math.cos(radLat1)*Math.cos(radLat2)*Math.pow(Math.sin(b/2),2)));
+        s = s*EARTH_RADIUS;
+        s = Math.round(s*10000)/10000.0;
+                
+        return s;
+    }
+
+
 function Rad(lonLat){
 	return lonLat * Math.PI / 180
 }
@@ -64,5 +79,5 @@ function Rad(lonLat){
 export default {
 	Interface,
 	dateFormat,
-	
+	mathLonLatToDistance,
 }
