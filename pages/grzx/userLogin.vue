@@ -173,8 +173,7 @@
 								uni.showToast({
 									title:"验证码已过期，请重新获取",
 									icon:"none"
-								})
-								
+								})	
 							}
 						})
 					
@@ -259,11 +258,12 @@
 						  	self.textCode = second+"秒后重发";
 						  }},1000)
 						 uni.request({
-							url:'http://111.231.109.113:8002/api/person/getLoginCode',
+							//url:'http://111.231.109.113:8002/api/person/getLoginCode',
+							url:self.$GrzxInter.Interface.getLoginCode.value,
 						    data:{
 								phoneNumber:self.phoneNumber,
 							},
-							method:"POST",
+							method:self.$GrzxInter.Interface.getLoginCode.method,
 							success:(res)=>{
 						 		console.log(res.data.data);
 								uni.setStorage({
@@ -281,7 +281,6 @@
 						    }
 						 }) 
 					  }
-							
 					}
 				}else{
 					uni.showToast({
@@ -290,7 +289,7 @@
 					})
 				}
 			},
-			//--------------返回个人中心-------------
+			//--------------返回上一页-------------
 			returnClick(){		
 				uni.navigateBack();
 			},
