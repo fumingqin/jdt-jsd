@@ -3,7 +3,7 @@
 
 //接口域名
 const Url = 'http://111.231.109.113:8002';
-
+const Url1='http://zntc.145u.net';
 const Interface={
 	Register_Driver:{
 		value:Url+'/api/person/Register_Driver',
@@ -28,7 +28,13 @@ const Interface={
 		name:'获取手机验证码',
 		method:'POST',
 		pages: [],
-	}
+	},
+	SearchVersion:{
+		value:Url1+'/api/person/SearchVersion',
+		name:'获取版本号',
+		method:'POST',
+		pages: [],
+	}, 
 }
 
 
