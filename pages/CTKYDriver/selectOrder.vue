@@ -10,7 +10,7 @@
 				<view style="width: 18rpx; height: 34rpx;"></view>
 			</view>
 			<!-- 本月接单量 -->
-			<view style="background-color: #FFFFFF;border-radius:20rpx; margin-top:30rpx;">
+			<!-- <view style="background-color: #FFFFFF;border-radius:20rpx; margin-top:30rpx;">
 				<view style="padding: 30rpx;display: flex;justify-content: space-between;align-items: center;">
 					<text style="font-size:36rpx;font-family:Source Han Sans SC;font-weight:bold;color:rgba(44,45,45,1);line-height:42rpx;">今日班次量</text>
 					<view style="display: flex;align-items: center;">
@@ -20,18 +20,18 @@
 						<image style="width: 14rpx;height: 26rpx;" src="../../static/driver/right.png"></image>
 					</view>
 				</view>
-			</view>
+			</view> -->
 			<!-- 接单信息 -->
 			<scroll-view :style="{height:scollerHeight}" scroll-y="true" style="margin-top: 10rpx;">
 				<view style="padding:40rpx 35rpx;background-color: #FFF;border-radius: 20rpx;margin-top: 20rpx;" v-for="(item,index) in orderInfo"
 				 :key="index">
 					<view style="font-size: 34rpx;color: #333333;font-weight: bold;">发车时间：{{item.departureTime}}</view>
 					<view style="font-size: 30rpx;color: #333333;line-height: 60rpx;">
-						<view>出发地：{{item.beginAddress}}</view>
-						<view>目的地：{{item.endAddress}}</view>
+						<view>出发地：{{formatStartSite(item)}}</view>
+						<view>目的地：{{formatEndSite(item)}}</view>
 						<view style="display: flex;">
-							<view>已检：{{item.checkedNum}}人</view>
-							<view style="padding-left: 30rpx;">未检：{{item.noCheckedNum}}人</view>
+							<view>已检：{{formatCheckCount(item).isCheckCount}}人</view>
+							<view style="padding-left: 30rpx;">未检：{{formatCheckCount(item).unCheckCount}}人</view>
 						</view>
 						<view style="padding: 40rpx 0 20rpx 0;" @click="depart(item)">
 							<button style="height:90rpx;background:linear-gradient(270deg,rgba(249,92,117,1),rgba(250,116,101,1));border-radius:12rpx;color: #FFF;">查看详情</button>
@@ -49,117 +49,7 @@
 			return {
 				scollerHeight: 0,
 				classNum:5,
-				orderInfo: [
-					{
-						ScheduleAndTickets:	{
-							ExecuteScheduleID:'',
-							PlanScheduleCode:'',
-							DriverID:'',
-							DriverName:'',
-							CoachCardNumber:'闽CK1678',
-							LineID:'',
-							LineName:'泉州-石狮',
-							SetoutTime:'07-21 13:00',
-							SetoutStationName:'',
-							FreeSeats:'',
-							Tickets:[
-								{
-									BookTicketAID:'',
-									SeatNumber:'',
-									TicketID:'',
-									PassengerID:'',
-									PassengerName:'',
-									BillNumber:'',
-									StartSiteName:'',
-									EndSiteName:'',
-									StartEndSiteName:'',
-									BuyType:'',
-									Checked:'',//bool
-									TicketType:'',
-									CarryChild:'',//bool
-									PhoneNumber:'',
-								}
-							],
-							SiteTicketList:[{
-								SiteID:'',
-								SiteName:'客运中心站',
-								ThisSiteGetonTicketCount:'',//INT
-								ThisSiteGetonTickets:[{
-									BookTicketAID:'',
-									SeatNumber:'',
-									TicketID:'',
-									PassengerID:'',
-									PassengerName:'',
-									BillNumber:'',
-									StartSiteName:'',
-									EndSiteName:'',
-									StartEndSiteName:'',
-									BuyType:'',
-									Checked:'',//bool
-									TicketType:'',
-									CarryChild:'',//bool
-									PhoneNumber:'',
-								}],
-								ThisSiteGetoffTicketCount:'',//INT
-								ThisSiteGetoffTickets:[{
-									BookTicketAID:'',
-									SeatNumber:'',
-									TicketID:'',
-									PassengerID:'',
-									PassengerName:'',
-									BillNumber:'',
-									StartSiteName:'',
-									EndSiteName:'',
-									StartEndSiteName:'',
-									BuyType:'',
-									Checked:'',//bool
-									TicketType:'',
-									CarryChild:'',//bool
-									PhoneNumber:'',
-								}],
-								Longitude:'',
-								Latitude:'',
-							}],
-							MyLine:{
-								LineID:'',
-								LineName:'',
-								Mileage:'',
-								RunTime:'',//INT
-								StartSiteName:'',
-								EndSiteName:'',
-								StationCompanyCode:'',
-								ViaSiteDesc:'',
-								MyLineSite:[],
-							}
-						},
-					}
-				
-					
-					/* {
-						departureTime: '2020-03-02 8:00', //发车时间
-						beginAddress: '茶叶大厦',//上车点
-						endAddress: '晋江机场',//下车点
-						checkedNum: 10,//已检人数
-						noCheckedNum: 8//未检人数
-					}, */
-					/* {
-						departureTime: '2020-03-02 12:20', //发车时间
-						beginAddress: '晋江机场',
-						endAddress: '茶叶大厦',
-						checkedNum: 10,
-						noCheckedNum: 2
-					},
-					{
-						departureTime: '2020-03-02 15:00', //发车时间
-						beginAddress: '茶叶大厦',
-						endAddress: '晋江机场',
-						checkedNum: 10,
-						noCheckedNum: 0
-					} */
-					
-				],
-				
-				
+				orderInfo: [],
 				userInfo:'',
 				vehicleInfo:'',
 			}
@@ -202,6 +92,8 @@
 			},
 			depart:function(item) {
 				let that = this;
+				item.SiteTicketList = that.arrayDistinct(item.SiteTicketList);
+				
 				uni.setStorageSync('scheduleInfo',item);
 				uni.navigateTo({
 					url: '/pages/CTKYDriver/index',
@@ -216,16 +108,18 @@
 					url:that.$Ky.Interface.GetRunScheduleInfoByVheicleNumberDriverPhone.value,
 					method:that.$Ky.Interface.GetRunScheduleInfoByVheicleNumberDriverPhone.method,
 					data:{
-						vehicleNumber : that.vehicleInfo.vehicleNumber,
-						phoneNumber : that.userInfo.phoneNumber,
-						//vehicleNumber:'闽CYB103',
-						//phoneNumber:'18965641002'
+						//vehicleNumber : that.vehicleInfo.vehicleNumber,
+						//phoneNumber : that.userInfo.phoneNumber,
+						vehicleNumber:'闽CYB103',
+						phoneNumber:'18965641002'
 					},
 					success:function(res){
 						uni.hideLoading();
 						console.log(res);
 						if(res.data.status){
-							
+							that.orderInfo = [];
+							let data = res.data.data;
+							that.orderInfo.push(data);
 						} else {
 							that.showToast('未取得订单信息');
 						}
@@ -237,6 +131,34 @@
 					}
 				});
 			},
+			
+			arrayDistinct:function(array){
+				let siteNameArr = [];
+				for(let item of array){
+					siteNameArr.push(item.SiteName);
+				}
+				let distinctArr = array.filter((x,index) => {
+					
+					return siteNameArr.indexOf(x.SiteName) == index
+				});
+				return distinctArr
+			},
+			
+		
+			formatStartSite:function(item){
+				return item.SiteTicketList[0].SiteName;
+			},
+			formatEndSite:function(item){
+				return item.SiteTicketList[item.SiteTicketList.length - 1].SiteName;
+			},
+			formatCheckCount:function(item){
+				let isCheckCount = item.Tickets.filter(x => x.Checked).length;
+				let unCheckCount = item.Tickets.filter(x => !x.Checked).length;
+				return {
+					isCheckCount : isCheckCount,
+					unCheckCount : unCheckCount
+				}
+			}
 		}
 	}
 </script>

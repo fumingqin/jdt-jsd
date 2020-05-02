@@ -16,24 +16,24 @@
 				</view>
 				<!--未检-->
 				<scroll-view :style="{height:scrollheight}" :scroll-y="true" style="border-radius:20rpx ;" v-if="!IsCheck">
-					<view style="background-color: #FFFFFF;border-radius: 20rpx;margin-top: 20rpx;" v-for="(item,index) in ticketArr" :key="index">
+					<view v-for="(item,index) in ScheduleAndTickets.Tickets" :key="index" v-show="!item.Checked"  style="background-color: #FFFFFF;border-radius: 20rpx;margin-top: 20rpx;" >
 						<view style="padding: 35rpx 35rpx 0 35rpx;">
 							<view style="display: flex;justify-content: space-between;font-size: 32rpx;padding-bottom: 30rpx;border-bottom: solid 1px #EAEAEA;">
 								<view>
-									上车点：{{item.startPoint}}
+									上车点：{{item.StartSiteName}}
 								</view>
 								<view>
-									下车点：{{item.endPoint}}
+									下车点：{{item.EndSiteName}}
 								</view>
 							</view>
 							<view style="padding: 20rpx 0;font-size: 32rpx;font-weight: 200;display: flex;flex-direction: column;justify-content: space-between;height: 290rpx;">
 								<view style="display: flex;justify-content: space-between;">
 									<view style="display: flex;flex-direction: column;justify-content: space-between;height: 110rpx;">
 										<view>
-											车次信息：{{item.trains}}
+											车次信息：{{ScheduleAndTickets.LineName}}
 										</view>
 										<view>
-											车票号：{{item.ticketNo}}
+											车票号：{{item.BillNumber}}
 										</view>
 									</view>
 									<view>
@@ -41,42 +41,42 @@
 									</view>
 								</view>
 								<view>
-									旅客姓名：{{item.Name}}
+									旅客姓名：{{item.PassengerName}}
 								</view>
 								<view>
-									旅客身份证：{{item.idCardNo}}
+									旅客身份证：{{formatIDCard(item.PassengerID)}}
 								</view>
 								<view>
-									座位号：{{item.seatNo}}
+									座位号：{{item.SeatNumber}}
 								</view>
 							</view>
 						</view>
-						<view style="display: flex;color: #666666;justify-content:flex-end;padding: 10rpx 35rpx 35rpx 0;">
+					   <!--<view style="display: flex;color: #666666;justify-content:flex-end;padding: 10rpx 35rpx 35rpx 0;">
 							<view style="padding-right: 30rpx;"><button style="width: 200rpx;background-color: #FFF;font-size: 30rpx;" >过站未检</button></view>
-							<view><button style="width: 200rpx;background-color: #FFF;font-size: 30rpx;">联系电话</button></view>
-						</view>
+							<view><button @click="callPassenger(item)" style="width: 200rpx;background-color: #FFF;font-size: 30rpx;">联系电话</button></view>
+						</view> -->
 					</view>
 				</scroll-view>
 				<!--已检-->
 				<scroll-view :style="{height:scrollheight}" :scroll-y="true" style="border-radius:20rpx ;" v-if="IsCheck">
-					<view style="background-color: #FFFFFF;margin-top: 20rpx;border-radius: 20rpx;" v-for="(item,index) in hascheckArr" :key="index">
+					<view  v-for="(item,index) in ScheduleAndTickets.Tickets" :key="index" v-show="item.Checked"  style="background-color: #FFFFFF;margin-top: 20rpx;border-radius: 20rpx;">
 						<view style="padding: 35rpx 35rpx 0 35rpx;">
 							<view style="display: flex;justify-content: space-between;font-size: 32rpx;padding-bottom: 30rpx;border-bottom: solid 1px #EAEAEA;">
 								<view>
-									上车点：{{item.startPoint}}
+									上车点：{{item.StartSiteName}}
 								</view>
 								<view>
-									下车点：{{item.endPoint}}
+									下车点：{{item.EndSiteName}}
 								</view>
 							</view>
 							<view style="padding: 20rpx 0;font-size: 32rpx;font-weight: 200;display: flex;flex-direction: column;justify-content: space-between;height: 290rpx;">
 								<view style="display: flex;justify-content: space-between;">
 									<view style="display: flex;flex-direction: column;justify-content: space-between;height: 110rpx;">
 										<view>
-											车次信息：{{item.trains}}
+											车次信息：{{ScheduleAndTickets.LineName}}
 										</view>
 										<view>
-											车票号：{{item.ticketNo}}
+											车票号：{{item.BillNumber}}
 										</view>
 									</view>
 									<view>
@@ -84,20 +84,20 @@
 									</view>
 								</view>
 								<view>
-									旅客姓名：{{item.Name}}
+									旅客姓名：{{item.PassengerName}}
 								</view>
 								<view>
-									旅客身份证：{{item.idCardNo}}
+									旅客身份证：{{formatIDCard(item.PassengerID)}}
 								</view>
 								<view>
-									座位号：{{item.seatNo}}
+									座位号：{{item.SeatNumber}}
 								</view>
 							</view>
 						</view>
-						<view style="display: flex;font-size: 30rpx;color: #666666;justify-content:flex-end;padding: 10rpx 35rpx 35rpx 0;">
+						<!-- <view style="display: flex;font-size: 30rpx;color: #666666;justify-content:flex-end;padding: 10rpx 35rpx 35rpx 0;">
 							<view style="padding-right: 30rpx;"><button style="width: 200rpx;background-color: #FFF;font-size: 30rpx;" >过站未检</button></view>
 							<view><button style="width: 200rpx;background-color: #FFF;font-size: 30rpx;">联系电话</button></view>
-						</view>
+						</view> -->
 					</view>
 				</scroll-view>
 			</view>
@@ -146,55 +146,24 @@
 					}
 				],
 				IsCheck: false,
-				ticketArr:[{
-					startPoint:"茶叶大厦",
-					endPoint:"晋江机场",
-					trains:"泉州 - 石狮",
-					 ticketNo:"425111144482716",
-					 Name:"罗苗东",
-					 seatNo:'5',
-					 idCardNo:'3505**********8571'
-				},
-				{
-					startPoint:" 丰泽广场",
-					endPoint:"动车站",
-					trains:"泉州 - 石狮",
-					 ticketNo:"425111144482716",
-					 Name:"罗苗",
-					 seatNo:'6',
-					 idCardNo:'3505**********8571'
-				}],
-				hascheckArr:[{
-					startPoint:"茶叶大厦",
-					endPoint:"晋江机场",
-					trains:"泉州 - 石狮",
-					 ticketNo:"425111144482716",
-					 Name:"罗东东",
-					 seatNo:'4',
-					 idCardNo:'3505**********8571'
-				},
-				{
-					startPoint:" 丰泽广场",
-					endPoint:"动车站",
-					trains:"泉州 - 石狮",
-					 ticketNo:"425111144482716",
-					 Name:"罗苗",
-					 seatNo:'3',
-					 idCardNo:'3505**********8571'
-				}],
-				scrollheight:'',
 				
+				scrollheight:'',
 				
 				vehicleInfo:'',
 				userInfo:'',
 				coachid:'',
-				
+				ScheduleAndTickets:''
 			}
 		},
 		onLoad() {
 			let that = this;
+			//that.checkTicket('350534B1030','05438435671');
+			//return;
+			
 			that.userInfo = uni.getStorageSync('userInfo') || '';
 			that.vehicleInfo = uni.getStorageSync("vehicleInfo")||'';
+			let scheduleInfo = uni.getStorageSync('scheduleInfo') || '';
+			that.ScheduleAndTickets = scheduleInfo;
 			if(that.userInfo == ''){
 				that.showToast('未取得用户信息');
 			}else if(that.vehicleInfo == ''){
@@ -232,6 +201,7 @@
 					success: function(res) {
 						console.log(res.result);
 						let coachid = uni.getStorageSync('driverCoachid') || '';
+						console.log(coachid);
 						if(coachid == ''){
 							//如果缓存内没有coachid,那重新调接口查。
 							that.getCoachid().then(res =>{
@@ -274,10 +244,7 @@
 					})
 				}
 			},
-			
-			
-			
-			
+					
 			getCoachid:function(){
 				let that = this;
 				//获取司机对应caochid；
@@ -290,10 +257,11 @@
 							phoneNumber: that.userInfo.phoneNumber
 						},
 						success:function(res){
-							console.log(res);
 							if(res.data.msg == '获取成功'){
 								that.coachid = res.data.data;
 								uni.setStorageSync('driverCoachid',that.coachid);
+							}else{
+								that.showToast(res.data.msg);
 							}
 						},
 						fail:function(res){
@@ -325,6 +293,9 @@
 				
 				
 			},
+			formatIDCard:function(idCard){
+				return idCard.substring(0,6) + '****' + idCard.substring(14,18);
+			}
 		}
 	}
 </script>

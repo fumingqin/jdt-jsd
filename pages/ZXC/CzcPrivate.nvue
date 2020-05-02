@@ -222,7 +222,8 @@
 								that.estimateDistance = data.EstimateDistance;
 								that.estimateTime = data.EstimateTime;
 								that.runTime = data.RunTime.replace('T', ' ').replace(/-/g,'/').substring(0,19);
-								//that.setoutTime = data.SetoutTime.replace('T', ' ').replace(/-/g,'/').substring(0,19);
+								console.log(data)
+								that.setoutTime = data.SetOutTime.replace('T', ' ').replace(/-/g,'/').substring(0,19);
 								resolve(res);
 							} else {
 								that.showToast(res.data.msg);
