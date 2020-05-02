@@ -14,13 +14,13 @@
 			<view style="padding: 30rpx 40rpx;background:#FFFFFF;box-shadow:0px 6px 20px 0px rgba(231,231,231,0.53);border-radius:20rpx;">
 				<view style="display: flex;flex-direction: column;">
 					<view style="display: flex;flex-direction: row;">
-						<view style="width: 305rpx;">
+						<view style="width: 100%;">
 							<text class="informationFont">线路：{{ScheduleAndTickets.LineName}}</text>
 						</view> 
-						<view style="width: 305rpx;">
+						<!-- <view style="width: 305rpx;">
 							<text class="informationFont">类型：定制快车</text> 
-						</view>
-					</view>
+						</view> -->
+					</view> 
 				</view>
 				
 				<view style="display: flex;flex-direction: column;">
@@ -29,7 +29,7 @@
 							<text class="informationFont">车牌号：{{ScheduleAndTickets.CoachCardNumber}}</text>
 						</view> 
 						<view style="width: 305rpx;">
-							<text class="informationFont">发车时间：{{ScheduleAndTickets.SetoutTime}}</text> 
+							<text class="informationFont">发车时间：{{formatSetoutTime(ScheduleAndTickets.SetoutTime)}}</text> 
 						</view>
 					</view>
 				</view>
@@ -52,6 +52,7 @@
 				<scroll-view style="height: 550rpx;" :scroll-x="true" :scroll-into-view='scrollStationIndex'> 
 					<view style="display: flex;flex-direction: row;">
 						
+						<!--起点-->
 						<view style="display: flex;flex-direction: column;" id="id_0">
 							<!-- <view style="display: flex;flex-direction: column;width: 100rpx;" id="id_0"> -->
 							<view style="text-align: center;height: 35rpx;">
@@ -61,10 +62,10 @@
 							</view>
 						</view>
 						
+						<!--横向-->
 						<view v-for='(item ,index) in ScheduleAndTickets.SiteTicketList' :key='index' :id="'id_' + (index + 1)"  style="display: flex;flex-direction: column;width: 100rpx;">
 							<view style="text-align: center;height: 50rpx;">
-								<!-- <image v-if="item.IsArrival"  src="../../static/CTKYDriver/bus.png" style="width: 50rpx;height: 25rpx;"></image> -->
-								<image   src="../../static/CTKYDriver/bus.png" style="width: 50rpx;height: 25rpx;"></image>
+								<image v-show='nowIndex == (index+1)' src="../../static/CTKYDriver/bus.png" style="width: 50rpx;height: 25rpx;"></image>
 							</view>
 							<view style="display: flex;margin-top: 10rpx;margin-bottom: 10rpx;">
 								<image src="../../static/CTKYDriver/line2.png" style="width: 100rpx;height: 10rpx;"></image>
@@ -77,21 +78,21 @@
 									<text style="font-size:30rpx;font-family:Source Han Sans SC;font-weight:300;color:#333333;">{{item.SiteName}}</text>
 								</view>
 							</view>
-							<view v-if="item.ThisSiteGetonTicketCount > 0">
+							<view v-show="item.ThisSiteGetonTicketCount > 0">
 								<view  style="width: 30px;margin: 0 auto;text-align: center;margin-top: 30rpx;line-height: 35rpx;">
-									<text style="font-size:30rpx;font-family:Source Han Sans SC;font-weight:300;color:#5BC12D;">{{item.ThisSiteGetonTicketCount}}人</text>
+									<text style="font-size:30rpx;font-family:Source Han Sans SC;font-weight:300;color:#5BC12D;">{{item.ThisSiteGetonTicketCount}}人上</text>
 								</view>
 							</view>
-							<view v-if="item.ThisSiteGetoffTicketCount > 0">
+							<view v-show="item.ThisSiteGetoffTicketCount > 0">
 								<view  style="width: 30px;margin: 0 auto;text-align: center;margin-top: 30rpx;line-height: 35rpx;">
-									<text style="font-size:30rpx;font-family:Source Han Sans SC;font-weight:300;color:#fc4646;">{{item.ThisSiteGetoffTicketCount}}人</text>
+									<text style="font-size:30rpx;font-family:Source Han Sans SC;font-weight:300;color:#fc4646;">{{item.ThisSiteGetoffTicketCount}}人下</text>
 								</view>
 							</view>
 						</view>
 						
+						<!--终点-->
 						<view style="display: flex;flex-direction: column;">
-							<view style="text-align: center;height: 35rpx;">
-							</view>
+							<view style="text-align: center;height: 35rpx;"></view>
 							<view style="display: flex;margin-top: 10rpx;margin-bottom: 10rpx;">
 								<image src="../../static/CTKYDriver/endSite.png" style="width: 40rpx;height: 50rpx;"></image>
 							</view>
@@ -102,7 +103,7 @@
 				<scroll-view :scroll-y="true" style="height: 250rpx;" :scroll-into-view="scrollOnOffIndex">
 					<view style="display: flex;flex-direction: column;">
 						<view v-for="(item , index) in ScheduleAndTickets.SiteTicketList" :key='index' :id="'id_' + (index+1)">
-							<view v-if="item.ThisSiteGetonTicketCount > 0" style="display: flex;flex-direction: row;align-items: center;margin-bottom: 10rpx;">
+							<view v-show="item.ThisSiteGetonTicketCount > 0" style="display: flex;flex-direction: row;align-items: center;margin-bottom: 10rpx;">
 								<image src="../../static/CTKYDriver/msg-green.png" style="width: 28rpx;height: 28rpx;margin-right: 10rpx;"></image>
 								<view style="display: flex;">
 									<text class="noticeFont">请注意，</text>
@@ -112,7 +113,7 @@
 									<text class="noticeFont">乘客等待上车</text>
 								</view>
 							</view>
-							<view v-if="item.ThisSiteGetoffTicketCount > 0" style="display: flex;flex-direction: row;align-items: center;margin-bottom: 10rpx;">
+							<view v-show="item.ThisSiteGetoffTicketCount > 0" style="display: flex;flex-direction: row;align-items: center;margin-bottom: 10rpx;">
 								<image src="../../static/CTKYDriver/msg-red.png" style="width: 28rpx;height: 28rpx;margin-right: 10rpx;"></image>
 								<view style="display: flex;">
 									<text class="noticeFont">请注意，</text>
@@ -171,58 +172,9 @@
 						canClick: true
 					}
 				],
-				stationArr:[
-					{
-						stationName:'客运中心站',
-						isArrive:true,
-						onNumber:3,//上车人数
-						offNumber:0,//下车人数
-					},
-					{
-						stationName:'丰泽行政服务中心',
-						isArrive:false,
-						onNumber:3,//上车人数
-						offNumber:0,//下车人数
-					},
-					{
-						stationName:'市皮肤医院',
-						isArrive:false,
-						onNumber:3,//上车人数
-						offNumber:0,//下车人数
-					},
-					{
-						stationName:'瑞士花园',
-						isArrive:false,
-						onNumber:0,//上车人数
-						offNumber:4,//下车人数
-					},
-					{
-						stationName:'云鹿路口',
-						isArrive:false,
-						onNumber:0,//上车人数
-						offNumber:4,//下车人数
-					},
-					{
-						stationName:'现在广场',
-						isArrive:false,
-						onNumber:0,//上车人数
-						offNumber:4,//下车人数
-					},
-					{
-						stationName:'东海街道办事处',
-						isArrive:false,
-						onNumber:0,//上车人数
-						offNumber:4,//下车人数
-					},
-					{
-						stationName:'黎明大学',
-						isArrive:false,
-						onNumber:0,//上车人数 
-						offNumber:4,//下车人数
-					},
-				],
 				scrollStationIndex:'id_0',
 				scrollOnOffIndex:'id_0',
+				nowIndex:1,
 				distanceInterval:0,
 				
 				ScheduleAndTickets:''
@@ -230,20 +182,15 @@
 		},
 		onLoad() {
 			let that = this;
-			
 			let scheduleInfo = uni.getStorageSync('scheduleInfo') || '';
-			that.ScheduleAndTickets = scheduleInfo.ScheduleAndTickets;
-			console.log(that.ScheduleAndTickets);
-			/* setTimeout(function(){
-				that.scrollStationIndex = "id_5";
-				that.scrollOnOffIndex = "id_5";
-			},10000); */
+			that.ScheduleAndTickets = scheduleInfo;
 			that.mathDistance();
 		},
 		onUnload() {
 			let that = this;
 			clearInterval(that.distanceInterval);
-			console.log('已关闭');
+		},
+		onReady() {
 		},
 		methods: {
 			tabbarClick: function(el) {
@@ -281,15 +228,18 @@
 				that.distanceInterval = setInterval(function(){
 					uni.getLocation({
 						success:function(res){
-							that.ScheduleAndTickets.SiteTicketList.filter(x => {
+							that.ScheduleAndTickets.SiteTicketList.filter((x,index) => {
 								let long = that.$home.mathLonLatToDistance(res.latitude,res.longitude,x.Latitude,x.Longitude);
 								if(long < 500){
-									let str = '请注意' + x.SiteName + '就要到了' ;
+									that.scrollStationIndex = 'id_' + (index+1);
+									that.scrollOnOffIndex = 'id_' + (index+1);
+									that.nowIndex = index +1 ;
+									let str = '请注意' + x.SiteName + '就要到了，' ;
 									if(x.ThisSiteGetonTicketCount > 0){
-										str += '上车' + x.ThisSiteGetonTicketCount + '人'
+										str += '有' + x.ThisSiteGetonTicketCount + '位乘客等待上车'
 									}
 									if(x.ThisSiteGetoffTicketCount > 0){
-										str += '下车' + x.ThisSiteGetoffTicketCount + '人'
+										str += '有' + x.ThisSiteGetoffTicketCount + '位乘客即将下车'
 									}
 									that.baiduPlayer(str); 
 									console.log(new Date());
@@ -298,7 +248,7 @@
 							});
 						}
 					});
-				},20000);
+				},10000);
 			},
 			
 			formatPersonCount:function(arr){
@@ -307,7 +257,9 @@
 			formatCarryChildCount:function(arr){
 				return arr.filter(x => x.CarryChild).length;
 			},
-			
+			formatSetoutTime:function(dateTime){
+				return dateTime.substring(11,16);
+			},
 			
 			//调用语音合成接口
 			baiduPlayer: function(tex) {

@@ -1002,6 +1002,10 @@
 			//联系乘客
 			toCallPassenger: function(item) {
 				let that = this;
+				if(item.passengersPhone == null){
+					that.showToast('获取手机号出错');
+					return;
+				}
 				uni.makePhoneCall({
 					phoneNumber: item.passengersPhone
 				});
