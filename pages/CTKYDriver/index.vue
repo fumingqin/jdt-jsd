@@ -186,6 +186,9 @@
 			that.ScheduleAndTickets = scheduleInfo;
 			that.mathDistance();
 		},
+		onShow() {
+			
+		},
 		onUnload() {
 			let that = this;
 			clearInterval(that.distanceInterval);

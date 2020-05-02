@@ -56,6 +56,10 @@
 		},
 		onLoad() {
 			let that = this;
+			
+		},
+		onShow() {
+			let that = this;
 			that.userInfo = uni.getStorageSync('userInfo') || '';
 			that.vehicleInfo = uni.getStorageSync("vehicleInfo")||'';
 			if(that.userInfo == ''){
@@ -65,9 +69,6 @@
 			}else {
 				that.getRunScheduleInfo();
 			}
-		},
-		onShow() {
-			
 		},
 		mounted() {
 			var that = this;
@@ -108,14 +109,11 @@
 					url:that.$Ky.Interface.GetRunScheduleInfoByVheicleNumberDriverPhone.value,
 					method:that.$Ky.Interface.GetRunScheduleInfoByVheicleNumberDriverPhone.method,
 					data:{
-						//vehicleNumber : that.vehicleInfo.vehicleNumber,
-						//phoneNumber : that.userInfo.phoneNumber,
-						vehicleNumber:'闽CYB103',
-						phoneNumber:'18965641002'
+						vehicleNumber : that.vehicleInfo.vehicleNumber,
+						phoneNumber : that.userInfo.phoneNumber,
 					},
 					success:function(res){
 						uni.hideLoading();
-						console.log(res);
 						if(res.data.status){
 							that.orderInfo = [];
 							let data = res.data.data;

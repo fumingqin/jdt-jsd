@@ -33,7 +33,7 @@
 											车次信息：{{ScheduleAndTickets.LineName}}
 										</view>
 										<view>
-											车票号：{{item.BillNumber}}
+											车票号：{{item.TicketID}}
 										</view>
 									</view>
 									<view>
@@ -76,7 +76,7 @@
 											车次信息：{{ScheduleAndTickets.LineName}}
 										</view>
 										<view>
-											车票号：{{item.BillNumber}}
+											车票号：{{item.TicketID}}
 										</view>
 									</view>
 									<view>
@@ -199,10 +199,9 @@
 				uni.scanCode({
 					onlyFromCamera: true,
 					success: function(res) {
-						console.log(res.result);
 						let coachid = uni.getStorageSync('driverCoachid') || '';
-						console.log(coachid);
-						if(coachid == ''){
+						//coachid = '350534B1030';
+						if(coachid === ''){
 							//如果缓存内没有coachid,那重新调接口查。
 							that.getCoachid().then(res =>{
 								if(res.data.msg == '获取成功'){

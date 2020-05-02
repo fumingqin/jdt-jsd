@@ -11,38 +11,36 @@
 			</view>
 			<view style="padding: 0 30rpx;margin-top: -90rpx;">
 				<view class="line">
-					<view class="linedetail">
+					<view>
 						<view>
-							线路：泉州-石狮
+							线路：{{ScheduleAndTickets.LineName}}
 						</view>
+					</view>
+					<view>
 						<view>
-							车牌号：闽CK1678
+							发车时间：{{formatDate(ScheduleAndTickets.SetoutTime)}}
 						</view>
 					</view>
 					<view class="linedetail">
 						<view>
-							司机名：张三丰
+							司机姓名：{{userInfo.userName}}
 						</view>
 						<view>
-							类型：定制快车
+							车牌号：{{ScheduleAndTickets.CoachCardNumber}}
 						</view>
 					</view>
-					<view class="linedetail">
-						<view>
-							发车时间：07-21 13:00
-						</view>
-					</view>
+					
 				</view>
 				<view class="uberstation" style="margin-top: 20rpx;">
 					<view style="display: flex;align-items: center;">
 						<view class="bluering"></view>
 						<view style="padding-left: 10rpx;">上车点：</view>
-						<view>茶叶大厦</view>
+						<view>{{startSite}}</view>
 					</view>
 					<view style="display: flex;align-items: center;">
 						<view class="redring"></view>
 						<view style="padding-left: 10rpx;">下车点：</view>
-						<view>华侨大学</view>
+						<view>{{endSite}}</view>
 					</view>
 				</view>
 				<view class="ticket">
@@ -63,24 +61,24 @@
 				</view>
 				<view class="ticket">
 					<view>总金额</view>
-					<view style="color:#FC4646">￥24</view>
+					<view style="color:#FC4646">￥{{price}}</view>
 				</view>
 				<view style="margin-top: 122rpx;display: flex;flex-direction: column;justify-content: space-between;align-items: center;">
 					<view>
-						<button class="cashbtn">
+						<button @click="payment" class="cashbtn">
 							<image src="../../static/CTKYDriver/cash.png" style="width: 42rpx;height: 42rpx;padding-right: 20rpx;"></image>
 							<text style="color: #FFF;font-size: 36rpx;">现金支付</text>
 						</button>
 					</view>
 					<view style="display: flex;margin-top: 42rpx;">
 						<view style="margin-right: 32rpx;">
-							<button class="weixinpaybtn">
+							<button @click="payment" class="weixinpaybtn">
 								<image src="../../static/CTKYDriver/weixin.png" style="width: 42rpx;height: 42rpx;padding-right: 20rpx;"></image>
-								<text style="color: #FFF;font-size: 36rpx;">微信支付</text>
+								<text  style="color: #FFF;font-size: 36rpx;">微信支付</text>
 							</button>
 						</view>
 						<view>
-							<button class="alipaybtn">
+							<button @click="payment" class="alipaybtn">
 								<image src="../../static/CTKYDriver/alipay.png" style="width: 42rpx;height: 42rpx;padding-right: 20rpx;"></image>
 								<text style="color: #FFF;font-size: 36rpx;">支付宝支付</text>
 							</button>
@@ -102,7 +100,27 @@
 		data() {
 			return {
 				num: 1,
+				
+				startSite:'',
+				endSite:'',
+				price:0,
+				
+				userInfo:'',
+				vehicleInfo:'',
+				ScheduleAndTickets:'',
 			}
+		},
+		onLoad(option) {
+			let that = this;
+			that.startSite = option.startSite;
+			that.endSite = option.endSite;
+		},
+		onShow() {
+			let that = this;
+			that.userInfo = uni.getStorageSync('userInfo') || '';
+			that.vehicleInfo = uni.getStorageSync("vehicleInfo")||'';
+			that.ScheduleAndTickets = uni.getStorageSync('scheduleInfo') || '';
+			
 		},
 		methods: {
 			goBack: function() { //返回上一页
@@ -147,6 +165,17 @@
 						this.num--;
 					}
 				}
+			},
+			
+			payment:function(){
+				uni.showToast({
+					title:'暂未开通',
+					icon:'none'
+				});
+			},
+			
+			formatDate:function(time){
+				return time.substring(5,10) + ' ' + time.substring(11,16);
 			}
 		}
 	}
