@@ -138,22 +138,6 @@
 					siteNameArr.push(item.SiteName);
 				}
 				let distinctArr = array.filter((x,index) => {
-					if(x.SiteName === '晋江宝龙城市'){
-						x.Longitude = '118.566719';
-						x.Latitude = '24.802147';
-					}
-					if(x.SiteName === '安溪汽车总站'){
-						x.Longitude = '118.150624';
-						x.Latitude = '25.066857';
-					}
-					if(x.SiteName === '安溪茶都公园'){
-						x.Longitude = '118.206165';
-						x.Latitude = '25.060782';
-					}
-					if(x.SiteName === '晋江SM天桥'){
-						x.Longitude = '118.564278';
-						x.Latitude = '24.778238';
-					}
 					
 					return siteNameArr.indexOf(x.SiteName) == index
 				});
