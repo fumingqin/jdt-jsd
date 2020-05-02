@@ -34,9 +34,10 @@
 
 <script>
 	import listCell from '@/components/grzx/mix-list-cell';
-	import {  
-	    mapState 
-	} from 'vuex'; 
+	import {
+		mapState,
+	    mapMutations  
+	} from 'vuex';
 	export default{
 		components: {
 			listCell
@@ -79,6 +80,7 @@
 			
 		},
 		methods:{
+			...mapMutations(['logout']),
 			orderClick(){
 				uni.switchTab({
 					url:'/pages/order/OrderList'
@@ -109,9 +111,20 @@
 						}) 
 					},500);
 				}else{
-					// uni.navigateTo({
-					// 	url :'/pages/grzx/personal'
-					// })  
+					uni.showModal({
+					    content: '确定要退出登录么',
+					    success: (e)=>{
+					    	if(e.confirm){
+					    		this.logout();
+								uni.removeStorageSync('vehicleInfo');
+					    		setTimeout(()=>{
+					    			uni.switchTab({
+					    				url:'/pages/grzx/user'
+					    			})
+					    		}, 200)
+					    	}
+					    }
+					}); 
 				}
 			},
 			scanClick(){
