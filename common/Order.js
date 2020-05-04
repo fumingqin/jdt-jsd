@@ -1,5 +1,6 @@
 //接口域名
-const Url1 = 'http://111.231.109.113:8002';
+//const Url1 = 'http://111.231.109.113:8002';
+const Url1 = 'http://zntc.145u.net';
 const Url2 = 'http://111.231.109.113:8004';
 
 const delayTime = {

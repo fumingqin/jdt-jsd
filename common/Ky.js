@@ -1,6 +1,6 @@
 //定制班车接口
-const Url = 'http://111.231.109.113:8002';
-
+//const Url = 'http://111.231.109.113:8002';
+const Url = 'http://zntc.145u.net';
 
 //接口对象
 const Interface = {

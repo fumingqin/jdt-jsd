@@ -118,8 +118,8 @@
 		data() {
 			return {
 				scale: 14,
-				longitude: "118.600608", //地图中心点经度
-				latitude: "24.889217", //地图中心点纬度
+				longitude: "", //地图中心点经度
+				latitude: "", //地图中心点纬度
 				points: [],
 				polyline: [],
 				markers: [],
@@ -177,7 +177,7 @@
 				}
 			});
 			that.setOrderStatus();
-			
+			that.getMyLocation();
 		},
 		onUnload() {
 			let that = this;
@@ -187,6 +187,17 @@
 			clearInterval(that.directionInterval);
 		},
 		methods: {
+			getMyLocation:function(){
+				let that = this;
+				uni.getLocation({
+					type:'gcj02',
+					success:function(res){
+						that.longitude = res.longitude;
+						that.latitude = res.latitude;
+					}
+				})
+			},
+			
 			//本页面统一调用此方法
 			showToast:function(title,icon='none'){
 				uni.showToast({
@@ -247,6 +258,7 @@
 				})
 				that.getOrder().then(res => {
 					uni.hideLoading();
+					console.log(res.data.data);
 					var data = res.data.data;
 					if (res.data.status) {
 						that.markers = [];

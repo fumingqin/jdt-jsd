@@ -11,12 +11,12 @@
 			</view>
 			<view style="padding: 0 30rpx;margin-top: -90rpx;">
 				<view class="line">
-					<view>
+					<view class="linedetail">
 						<view>
 							线路：{{ScheduleAndTickets.LineName}}
 						</view>
 					</view>
-					<view>
+					<view class="linedetail">
 						<view>
 							发车时间：{{formatDate(ScheduleAndTickets.SetoutTime)}}
 						</view>
@@ -25,6 +25,8 @@
 						<view>
 							司机姓名：{{userInfo.userName}}
 						</view>
+					</view>
+					<view class="linedetail">
 						<view>
 							车牌号：{{ScheduleAndTickets.CoachCardNumber}}
 						</view>
@@ -216,8 +218,7 @@
 	.line {
 		background-color: #FFF;
 		border-radius: 20rpx;
-		height: 140rpx;
-		padding: 33rpx 38rpx;
+		padding: 0 38rpx 20rpx 38rpx;
 		display: flex;
 		flex-direction: column;
 		justify-content: space-between;
@@ -225,17 +226,17 @@
 		font-family: Source Han Sans SC;
 		font-weight: 300;
 		color: rgba(51, 51, 51, 1);
-		line-height: 20rpx;
 		box-shadow: 0px 6px 20px 0px rgba(231, 231, 231, 0.53);
 	}
 
 	.linedetail {
 		display: flex;
 		align-items: center;
+		margin-top: 20rpx;
 	}
 
 	.linedetail view {
-		width: 345rpx;
+		/*width: 345rpx;*/
 	}
 
 	.uberstation {

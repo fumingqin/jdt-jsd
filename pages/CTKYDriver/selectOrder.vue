@@ -25,7 +25,7 @@
 			<scroll-view :style="{height:scollerHeight}" scroll-y="true" style="margin-top: 10rpx;">
 				<view style="padding:40rpx 35rpx;background-color: #FFF;border-radius: 20rpx;margin-top: 20rpx;" v-for="(item,index) in orderInfo"
 				 :key="index">
-					<view style="font-size: 34rpx;color: #333333;font-weight: bold;">发车时间：{{item.departureTime}}</view>
+					<view style="font-size: 34rpx;color: #333333;font-weight: bold;">发车时间：{{formatSetoutTime(item.SetoutTime)}}</view>
 					<view style="font-size: 30rpx;color: #333333;line-height: 60rpx;">
 						<view>出发地：{{formatStartSite(item)}}</view>
 						<view>目的地：{{formatEndSite(item)}}</view>
@@ -111,6 +111,8 @@
 					data:{
 						vehicleNumber : that.vehicleInfo.vehicleNumber,
 						phoneNumber : that.userInfo.phoneNumber,
+						//vehicleNumber:'闽CYB103',
+						//phoneNumber:'13559632455'
 					},
 					success:function(res){
 						uni.hideLoading();
@@ -136,7 +138,6 @@
 					siteNameArr.push(item.SiteName);
 				}
 				let distinctArr = array.filter((x,index) => {
-					
 					return siteNameArr.indexOf(x.SiteName) == index
 				});
 				return distinctArr
@@ -156,7 +157,10 @@
 					isCheckCount : isCheckCount,
 					unCheckCount : unCheckCount
 				}
-			}
+			},
+			formatSetoutTime:function(dateTime){
+				return dateTime.substring(11,16);
+			},
 		}
 	}
 </script>
