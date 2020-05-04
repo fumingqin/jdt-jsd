@@ -1,10 +1,7 @@
 <script>
 	import homeJS from 'common/Home.js';
 	import utils from '@/components/shoyu-date/utils.filter.js';
-	
-	import {
-		mapMutations
-	} from 'vuex';
+
 	export default {
 		data: {},
 		globalData: {
@@ -57,26 +54,26 @@
 		},
 
 		methods: {
-			...mapMutations(['login']),
+
 		},
 		onLaunch: function() {
-			let that = this;
-			let userInfo = uni.getStorageSync('userInfo') || '';
-			if (userInfo.driverId) {
-				//如果有登录缓存则开启定时器。
-				/* that.constantly(); */
-			}
+			// let that = this;
+			// let userInfo = uni.getStorageSync('userInfo') || '';
+			// if (userInfo.driverId) {
+			// 	//如果有登录缓存则开启定时器。
+			// 	/* that.constantly(); */
+			// }
 
-			if (userInfo.driverId) {
-				//更新登陆状态
-				uni.getStorage({
-					key: 'userInfo',
-					success: (res) => {
-						// console.log(res);
-						this.login(res.data);
-					}
-				});
-			}
+			// if (userInfo.driverId) {
+			// 	//更新登陆状态
+			// 	uni.getStorage({
+			// 		key: 'userInfo',
+			// 		success: (res) => {
+			// 			// console.log(res);
+			// 			//this.login(res.data);
+			// 		}
+			// 	});
+			// }
 		},
 		onShow: function() {
 			console.log('App Show')
