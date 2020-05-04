@@ -205,7 +205,6 @@
 						vehicleNumber:that.vehicleInfo.vehicleNumber,
 					},
 					success:function(res){
-						console.log(res);
 						uni.hideLoading();
 						if(res.data.status){
 							switch(item.orderType){

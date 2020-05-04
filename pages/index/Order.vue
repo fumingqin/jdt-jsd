@@ -1085,11 +1085,10 @@
 					url = '';
 					method = '';
 					data = '';
-				}
+				} 
 				
 				that.taxiRequest(url,method,data).then(res => {
 					//成功回调
-					console.log(res);
 					if (res.data.status) {
 						if(item.title == '出租车'){
 							uni.navigateTo({

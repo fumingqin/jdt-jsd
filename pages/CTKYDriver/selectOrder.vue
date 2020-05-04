@@ -25,7 +25,7 @@
 			<scroll-view :style="{height:scollerHeight}" scroll-y="true" style="margin-top: 10rpx;">
 				<view style="padding:40rpx 35rpx;background-color: #FFF;border-radius: 20rpx;margin-top: 20rpx;" v-for="(item,index) in orderInfo"
 				 :key="index">
-					<view style="font-size: 34rpx;color: #333333;font-weight: bold;">发车时间：{{item.departureTime}}</view>
+					<view style="font-size: 34rpx;color: #333333;font-weight: bold;">发车时间：{{formatSetoutTime(item.SetoutTime)}}</view>
 					<view style="font-size: 30rpx;color: #333333;line-height: 60rpx;">
 						<view>出发地：{{formatStartSite(item)}}</view>
 						<view>目的地：{{formatEndSite(item)}}</view>
@@ -56,6 +56,10 @@
 		},
 		onLoad() {
 			let that = this;
+			
+		},
+		onShow() {
+			let that = this;
 			that.userInfo = uni.getStorageSync('userInfo') || '';
 			that.vehicleInfo = uni.getStorageSync("vehicleInfo")||'';
 			if(that.userInfo == ''){
@@ -65,9 +69,6 @@
 			}else {
 				that.getRunScheduleInfo();
 			}
-		},
-		onShow() {
-			
 		},
 		mounted() {
 			var that = this;
@@ -108,14 +109,13 @@
 					url:that.$Ky.Interface.GetRunScheduleInfoByVheicleNumberDriverPhone.value,
 					method:that.$Ky.Interface.GetRunScheduleInfoByVheicleNumberDriverPhone.method,
 					data:{
-						//vehicleNumber : that.vehicleInfo.vehicleNumber,
-						//phoneNumber : that.userInfo.phoneNumber,
-						vehicleNumber:'闽CYB103',
-						phoneNumber:'18965641002'
+						vehicleNumber : that.vehicleInfo.vehicleNumber,
+						phoneNumber : that.userInfo.phoneNumber,
+						//vehicleNumber:'闽CYB103',
+						//phoneNumber:'13559632455'
 					},
 					success:function(res){
 						uni.hideLoading();
-						console.log(res);
 						if(res.data.status){
 							that.orderInfo = [];
 							let data = res.data.data;
@@ -138,7 +138,6 @@
 					siteNameArr.push(item.SiteName);
 				}
 				let distinctArr = array.filter((x,index) => {
-					
 					return siteNameArr.indexOf(x.SiteName) == index
 				});
 				return distinctArr
@@ -158,7 +157,10 @@
 					isCheckCount : isCheckCount,
 					unCheckCount : unCheckCount
 				}
-			}
+			},
+			formatSetoutTime:function(dateTime){
+				return dateTime.substring(11,16);
+			},
 		}
 	}
 </script>

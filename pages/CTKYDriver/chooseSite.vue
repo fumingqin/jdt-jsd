@@ -7,28 +7,30 @@
 			</view>
 		</view>
 		<view style="margin-left: 30rpx;margin-right: 30rpx;">
+			<!--选择上车点-->
 			<view class="startSiteBlock">
 				<view style="margin-bottom: 30rpx;">
 					<text class="SiteTitleFont">选择上车点</text>
 				</view>
 				<scroll-view style="height: 300rpx;" :style="{height:siteHeight}"  :scroll-y='true'>
 					<view class="siteBlock">
-						<view v-for="(item,index) in startSite" :key='index' @click="startSiteClick(item)" :class="item.isActive?'activated':'unActivated'"
+						<view v-for="(item,index) in startSite" :key='index' @click="startSiteClick(item,index)" :class="chooseStartSiteIndex == index?'activated':'unActivated'"
 						 style="margin-right: 20rpx;margin-bottom: 20rpx;background-color: #E3E3E3;">
-							<text class="siteFont">{{item.name}}</text>
+							<text class="siteFont">{{item.SiteName}}</text>
 						</view>
 					</view>
 				</scroll-view>
 			</view>
+			<!--选择下车点-->
 			<view class="endSiteBlock">
 				<view style="margin-bottom: 30rpx;">
 					<text class="SiteTitleFont">选择下车点</text>
 				</view>
 				<scroll-view style="height: 300rpx;" :style="{height:siteHeight}" :scroll-y='true'>
 					<view class="siteBlock">
-						<view v-for="(item,index) in endSite" :key='index' @click="endSiteClick(item)" :class="item.isActive?'activated':'unActivated'"
+						<view v-for="(item,index) in endSite" :key='index' @click="endSiteClick(item,index)" :class="chooseEndSiteIndex == index?'activated':'unActivated'"
 						 style="margin-right: 20rpx;margin-bottom: 20rpx;">
-							<text class="siteFont">{{item.name}}</text>
+							<text class="siteFont">{{item.SiteName}}</text>
 						</view>
 					</view>
 				</scroll-view>
@@ -80,132 +82,14 @@
 						canClick: true
 					}
 				],
-				startSite: [{
-						id:'0',
-						name: '茶叶大厦',
-						isActive: false
-					},
-					{
-						id:'0',
-						name: '信和路口',
-						isActive: false
-					},
-					{
-						id:'0',
-						name: '浦西路口',
-						isActive: false
-					},
-					{
-						id:'0',
-						name: '清源山',
-						isActive: false
-					},
-					{
-						id:'0',
-						name: '华侨大学',
-						isActive: false
-					},
-					{
-						id:'0',
-						name: '客运中心站',
-						isActive: false
-					},
-					{
-						id:'0',
-						name: '幸福路口',
-						isActive: false
-					},
-					{
-						id:'0',
-						name: '中骏世界城',
-						isActive: false
-					},
-					{
-						id:'0',
-						name: '海关大楼',
-						isActive: false 
-					},
-					{
-						id:'0',
-						name: '汽车站',
-						isActive: false
-					},
-					{
-						id:'0',
-						name: '万达广场',
-						isActive: false
-					},
-					{
-						id:'0',
-						name: '第一医院',
-						isActive: false
-					}
-				],
-				endSite: [{
-						id:'0',
-						name: '茶叶大厦',
-						isActive: false
-					},
-					{
-						id:'0',
-						name: '信和路口',
-						isActive: false
-					},
-					{
-						id:'0',
-						name: '浦西路口',
-						isActive: false
-					},
-					{
-						id:'0',
-						name: '清源山',
-						isActive: false
-					},
-					{
-						id:'0',
-						name: '华侨大学',
-						isActive: false
-					},
-					{
-						id:'0',
-						name: '客运中心站',
-						isActive: false
-					},
-					{
-						id:'0',
-						name: '幸福路口',
-						isActive: false
-					},
-					{
-						id:'0',
-						name: '中骏世界城',
-						isActive: false
-					},
-					{
-						id:'0',
-						name: '海关大楼',
-						isActive: false
-					},
-					{
-						id:'0',
-						name: '汽车站',
-						isActive: false
-					},
-					{
-						id:'0',
-						name: '万达广场',
-						isActive: false
-					},
-					{
-						id:'0',
-						name: '第一医院',
-						isActive: false
-					}
-				],
-				chooseStartSite:'',
-				chooseEndSite:'',
+				startSite: [],
+				endSite: [],
 				Disabled:true,
-				siteHeight:''
+				siteHeight:'',
+				
+				chooseStartSiteIndex:-1,
+				chooseEndSiteIndex:-1,
+				ScheduleAndTickets:'',
 			}
 		},
 		onShow() {
@@ -214,43 +98,49 @@
 				success(res) {
 					that.siteHeight=res.windowHeight*0.23+'px';
 				}
-			})
+			});
+			that.ScheduleAndTickets = uni.getStorageSync('scheduleInfo') || '';
+			if(that.ScheduleAndTickets !== ''){
+				that.startSite = that.ScheduleAndTickets.SiteTicketList;
+				that.endSite = that.ScheduleAndTickets.SiteTicketList;
+			}
 		},
 		methods: {
-			startSiteClick: function(el) {
+			startSiteClick: function(el,index) {
 				//上车点点击事件
 				let that = this;
-				that.startSite = that.startSite.filter(x => {
-					x.isActive = false;
-					return true
-				});
-				el.isActive = !el.isActive;
-				that.chooseStartSite = el.id;
-				
+				that.chooseStartSiteIndex = index;
 				//取消按钮禁用
-				if(that.chooseStartSite != '' && that.chooseEndSite){
+				if(that.isUndisabled()){
 					that.Disabled = false;
 				}
+				
 			},
-			endSiteClick: function(el) {
+			endSiteClick: function(el,index) {
 				//上车点点击事件
 				let that = this;
-				that.endSite = that.endSite.filter(x => {
-					x.isActive = false;
-					return true
-				});
-				el.isActive = !el.isActive;
-				that.chooseEndSite = el.id;
-				
+				that.chooseEndSiteIndex = index
 				//取消按钮禁用
-				if(that.chooseStartSite != '' && that.chooseEndSite){
+				if(that.isUndisabled()){
 					that.Disabled = false;
 				}
 			},
 			
+			isUndisabled:function(){
+				let that = this;
+				//是否关闭禁用按钮
+				//console.log(that.chooseStartSiteIndex < that.chooseEndSiteIndex); 
+				return 	that.chooseStartSiteIndex!=-1 && that.chooseEndSiteIndex!=-1 && that.chooseStartSiteIndex < that.chooseEndSiteIndex
+			},
+			
 			finished:function(){
+				let that = this;
+				let startSite = that.ScheduleAndTickets.SiteTicketList[that.chooseStartSiteIndex].SiteName;
+				let endSite = that.ScheduleAndTickets.SiteTicketList[that.chooseEndSiteIndex].SiteName;
+				
+				//console.log(`./buyTicket?startSite=${startSite}&endSite=${endSite}`);
 				uni.navigateTo({
-					url:'./buyTicket'
+					url:`./buyTicket?startSite=${startSite}&endSite=${endSite}`,
 				})
 			},
 			

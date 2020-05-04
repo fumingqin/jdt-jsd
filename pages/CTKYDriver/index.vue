@@ -184,7 +184,11 @@
 			let that = this;
 			let scheduleInfo = uni.getStorageSync('scheduleInfo') || '';
 			that.ScheduleAndTickets = scheduleInfo;
+			that.initSiteData();
 			that.mathDistance();
+		},
+		onShow() {
+			
 		},
 		onUnload() {
 			let that = this;
@@ -222,33 +226,38 @@
 				})
 			},
 			
+			initSiteData:function(){
+				//根据经纬度获取当前
+				let that = this;
+				uni.getLocation({
+					success:function(res){
+						that.ScheduleAndTickets.SiteTicketList.filter((x,index) => {
+							let long = that.$home.mathLonLatToDistance(res.latitude,res.longitude,x.Latitude,x.Longitude);
+							if(long < 500){
+								that.scrollStationIndex = 'id_' + (index+1);
+								that.scrollOnOffIndex = 'id_' + (index+1);
+								that.nowIndex = index +1 ;
+								let str = '请注意' + x.SiteName + '就要到了，' ;
+								if(x.ThisSiteGetonTicketCount > 0){
+									str += '有' + x.ThisSiteGetonTicketCount + '位乘客等待上车'
+								}
+								if(x.ThisSiteGetoffTicketCount > 0){
+									str += '有' + x.ThisSiteGetoffTicketCount + '位乘客即将下车'
+								}
+								that.baiduPlayer(str); 
+							}
+							return long < 500;
+						});
+					}
+				});
+			},
+			
 			mathDistance:function(){
 				let that = this;
 				clearInterval(that.distanceInterval); 
 				that.distanceInterval = setInterval(function(){
-					uni.getLocation({
-						success:function(res){
-							that.ScheduleAndTickets.SiteTicketList.filter((x,index) => {
-								let long = that.$home.mathLonLatToDistance(res.latitude,res.longitude,x.Latitude,x.Longitude);
-								if(long < 500){
-									that.scrollStationIndex = 'id_' + (index+1);
-									that.scrollOnOffIndex = 'id_' + (index+1);
-									that.nowIndex = index +1 ;
-									let str = '请注意' + x.SiteName + '就要到了，' ;
-									if(x.ThisSiteGetonTicketCount > 0){
-										str += '有' + x.ThisSiteGetonTicketCount + '位乘客等待上车'
-									}
-									if(x.ThisSiteGetoffTicketCount > 0){
-										str += '有' + x.ThisSiteGetoffTicketCount + '位乘客即将下车'
-									}
-									that.baiduPlayer(str); 
-									console.log(new Date());
-								}
-								return long < 500;
-							});
-						}
-					});
-				},10000);
+					that.initSiteData();
+				},20000);
 			},
 			
 			formatPersonCount:function(arr){

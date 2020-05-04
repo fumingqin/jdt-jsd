@@ -33,7 +33,7 @@
 											车次信息：{{ScheduleAndTickets.LineName}}
 										</view>
 										<view>
-											车票号：{{item.BillNumber}}
+											车票号：{{item.TicketID}}
 										</view>
 									</view>
 									<view>
@@ -76,7 +76,7 @@
 											车次信息：{{ScheduleAndTickets.LineName}}
 										</view>
 										<view>
-											车票号：{{item.BillNumber}}
+											车票号：{{item.TicketID}}
 										</view>
 									</view>
 									<view>
@@ -199,10 +199,8 @@
 				uni.scanCode({
 					onlyFromCamera: true,
 					success: function(res) {
-						console.log(res.result);
 						let coachid = uni.getStorageSync('driverCoachid') || '';
-						console.log(coachid);
-						if(coachid == ''){
+						if(coachid === ''){
 							//如果缓存内没有coachid,那重新调接口查。
 							that.getCoachid().then(res =>{
 								if(res.data.msg == '获取成功'){
@@ -255,9 +253,12 @@
 						data:{
 							vehicleNumber : that.vehicleInfo.vehicleNumber,
 							phoneNumber: that.userInfo.phoneNumber
+							//vehicleNumber:'闽CYB103',
+							//phoneNumber:'13559632455'
 						},
 						success:function(res){
 							if(res.data.msg == '获取成功'){
+								console.log(res);
 								that.coachid = res.data.data;
 								uni.setStorageSync('driverCoachid',that.coachid);
 							}else{
@@ -275,6 +276,9 @@
 			checkTicket:function(coachid,tickId){
 				//泉运检票接口
 				let that = this;
+				uni.showLoading({
+					mask:true
+				});
 				uni.request({
 					url : that.$Ky.Interface.CheckTicket_ByTicketID.value,
 					method:that.$Ky.Interface.CheckTicket_ByTicketID.method,
@@ -283,16 +287,51 @@
 						tickId :tickId,
 					},
 					success:function(res){
+						uni.hideLoading();
+						if(res.data.status){
+							console.log(res);
+							that.showToast('检票成功');
+							that.getRunScheduleInfo();
+						}else{
+							that.showToast('检票失败');
+						}
+					},
+					fail:function(res){
+						uni.hideLoading();
 						console.log(res);
+						that.showToast('网络连接失败');
+					}
+				});
+			},
+			
+			getRunScheduleInfo:function(){
+				let that = this;
+				uni.request({
+					url:that.$Ky.Interface.GetRunScheduleInfoByVheicleNumberDriverPhone.value,
+					method:that.$Ky.Interface.GetRunScheduleInfoByVheicleNumberDriverPhone.method,
+					data:{
+						vehicleNumber : that.vehicleInfo.vehicleNumber,
+						phoneNumber : that.userInfo.phoneNumber,
+						//vehicleNumber:'闽CYB103',
+						//phoneNumber:'13559632455'
+					},
+					success:function(res){
+						if(res.data.status){
+							that.orderInfo = [];
+							let data = res.data.data;
+							that.ScheduleAndTickets = data;
+							uni.setInterval('scheduleInfo',that.ScheduleAndTickets);
+						} else {
+							that.showToast('未取得订单信息');
+						}
 					},
 					fail:function(res){
 						console.log(res);
 						that.showToast('网络连接失败');
 					}
-				})
-				
-				
+				});
 			},
+			
 			formatIDCard:function(idCard){
 				return idCard.substring(0,6) + '****' + idCard.substring(14,18);
 			}
