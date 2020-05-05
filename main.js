@@ -8,6 +8,7 @@ import order from './common/Order.js'    //司机端全局
 import myTime from './common/myTime.js' //时间
 import Ky from './common/Ky.js' //客运
 import GrzxInter from './common/Grzx.js'    //司机端个人中心
+import Bcsjd from 'common/Bcsjd.js' //包车司机端
 
 Vue.config.productionTip = false
 Vue.prototype.$store=store;  //登录
@@ -17,6 +18,7 @@ Vue.prototype.$home=home;  //全局
 Vue.prototype.$order=order;  //订单
 Vue.prototype.$myTime=myTime;  //日期js
 Vue.prototype.$Ky=Ky;  //客运
+Vue.prototype.$Bcsjd=Bcsjd;  //个人中心
 Vue.prototype.$GrzxInter=GrzxInter;  //个人中心
 
 
@@ -28,6 +30,8 @@ const app = new Vue({
 	home,
 	order,
 	GrzxInter,
+	Bcsjd,
     ...App
+	
 })
 app.$mount()
