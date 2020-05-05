@@ -100,7 +100,7 @@
 						})
 						setTimeout(function(){
 							uni.navigateTo({
-								url  : '/pages/GRZX/userLogin'
+								url  : '/pages/grzx/userLogin'
 							}) 
 						},1000)
 					}
@@ -113,7 +113,7 @@
 				    content: '是否清除数据',
 				    success: (e)=>{
 				    	if(e.confirm){
-							uni.clearStorage();
+							uni.clearStorageSync();
 							uni.setStorageSync('userInfo',user);
 							uni.setStorageSync('vehicleInfo',info);
 							uni.redirectTo({

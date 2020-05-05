@@ -77,18 +77,25 @@
 		},
 		methods:{
 			loadData(){
-				var user=uni.getStorageSync('userInfo');
-				
-				this.userName=user.userName;
 				var that=this;
-				if(that.isBase64(user.userPortrait)){
-					base64ToPath(base64)
-					  .then(path => {
-						that.userPortrait=path;
-					})
-				}else{
-					that.userPortrait=user.userPortrait;
-				}
+				uni.getStorage({
+					key:'userInfo',
+					success(user){
+						that.userName=user.data.userName;
+						if(that.isBase64(user.data.userPortrait)){
+							base64ToPath(base64)
+							  .then(path => {
+								that.userPortrait=path;
+							})
+						}else{
+							that.userPortrait=user.data.userPortrait;
+						}
+					},
+					fail(){
+						that.userName="";
+						that.userPortrait="";
+					}
+				})
 			},
 			orderClick(){
 				uni.switchTab({
@@ -119,22 +126,23 @@
 							url  : '/pages/grzx/selectOperation'
 						}) 
 					},500);
-				}else{
-					uni.showModal({
-					    content: '确定要退出登录么',
-					    success: (e)=>{
-					    	if(e.confirm){
-								uni.removeStorageSync('vehicleInfo');
-								uni.removeStorageSync('userInfo');
-					    		setTimeout(()=>{
-					    			uni.switchTab({
-					    				url:'/pages/grzx/user'
-					    			})
-					    		}, 200)
-					    	}
-					    }
-					}); 
-				}	
+				}
+				// else{
+				// 	uni.showModal({
+				// 	    content: '确定要退出登录么',
+				// 	    success: (e)=>{
+				// 	    	if(e.confirm){
+				// 				uni.removeStorageSync('vehicleInfo');
+				// 				uni.removeStorageSync('userInfo');
+				// 	    		setTimeout(()=>{
+				// 	    			uni.switchTab({
+				// 	    				url:'/pages/grzx/user'
+				// 	    			})
+				// 	    		}, 200)
+				// 	    	}
+				// 	    }
+				// 	}); 
+				// }	
 			},
 			scanClick(){
 				uni.showToast({
@@ -154,6 +162,9 @@
 			},
 			//------------判断是否为base64格式-----------
 			isBase64:function(str) {
+				if(typeof str === 'string'){
+				     str = str.trim();
+				}
 			    if (str ===''){ return false; }
 			    try {
 			        return btoa(atob(str)) == str;
