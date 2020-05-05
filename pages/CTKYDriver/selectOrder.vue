@@ -60,7 +60,6 @@
 		},
 		onShow() {
 			let that = this;
-			
 			that.userInfo = uni.getStorageSync('userInfo') || '';
 			that.vehicleInfo = uni.getStorageSync("vehicleInfo")||'';
 			if(that.userInfo == ''){
