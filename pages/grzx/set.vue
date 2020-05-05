@@ -84,7 +84,7 @@
 						    	if(e.confirm){
 									uni.removeStorageSync('vehicleInfo');
 									uni.removeStorageSync('userInfo');
-						    		setTimeout(()=>{
+						    		setTimeout(()=>{ 
 						    			uni.switchTab({
 						    				url:'/pages/grzx/user'
 						    			})

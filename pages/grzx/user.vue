@@ -123,8 +123,8 @@
 					    content: '确定要退出登录么',
 					    success: (e)=>{
 					    	if(e.confirm){
-					    		this.logout();
 								uni.removeStorageSync('vehicleInfo');
+								uni.removeStorageSync('userInfo');
 					    		setTimeout(()=>{
 					    			uni.switchTab({
 					    				url:'/pages/grzx/user'
@@ -153,7 +153,7 @@
 			},
 			//------------判断是否为base64格式-----------
 			isBase64:function(str) {
-			    if (str ==='' || str.trim() ===''){ return false; }
+			    if (str ===''){ return false; }
 			    try {
 			        return btoa(atob(str)) == str;
 			    } catch (err) {
