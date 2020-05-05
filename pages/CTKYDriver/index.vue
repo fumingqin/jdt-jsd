@@ -190,6 +190,13 @@
 		},
 		onShow() {
 			let that = this;
+			uni.setKeepScreenOn({
+				keepScreenOn:true,
+				success:function(res){
+				},
+				fail:function(res){
+				}
+			})
 			that.lastIndex = uni.getStorageSync('lastIndex') || -1;
 		},
 		onUnload() {

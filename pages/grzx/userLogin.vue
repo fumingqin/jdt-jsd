@@ -42,10 +42,6 @@
 </template>
 
 <script>
-	import {
-		mapState,
-	    mapMutations  
-	} from 'vuex';
 	export default {
 		data() {
 			return {
@@ -61,7 +57,6 @@
 			this.load();
 		},
 		methods: {
-			...mapMutations(['login']),
 			//--------------加载数据-------------
 			async load(){
 				var that=this;
