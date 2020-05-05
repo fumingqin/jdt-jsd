@@ -53,7 +53,7 @@
 					<view style="display: flex;flex-direction: row;">
 						
 						<!--起点-->
-						<view style="display: flex;flex-direction: column;" id="id_0">
+						<view style="display: flex;flex-direction: column;">
 							<!-- <view style="display: flex;flex-direction: column;width: 100rpx;" id="id_0"> -->
 							<view style="text-align: center;height: 35rpx;">
 							</view>
@@ -65,7 +65,7 @@
 						<!--横向-->
 						<view v-for='(item ,index) in ScheduleAndTickets.SiteTicketList' :key='index' :id="'id_' + (index + 1)"  style="display: flex;flex-direction: column;width: 100rpx;">
 							<view style="text-align: center;height: 50rpx;">
-								<image v-show='nowIndex == (index+1)' src="../../static/CTKYDriver/bus.png" style="width: 50rpx;height: 25rpx;"></image>
+								<image v-show='nowIndex == index' src="../../static/CTKYDriver/bus.png" style="width: 50rpx;height: 25rpx;"></image>
 							</view>
 							<view style="display: flex;margin-top: 10rpx;margin-bottom: 10rpx;">
 								<image src="../../static/CTKYDriver/line2.png" style="width: 100rpx;height: 10rpx;"></image>
@@ -174,7 +174,8 @@
 				],
 				scrollStationIndex:'id_0',
 				scrollOnOffIndex:'id_0',
-				nowIndex:1,
+				nowIndex:0,
+				lastIndex:-1,
 				distanceInterval:0,
 				
 				ScheduleAndTickets:''
@@ -188,7 +189,20 @@
 			that.mathDistance();
 		},
 		onShow() {
-			
+			let that = this;
+			uni.setKeepScreenOn({
+				keepScreenOn:true,
+				success:function(res){
+				},
+				fail:function(res){
+				}
+			})
+			that.lastIndex = uni.getStorageSync('lastIndex') || -1;
+			if(that.lastIndex > -1){
+				that.scrollStationIndex = 'id_' + that.lastIndex;
+				that.scrollOnOffIndex = 'id_' + that.lastIndex;
+				that.nowIndex = that.lastIndex
+			}
 		},
 		onUnload() {
 			let that = this;
@@ -233,10 +247,12 @@
 					success:function(res){
 						that.ScheduleAndTickets.SiteTicketList.filter((x,index) => {
 							let long = that.$home.mathLonLatToDistance(res.latitude,res.longitude,x.Latitude,x.Longitude);
-							if(long < 500){
-								that.scrollStationIndex = 'id_' + (index+1);
-								that.scrollOnOffIndex = 'id_' + (index+1);
-								that.nowIndex = index +1 ;
+							if(long < 500 && that.lastIndex < index  ){
+								that.scrollStationIndex = 'id_' + index;
+								that.scrollOnOffIndex = 'id_' + index;
+								that.nowIndex = index ;
+								that.lastIndex = index;
+								uni.setStorageSync('lastIndex' , index);
 								let str = '请注意' + x.SiteName + '就要到了，' ;
 								if(x.ThisSiteGetonTicketCount > 0){
 									str += '有' + x.ThisSiteGetonTicketCount + '位乘客等待上车'
@@ -244,12 +260,17 @@
 								if(x.ThisSiteGetoffTicketCount > 0){
 									str += '有' + x.ThisSiteGetoffTicketCount + '位乘客即将下车'
 								}
+								//报站两次
 								that.baiduPlayer(str); 
+								that.baiduPlayer(str);
 							}
 							return long < 500;
 						});
 					}
 				});
+			},
+			sleep:function(ms){
+				return new Promise(resolve => setTimeout(resolve,ms));
 			},
 			
 			mathDistance:function(){

@@ -437,6 +437,12 @@
 		onLoad() {
 			this.getnowdate();
 		},
+		onShow() {
+			uni.showToast({
+				title:'该页面数据正在测试中，仅供参观',
+				icon:'none'
+			})
+		},
 		mounted() {
 			var that = this;
 

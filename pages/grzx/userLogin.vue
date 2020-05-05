@@ -42,10 +42,6 @@
 </template>
 
 <script>
-	import {
-		mapState,
-	    mapMutations  
-	} from 'vuex';
 	export default {
 		data() {
 			return {
@@ -61,7 +57,6 @@
 			this.load();
 		},
 		methods: {
-			...mapMutations(['login']),
 			//--------------加载数据-------------
 			async load(){
 				var that=this;
@@ -129,7 +124,7 @@
 							that.getuserInfo(that.phoneNumber);
 						}else{
 							uni.showToast({
-								title:'密码错误或手机号不对',
+								title:'手机号未注册或密码错误',
 								icon:'none',
 							})
 						}
@@ -195,8 +190,6 @@
 						uni.hideLoading();
 						if(res.data.data.userauditState=='1'||res.data.data.userauditState==1){
 							uni.setStorageSync('userInfo',res.data.data)
-							that.logining=true;
-							that.login(res.data.data)
 							uni.showToast({
 								title:"登录成功",
 								icon:"success"

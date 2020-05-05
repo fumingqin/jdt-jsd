@@ -70,6 +70,10 @@
 				that.getRunScheduleInfo();
 			}
 		},
+		onPullDownRefresh() {
+			let that = this;
+			that.getRunScheduleInfo();
+		},
 		mounted() {
 			var that = this;
 			uni.getSystemInfo({
@@ -102,6 +106,7 @@
 			},
 			getRunScheduleInfo:function(){
 				let that = this;
+				uni.stopPullDownRefresh();
 				uni.showLoading({
 					mask:true
 				});
@@ -111,8 +116,6 @@
 					data:{
 						vehicleNumber : that.vehicleInfo.vehicleNumber,
 						phoneNumber : that.userInfo.phoneNumber,
-						//vehicleNumber:'闽CYB103',
-						//phoneNumber:'13559632455'
 					},
 					success:function(res){
 						uni.hideLoading();

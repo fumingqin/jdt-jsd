@@ -183,6 +183,7 @@
 		}, {
 			"path": "pages/CTKYDriver/checkTicket",
 			"style": {
+				"enablePullDownRefresh":true,
 				"navigationStyle": "custom"
 			}
 		}, {
@@ -268,6 +269,7 @@
         ,{
             "path" : "pages/CTKYDriver/selectOrder",
             "style" : {
+				"enablePullDownRefresh":true,
 				"navigationStyle": "custom"
 			}
         }

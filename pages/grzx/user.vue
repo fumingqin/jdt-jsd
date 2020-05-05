@@ -7,8 +7,8 @@
 			<!-- <image src="../../static/grzx/info.png" class="infoClass" @click="navTo('/pages/grzx/myNews')"></image> -->
 			<!-- #endif -->
 			<view class="userInfoClass" @click="checkLogin">
-				<image class="portraitClass" :src=" userInfo.userPortrait || '/static/grzx/touxiang.png'"></image>
-				<text class="usernameClass">{{userInfo.userName || '请登录'}}</text>
+				<image class="portraitClass" :src="userPortrait || '/static/grzx/touxiang.png'"></image>
+				<text class="usernameClass">{{userName || '请登录'}}</text>
 			</view>
 		</view>
 		<view class="serviceBox">
@@ -34,10 +34,7 @@
 
 <script>
 	import listCell from '@/components/grzx/mix-list-cell';
-	import {
-		mapState,
-	    mapMutations  
-	} from 'vuex';
+	import { pathToBase64, base64ToPath } from '@/components/grzx/js_sdk/gsq-image-tools/image-tools/index.js';
 	export default{
 		components: {
 			listCell
@@ -45,15 +42,14 @@
 		data(){
 			return{
 				QQ:'2482549389',
+				userPortrait:'',
+				userName:'',
 			}
-		},
-		computed: {
-			...mapState(['hasLogin','userInfo'])
 		},
 		onLoad(){
 		},
 		onShow(){
-			//this.loadData();
+			this.loadData();
 		},
 		onNavigationBarButtonTap(e) {
 			const index = e.index;
@@ -80,7 +76,27 @@
 			
 		},
 		methods:{
-			...mapMutations(['logout']),
+			loadData(){
+				var that=this;
+				uni.getStorage({
+					key:'userInfo',
+					success(user){
+						that.userName=user.data.userName;
+						if(that.isBase64(user.data.userPortrait)){
+							base64ToPath(base64)
+							  .then(path => {
+								that.userPortrait=path;
+							})
+						}else{
+							that.userPortrait=user.data.userPortrait;
+						}
+					},
+					fail(){
+						that.userName="";
+						that.userPortrait="";
+					}
+				})
+			},
 			orderClick(){
 				uni.switchTab({
 					url:'/pages/order/OrderList'
@@ -99,8 +115,8 @@
 				})
 			},
 			checkLogin(){
-				console.log(this.hasLogin,"6666")
-				if(!this.hasLogin){
+				var user=uni.getStorageSync('userInfo');
+				if(user==""||user==null){
 					uni.showToast({
 						title : '请先登录',
 						icon : 'none',
@@ -110,22 +126,23 @@
 							url  : '/pages/grzx/selectOperation'
 						}) 
 					},500);
-				}else{
-					uni.showModal({
-					    content: '确定要退出登录么',
-					    success: (e)=>{
-					    	if(e.confirm){
-					    		this.logout();
-								uni.removeStorageSync('vehicleInfo');
-					    		setTimeout(()=>{
-					    			uni.switchTab({
-					    				url:'/pages/grzx/user'
-					    			})
-					    		}, 200)
-					    	}
-					    }
-					}); 
 				}
+				// else{
+				// 	uni.showModal({
+				// 	    content: '确定要退出登录么',
+				// 	    success: (e)=>{
+				// 	    	if(e.confirm){
+				// 				uni.removeStorageSync('vehicleInfo');
+				// 				uni.removeStorageSync('userInfo');
+				// 	    		setTimeout(()=>{
+				// 	    			uni.switchTab({
+				// 	    				url:'/pages/grzx/user'
+				// 	    			})
+				// 	    		}, 200)
+				// 	    	}
+				// 	    }
+				// 	}); 
+				// }	
 			},
 			scanClick(){
 				uni.showToast({
@@ -142,6 +159,18 @@
 				uni.navigateTo({
 					url:'/pages/grzx/licenseManage',
 				})
+			},
+			//------------判断是否为base64格式-----------
+			isBase64:function(str) {
+				if(typeof str === 'string'){
+				     str = str.trim();
+				}
+			    if (str ===''){ return false; }
+			    try {
+			        return btoa(atob(str)) == str;
+			    } catch (err) {
+			        return false;
+			    }
 			},
 		}
 		

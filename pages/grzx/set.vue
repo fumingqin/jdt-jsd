@@ -15,10 +15,10 @@
 			<text style="font-size: 28upx;">{{currentSize}}</text>
 			<text class="cell-more jdticon icon-you"></text>
 		</view>
-		<!-- <view class="list-cell b-b b-l" @click="navTo('aboutApp')">
+		<view class="list-cell b-b b-l" @click="navTo('aboutApp')">
 			<text class="cell-tit">关于APP</text>
 			<text class="cell-more jdticon icon-you"></text>
-		</view> -->
+		</view>
 		<view class="list-cell log-out-btn" @click="toLogout">
 			<text class="cell-tit">退出登录</text>
 		</view>
@@ -26,10 +26,6 @@
 </template>
 
 <script>
-	import {  
-		mapState,
-	    mapMutations  
-	} from 'vuex';
 	export default {
 		data() {
 			return {
@@ -40,9 +36,6 @@
 				currentSize:'',
 			};
 		},
-		computed: {
-			...mapState(['hasLogin','userInfo'])
-		},
 		onLoad(){
 			
 		},
@@ -50,8 +43,6 @@
 			this.load();
 		},
 		methods:{
-			...mapMutations(['logout']),
-
 			navTo(url){
 				uni.navigateTo({
 					url:url
@@ -84,34 +75,36 @@
 			},
 			//退出登录
 			toLogout(){
-			/* 	console.log(this.hasLogin,"00000") */
-				if(this.hasLogin){
-					uni.showModal({
-					    content: '确定要退出登录么',
-					    success: (e)=>{
-					    	if(e.confirm){
-					    		this.logout();
-								uni.removeStorageSync('vehicleInfo');
-					    		setTimeout(()=>{
-					    			uni.switchTab({
-					    				url:'/pages/grzx/user'
-					    			})
-					    		}, 200)
-					    	}
-					    }
-					});
-				}else{
-					uni.showToast({
-						title : '请先登录',
-						icon : 'none',
-					})
-					/* setTimeout(function(){
-						uni.navigateTo({
-							url  : '/pages/GRZX/userLogin'
-						}) 
-					},1500); */
-				}
-				
+				uni.getStorage({
+					key:'userInfo',
+					success(){
+						uni.showModal({
+						    content: '确定要退出登录么',
+						    success: (e)=>{
+						    	if(e.confirm){
+									uni.removeStorageSync('vehicleInfo');
+									uni.removeStorageSync('userInfo');
+						    		setTimeout(()=>{ 
+						    			uni.switchTab({
+						    				url:'/pages/grzx/user'
+						    			})
+						    		}, 200)
+						    	}
+						    }
+						})
+					},
+					fail(){
+						uni.showToast({
+							title : '请先登录',
+							icon : 'none',
+						})
+						setTimeout(function(){
+							uni.navigateTo({
+								url  : '/pages/grzx/userLogin'
+							}) 
+						},1000)
+					}
+				})
 			},
 			clearStorage(){
 				var user=uni.getStorageSync('userInfo');
@@ -120,7 +113,7 @@
 				    content: '是否清除数据',
 				    success: (e)=>{
 				    	if(e.confirm){
-							uni.clearStorage();
+							uni.clearStorageSync();
 							uni.setStorageSync('userInfo',user);
 							uni.setStorageSync('vehicleInfo',info);
 							uni.redirectTo({

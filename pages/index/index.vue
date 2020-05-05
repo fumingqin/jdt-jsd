@@ -30,7 +30,7 @@
 					<image class="tabItem-image" src="../../static/index/WLYC.png"></image>
 					<text class="tabItem-font">出租车</text>
 				</view>
-				<view class="tabItem" @click="setPlateNumber('','公交车')">
+				<!-- <view class="tabItem" @click="setPlateNumber('','公交车')">
 					<image class="tabItem-image" src="../../static/index/GJCX.png"></image>
 					<text class="tabItem-font">公交车</text>
 				</view>
@@ -41,7 +41,7 @@
 				<view class="tabItem" @click="setPlateNumber('','旅游')">
 					<image class="tabItem-image" src="../../static/index/LVFW.png"></image>
 					<text class="tabItem-font">旅游</text>
-				</view>
+				</view> -->
 			</view>
 		</view>
 		<!-- 工作提示框 -->
@@ -145,13 +145,21 @@
 			that.userInfo = uni.getStorageSync('userInfo') || '';
 			uni.getStorage({
 				key: 'vehicleInfo',
-				success(res) {
+				success:function(res) {
 					that.vehicleType = res.data.vehicleType;
 					if (res.data != '') {
 						getApp().globalData.vehicleNumber = res.data.vehicleNumber;
 						getApp().globalData.constantly();
 						that.IsWork = true;
+					}else{
+						that.IsWork = false;
 					}
+				},
+				fail:function(res){
+					that.IsWork = false;
+					that.vehicleType = '';
+					getApp().globalData.vehicleNumber = '';
+					getApp().globalData.closeUpload();
 				}
 			});
 		},
@@ -160,8 +168,9 @@
 				uni.scanCode({
 					onlyFromCamera: true,
 					success: function(res) {
-						void plus.runtime.openWeb(res.result, function() {
-							//识别失败
+						uni.showToast({
+							title:'无法识别',
+							icon:'none'
 						});
 					}
 				})
