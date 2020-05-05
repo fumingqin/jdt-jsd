@@ -116,8 +116,6 @@
 					data:{
 						vehicleNumber : that.vehicleInfo.vehicleNumber,
 						phoneNumber : that.userInfo.phoneNumber,
-						//vehicleNumber:'闽CYB103',
-						//phoneNumber:'13559632455'
 					},
 					success:function(res){
 						uni.hideLoading();
@@ -143,10 +141,6 @@
 					siteNameArr.push(item.SiteName);
 				}
 				let distinctArr = array.filter((x,index) => {
-					if(x.SiteName === '晋江宝龙城市'){
-						x.Longitude = '118.599705';
-						x.Latitude = '24.889993';
-					}
 					return siteNameArr.indexOf(x.SiteName) == index
 				});
 				return distinctArr

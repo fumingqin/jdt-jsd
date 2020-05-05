@@ -157,10 +157,6 @@
 		},
 		onLoad() {
 			let that = this;
-			//that.checkTicket('350534B1030','05438435671');
-			//return;
-			
-			
 		},
 		onUnload(){
 			let that = this;
@@ -261,8 +257,6 @@
 						data:{
 							vehicleNumber : that.vehicleInfo.vehicleNumber,
 							phoneNumber: that.userInfo.phoneNumber
-							//vehicleNumber:'闽CYB103',
-							//phoneNumber:'13559632455'
 						},
 						success:function(res){
 							if(res.data.msg == '获取成功'){
@@ -320,8 +314,6 @@
 					data:{
 						vehicleNumber : that.vehicleInfo.vehicleNumber,
 						phoneNumber : that.userInfo.phoneNumber,
-						//vehicleNumber:'闽CYB103',
-						//phoneNumber:'13559632455'
 					},
 					success:function(res){
 						if(res.data.status){

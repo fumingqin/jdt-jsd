@@ -266,11 +266,6 @@
 							}
 							return long < 500;
 						});
-						/* if(that.lastIndex == that.ScheduleAndTickets.SiteTicketList.length-1){
-							console.log(that.lastIndex);
-							console.log(that.ScheduleAndTickets.SiteTicketList.length);
-							uni.removeStorageSync('lastIndex');
-						} */
 					}
 				});
 			},
