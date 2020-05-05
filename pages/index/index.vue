@@ -30,7 +30,7 @@
 					<image class="tabItem-image" src="../../static/index/WLYC.png"></image>
 					<text class="tabItem-font">出租车</text>
 				</view>
-				<view class="tabItem" @click="setPlateNumber('','公交车')">
+				<!-- <view class="tabItem" @click="setPlateNumber('','公交车')">
 					<image class="tabItem-image" src="../../static/index/GJCX.png"></image>
 					<text class="tabItem-font">公交车</text>
 				</view>
@@ -41,7 +41,7 @@
 				<view class="tabItem" @click="setPlateNumber('','旅游')">
 					<image class="tabItem-image" src="../../static/index/LVFW.png"></image>
 					<text class="tabItem-font">旅游</text>
-				</view>
+				</view> -->
 			</view>
 		</view>
 		<!-- 工作提示框 -->
