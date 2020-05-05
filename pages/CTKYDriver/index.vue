@@ -198,6 +198,11 @@
 				}
 			})
 			that.lastIndex = uni.getStorageSync('lastIndex') || -1;
+			if(that.lastIndex > -1){
+				that.scrollStationIndex = 'id_' + that.lastIndex;
+				that.scrollOnOffIndex = 'id_' + that.lastIndex;
+				that.nowIndex = that.lastIndex
+			}
 		},
 		onUnload() {
 			let that = this;

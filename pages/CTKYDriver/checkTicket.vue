@@ -160,6 +160,14 @@
 			//that.checkTicket('350534B1030','05438435671');
 			//return;
 			
+			
+		},
+		onUnload(){
+			let that = this;
+			uni.removeStorageSync('driverCoachid');
+		},
+		onShow() {
+			let that = this;
 			that.userInfo = uni.getStorageSync('userInfo') || '';
 			that.vehicleInfo = uni.getStorageSync("vehicleInfo")||'';
 			let scheduleInfo = uni.getStorageSync('scheduleInfo') || '';
@@ -172,9 +180,9 @@
 				that.getCoachid();
 			}
 		},
-		onUnload(){
+		onPullDownRefresh() {
 			let that = this;
-			uni.removeStorageSync('driverCoachid');
+			that.getRunScheduleInfo();
 		},
 		mounted() {
 			var that=this;
@@ -258,7 +266,6 @@
 						},
 						success:function(res){
 							if(res.data.msg == '获取成功'){
-								console.log(res);
 								that.coachid = res.data.data;
 								uni.setStorageSync('driverCoachid',that.coachid);
 							}else{
@@ -306,6 +313,7 @@
 			
 			getRunScheduleInfo:function(){
 				let that = this;
+				uni.stopPullDownRefresh();
 				uni.request({
 					url:that.$Ky.Interface.GetRunScheduleInfoByVheicleNumberDriverPhone.value,
 					method:that.$Ky.Interface.GetRunScheduleInfoByVheicleNumberDriverPhone.method,
@@ -319,8 +327,9 @@
 						if(res.data.status){
 							that.orderInfo = [];
 							let data = res.data.data;
+							data.SiteTicketList = that.arrayDistinct(data.SiteTicketList);
 							that.ScheduleAndTickets = data;
-							uni.setInterval('scheduleInfo',that.ScheduleAndTickets);
+							uni.setStorageSync('scheduleInfo',that.ScheduleAndTickets);
 						} else {
 							that.showToast('未取得订单信息');
 						}
@@ -331,7 +340,16 @@
 					}
 				});
 			},
-			
+			arrayDistinct:function(array){ 
+				let siteNameArr = [];
+				for(let item of array){
+					siteNameArr.push(item.SiteName);
+				}
+				let distinctArr = array.filter((x,index) => {
+					return siteNameArr.indexOf(x.SiteName) == index
+				});
+				return distinctArr
+			},
 			formatIDCard:function(idCard){
 				return idCard.substring(0,6) + '****' + idCard.substring(14,18);
 			}
