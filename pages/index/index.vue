@@ -145,13 +145,21 @@
 			that.userInfo = uni.getStorageSync('userInfo') || '';
 			uni.getStorage({
 				key: 'vehicleInfo',
-				success(res) {
+				success:function(res) {
 					that.vehicleType = res.data.vehicleType;
 					if (res.data != '') {
 						getApp().globalData.vehicleNumber = res.data.vehicleNumber;
 						getApp().globalData.constantly();
 						that.IsWork = true;
+					}else{
+						that.IsWork = false;
 					}
+				},
+				fail:function(res){
+					that.IsWork = false;
+					that.vehicleType = '';
+					getApp().globalData.vehicleNumber = '';
+					getApp().globalData.closeUpload();
 				}
 			});
 		},
@@ -160,8 +168,9 @@
 				uni.scanCode({
 					onlyFromCamera: true,
 					success: function(res) {
-						void plus.runtime.openWeb(res.result, function() {
-							//识别失败
+						uni.showToast({
+							title:'无法识别',
+							icon:'none'
 						});
 					}
 				})

@@ -61,6 +61,8 @@
 		},
 		onLaunch: function() {
 			let that = this;
+			console.log('onLaunch');
+			uni.removeStorageSync('lastIndex');
 			let userInfo = uni.getStorageSync('userInfo') || '';
 			if (userInfo.driverId) {
 				//如果有登录缓存则开启定时器。
