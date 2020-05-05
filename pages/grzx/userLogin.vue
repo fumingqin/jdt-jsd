@@ -190,8 +190,6 @@
 						uni.hideLoading();
 						if(res.data.data.userauditState=='1'||res.data.data.userauditState==1){
 							uni.setStorageSync('userInfo',res.data.data)
-							that.logining=true;
-							that.login(res.data.data)
 							uni.showToast({
 								title:"登录成功",
 								icon:"success"

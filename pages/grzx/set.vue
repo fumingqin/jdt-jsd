@@ -82,8 +82,8 @@
 						    content: '确定要退出登录么',
 						    success: (e)=>{
 						    	if(e.confirm){
-						    		this.logout();
 									uni.removeStorageSync('vehicleInfo');
+									uni.removeStorageSync('userInfo');
 						    		setTimeout(()=>{
 						    			uni.switchTab({
 						    				url:'/pages/grzx/user'
