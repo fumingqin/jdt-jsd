@@ -124,7 +124,7 @@
 							that.getuserInfo(that.phoneNumber);
 						}else{
 							uni.showToast({
-								title:'密码错误或手机号不对',
+								title:'手机号未注册或密码错误',
 								icon:'none',
 							})
 						}
