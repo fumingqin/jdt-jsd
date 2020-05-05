@@ -78,6 +78,7 @@
 		methods:{
 			loadData(){
 				var user=uni.getStorageSync('userInfo');
+				
 				this.userName=user.userName;
 				var that=this;
 				if(that.isBase64(user.userPortrait)){
