@@ -63,22 +63,6 @@
 			let that = this;
 			console.log('onLaunch');
 			uni.removeStorageSync('lastIndex');
-			let userInfo = uni.getStorageSync('userInfo') || '';
-			if (userInfo.driverId) {
-				//如果有登录缓存则开启定时器。
-				/* that.constantly(); */
-			}
-
-			if (userInfo.driverId) {
-				//更新登陆状态
-				uni.getStorage({
-					key: 'userInfo',
-					success: (res) => {
-						// console.log(res);
-						this.login(res.data);
-					}
-				});
-			}
 		},
 		onShow: function() {
 			console.log('App Show')
