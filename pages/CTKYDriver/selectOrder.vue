@@ -143,37 +143,9 @@
 					siteNameArr.push(item.SiteName);
 				}
 				let distinctArr = array.filter((x,index) => {
-					if(x.SiteName === '安溪汽车总站'){
-						x.Longitude = '118.150624';
-						x.Latitude = '25.066857';
-					}
-					if(x.SiteName === '安溪龙凤都城'){
-						x.Longitude = '118.161591';
-						x.Latitude = '25.064937';
-					}
-					if(x.SiteName === '安溪金火中学'){
-						x.Longitude = '118.163002';
-						x.Latitude = '25.060751';
-					}
-					if(x.SiteName === '安溪永隆国际'){
-						x.Longitude = '118.187401';                                                                                                                                                                                                                                                                                                                                                                                                                   
-						x.Latitude = '25.041849';
-					}
-					if(x.SiteName === '安溪宝龙广场'){
-						x.Longitude = '118.196243';
-						x.Latitude = '25.041702';
-					}
-					if(x.SiteName === '安溪行政中心'){
-						x.Longitude = '118.206108';
-						x.Latitude = '25.042635';
-					}
-					if(x.SiteName === '安溪茶都公园'){
-						x.Longitude = '118.206165';
-						x.Latitude = '25.060782';
-					}
 					if(x.SiteName === '晋江宝龙城市'){
-						x.Longitude = '118.566719';
-						x.Latitude = '24.802147';
+						x.Longitude = '118.599705';
+						x.Latitude = '24.889993';
 					}
 					return siteNameArr.indexOf(x.SiteName) == index
 				});
