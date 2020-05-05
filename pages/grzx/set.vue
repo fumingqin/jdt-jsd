@@ -75,34 +75,36 @@
 			},
 			//退出登录
 			toLogout(){
-				var user=uni.getStorageSync('userInfo');
-				console.log(user,'user')
-				if(user!=""||user!=null){
-					uni.showModal({
-					    content: '确定要退出登录么',
-					    success: (e)=>{
-					    	if(e.confirm){
-								uni.removeStorageSync('vehicleInfo');
-							uni.removeStorageSync('userInfo');
-					    		setTimeout(()=>{
-					    			uni.switchTab({
-					    				url:'/pages/grzx/user'
-					    			})
-					    		}, 200)
-					    	}
-					    }
-					});
-				}else{
-					uni.showToast({
-						title : '请先登录',
-						icon : 'none',
-					})
-					setTimeout(function(){
-						uni.navigateTo({
-							url  : '/pages/GRZX/userLogin'
-						}) 
-					},1000);
-				}
+				uni.getStorage({
+					key:'userInfo',
+					success(){
+						uni.showModal({
+						    content: '确定要退出登录么',
+						    success: (e)=>{
+						    	if(e.confirm){
+						    		this.logout();
+									uni.removeStorageSync('vehicleInfo');
+						    		setTimeout(()=>{
+						    			uni.switchTab({
+						    				url:'/pages/grzx/user'
+						    			})
+						    		}, 200)
+						    	}
+						    }
+						})
+					},
+					fail(){
+						uni.showToast({
+							title : '请先登录',
+							icon : 'none',
+						})
+						setTimeout(function(){
+							uni.navigateTo({
+								url  : '/pages/GRZX/userLogin'
+							}) 
+						},1000)
+					}
+				})
 			},
 			clearStorage(){
 				var user=uni.getStorageSync('userInfo');
