@@ -44,6 +44,7 @@
 </template>
 
 <script>
+	import tc from '@/common/my-openMap/transformCoordinate.js'
 	export default {
 		data() {
 			return {
@@ -97,8 +98,10 @@
 			},
 			depart:function(item) {
 				let that = this;
+				console.log(item);
 				item.SiteTicketList = that.arrayDistinct(item.SiteTicketList);
-				
+				item.SiteTicketList = that.arrayBDToGcj02(item.SiteTicketList);
+				console.log(item);
 				uni.setStorageSync('scheduleInfo',item);
 				uni.navigateTo({
 					url: '/pages/CTKYDriver/index',
@@ -119,6 +122,7 @@
 					},
 					success:function(res){
 						uni.hideLoading();
+						console.log(res.data);
 						if(res.data.status){
 							that.orderInfo = [];
 							let data = res.data.data;
@@ -145,7 +149,14 @@
 				});
 				return distinctArr
 			},
-			
+			arrayBDToGcj02:function(array){
+				for (let item of array) {
+					var arr = tc.bd09togcj02(parseFloat(item.Longitude),parseFloat(item.Latitude));
+					item.Longitude = arr[0];
+					item.Latitude = arr[1];
+				}
+				return array;
+			},
 		
 			formatStartSite:function(item){
 				return item.SiteTicketList[0].SiteName;

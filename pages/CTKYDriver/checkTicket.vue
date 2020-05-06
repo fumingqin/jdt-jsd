@@ -289,8 +289,8 @@
 					},
 					success:function(res){
 						uni.hideLoading();
+						console.log(res);
 						if(res.data.status){
-							console.log(res);
 							that.showToast('检票成功');
 							that.getRunScheduleInfo();
 						}else{
