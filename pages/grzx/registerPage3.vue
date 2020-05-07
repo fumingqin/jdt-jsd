@@ -1,9 +1,5 @@
 <template>
 	<view class="content">
-		<text class="titleClass">{{title}}</text>
-		<image src="../../static/grzx/btnReturn.png" class="returnClass" @click="returnClick"></image>
-		<image src="../../static/grzx/nav3.png" class="navClass"></image>
-		
 		<view class="boxClass mt">
 			<text class="fontClass">驾龄</text>
 			<input class="inputClass1" type="number" name="userdrivingAge"  placeholder="请输入" v-model="userdrivingAge" @blur="inputChange"/>
@@ -28,7 +24,12 @@
 		<view v-if="type2==1" @click="getBack" class="boxStyle">
 			<image :src="userlicenseBack" name="userlicenseBack"  mode="aspectFill" style="width: 100%;height: 100%;border-radius: 26upx;"></image>
 		</view>
-		<text class="fontStyle">驾照副页</text>
+		<text class="fontStyle">驾照副页</text>	
+		<view class="topClass">
+			<text class="titleClass">{{title}}</text>
+			<image src="../../static/grzx/btnReturn.png" class="returnClass" @click="returnClick"></image>
+			<image src="../../static/grzx/nav3.png" class="navClass"></image>
+		</view>
 		<view @click="submitClick" class="submitClass">
 			提交
 		</view>
@@ -208,6 +209,14 @@
 		display: flex;
 		flex-direction: column;
 		width: 100%;
+	}
+	.topClass{
+		background-color: #F5F9FC;
+		width: 100%;
+		height: 250upx;
+		position: fixed;
+		left: 0upx;
+		top:0upx;
 	}
 	.returnClass{  //返回按钮
 		width: 2.53%;

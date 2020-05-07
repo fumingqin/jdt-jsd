@@ -2,9 +2,6 @@
 	import homeJS from 'common/Home.js';
 	import utils from '@/components/shoyu-date/utils.filter.js';
 	
-	import {
-		mapMutations
-	} from 'vuex';
 	export default {
 		data: {},
 		globalData: {
@@ -57,12 +54,26 @@
 		},
 
 		methods: {
-			...mapMutations(['login']),
+			
 		},
 		onLaunch: function() {
 			let that = this;
 			console.log('onLaunch');
 			uni.removeStorageSync('lastIndex');
+			uni.getStorage({
+				key:'userInfo',
+				fail(){
+					uni.showToast({
+						title : '您暂未登录，请先登录',
+						icon : 'none',
+					})
+					setTimeout(function(){
+						uni.navigateTo({	
+							url  : '/pages/grzx/selectOperation?address=1'
+						}) 
+					},1000);
+				}
+			})
 		},
 		onShow: function() {
 			console.log('App Show')

@@ -9,6 +9,7 @@
 			
 			<!-- <image src="../../static/grzx/btnLogin.png" class="registerClass" ></image> -->
 			<text class="registerClass" @click="registerClick">注册</text>
+			<text class="textClass">司机需经过注册审核后方可登录</text>
 		</view>
 		<image src="../../static/grzx/logo.png" class="logoClass"></image>
 	</view>
@@ -19,9 +20,11 @@
 		data() {
 			return {
 				imgHeight:'',
+				address:'',
 			}
 		},
-		onLoad() {
+		onLoad(options) {
+			this.address=options.address;
 			this.load();
 		},
 		methods: {
@@ -36,10 +39,13 @@
 			},
 			//--------返回个人中心---------
 			returnClick(){		
-				//uni.navigateBack();
-				uni.switchTab({
-					url:'/pages/grzx/user'
-				});
+				if(this.address==1){
+					uni.navigateBack();
+				}else{
+					uni.switchTab({
+						url:'/pages/grzx/user'
+					});
+				}
 			},
 			//--------登录---------
 			loginClick(){
@@ -112,6 +118,14 @@
 		height: 250upx;
 		top: 200upx;
 		left: 33.87%;
+		position: absolute;
+	}
+	.textClass{
+		font-size: 28upx;
+		color: #333333;
+		width: 100%;
+		text-align: center;
+		top: 620upx;
 		position: absolute;
 	}
 </style>
