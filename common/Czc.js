@@ -2,17 +2,16 @@
 // 示例
 
 //接口域名
-const Url = 'http://zntc.145u.net';
-//const Url = 'http://111.231.109.113:8002';
+const Url = 'https://zntc.145u.net:9099';
 
 const InterfaceAddress = [
 	//根据起终点经纬度获取线路规划
 	//使用页面 - /CZC/CallAndDrive - 
-	'http://zntc.145u.net/api/zhcx/getPlanningLineByLonLat',
+	Url +'/api/zhcx/getPlanningLineByLonLat',
 	//获取所有车辆定位数据
-	'http://zntc.145u.net/api/zhcx/getAllVehiclePosition',
+	Url +'/api/zhcx/getAllVehiclePosition',
 	//根据经纬度获取附近一定范围的经纬度
-	'http://zntc.145u.net/api/zhcx/getLonLatRangeVehiclePosition',
+	Url +'/api/zhcx/getLonLatRangeVehiclePosition',
 ]
 const delayTime = {
 	getOrderDelay: {

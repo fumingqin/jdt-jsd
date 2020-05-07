@@ -4,12 +4,9 @@ import Vuex from 'vuex'
 
 Vue.use(Vuex)
 //接口域名
-//const Url = 'http://111.231.109.113:8002';
-const Url = 'http://zntc.145u.net';
-
+const Url = 'https://zntc.145u.net:9099';
 //接口对象
 const Interface = {
-	
 	addVehiclePosition : {
 		value: Url + '/api/zhcx/addVehiclePosition',
 		name:'司机端定时实时上报位置',
@@ -46,16 +43,7 @@ const dateFormat = {
 //经纬度计算距离单位米
 const EARTH_RADIUS = 6378137;
 
-/* function mathLonLatToDistance(startLon,startLat,endLon,endLat){
-	var radStartLon = Rad(startLon);
-	var radStartLat = Rad(startLat);
-	var radEndLon = Rad(endLon);
-	var radEndLat = Rad(endLat);
-	var a = radStartLat - radEndLat;
-	var b = radEndLon - radEndLat; 
-	return  2 * Math.asin(Math.sqrt(Math.pow(Math.sin(a / 2), 2) + Math.cos(radStartLat) * Math.cos(radEndLat) * Math.pow(Math.sin(b / 2), 2))) * EARTH_RADIUS;
-} */
- function mathLonLatToDistance(lat1,lng1,lat2,lng2){
+function mathLonLatToDistance(lat1,lng1,lat2,lng2){
         var radLat1 = Rad(lat1);
         var radLat2 = Rad(lat2);
         

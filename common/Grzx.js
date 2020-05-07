@@ -2,8 +2,8 @@
 // 示例
 
 //接口域名
-const Url = 'http://111.231.109.113:8002';
-const Url1='http://zntc.145u.net';
+const Url = 'https://zntc.145u.net:9099';
+const Url1 = 'https://zntc.145u.net:9099';//此字段无用
 const Interface={
 	Register_Driver:{
 		value:Url+'/api/person/Register_Driver',
@@ -30,7 +30,7 @@ const Interface={
 		pages: [],
 	},
 	SearchVersion:{
-		value:Url1+'/api/person/SearchVersion',
+		value:Url+'/api/person/SearchVersion',
 		name:'获取版本号',
 		method:'POST',
 		pages: [],

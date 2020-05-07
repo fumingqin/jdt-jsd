@@ -2,17 +2,8 @@
 // 示例
 
 //接口域名
-const Url = 'http://111.231.109.113:8004';
+const Url = 'https://zntc.145u.net:9099';
 
-const InterfaceAddress = [
-	//根据起终点经纬度获取线路规划
-	//使用页面 - /CZC/CallAndDrive - 
-	'http://111.231.109.113:8002/api/zhcx/getPlanningLineByLonLat',
-	//获取所有车辆定位数据
-	'http://111.231.109.113:8002/api/zhcx/getAllVehiclePosition',
-	//根据经纬度获取附近一定范围的经纬度
-	'http://111.231.109.113:8002/api/zhcx/getLonLatRangeVehiclePosition',
-]
 const delayTime = {
 	getOrderDelay: {
 		name: '司机端-出租车-可接订单',
@@ -93,7 +84,6 @@ const Interface = {
 
 // 接口声明区
 export default {
-	InterfaceAddress,
 	Interface,
 	delayTime
 }

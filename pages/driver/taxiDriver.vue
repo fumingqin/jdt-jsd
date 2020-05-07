@@ -401,7 +401,6 @@
 						orderEndTime:utils.timeTodate(that.$home.dateFormat.dateformat, endDate.getTime())
 					},
 					success:function(res){
-						console.log(res);
 						if(res.data.status){
 							let data = res.data.data[0];
 							that.taxiOrderNum = data == undefined ? 0 : data.orderNum;

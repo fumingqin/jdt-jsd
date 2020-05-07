@@ -194,7 +194,6 @@
 										driverId: that.userInfo.driverId
 									},
 									success: function(res) {
-										console.log(res);
 										uni.hideLoading();
 										if (res.data.status) {
 											that.IsWork = iswork;
