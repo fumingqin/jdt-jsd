@@ -110,9 +110,7 @@
 			},
 			//投诉申诉
 			complaintClick(){
-				uni.navigateTo({
-					url:'/pages/grzx/complaint'
-				})
+				
 			},
 			checkLogin(){
 				var user=uni.getStorageSync('userInfo');

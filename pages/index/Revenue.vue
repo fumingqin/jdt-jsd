@@ -5,7 +5,7 @@
 				<view class="status_bar"></view>
 				<view class="tab">
 					<view style="height: 55rpx;font-weight: 600;color: #2C2D2;" :class="current==0?'tabactive':''" @click="tabclick(0)">全部</view>
-					<view style="height: 55rpx;font-weight: 600;color: #2C2D2;" :class="current==1?'tabactive':''" @click="tabclick(1)">客运</view>
+					<!-- <view v-show="false" style="height: 55rpx;font-weight: 600;color: #2C2D2;" :class="current==1?'tabactive':''" @click="tabclick(1)">客运</view> -->
 					<view style="height: 55rpx;font-weight: 600;color: #2C2D2;" :class="current==2?'tabactive':''" @click="tabclick(2)">出租车</view>
 					<view style="height: 55rpx;font-weight: 600;color: #2C2D2;" :class="current==3?'tabactive':''" @click="tabclick(3)">包车</view>
 					<view></view>
@@ -40,11 +40,11 @@
 						<view>
 							<!-- 折线Line纯数字-->
 							<view>
-								<line-chart canvasId="index_line_2" :dataAs="lineData2" />
+								<line-chart :dataAs="lineData" canvasId="index_line_2" />
 							</view>
 						</view>
 					</view>
-					<view style="background-color: #FFF;border-radius: 20rpx;margin-top: 20rpx;padding: 30rpx;">
+					<view v-show="false" style="background-color: #FFF;border-radius: 20rpx;margin-top: 20rpx;padding: 30rpx;">
 						<view style="display: flex;align-items: center;">
 							<view style="width: 8rpx;height: 34rpx; background-color: #E9554E;"></view>
 							<view style="font-size:36rpx;font-family:Source Han Sans SC;font-weight:bold;color:#2C2D2D;line-height:42rpx;padding-left: 10rpx;">按订单统计</view>
@@ -83,7 +83,7 @@
 					</view>
 				</scroll-view>
 			</view>
-			<view style="margin: 0 30rpx;" v-if="current==1">
+			<!-- <view v-show="false" style="margin: 0 30rpx;" v-if="current==1">
 				<view style="height: 110rpx;display: flex;align-items: center;justify-content: space-between;padding: 0 40rpx;font-size: 32rpx;background-color: #FFF;border-radius: 20rpx;margin-top: -55rpx;">
 					<view @click="changeDate('cut')">前一天</view>
 					<view style="display: flex;justify-content: space-between;align-items: center;">
@@ -117,8 +117,8 @@
 						</view>
 					</scroll-view>
 				</view>
-			</view>
-		<view style="margin: 0 30rpx;" v-if="current==2">
+			</view> -->
+			<view style="margin: 0 30rpx;" v-if="current==2">
 				<view style="height: 110rpx;display: flex;align-items: center;justify-content: space-between;padding: 0 40rpx;font-size: 32rpx;background-color: #FFF;border-radius: 20rpx;margin-top: -55rpx;">
 					<view @click="changeDate('cut')">前一天</view>
 					<view style="display: flex;justify-content: space-between;align-items: center;">
@@ -153,8 +153,8 @@
 					</scroll-view>
 				</view>
 			</view>
-		
-		<view style="margin: 0 30rpx;" v-if="current==3">
+
+			<view style="margin: 0 30rpx;" v-if="current==3">
 				<view style="height: 110rpx;display: flex;align-items: center;justify-content: space-between;padding: 0 40rpx;font-size: 32rpx;background-color: #FFF;border-radius: 20rpx;margin-top: -55rpx;">
 					<view @click="changeDate('cut')">前一天</view>
 					<view style="display: flex;justify-content: space-between;align-items: center;">
@@ -189,7 +189,7 @@
 					</scroll-view>
 				</view>
 			</view>
-		
+
 		</view>
 		<mx-date-picker :show="showPicker" :type="type" :value="value" :show-tips="true" :show-seconds="true" @confirm="onSelected"
 		 @cancel="onSelected" />
@@ -198,8 +198,9 @@
 
 <script>
 	import MxDatePicker from "@/components/mx-datepicker/mx-datepicker.vue";
-	import HistogramChart from '@/components/stan-ucharts/HistogramChart.vue';//
+	import HistogramChart from '@/components/stan-ucharts/HistogramChart.vue'; //
 	import LineChart from '@/components/stan-ucharts/LineChart.vue';
+	import utils from '@/components/shoyu-date/utils.filter.js';
 	export default {
 		components: {
 			HistogramChart,
@@ -210,7 +211,7 @@
 			return {
 				current: 0,
 				scrollHeight: "",
-				paymentscrollHeight:"",
+				paymentscrollHeight: "",
 				showPicker: false,
 				date: '2020/01/01',
 				time: '15:00:12',
@@ -220,49 +221,23 @@
 				rangetime: ['2019/01/08 14:00', '2019/01/16 13:59'],
 				type: 'rangetime',
 				value: '',
-				histogramData: { //柱状图
-					categories: ['客车', '出租车', '包车'],
+
+				colorArr: ['#FE9908', '#E9554E', '#76BD48', '#FE9908', '#E9554E', '#76BD48'],
+				//柱状图数据
+				histogramData: {
+					categories: [],
 					series: [{
 						name: '',
-						data: [{
-								name: "chus",
-								value: 111.4,
-								color: "#FE9908"
-							},
-							{
-								value: 60,
-								color: "#E9554E"
-							},
-							{
-								value: 70,
-								color: "#76BD48"
-							},
-						],
-					}, ]
+						data: [],
+					}]
 				},
-				lineData2: { //数字的图--折线图数据
-					categories: ['4月12号', '4月13号', '4月14号', '4月15号', '4月16号', '4月17号'],
-					series: [{
-							name: '客车',
-							data: [35, 50, 10, 35, 50, 10],
-							color: '#FE9908',
-							legendShape: 'line'
-						},
-						{
-							name: '出租车',
-							data: [70, 90,60],
-							color: '#E9554E',
-							legendShape: 'line'
-						},
-						{
-							name: '包车',
-							data: [100, 14, 50],
-							color: '#76BD48',
-							legendShape: 'line'
-						}
-					]
+				//折线图数据
+				lineData: {
+					categories: [],
+					series: []
 				},
-				array: [{
+				array: [
+					{
 						type: '客车',
 						orderArr: [{
 							datetime: '2020.04.08', //日期
@@ -309,7 +284,7 @@
 						]
 					}
 				],
-				busDetailArr: [{//客车明细
+				busDetailArr: [{ //客车明细
 						paymentName: "车费抽成",
 						amount: 115.35,
 						paymentTime: "2020.4.11 6:20"
@@ -350,7 +325,7 @@
 						paymentTime: "2020.4.11 15:36"
 					}
 				],
-			taxiDetailArr: [{//出租车明细
+				taxiDetailArr: [{ //出租车明细
 						paymentName: "车费抽成",
 						amount: 115.35,
 						paymentTime: "2020.4.11 8:20"
@@ -391,57 +366,65 @@
 						paymentTime: "2020.4.11 15:36"
 					}
 				],
-				charterDetailArr: [{//包车明细
-							paymentName: "车费抽成",
-							amount: 115.35,
-							paymentTime: "2020.4.11 8:20"
-						},
-						{
-							paymentName: "车费抽成",
-							amount: 85.63,
-							paymentTime: "2020.4.11 8:50"
-						},
-						{
-							paymentName: "车费抽成",
-							amount: 96.3,
-							paymentTime: "2020.4.11 11:20"
-						},
-						{
-							paymentName: "车费抽成",
-							amount: 42.52,
-							paymentTime: "2020.4.11 12:40"
-						},
-						{
-							paymentName: "车费抽成",
-							amount: 50.6,
-							paymentTime: "2020.4.11 15:36"
-						},
-						{
-							paymentName: "车费抽成",
-							amount: 50.6,
-							paymentTime: "2020.4.11 15:36"
-						},
-						{
-							paymentName: "车费抽成",
-							amount: 50.6,
-							paymentTime: "2020.4.11 15:36"
-						},
-						{
-							paymentName: "车费抽成",
-							amount: 50.6,
-							paymentTime: "2020.4.11 15:36"
-						}
-					]
+				charterDetailArr: [{ //包车明细
+						paymentName: "车费抽成",
+						amount: 115.35,
+						paymentTime: "2020.4.11 8:20"
+					},
+					{
+						paymentName: "车费抽成",
+						amount: 85.63,
+						paymentTime: "2020.4.11 8:50"
+					},
+					{
+						paymentName: "车费抽成",
+						amount: 96.3,
+						paymentTime: "2020.4.11 11:20"
+					},
+					{
+						paymentName: "车费抽成",
+						amount: 42.52,
+						paymentTime: "2020.4.11 12:40"
+					},
+					{
+						paymentName: "车费抽成",
+						amount: 50.6,
+						paymentTime: "2020.4.11 15:36"
+					},
+					{
+						paymentName: "车费抽成",
+						amount: 50.6,
+						paymentTime: "2020.4.11 15:36"
+					},
+					{
+						paymentName: "车费抽成",
+						amount: 50.6,
+						paymentTime: "2020.4.11 15:36"
+					},
+					{
+						paymentName: "车费抽成",
+						amount: 50.6,
+						paymentTime: "2020.4.11 15:36"
+					}
+				]
 			}
 		},
 		onLoad() {
+			let that = this;
 			this.getnowdate();
 		},
 		onShow() {
+			let that = this;
 			uni.showToast({
-				title:'该页面数据正在测试中，仅供参观',
-				icon:'none'
+				title: '该页面数据正在测试中，仅供参观',
+				icon: 'none'
 			})
+			that.userInfo = uni.getStorageSync('userInfo') || '';
+			if (that.userInfo == '') {
+				that.showToast('请先登录');
+			} else {
+				that.getTaxiRevenueTotal();
+			}
 		},
 		mounted() {
 			var that = this;
@@ -449,11 +432,17 @@
 			uni.getSystemInfo({
 				success(res) {
 					that.scrollHeight = res.windowHeight - 170 + "px";
-					that.paymentscrollHeight=res.windowHeight - 340 + "px"
+					that.paymentscrollHeight = res.windowHeight - 340 + "px"
 				}
 			})
 		},
 		methods: {
+			showToast: function(title, icon = 'none') {
+				uni.showToast({
+					title: title,
+					icon: icon
+				});
+			},
 			tabclick: function(e) {
 				this.current = e;
 			},
@@ -532,6 +521,108 @@
 						this.changeweek(new Date(e.value).getDay());
 					}
 				}
+			},
+
+			//填充柱状图数值
+			setHistogramData: function(title, value) {
+				let that = this;
+				that.histogramData.categories.push(title);
+				let index = that.histogramData.categories.length;
+				var obj = {
+					value: value,
+					color: that.colorArr[index]
+				};
+				that.histogramData.series[0].data.push(obj);
+			},
+			//设置折线图数据
+			setLineData: function(title, value) {
+				let that = this;
+				let index = that.lineData.series.length;
+				var obj = {
+					name: title,
+					data: value,
+					color: that.colorArr[index],
+					legendShape: 'line'
+				};
+				that.lineData.series.push(obj);
+			},
+			//设置折线图日期
+			setDateArr: function(dateArr) {
+				let that = this;
+				that.lineData.categories = dateArr;
+			},
+			//获取出租车总计
+			getTaxiRevenueTotal: function() {
+				let that = this;
+				uni.request({
+					url: that.$taxi.Interface.GetExpressOrderCountByDriverID_Driver.value,
+					method: that.$taxi.Interface.GetExpressOrderCountByDriverID_Driver.method,
+					data: {
+						driverId: that.userInfo.driverId,
+						orderStartTime: utils.timeTodate(that.$home.dateFormat.dateformat, new Date(that.range[0]).getTime()),
+						orderEndTime: utils.timeTodate(that.$home.dateFormat.dateformat, new Date(that.range[1]).getTime())
+					},
+					success: function(res) {
+						console.log(res);
+						that.getdownwindCarTotal();
+					},
+					fail: function(res) {
+						that.showToast('网络连接失败');
+					}
+				})
+			},
+
+			getdownwindCarTotal: function() {
+				let that = this;
+
+				uni.request({
+					url: that.$downwindCar.Interface.GetHitchhikerOrderCountByDriverID_Driver.value,
+					method: that.$downwindCar.Interface.GetHitchhikerOrderCountByDriverID_Driver.method,
+					data: {
+						driverId: that.userInfo.driverId,
+						orderStartTime: utils.timeTodate(that.$home.dateFormat.dateformat, new Date(that.range[0]).getTime()),
+						orderEndTime: utils.timeTodate(that.$home.dateFormat.dateformat, new Date(that.range[1]).getTime() + (24 * 60 *60 * 1000))
+					},
+					success: function(res) {
+						console.log(res);
+						let type = '顺风车';
+						
+						if (res.data.status) {
+							let data = res.data.data;
+							if (data.IsExist) {
+								var dateArr = []; //折线图-时间数组
+								var dayItemPriceArr = []; //折线图-值数组
+								var totalPirce = 0; //柱状图统计
+								var totalPayPrice = 0; //柱状图统计
+								var orderArr = [];//表格数组
+
+								for (let item of data.RList) {
+									dateArr.push(item.orderDate.substring(5, 9));
+									dayItemPriceArr.push(item.totalPayPrice);
+									totalPirce += item.totalPirce;
+									totalPayPrice += item.totalPayPrice;
+									var obj = {
+										datetime : item.orderDate,
+										orderNum: item.orderNum,
+										earning:item.totalPayPrice,
+									}
+									orderArr.push(obj);
+									console.log(obj);
+								}
+								that.setDateArr(dateArr);
+								that.setLineData(type, dayItemPriceArr);
+								that.setHistogramData(type, totalPayPrice);
+							} else {
+
+							}
+						} else {
+
+						}
+					},
+					fail: function(res) {
+						console.log(res);
+					}
+				})
 			},
 		}
 	}

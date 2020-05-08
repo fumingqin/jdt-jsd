@@ -291,6 +291,22 @@
 				"navigationStyle": "custom"
 			}
 		}
+        ,{
+            "path" : "pages/downwindCar/addDownwindOrder",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/downwindCar/orderDetail",
+            "style" : {
+				"navigationStyle":"custom"
+			}
+        },
+		{
+		    "path" : "pages/downwindCar/downwindCarDriver",
+		    "style" : {
+				"navigationStyle":"custom"
+			}
+		}
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

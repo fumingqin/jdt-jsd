@@ -5,7 +5,7 @@
 				<image @click="back" src="../../static/driver/back.png" style="width: 18rpx; height: 34rpx; margin:103rpx 26rpx; color: #2C2D2D;"></image>
 			</view>
 			<view style="width: 200rpx; margin-top: 92rpx;margin-left: 212rpx;color: #333333; font-size: 38rpx;font-weight:bold;">出租车司机</view>
-			<button style="width: 164rpx; height: 90rpx; margin-top: 76rpx;">
+			<button @click="downwindCar" style="width: 200rpx; height: 90rpx; margin-top: 76rpx;margin-right: 23rpx;">
 				<text>顺风车</text>
 			</button>
 		</view>
@@ -464,7 +464,14 @@
 			},
 			formatTime:function(time){
 				return time.replace('T',' ');
-			}
+			},
+			//顺风车
+			downwindCar:function(){
+				uni.navigateTo({
+					url:'../downwindCar/addDownwindOrder'
+				});
+			},
+			
 		}
 	}
 </script>
