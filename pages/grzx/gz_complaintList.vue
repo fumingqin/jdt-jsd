@@ -28,20 +28,18 @@
 			}
 		},
 		onShow() {
-			this.grzxData();
+			var userInfo = uni.getStorageSync('userInfo') || '';
+			this.grzxData(userInfo.userName);
 		},
 		methods: {
 			//---------------------------------接口数据--------------------------------------
-			grzxData:function(){
+			grzxData:function(e){
 				uni.request({
 					url:this.$GrzxInter.Interface.complaintList.value,
 					method:this.$GrzxInter.Interface.complaintList.method,
 					header: {'content-type': 'application/json'},
 					data:{
-						becomplainant:'黄仙剑',
-						model:'出租车',
-						// complainant:this.complaintList.complainant,
-						// model:this.complaintList.model,
+						becomplainant:e,
 					},
 					success: (res) => {
 						console.log(res)
