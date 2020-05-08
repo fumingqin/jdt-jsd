@@ -292,17 +292,27 @@
 			}
 		}
         ,{
-            "path" : "pages/downwindCar/addDownwindOrder",
+            "path" : "pages/grzx/gz_complaintList",
             "style" : {}
         }
         ,{
-            "path" : "pages/downwindCar/orderDetail",
-            "style" : {
+            "path" : "pages/grzx/gz_complaintText",
+            "style" : {}
+        }
+		,{
+		    "path" : "pages/downwindCar/addDownwindOrder",
+		    "style" : {
+				"navigationBarTitleText":"发布顺风车"
+			}
+		}
+		,{
+		    "path" : "pages/downwindCar/downwindCarDriver",
+		    "style" : {
 				"navigationStyle":"custom"
 			}
-        },
-		{
-		    "path" : "pages/downwindCar/downwindCarDriver",
+		}
+		,{
+		    "path" : "pages/downwindCar/orderDetail",
 		    "style" : {
 				"navigationStyle":"custom"
 			}
