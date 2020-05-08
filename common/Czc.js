@@ -33,61 +33,61 @@ const Interface = {
 		value: Url + '/api/taxi/GetCanReceiptExpressOrder_Driver',
 		name: '司机端-出租车-获取可接订单',
 		method: 'POST', //GET-POST
-		pages: []
+		pages: ['/driver/taxiDriver']
 	},
 	ReceiptExpressOrder_Driver: {
 		value: Url + '/api/taxi/ReceiptExpressOrder_Driver',
 		name: '司机端-出租车-接单',
 		method: 'POST', //GET-POST
-		pages: []
+		pages: ['/driver/taxiDriver']
 	},
 	CancelExpressOrderByOrderNum_Driver: {
 		value: Url + '/api/taxi/CancelExpressOrderByOrderNum_Driver',
 		name: '司机端-出租车-取消订单',
 		method: 'POST', //GET-POST
-		pages: []
+		pages: ['/driver/taxiDriver','/index/Order']
 	},
 	RefuseExpressOrderByOrderNumDriverID_Driver: {
 		value: Url + '/api/taxi/RefuseExpressOrderByOrderNumDriverID_Driver',
 		name: '司机端-出租车-拒接订单',
 		method: 'POST', //GET-POST
-		pages: []
+		pages: ['/driver/taxiDriver']
 	},
 	InputAmountExpressOrder_Driver: {
 		value: Url + '/api/taxi/InputAmountExpressOrder_Driver',
 		name: '司机端-出租车-订单支付',
 		method: 'POST', //GET-POST
-		pages: []
+		pages: ['/driver/otherExpenses']
 	},
 	GetExpressOrderByOrderNumber_Driver:{
 		value:Url + '/api/taxi/GetExpressOrderByOrderNumber_Driver',
 		name:'司机端-出租车-根据司机Id和订单Id获取订单详情',
 		method:'POST',
-		page:["/dirver/confirmgetonCar"]
+		page:['/dirver/confirmgetonCar','/driver/orderDetail']
 	},
 	RunExpressOrder_Driver:{
 		value:Url + '/api/taxi/RunExpressOrder_Driver',
 		name:'司机端-出租车-长按确认乘客上车',
 		method:'POST',
-		page:[""]
+		page:['/dirver/confirmgetonCar']
 	},
 	FinishExpressOrder_Driver:{
 		value:Url + '/api/taxi/FinishExpressOrder_Driver',
 		name:'司机端-出租车-长按到达目的地',
 		method:'POST',
-		page:[""]
+		page:['/dirver/confirmgetonCar','/index/Order']
 	},
 	SetoutExpressOrder_Driver:{
 		value:Url + '/api/taxi/SetoutExpressOrder_Driver',
 		name:'司机端-出租车-长按发车',
 		method:'POST',
-		page:[]
+		page:['/index/Order']
 	},
 	GetExpressOrderCountByDriverID_Driver:{
 		value:Url + '/api/taxi/GetExpressOrderCountByDriverID_Driver',
 		name:'司机端-出租车-统计接单量',
 		method:'POST',
-		page:[]
+		page:['/driver/taxiDriver']
 	}
 }
 

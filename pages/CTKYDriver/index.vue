@@ -49,7 +49,7 @@
 			
 			
 			<view style="padding: 30rpx 40rpx;margin-top: 30rpx;background:#FFFFFF;box-shadow:0px 6px 20px 0px rgba(231,231,231,0.53);border-radius:20rpx;">
-				<scroll-view style="height: 550rpx;" :scroll-x="true" :scroll-into-view='scrollStationIndex'> 
+				<scroll-view :style="{height:firHeight+'px'}" :scroll-x="true" :scroll-into-view='scrollStationIndex'> 
 					<view style="display: flex;flex-direction: row;">
 						
 						<!--起点-->
@@ -100,7 +100,7 @@
 					</view>
 				</scroll-view>
 				
-				<scroll-view :scroll-y="true" style="height: 250rpx;" :scroll-into-view="scrollOnOffIndex">
+				<scroll-view :style="{height:secHeight+'px'}" :scroll-y="true" :scroll-into-view="scrollOnOffIndex">
 					<view style="display: flex;flex-direction: column;">
 						<view v-for="(item , index) in ScheduleAndTickets.SiteTicketList" :key='index' :id="'id_' + (index+1)">
 							<view v-show="item.ThisSiteGetonTicketCount > 0" style="display: flex;flex-direction: row;align-items: center;margin-bottom: 10rpx;">
@@ -178,7 +178,11 @@
 				lastIndex:-1,
 				distanceInterval:0,
 				
-				ScheduleAndTickets:''
+				ScheduleAndTickets:'',
+				
+				firHeight:280,//第一个块高度
+				secHeight:140,//第二个块高度
+				basicHeight:720,
 			}
 		},
 		onLoad() {
@@ -187,6 +191,7 @@
 			that.ScheduleAndTickets = scheduleInfo;
 			that.initSiteData();
 			that.mathDistance();
+			that.initModuleParam();
 		},
 		onShow() {
 			let that = this;
@@ -211,6 +216,19 @@
 		onReady() {
 		},
 		methods: {
+			initModuleParam:function(){
+				let that = this;
+				uni.getSystemInfo({
+					success:function(res){
+						let firHeightVal = that.firHeight / that.basicHeight * res.windowHeight;
+						let secHeightVal = that.secHeight / that.basicHeight * res.windowHeight;
+						console.log(firHeightVal);
+						that.firHeight = firHeightVal;
+						that.secHeight = secHeightVal;
+					}
+				})
+			},
+			
 			tabbarClick: function(el) {
 				let url = '';
 				if (el.canClick) {

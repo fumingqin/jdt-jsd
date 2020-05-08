@@ -24,25 +24,25 @@ const Interface = {
 		value: Url + '/api/SpecialLine/GetCanReceiptSpecialLineOrder_Driver',
 		name: '司机端-专线车-获取可接订单',
 		method: 'POST', //GET-POST
-		pages: []
+		pages: ['/driver/taxiDriver']
 	},
 	ReceiptSpecialLineOrder_Driver: {
 		value: Url + '/api/SpecialLine/ReceiptSpecialLineOrder_Driver',
 		name: '司机端-专线车-接单',
 		method: 'POST', //GET-POST
-		pages: []
+		pages: ['/driver/taxiDriver']
 	},
 	CancelSpecialLineOrderByOrderNum_Driver: {
 		value: Url + '/api/SpecialLine/CancelSpecialLineOrderByOrderNum_Driver',
 		name: '司机端-专线车-取消订单',
 		method: 'POST', //GET-POST
-		pages: []
+		pages: ['/index/Order','/ZXC/CzxPrivate']
 	},
 	RefuseSpecialLineOrderByOrderNumDriverID_Driver: {
 		value: Url + '/api/SpecialLine/RefuseSpecialLineOrderByOrderNumDriverID_Driver',
 		name: '司机端-专线车-拒接订单',
 		method: 'POST', //GET-POST
-		pages: []
+		pages: ['/driver/taxiDriver']
 	},
 	/* InputAmountExpressOrder_Driver: {
 		value: Url + '/api/SpecialLine/InputAmountExpressOrder_Driver',
@@ -54,25 +54,25 @@ const Interface = {
 		value:Url + '/api/SpecialLine/GetSpecialLineOrderByOrderNumber_Driver',
 		name:'司机端-专线车-根据司机Id和订单Id获取订单详情',
 		method:'POST',
-		page:["/dirver/confirmgetonCar"]
+		page:['/ZXC/CzxPrivate','/ZXC/orderDetail']
 	},
 	RunSpecialLineOrder_Driver:{
 		value:Url + '/api/SpecialLine/RunSpecialLineOrder_Driver',
 		name:'司机端-专线车-长按确认乘客上车',
 		method:'POST',
-		page:[""]
+		page:['/ZXC/orderDetail']
 	},
 	FinishSpecialLineOrder_Driver:{
 		value:Url + '/api/SpecialLine/FinishSpecialLineOrder_Driver',
 		name:'司机端-专线车-长按到达目的地',
 		method:'POST',
-		page:[""]
+		page:['/index/Order','/ZXC/CzxPrivate']
 	},
 	SetoutSpecialLineOrder_Driver:{
 		value:Url + '/api/SpecialLine/SetoutSpecialLineOrder_Driver',
 		name:'司机端-专线车-长按发车',
 		method:'POST',
-		page:[]
+		page:['/index/Order']
 	},
 	GetSpecialOrderCountByDriverID_Driver:{
 		value:Url + '/api/SpecialLine/GetSpecialOrderCountByDriverID_Driver',
