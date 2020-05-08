@@ -105,6 +105,12 @@
 				"navigationStyle": "custom"
 			}
 		},
+		{
+			"path": "pages/grzx/complaint",
+			"style": {
+				"navigationBarTitleText": "投诉申诉"
+			}
+		},
 		//个人中心结束
 		{
 			"path": "pages/driver/taxiDriver",

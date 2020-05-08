@@ -18,12 +18,12 @@
 				<text class="fontStyle">QQ客服</text>
 				<image src="../../static/grzx/tubiao_Right.png" class="btnClass"></image>
 			</view>
-			<!-- <view class="boxClass borderTop" @click="infoClick">
-				<image src="../../static/grzx/tubiao_zhengzhao.png" class="iconClass3"></image>
-				<text class="fontStyle">信息登记</text>
+			<view class="boxClass borderTop" @click="complaintClick">
+				<image src="../../static/grzx/tubiao_tousu.png" class="iconClass3"></image>
+				<text class="fontStyle">投诉申诉</text>
 				<image src="../../static/grzx/tubiao_Right.png" class="btnClass"></image>
 			</view>
-			<view class="boxClass borderTop" @click="drivingClick">
+			<!-- <view class="boxClass borderTop" @click="drivingClick">
 				<image src="../../static/grzx/tubiao_zhengzhao.png" class="iconClass3"></image>
 				<text class="fontStyle">驾照登记</text>
 				<image src="../../static/grzx/tubiao_Right.png" class="btnClass"></image>
@@ -108,10 +108,10 @@
 				})
 				console.log(url)
 			},
-			//信息管理
-			infoClick(){
+			//投诉申诉
+			complaintClick(){
 				uni.navigateTo({
-					url:'/pages/grzx/infoManage'
+					url:'/pages/grzx/complaint'
 				})
 			},
 			checkLogin(){
@@ -396,10 +396,10 @@
 		margin-left: 9upx;
 	}
 	.iconClass3{  //证照信息图标
-		width: 42upx;
-		height: 34upx;
-		margin-top: 34upx;
-		margin-left: 8upx;
+		width: 38upx;
+		height: 44upx;
+		margin-top: 30upx;
+		margin-left: 12upx;
 	}
 	.iconClass4{  //我的投诉图标
 		width: 36upx;
