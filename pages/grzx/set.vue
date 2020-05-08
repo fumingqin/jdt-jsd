@@ -108,14 +108,16 @@
 			},
 			clearStorage(){
 				var user=uni.getStorageSync('userInfo');
-				var info=uni.getStorageSync('vehicleInfo');
+				var info=uni.getStorageSync('vehicleInfo') || '';
 				uni.showModal({
 				    content: '是否清除数据',
 				    success: (e)=>{
 				    	if(e.confirm){
 							uni.clearStorageSync();
 							uni.setStorageSync('userInfo',user);
-							uni.setStorageSync('vehicleInfo',info);
+							if(info != ''){
+								uni.setStorageSync('vehicleInfo',info);
+							}
 							uni.redirectTo({
 								url:'/pages/grzx/set'
 							})

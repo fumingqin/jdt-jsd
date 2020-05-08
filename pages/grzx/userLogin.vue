@@ -186,7 +186,6 @@
 					},
 					method:that.$GrzxInter.Interface.GetDetailInfo_Driver.method,
 					success(res) {
-						console.log(res,'res1')
 						uni.hideLoading();
 						if(res.data.data.userauditState=='1'||res.data.data.userauditState==1){
 							uni.setStorageSync('userInfo',res.data.data)

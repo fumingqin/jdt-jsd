@@ -320,6 +320,7 @@
 							that.orderInfo = [];
 							let data = res.data.data;
 							data.SiteTicketList = that.arrayDistinct(data.SiteTicketList);
+							data.SiteTicketList = that.arrayBDToGcj02(data.SiteTicketList);
 							that.ScheduleAndTickets = data;
 							uni.setStorageSync('scheduleInfo',that.ScheduleAndTickets);
 						} else {
@@ -341,6 +342,14 @@
 					return siteNameArr.indexOf(x.SiteName) == index
 				});
 				return distinctArr
+			},
+			arrayBDToGcj02:function(array){
+				for (let item of array) {
+					var arr = tc.bd09togcj02(parseFloat(item.Longitude),parseFloat(item.Latitude));
+					item.Longitude = arr[0];
+					item.Latitude = arr[1];
+				}
+				return array;
 			},
 			formatIDCard:function(idCard){
 				return idCard.substring(0,6) + '****' + idCard.substring(14,18);
