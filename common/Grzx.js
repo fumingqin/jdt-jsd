@@ -35,6 +35,20 @@ const Interface={
 		method:'POST',
 		pages: [],
 	}, 
+	
+	complaintText:{
+		value:Url+'/api/person/UpdateComplaint_BeComplainant',
+		name:'提交',
+		method:'POST',
+		pages: ['pages/grzx/gz_complaintText'],
+	}, 
+	
+	complaintList:{
+		value:Url+'/api/person/SearchComplaint_BeComplainant',
+		name:'投诉列表内容',
+		method:'POST',
+		pages: ['pages/grzx/gz_complaintList'],
+	}, 
 }
 
 

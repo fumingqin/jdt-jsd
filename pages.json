@@ -291,6 +291,14 @@
 				"navigationStyle": "custom"
 			}
 		}
+        ,{
+            "path" : "pages/grzx/gz_complaintList",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/grzx/gz_complaintText",
+            "style" : {}
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
