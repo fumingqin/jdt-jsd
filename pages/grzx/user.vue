@@ -18,11 +18,11 @@
 				<text class="fontStyle">QQ客服</text>
 				<image src="../../static/grzx/tubiao_Right.png" class="btnClass"></image>
 			</view>
-			<view class="boxClass borderTop" @click="complaintClick">
+			<!-- <view class="boxClass borderTop" @click="complaintClick">
 				<image src="../../static/grzx/tubiao_tousu.png" class="iconClass3"></image>
 				<text class="fontStyle">投诉申诉</text>
 				<image src="../../static/grzx/tubiao_Right.png" class="btnClass"></image>
-			</view>
+			</view> -->
 			<!-- <view class="boxClass borderTop" @click="drivingClick">
 				<image src="../../static/grzx/tubiao_zhengzhao.png" class="iconClass3"></image>
 				<text class="fontStyle">驾照登记</text>
