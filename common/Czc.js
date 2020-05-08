@@ -88,6 +88,12 @@ const Interface = {
 		name:'司机端-出租车-统计接单量',
 		method:'POST',
 		page:['/driver/taxiDriver']
+	},
+	InputAmountExpressOrderNeedPay_Driver:{
+		value:Url + '/api/taxi/InputAmountExpressOrderNeedPay_Driver',
+		name:'司机端-出租车-统计接单量',
+		method:'POST',
+		page:['/driver/taxiDriver']
 	}
 }
 

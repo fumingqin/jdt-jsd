@@ -180,8 +180,8 @@
 				
 				ScheduleAndTickets:'',
 				
-				firHeight:280,//第一个块高度
-				secHeight:140,//第二个块高度
+				firHeight:270,//第一个块高度280
+				secHeight:100,//第二个块高度140
 				basicHeight:720,
 			}
 		},

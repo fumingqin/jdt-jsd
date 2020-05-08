@@ -111,7 +111,7 @@
 			//投诉申诉
 			complaintClick(){
 				uni.navigateTo({
-					url:'/pages/grzx/complaint'
+					url:'gz_complaintList'
 				})
 			},
 			checkLogin(){

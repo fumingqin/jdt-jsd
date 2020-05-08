@@ -130,7 +130,6 @@
 						} else {
 							that.showToast('未取得订单信息');
 						}
-						that.orderInfo.push(that.$Ky.ScheduleAndTickets);
 					},
 					fail:function(res){
 						uni.hideLoading();
