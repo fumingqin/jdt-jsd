@@ -94,6 +94,12 @@ const Interface = {
 		name:'司机端-出租车-统计接单量',
 		method:'POST',
 		page:['/driver/taxiDriver']
+	},
+	GetExpressOrderCountRevenueByDriverID_Driver:{
+		value:Url + '/api/taxi/GetExpressOrderCountRevenueByDriverID_Driver',
+		name:'司机端-出租车-营收',
+		method:'POST',
+		page:['/driver/taxiDriver']
 	}
 }
 

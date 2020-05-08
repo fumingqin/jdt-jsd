@@ -1,5 +1,5 @@
-const Url = 'http://111.231.109.113:8004';
-
+const Url = 'https://zntc.145u.net:9099';
+//const Url = 'http://111.231.109.113:8004';
 const Interface = {
 	CreateLine_Driver: {
 		value: Url + '/api/Hitchhiker/CreateLine_Driver',

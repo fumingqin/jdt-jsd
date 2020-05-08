@@ -6,8 +6,8 @@
 				<view class="tab">
 					<view style="height: 55rpx;font-weight: 600;color: #2C2D2;" :class="current==0?'tabactive':''" @click="tabclick(0)">全部</view>
 					<!-- <view v-show="false" style="height: 55rpx;font-weight: 600;color: #2C2D2;" :class="current==1?'tabactive':''" @click="tabclick(1)">客运</view> -->
-					<view style="height: 55rpx;font-weight: 600;color: #2C2D2;" :class="current==2?'tabactive':''" @click="tabclick(2)">出租车</view>
-					<view style="height: 55rpx;font-weight: 600;color: #2C2D2;" :class="current==3?'tabactive':''" @click="tabclick(3)">包车</view>
+					<!-- <view style="height: 55rpx;font-weight: 600;color: #2C2D2;" :class="current==2?'tabactive':''" @click="tabclick(2)">出租车</view> -->
+					<!-- <view style="height: 55rpx;font-weight: 600;color: #2C2D2;" :class="current==3?'tabactive':''" @click="tabclick(3)">包车</view> -->
 					<view></view>
 					<view></view>
 				</view>
@@ -83,7 +83,7 @@
 					</view>
 				</scroll-view>
 			</view>
-			<!-- <view v-show="false" style="margin: 0 30rpx;" v-if="current==1">
+			<view v-show="false" style="margin: 0 30rpx;" v-if="current==1">
 				<view style="height: 110rpx;display: flex;align-items: center;justify-content: space-between;padding: 0 40rpx;font-size: 32rpx;background-color: #FFF;border-radius: 20rpx;margin-top: -55rpx;">
 					<view @click="changeDate('cut')">前一天</view>
 					<view style="display: flex;justify-content: space-between;align-items: center;">
@@ -117,7 +117,7 @@
 						</view>
 					</scroll-view>
 				</view>
-			</view> -->
+			</view>
 			<view style="margin: 0 30rpx;" v-if="current==2">
 				<view style="height: 110rpx;display: flex;align-items: center;justify-content: space-between;padding: 0 40rpx;font-size: 32rpx;background-color: #FFF;border-radius: 20rpx;margin-top: -55rpx;">
 					<view @click="changeDate('cut')">前一天</view>
@@ -415,10 +415,18 @@
 		},
 		onShow() {
 			let that = this;
-			uni.showToast({
-				title: '该页面数据正在测试中，仅供参观',
-				icon: 'none'
-			})
+			that.histogramData = {
+				categories: [],
+				series: [{
+					name: '',
+					data: [],
+				}]
+			};
+			that.lineData = {
+				categories: [],
+				series: []
+			};
+			
 			that.userInfo = uni.getStorageSync('userInfo') || '';
 			if (that.userInfo == '') {
 				that.showToast('请先登录');
@@ -520,6 +528,7 @@
 					if (this.current != 0) {
 						this.changeweek(new Date(e.value).getDay());
 					}
+					this.getTaxiRevenueTotal();
 				}
 			},
 
@@ -555,15 +564,46 @@
 			getTaxiRevenueTotal: function() {
 				let that = this;
 				uni.request({
-					url: that.$taxi.Interface.GetExpressOrderCountByDriverID_Driver.value,
-					method: that.$taxi.Interface.GetExpressOrderCountByDriverID_Driver.method,
+					url: that.$taxi.Interface.GetExpressOrderCountRevenueByDriverID_Driver.value,
+					method: that.$taxi.Interface.GetExpressOrderCountRevenueByDriverID_Driver.method,
 					data: {
 						driverId: that.userInfo.driverId,
 						orderStartTime: utils.timeTodate(that.$home.dateFormat.dateformat, new Date(that.range[0]).getTime()),
 						orderEndTime: utils.timeTodate(that.$home.dateFormat.dateformat, new Date(that.range[1]).getTime())
 					},
 					success: function(res) {
+						let type = '出租车';
 						console.log(res);
+						if (res.data.status) {
+							let data = res.data.data;
+							if (data.IsExist) {
+								var dateArr = []; //折线图-时间数组
+								var dayItemPriceArr = []; //折线图-值数组
+								var totalPirce = 0; //柱状图统计
+								var totalPayPrice = 0; //柱状图统计
+								var orderArr = [];//表格数组
+						
+								for (let item of data.RList) {
+									dateArr.push(item.orderDate.substring(5, 9));
+									dayItemPriceArr.push(item.totalPayPrice);
+									totalPirce += item.totalPirce;
+									totalPayPrice += item.totalPayPrice;
+									var obj = {
+										datetime : item.orderDate,
+										orderNum: item.orderNum,
+										earning:item.totalPayPrice,
+									}
+									orderArr.push(obj);
+								}
+								that.setDateArr(dateArr);
+								that.setLineData(type, dayItemPriceArr);
+								that.setHistogramData(type, totalPayPrice);
+							} else {
+						
+							}
+						} else {
+						
+						}
 						that.getdownwindCarTotal();
 					},
 					fail: function(res) {
@@ -574,7 +614,6 @@
 
 			getdownwindCarTotal: function() {
 				let that = this;
-
 				uni.request({
 					url: that.$downwindCar.Interface.GetHitchhikerOrderCountByDriverID_Driver.value,
 					method: that.$downwindCar.Interface.GetHitchhikerOrderCountByDriverID_Driver.method,
@@ -584,9 +623,7 @@
 						orderEndTime: utils.timeTodate(that.$home.dateFormat.dateformat, new Date(that.range[1]).getTime() + (24 * 60 *60 * 1000))
 					},
 					success: function(res) {
-						console.log(res);
 						let type = '顺风车';
-						
 						if (res.data.status) {
 							let data = res.data.data;
 							if (data.IsExist) {
@@ -607,7 +644,6 @@
 										earning:item.totalPayPrice,
 									}
 									orderArr.push(obj);
-									console.log(obj);
 								}
 								that.setDateArr(dateArr);
 								that.setLineData(type, dayItemPriceArr);
@@ -624,6 +660,58 @@
 					}
 				})
 			},
+			getSpecialLineTotal:function(){
+				let that = this;
+				uni.request({
+					url: that.$CzcPrivate.Interface.GetSpecialLineOrderCountRevenueByDriverID_Driver.value,
+					method: that.$CzcPrivate.Interface.GetSpecialLineOrderCountRevenueByDriverID_Driver.method,
+					data: {
+						driverId: that.userInfo.driverId,
+						orderStartTime: utils.timeTodate(that.$home.dateFormat.dateformat, new Date(that.range[0]).getTime()),
+						orderEndTime: utils.timeTodate(that.$home.dateFormat.dateformat, new Date(that.range[1]).getTime() + (24 * 60 *60 * 1000))
+					},
+					success: function(res) {
+						console.log(res);
+						let type = '专线车';
+						if (res.data.status) {
+							let data = res.data.data;
+							if (data.IsExist) {
+								var dateArr = []; //折线图-时间数组
+								var dayItemPriceArr = []; //折线图-值数组
+								var totalPirce = 0; //柱状图统计
+								var totalPayPrice = 0; //柱状图统计
+								var orderArr = [];//表格数组
+				
+								for (let item of data.RList) {
+									dateArr.push(item.orderDate.substring(5, 9));
+									dayItemPriceArr.push(item.totalPayPrice);
+									totalPirce += item.totalPirce;
+									totalPayPrice += item.totalPayPrice;
+									var obj = {
+										datetime : item.orderDate,
+										orderNum: item.orderNum,
+										earning:item.totalPayPrice,
+									}
+									orderArr.push(obj);
+									console.log(obj);
+								}
+								that.setDateArr(dateArr);
+								that.setLineData(type, dayItemPriceArr);
+								that.setHistogramData(type, totalPayPrice);
+							} else {
+				
+							}
+						} else {
+				
+						}
+					},
+					fail: function(res) {
+						console.log(res);
+					}
+				});
+			}
+			
+			
 		}
 	}
 </script>
