@@ -43,6 +43,12 @@ const Interface = {
 		name: '司机端-顺风车-营收',
 		method: 'POST', //GET-POST
 		pages: []
+	},
+	QueryHitchhikerOrderByDriverIDAndDate_Passenger:{
+		value: Url + '/api/Hitchhiker/QueryHitchhikerOrderByDriverIDAndDate_Passenger',
+		name: '司机端-顺风车-营收详情',
+		method: 'POST', //GET-POST
+		pages: []
 	}
 }
 

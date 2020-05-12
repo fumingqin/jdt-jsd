@@ -42,7 +42,6 @@
 						becomplainant:e,
 					},
 					success: (res) => {
-						console.log(res)
 						this.complaintList=res.data.data;
 						// console.log(this.vehicleSelection)
 					}

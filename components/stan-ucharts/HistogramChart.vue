@@ -74,7 +74,9 @@ export default {
 		}
 	},
 	data() {
-		return {};
+		return {
+			isMount:false,
+		};
 	},
 	computed: {
 		cWidth() {
@@ -179,6 +181,10 @@ export default {
 		};
 		optionAs[this.canvasId] = Object.assign(defaultOption, this.basicAs, this.xAxisAS, this.yAxisAS, this.legendAs, this.extraAs);
 		histogramuCharts[this.canvasId] = new uCharts(optionAs[this.canvasId]);
+		histogramuCharts[this.canvasId].addEventListener('renderComplete',function(res){
+			//this.isMount = true;
+			console.log('渲染完成');
+		});
 	},
 	methods: {
 		touchstart(e) {
@@ -218,6 +224,9 @@ export default {
 		},
 		touchend(e) {
 			histogramuCharts[this.canvasId].scrollEnd(e);
+		},
+		update(data){
+			histogramuCharts[this.canvasId].updateData(data);
 		}
 	}
 };
