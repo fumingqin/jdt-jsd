@@ -167,6 +167,54 @@
 						</view>
 					</view>
 					<!-- 专线车结束 -->
+					<!-- 顺风车开始 -->
+					<view v-if="item.title == '顺风车'" style="margin-top: 20rpx;">
+						<view class="booktime" v-if="item.orderType == '预约'">
+							预约日期：{{taxiFormatTime(item.appointmentTime)}}
+						</view>
+						<view class="order">
+							<view style="padding: 35rpx 30rpx;">
+								<view style="display: flex;justify-content: space-between;align-items: center;">
+									<view style="display: flex;align-items: center;">
+										<image src="../../static/index/Car1.png" style="width: 50rpx;" mode="widthFix"></image>
+										<view class="ordertitle">{{item.title}}</view>
+									</view>
+									<view class="orderstatus">{{item.orderState}}</view>
+					
+								</view>
+								<view style="padding-left: 45rpx;padding-top: 10rpx;" class="orderstatus">
+									<view>订单号：{{item.orderNumber}}</view>
+									<view style="display: flex;justify-content: space-between;">
+										<view>
+											客户类型：{{taxiFormatUserType(item.userType)}}
+										</view>
+										<view v-if="item.state == 6" style="padding-left: 40rpx;">
+											￥{{item.factPayPrice}}
+										</view>
+									</view>
+									<view>出发时间：{{taxiFormatTime(item.runTime)}}</view>
+									<view>上车点：{{item.startAddress}}</view>
+									<view>目的地：{{item.endAddress}}</view>
+								</view>
+								<view class="btnarea">
+									<view v-if="item.state==1 || item.state==2">
+										<button @click="toCallPassenger(item)" style="width: auto;">联系乘客</button>
+									</view>
+									<view v-if="item.state != 1">
+										<button @click="toDetail(item)" style="width: auto;">详情</button>
+									</view>
+									<view v-if="item.state == 1">
+										<button @click="toDepart(item)" style="background-color: #FC4646;color: #FFF;width: auto;">发车</button>
+									</view>
+									<view v-if="item.state == 4">
+										<button @click="toArrive(item)" style="background-color: #FC4646;color: #FFF;width: auto;">到达</button>
+									</view>
+								</view>
+							</view>
+						</view>
+					</view>
+					<!-- 顺风车结束 -->
+					
 					<!-- 包车开始 -->
 					<view v-if="item.title == '包车'" style="margin-top: 20rpx;position: relative;">
 						<view class="booktime" v-if="item.ordertype==1">
@@ -379,6 +427,52 @@
 						</view>
 					</view>
 					<!-- 专线车结束 -->
+					<!-- 顺风车开始 -->
+					<view v-if="item.title == '顺风车'" style="margin-top: 20rpx;">
+						<view class="booktime" v-if="item.orderType == '预约'">
+							预约日期：{{taxiFormatTime(item.appointmentTime)}}
+						</view>
+						<view class="order">
+							<view style="padding: 35rpx 30rpx;">
+								<view style="display: flex;justify-content: space-between;align-items: center;">
+									<view style="display: flex;align-items: center;">
+										<image src="../../static/index/Car1.png" style="width: 50rpx;" mode="widthFix"></image>
+										<view class="ordertitle">{{item.title}}</view>
+									</view>
+									<view class="orderstatus">{{item.orderState}}</view>
+								</view>
+								<view style="padding-left: 45rpx;padding-top: 10rpx;" class="orderstatus">
+									<view>订单号：{{item.orderNumber}}</view>
+									<view style="display: flex;justify-content: space-between;">
+										<view>
+											客户类型：{{taxiFormatUserType(item.userType)}}
+										</view>
+										<view v-if="item.state == 6" style="padding-left: 40rpx;">
+											￥{{item.factPrice}}
+										</view>
+									</view>
+									<view>出发时间：{{taxiFormatTime(item.runTime)}}</view>
+									<view>上车点：{{item.startAddress}}</view>
+									<view>目的地：{{item.endAddress}}</view>
+								</view>
+								<view class="btnarea">
+									<view v-if="item.state==1 || item.state==2">
+										<button @click="toCallPassenger(item)" style="width: auto;">联系乘客</button>
+									</view>
+									<view v-if="item.state != 1">
+										<button @click="toDetail(item)" style="width: auto;">详情</button>
+									</view>
+									<view v-if="item.state == 1">
+										<button @click="toDepart(item)" style="background-color: #FC4646;color: #FFF;width: auto;">发车</button>
+									</view>
+									<view v-if="item.state == 4">
+										<button @click="toArrive(item)" style="background-color: #FC4646;color: #FFF;width: auto;">到达</button>
+									</view>
+								</view>
+							</view>
+						</view>
+					</view>
+					<!-- 顺风车结束 -->
 					<!-- 包车开始 -->
 					<view v-if="item.title == '包车'" style="margin-top: 20rpx;position: relative;">
 						<view class="booktime" v-if="item.ordertype==1">
@@ -567,6 +661,45 @@
 						</view>
 					</view>
 					<!-- 专线车结束 -->
+					<!-- 顺风车开始 -->
+					<view v-if="item.title == '顺风车'" style="margin-top: 20rpx;">
+						<view class="booktime" v-if="item.orderType == '预约'">
+							预约日期：{{taxiFormatTime(item.appointmentTime)}}
+						</view>
+						<view class="order">
+							<view style="padding: 35rpx 30rpx;">
+								<view style="display: flex;justify-content: space-between;align-items: center;">
+									<view style="display: flex;align-items: center;">
+										<image src="../../static/index/Car1.png" style="width: 50rpx;" mode="widthFix"></image>
+										<view class="ordertitle">{{item.title}}</view>
+									</view>
+									<view class="orderstatus">{{item.orderState}}</view>
+					
+								</view>
+								<view style="padding-left: 45rpx;padding-top: 10rpx;" class="orderstatus">
+									<view>订单号：{{item.orderNumber}}</view>
+									<view style="display: flex;justify-content: space-between;">
+										<view>
+											客户类型：{{taxiFormatUserType(item.userType)}}
+										</view>
+										<view v-if="item.state == 6" style="padding-left: 40rpx;">
+											￥{{item.factPayPrice}}
+										</view>
+									</view>
+									<view>出发时间：{{taxiFormatTime(item.runTime)}}</view>
+									<view>上车点：{{item.startAddress}}</view>
+									<view>目的地：{{item.endAddress}}</view>
+					
+								</view>
+								<view class="btnarea">
+									<view v-if="item.state != 1">
+										<button @click="toDetail(item)" style="width: auto;">详情</button>
+									</view>
+								</view>
+							</view>
+						</view>
+					</view>
+					<!-- 顺风车结束 -->
 					<!-- 包车开始 -->
 					<view v-if="item.title == '包车'" style="margin-top: 20rpx;position: relative;">
 						<view class="booktime" v-if="item.ordertype==1">
@@ -951,6 +1084,61 @@
 						} else {
 							that.showToast(res.data.msg);
 						}
+						that.getdownwindCarOrder();
+						/* that.underwayArr = that.orderArr.filter(x => {
+							return x.orderState == '进行中';
+						});
+						that.finishedArr = that.orderArr.filter(x => {
+							return x.orderState == '已完成';
+						});
+						that.cancleArr = that.orderArr.filter(x => {
+							return x.orderState == '已取消';
+						}); */
+					},
+					fail: function(res) {
+						console.log(res);
+						that.showToast('网络连接失败');
+						uni.hideLoading();
+					}
+				});
+				
+			},
+			getdownwindCarOrder:function(){
+				let that = this;
+				uni.showLoading({
+					mask:true
+				});
+				uni.request({
+					url:that.$downwindCar.Interface.GetHitchhikerOrderByDriverID_Driver.value,
+					method:that.$downwindCar.Interface.GetHitchhikerOrderByDriverID_Driver.method,
+					data:{
+						DriverId: that.userInfo.driverId,
+						State: -1
+					},
+					success:function(res){
+						uni.hideLoading();
+						if(res.data.status){
+							for (let item of res.data.data) {
+								var obj = {
+									title: '顺风车',
+									orderType: item.OrderType, //实时/预约
+									appointmentTime: item.AppointmentTime, //预约时间
+									userType: item.UserType, //用户类型：普通/会员
+									runTime: item.RunTime, //出发时间
+									endAddress: item.EndAddress,
+									startAddress: item.StartAddress,
+									orderState: that.taxiFormatState(item.State),
+									factPrice: item.FactPrice,
+									factPayPrice: item.FactPayPrice,
+									orderNumber: item.OrderNumber,
+									state: item.State,
+									passengersPhone: item.PassengersPhone
+								};
+								that.orderArr.push(obj);
+							}
+						} else {
+							that.showToast(res.data.msg);
+						}
 						that.underwayArr = that.orderArr.filter(x => {
 							return x.orderState == '进行中';
 						});
@@ -961,15 +1149,12 @@
 							return x.orderState == '已取消';
 						});
 					},
-					fail: function(res) {
-						console.log(res);
-						that.showToast('网络连接失败');
+					fail:function(res){
 						uni.hideLoading();
+						console.log(res);
 					}
-				});
-				
+				})
 			},
-
 
 
 			//详情
@@ -995,8 +1180,16 @@
 							url: '../ZXC/orderDetail?orderNumber=' + item.orderNumber
 						});
 					}
-				} else if(item.title == '客运-定制'){
-					
+				} else if(item.title == '顺风车'){
+					if (item.state == 0 || item.state == 1 || item.state == 2 || item.state == 3 || item.state == 4) {
+						uni.navigateTo({
+							url:'../downwindCar/downwindCarDriver?orderNumber=' + item.orderNumber,
+						});
+					} else {
+						uni.navigateTo({
+							url:'../downwindCar/orderDetail?orderNumber=' + item.orderNumber
+						});
+					}
 				}
 			},
 			//联系乘客
@@ -1031,11 +1224,12 @@
 					data = {
 						orderNumber:item.orderNumber
 					};
-				} else if(item.title == '客运-定制'){
-					url = '';
-					method = '';
-					data = '';
-					
+				} else if(item.title == '顺风车'){
+					url = that.$downwindCar.Interface.FinishSF_HitchhikerOrder_Driver.value;
+					method = that.$downwindCar.Interface.FinishSF_HitchhikerOrder_Driver.method;
+					data = {
+						orderNumber:item.orderNumber
+					};
 				}
 				that.taxiRequest(url,method,data).then(res => {
 					if (res.data.status) {
@@ -1049,8 +1243,11 @@
 							uni.navigateTo({
 								url:'../driver/orderComplete'
 							});
-						} else if(item.title == '客运-定制'){
-							
+						} else if(item.title == '顺风车'){
+							that.showToast('到达成功');
+							uni.navigateTo({
+								url:'../driver/orderComplete'
+							});
 						}
 					} else {
 						that.showToast(res.data.msg);
@@ -1074,17 +1271,18 @@
 					data = {
 						orderNumber:item.orderNumber
 					};
-				
 				} else if(item.title == '专线车'){
 					url = that.$CzcPrivate.Interface.SetoutSpecialLineOrder_Driver.value;
 					method = that.$CzcPrivate.Interface.SetoutSpecialLineOrder_Driver.method;
 					data = {
 						orderNumber:item.orderNumber
 					};
-				} else if(item.title == '客运-定制'){
-					url = '';
-					method = '';
-					data = '';
+				} else if(item.title == '顺风车'){
+					url = that.$downwindCar.Interface.SetoutHitchhikerOrder_Driver.value;
+					method = that.$downwindCar.Interface.SetoutHitchhikerOrder_Driver.method;
+					data = {
+						orderNumber:item.orderNumber
+					};
 				} 
 				
 				that.taxiRequest(url,method,data).then(res => {
@@ -1097,9 +1295,11 @@
 						} else if(item.title == '专线车'){
 							uni.navigateTo({
 								url:'../ZXC/CzcPrivate?orderNumber=' + item.orderNumber
-							})
-						} else if(item.title == '客运-定制'){
-							
+							});
+						} else if(item.title == '顺风车'){
+							uni.navigateTo({
+								url:'../downwindCar/downwindCarDriver?orderNumber=' + item.orderNumber
+							});
 						}
 					} else {
 						that.showToast(res.data.msg);

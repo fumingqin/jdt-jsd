@@ -28,7 +28,11 @@
 				<text class="textClass">元</text>
 			</view>
 		</view>
-		<image @click="finish" style="width: 750rpx; height: 195rpx; margin-top: 20rpx;" src="../../static/driver/finishButton.png"></image>
+		<view style="display: flex;justify-content: space-between;padding-top: 40rpx;margin: 0 30rpx;">
+			<view @click="InputAmountExpressOrderNeedPay" style="width:300rpx;height: 100rpx;background:linear-gradient(270deg,rgba(250,116,101,1),rgba(249,92,117,1));border-radius: 10rpx;color: #FFF;text-align: center;line-height: 100rpx;">线上支付</view>
+			<view @click="finish" style="width:300rpx;height: 100rpx;background:linear-gradient(270deg,rgba(250,116,101,1),rgba(249,92,117,1));border-radius: 10rpx;color: #FFF;text-align: center;line-height: 100rpx;">线下支付</view>
+		</view>
+		<!-- <image @click="finish" style="width: 750rpx; height: 195rpx; margin-top: 20rpx;" src="../../static/driver/finishButton.png"></image> -->
 	</view>
 </template>
 
@@ -63,6 +67,44 @@
 				const key = e.currentTarget.dataset.key;
 				this[key] = e.detail.value;
 			},
+			InputAmountExpressOrderNeedPay:function(){//输入金额线上支付
+				var that = this;
+				uni.showLoading({
+					mask:true
+				});
+				if (this.FactPayPrice > 0) {
+					uni.request({
+						url: that.$taxi.Interface.InputAmountExpressOrderNeedPay_Driver.value,
+						method: that.$taxi.Interface.InputAmountExpressOrderNeedPay_Driver.method,
+						data: {
+							orderNumber: that.orderNumber,//订单编号
+							FactPayPrice: this.FactPayPrice,
+							payType: "线上支付",
+						},
+						success(res) {
+							uni.hideLoading();
+							if(res.data.status){
+								uni.redirectTo({
+									url: '/pages/driver/orderComplete',
+								});
+							}else{
+								console.log(res);
+							}
+						},
+						fail: function(res) {
+							uni.hideLoading();
+							that.showToast('网络连接失败');
+							console.log(res);
+						}
+					});
+				
+				} else {
+					uni.showToast({
+						title: '费用不能小于0',
+						icon: "none"
+					})
+				}
+				},
 			finish() {
 				var that = this;
 				uni.showLoading({

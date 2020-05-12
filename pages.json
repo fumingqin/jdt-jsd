@@ -293,12 +293,32 @@
 		}
         ,{
             "path" : "pages/grzx/gz_complaintList",
-            "style" : {}
+            "style" : {
+				"navigationBarTitleText":"投诉列表"
+			}
         }
         ,{
             "path" : "pages/grzx/gz_complaintText",
             "style" : {}
         }
+		,{
+		    "path" : "pages/downwindCar/addDownwindOrder",
+		    "style" : {
+				"navigationBarTitleText":"发布顺风车"
+			}
+		}
+		,{
+		    "path" : "pages/downwindCar/downwindCarDriver",
+		    "style" : {
+				"navigationStyle":"custom"
+			}
+		}
+		,{
+		    "path" : "pages/downwindCar/orderDetail",
+		    "style" : {
+				"navigationStyle":"custom"
+			}
+		}
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

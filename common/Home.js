@@ -30,6 +30,12 @@ const Interface = {
 		name:'司机端-出租车-一键报警',
 		method:'POST',
 		page:[]
+	},
+	GetImage:{
+		value:Url + '/api/zhcx/GetImage',//model7
+		name:'获取图片',
+		method:'POST',
+		page:[]
 	}
 }
 

@@ -9,7 +9,7 @@ import myTime from './common/myTime.js' //时间
 import Ky from './common/Ky.js' //客运
 import GrzxInter from './common/Grzx.js'    //司机端个人中心
 import Bcsjd from 'common/Bcsjd.js' //包车司机端
-
+import downwindCar from 'common/downwindCar.js' //包车司机端
 Vue.config.productionTip = false
 // Vue.prototype.$store=store;  //登录
 Vue.prototype.$taxi=taxi;  //出租车
@@ -20,6 +20,7 @@ Vue.prototype.$myTime=myTime;  //日期js
 Vue.prototype.$Ky=Ky;  //客运
 Vue.prototype.$Bcsjd=Bcsjd;  //个人中心
 Vue.prototype.$GrzxInter=GrzxInter;  //个人中心
+Vue.prototype.$downwindCar=downwindCar;  //个人中心
 
 
 App.mpType = 'app'
