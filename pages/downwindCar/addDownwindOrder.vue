@@ -226,11 +226,11 @@
 				} else if (that.price < 0){
 					that.showToast('价格输入有误');
 					return false;
-				} else if (that.seat < 0){
-					that.showToast('剩余位置输入有误');
+				} else if (that.seat <= 0){
+					that.showToast('剩余座位不能大于1个');
 					return false;
 				} else if (that.seat > 4){
-					that.showToast('剩余位置不能大于4个');
+					that.showToast('剩余座位不能大于4个');
 					return false;
 				}
 				return true;
