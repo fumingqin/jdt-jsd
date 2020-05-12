@@ -5,7 +5,7 @@
 			<view class="content">
 				<!-- 投诉原因 -->
 				<view class="ComplaintYY">
-					<text class="yyText">投诉原因</text>
+					<text class="yyText">申诉原因</text>
 					<textarea class="yyTitle" placeholder-style="#AAAAAA" placeholder="描述详尽助于提升处理速度" maxlength="500" @input="descInput"
 					 v-model="detailInfo.a" style="width: 295px;height: 100px;" />
 					<view class="num">{{remnant}}/500字</view>
@@ -28,7 +28,7 @@
 		data() {
 			return {
 				aid:'',
-				b:'本人于 #填写时间  在#填写事发地详细地址# 发生 了 #描述投诉原因# ， 本人希望 #填写您的述求， 如退票#',
+				b:'本人于 #填写时间  在#填写事发地详细地址# 发生 了 #描述申诉原因# ， 本人希望 #填写您的述求， 如退票#',
 				remnant: 0,//字数
 				detailInfo : {//详细信息
 					a:'',//投诉原因
@@ -37,6 +37,7 @@
 		},
 		onLoad:function(options) {
 			this.aid = JSON.parse(options.aid);
+			
 		},
 		methods: {
 			//字数
