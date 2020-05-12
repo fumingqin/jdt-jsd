@@ -134,7 +134,7 @@ export default {
 				showTitle:true,//是否显示标题
 				splitNumber:5,//网格数量
 				data:[
-					{title:"收益/元",
+					{title:"   收益/元",
 					position: 'left', //Y轴位置
 					min:0
 					}

@@ -21,7 +21,7 @@
 						<image src="../../static/index/calendar.png" style="width: 35rpx;" mode="widthFix" @click="onShowDatePicker('range')"></image>
 					</view>
 				</view>
-				<scroll-view style="padding:20rpx 0;" :style="{height:scrollHeight}" :scroll-y="true">
+				<scroll-view v-if="isShow" style="padding:20rpx 0;" :style="{height:scrollHeight}" :scroll-y="true">
 					<view style="background-color: #FFF;border-radius: 20rpx;padding: 30rpx;">
 						<view style="display: flex;align-items: center;">
 							<view style="width: 8rpx;height: 34rpx; background-color: #E9554E;"></view>
@@ -250,7 +250,8 @@
 				
 				
 				IsExist:false,
-				userInfo:null
+				userInfo:null,
+				isShow:true
 			}
 		},
 		onLoad() {
@@ -362,6 +363,7 @@
 				this.type = type;
 				this.showPicker = true;
 				this.value = this[type];
+				this.isShow = false;//关闭显示
 			},
 			onSelected(e) { //选择
 				this.showPicker = false;
@@ -373,6 +375,7 @@
 					this.index ++;
 					this.getTaxiRevenueTotal();
 				}
+				this.isShow = true;//重新渲染
 			},
 
 			//填充柱状图数值
@@ -576,7 +579,6 @@
 					if(that.histogramData.categories.length > 0){
 						that.$refs.ht0.update(that.histogramData);
 					}else{
-						console.log(that.$refs);
 						that.$refs.ht0.update({
 							categories:['无数据'],
 							series:[{
@@ -665,6 +667,9 @@
 			},
 			taxiIncomeDetail:function(){
 				let that = this;
+				uni.showLoading({
+					mask:true
+				});
 				//出租车营收明细
 				uni.request({
 					url:that.$taxi.Interface.QueryTaxiExpressOrderByDriverIDAndDate_Passenger.value, 
@@ -674,19 +679,27 @@
 						driverId:that.userInfo.driverId
 					},
 					success:function(res){
-						console.log(res);
+						uni.hideLoading();
 						if(res.data.status){
+							console.log(res);
 							that.taxiDetailArr = res.data.data;
+						}else{
+							that.taxiDetailArr = [];
 						}
+						console.log(that.taxiDetailArr.length);
 					},
 					fail:function(res){
 						console.log(res);
+						uni.hideLoading();
 					}
 				});
 				
 			},
 			specialLineIncomeDetail:function(){
 				let that = this;
+				uni.showLoading({
+					mask:true
+				});
 				//专线车营收明细
 				uni.request({
 					url:that.$CzcPrivate.Interface.QuerySpecialLineOrderByDriverIDAndDate_Passenger.value,
@@ -696,9 +709,11 @@
 						DriverId:that.userInfo.driverId
 					},
 					success:function(res){
-						console.log(res);
+						uni.hideLoading();
 						if(res.data.status){
 							that.specialLineDetailArr = res.data.data;
+						}else{
+							that.taxiDetailArr = [];
 						}
 					},
 					fail:function(res){
@@ -708,6 +723,9 @@
 			},
 			downwindIncomeDetail:function(){
 				let that = this;
+				uni.showLoading({
+					mask:true
+				});
 				//顺风车营收明细
 				uni.request({
 					url:that.$downwindCar.Interface.QueryHitchhikerOrderByDriverIDAndDate_Passenger.value,
@@ -717,12 +735,15 @@
 						DriverId:that.userInfo.driverId
 					},
 					success:function(res){
-						console.log(res);
+						uni.hideLoading();
 						if(res.data.status){
 							that.dowmwindDetailArr = res.data.data;
+						}else{
+							that.taxiDetailArr = [];
 						}
 					},
 					fail:function(res){
+						uni.hideLoading();
 						console.log(res);
 					}
 				});

@@ -153,7 +153,7 @@ export default {
 				showTitle:true,//是否显示标题
 				splitNumber:5,//网格数量
 				data:[
-					{title:"收益/元",
+					{title:"   收益/元",
 					position: 'left', //Y轴位置
 					min:0
 					
@@ -192,7 +192,7 @@ export default {
 	methods: {
 		touchstart(e) {
 			let that = this;
-			lineCharts[this.canvasId].touchLegend(e, { animation: false });
+			//lineCharts[this.canvasId].touchLegend(e, { animation: false });
 			lineCharts[this.canvasId].scrollStart(e);
 			lineCharts[this.canvasId].showToolTip(e, {
 				//修改点击事弹出文字

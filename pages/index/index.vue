@@ -231,6 +231,13 @@
 					});
 				}
 				if (iswork) {
+					if(that.userInfo == ''){
+						uni.showToast({
+							title:'请先登录',
+							icon:'none'
+						});
+						return;
+					}
 					uni.navigateTo({
 						url: '/pages/driver/bindCoachCode1',
 					});

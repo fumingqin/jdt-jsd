@@ -91,7 +91,6 @@
 									<view>出发时间：{{taxiFormatTime(item.runTime)}}</view>
 									<view>上车点：{{item.startAddress}}</view>
 									<view>目的地：{{item.endAddress}}</view>
-
 								</view>
 								<view class="btnarea">
 									<view v-if="item.state==1 || item.state==2">
@@ -106,10 +105,10 @@
 									<view v-if="item.state == 1">
 										<button @click="toDepart(item)" style="background-color: #FC4646;color: #FFF;width: auto;">发车</button>
 									</view>
-									<view v-if="item.state == 4">
+									<!-- <view v-if="item.state == 4">
 										<button @click="toArrive(item)" style="background-color: #FC4646;color: #FFF;width: auto;">到达</button>
-									</view>
-									<view v-if="item.state == 5">
+									</view> -->
+									<view v-if="item.state == 4">
 										<button @click="toInputPrice(item)" style="background-color: #FC4646;color: #FFF;width: auto;">输入价格</button>
 									</view>
 								</view>
@@ -214,7 +213,6 @@
 						</view>
 					</view>
 					<!-- 顺风车结束 -->
-					
 					<!-- 包车开始 -->
 					<view v-if="item.title == '包车'" style="margin-top: 20rpx;position: relative;">
 						<view class="booktime" v-if="item.ordertype==1">
@@ -367,10 +365,10 @@
 									<view v-if="item.state == 1">
 										<button @click="toDepart(item)" style="background-color: #FC4646;color: #FFF;width: auto;">发车</button>
 									</view>
-									<view v-if="item.state == 4">
+									<!-- <view v-if="item.state == 4">
 										<button @click="toArrive(item)" style="background-color: #FC4646;color: #FFF;width: auto;">到达</button>
-									</view>
-									<view v-if="item.state == 5">
+									</view> -->
+									<view v-if="item.state == 4">
 										<button @click="toInputPrice(item)" style="background-color: #FC4646;color: #FFF;width: auto;">输入价格</button>
 									</view>
 								</view>
@@ -611,7 +609,6 @@
 									<view>出发时间：{{taxiFormatTime(item.runTime)}}</view>
 									<view>上车点：{{item.startAddress}}</view>
 									<view>目的地：{{item.endAddress}}</view>
-
 								</view>
 								<view class="btnarea">
 									<view v-if="item.state != 1">
@@ -968,7 +965,7 @@
 			var that = this;
 			that.userInfo = uni.getStorageSync('userInfo') || '';
 			if(that.userInfo == ''){
-				that.showToast('您未登录');
+				that.showToast('请先登录');
 			} else {
 				that.getTaxiOrder();
 			}
@@ -1369,6 +1366,17 @@
 			},
 			//输入价格
 			toInputPrice :function(item) {
+				let that = this;
+				uni.request({
+					url:that.$taxi.Interface.FinishExpressOrder_Driver.value,
+					method:that.$taxi.Interface.FinishExpressOrder_Driver.method,
+					success:function(res){
+						console.log(res);
+					},
+					fail:function(res){
+						that.showToast('网络连接失败');
+					}
+				});
 				uni.navigateTo({
 					url:'../driver/otherExpenses?orderNumber=' + item.orderNumber
 				});
