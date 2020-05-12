@@ -5,71 +5,71 @@
 		</view>
 			<view style="margin-top: -80rpx;">
 				<view style=" margin: 0 20rpx;padding: 50rpx;background-color: #FFFFFF;border-radius: 20rpx;">
-					<view>
+					<scroll-view style="height: 750rpx;" :scroll-y='true'>
 						<view>
-							<text class="titleFont">上车点</text>
+							<view>
+								<text class="titleFont">上车点</text>
+							</view>
+							<view style="padding: 20rpx 0;border-bottom: #EAEAEA 1px solid;"> 
+								<text @click="chooseStartSite" v-model="startSiteName" class="contentFont">{{startSiteName}}</text>
+							</view>
 						</view>
-						<view style="padding: 20rpx 0;border-bottom: #EAEAEA 1px solid;"> 
-							<text @click="chooseStartSite" v-model="startSiteName" class="contentFont">{{startSiteName}}</text>
+						
+						<view>
+							<view style="padding-top: 20rpx ;">
+								<text class="titleFont">下车点</text>
+							</view>
+							<view style="padding: 20rpx 0;border-bottom: #EAEAEA 1px solid;"> 
+								<text @click="chooseEndSite" v-model="endSiteName" class="contentFont">{{endSiteName}}</text>
+							</view>
 						</view>
-					</view>
-					
-					<view>
-						<view style="padding-top: 20rpx ;">
-							<text class="titleFont">下车点</text>
+						
+						<view>
+							<view style="padding-top: 20rpx ;">
+								<text class="titleFont">出发时间</text>
+							</view>
+							<view style="padding: 20rpx 0;border-bottom: #EAEAEA 1px solid;"> 
+								<text style="letter-spacing:1px" @click="onShowDatePicker('datetime')">{{datestring}} {{Week}}</text>
+							</view>
+							<mx-date-picker :show="showPicker" :showSeconds="false" :type="type" :value="value" :show-tips="true" :begin-text="'入住'"
+							 :end-text="'离店'" :show-seconds="true" @confirm="onSelected" @cancel="onCancle" />
 						</view>
-						<view style="padding: 20rpx 0;border-bottom: #EAEAEA 1px solid;"> 
-							<text @click="chooseEndSite" v-model="endSiteName" class="contentFont">{{endSiteName}}</text>
+						
+						<view>
+							<view style="padding-top: 20rpx ;">
+								<text class="titleFont">预计里程</text>
+							</view>
+							<view style="padding: 20rpx 0;border-bottom: #EAEAEA 1px solid;display: flex;flex-direction: row;justify-content: space-between;"> 
+								<input class="contentFont" v-model="mileage" type="number"  />
+								<text>公里</text>
+							</view>
 						</view>
-					</view>
-					
-					<view>
-						<view style="padding-top: 20rpx ;">
-							<text class="titleFont">出发时间</text>
+						
+						<view>
+							<view style="padding-top: 20rpx ;">
+								<text class="titleFont">价格</text>
+							</view>
+							<view style="padding: 20rpx 0;border-bottom: #EAEAEA 1px solid;display: flex;flex-direction: row;justify-content: space-between;"> 
+								<input class="contentFont" v-model="price" type="number"  />
+								<text>元</text>
+							</view>
 						</view>
-						<view style="padding: 20rpx 0;border-bottom: #EAEAEA 1px solid;"> 
-							<text style="letter-spacing:1px" @click="onShowDatePicker('datetime')">{{datestring}} {{Week}}</text>
+						
+						<view>
+							<view style="padding-top: 20rpx ;">
+								<text class="titleFont">剩余座位</text>
+							</view>
+							<view style="padding: 20rpx 0;border-bottom: #EAEAEA 1px solid;display: flex;flex-direction: row;justify-content: space-between;"> 
+								<input class="contentFont" v-model="seat" type="number"  />
+								<text>个</text>
+							</view>
 						</view>
-						<mx-date-picker :show="showPicker" :showSeconds="false" :type="type" :value="value" :show-tips="true" :begin-text="'入住'"
-						 :end-text="'离店'" :show-seconds="true" @confirm="onSelected" @cancel="onCancle" />
-					</view>
-					
-					<view>
-						<view style="padding-top: 20rpx ;">
-							<text class="titleFont">预计里程</text>
-						</view>
-						<view style="padding: 20rpx 0;border-bottom: #EAEAEA 1px solid;display: flex;flex-direction: row;justify-content: space-between;"> 
-							<input class="contentFont" v-model="mileage" type="number"  />
-							<text>公里</text>
-						</view>
-					</view>
-					
-					<view>
-						<view style="padding-top: 20rpx ;">
-							<text class="titleFont">价格</text>
-						</view>
-						<view style="padding: 20rpx 0;border-bottom: #EAEAEA 1px solid;display: flex;flex-direction: row;justify-content: space-between;"> 
-							<input class="contentFont" v-model="price" type="number"  />
-							<text>元</text>
-						</view>
-					</view>
-					
-					<view>
-						<view style="padding-top: 20rpx ;">
-							<text class="titleFont">剩余座位</text>
-						</view>
-						<view style="padding: 20rpx 0;border-bottom: #EAEAEA 1px solid;display: flex;flex-direction: row;justify-content: space-between;"> 
-							<input class="contentFont" v-model="seat" type="number"  />
-							<text>个</text>
-						</view>
-					</view>
-					
+					</scroll-view>
 					<view style="margin-top: 30rpx;">
 						<button @click="submit" style="background-color: #FC4646;border-radius: 12rpx;">
 							<text style="font-size:36rpx;font-family:Source Han Sans SC;font-weight:400;color:#FFFFFF;">发布</text>
 						</button>
 					</view>
-					
 				</view>
 			</view>
 	</view>
@@ -226,11 +226,11 @@
 				} else if (that.price < 0){
 					that.showToast('价格输入有误');
 					return false;
-				} else if (that.seat < 0){
-					that.showToast('剩余位置输入有误');
+				} else if (that.seat <= 0){
+					that.showToast('剩余座位不能大于1个');
 					return false;
 				} else if (that.seat > 4){
-					that.showToast('剩余位置不能大于4个');
+					that.showToast('剩余座位不能大于4个');
 					return false;
 				}
 				return true;

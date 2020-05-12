@@ -1,5 +1,5 @@
-const Url = 'http://111.231.109.113:8004';
-
+const Url = 'https://zntc.145u.net:9099';
+//const Url = 'http://111.231.109.113:8004';
 const Interface = {
 	CreateLine_Driver: {
 		value: Url + '/api/Hitchhiker/CreateLine_Driver',
@@ -41,6 +41,12 @@ const Interface = {
 	GetHitchhikerOrderCountByDriverID_Driver:{
 		value: Url + '/api/Hitchhiker/GetHitchhikerOrderCountByDriverID_Driver',
 		name: '司机端-顺风车-营收',
+		method: 'POST', //GET-POST
+		pages: []
+	},
+	QueryHitchhikerOrderByDriverIDAndDate_Passenger:{
+		value: Url + '/api/Hitchhiker/QueryHitchhikerOrderByDriverIDAndDate_Passenger',
+		name: '司机端-顺风车-营收详情',
 		method: 'POST', //GET-POST
 		pages: []
 	}
