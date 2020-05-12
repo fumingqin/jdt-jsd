@@ -1,14 +1,14 @@
 <template>
 	<view>
 		<view class="cl_outermostLayer" v-for="(item,index) in complaintList" :key="index">
-			<text class="ol_text">投诉人:{{item.beComplainant}}</text>
+			<!-- <text class="ol_text">投诉人:{{item.beComplainant}}</text> -->
 			<view>
-				<text class="ol_title">{{item.declarantContent}}</text>
+				<text class="ol_title">{{item.complaintContent}}</text>
 			</view>
-			<view class="ol_button" v-if="complaintList.declarantContent!==''"  @click="event(index)">
+			<view class="ol_button" v-if="item.declarantContent==' '"  @click="event(index)">
 				<text class="bt_text">申诉</text>
 			</view>
-			<view class="ol_button2" v-if="complaintList.declarantContent==''">
+			<view class="ol_button2" v-if="item.declarantContent!==' '">
 				<text class="bt_text2">已申诉</text>
 			</view>
 		</view>
@@ -21,6 +21,7 @@
 			return {
 				complaintList:[{
 					beComplainant:'',
+					complaintContent:'',
 					declarantContent:'',
 					model:'',
 					aid:'',
