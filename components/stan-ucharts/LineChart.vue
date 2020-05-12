@@ -227,6 +227,9 @@ export default {
 		},
 		touchend(e) {
 			lineCharts[this.canvasId].scrollEnd(e);
+		},
+		update(data){
+			lineCharts[this.canvasId].updateData(data);
 		}
 	}
 };
