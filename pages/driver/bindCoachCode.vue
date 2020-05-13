@@ -85,7 +85,6 @@
 					.test(str);
 			},
 			goBack: function() {
-				uni.clearStorageSync('vehicleInfo');
 				uni.navigateBack();
 			},
 			onClickItem(e) { //tab点击事件

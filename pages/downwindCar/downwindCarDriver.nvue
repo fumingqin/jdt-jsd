@@ -6,7 +6,10 @@
 		<image @click="back" src="../../static/driver/back1.png" style="width: 120rpx;height: 120rpx;position: fixed;top: 50px;left: 1px;"></image>
 		<view v-if="state == 2" style="position: fixed;bottom: 220rpx; ">
 			<view style="flex-direction: row;justify-content: space-between;align-items: center;">
-				<image src="../../static/driver/police.png" style="width: 120rpx;height: 120rpx;margin-left: 10rpx;" @click="callPolice"></image>
+				<view style="flex-direction: row;">
+					<image src="../../static/driver/police.png" style="width: 120rpx;height: 120rpx;margin-left: 10rpx;" @click="callPolice"></image>
+					<image src="../../static/driver/message.png" style="width: 120rpx;height: 120rpx;margin-left: 10rpx;" @click="sendMessage"></image>
+				</view>
 			</view>
 			<!-- 行程信息 -->
 			<view style="width: 698rpx; background-color: #FFFFFF;margin-left: 28rpx; border-radius:20rpx;padding-bottom: 20rpx;">
@@ -43,7 +46,10 @@
 			</view>
 		</view>
 		<view v-if="state == 4" style="position: fixed;bottom: 220rpx; ">
-			<image src="../../static/driver/police.png" style="width: 120rpx;height: 120rpx;margin-left: 10rpx;" @click="callPolice"></image>
+			<view style="flex-direction: row;">
+				<image src="../../static/driver/police.png" style="width: 120rpx;height: 120rpx;margin-left: 10rpx;" @click="callPolice"></image>
+				<image src="../../static/driver/message.png" style="width: 120rpx;height: 120rpx;margin-left: 10rpx;" @click="sendMessage"></image>
+			</view>
 			<!-- 行程信息 -->
 			<view style="width: 698rpx; background-color: #FFFFFF;margin-left: 28rpx; border-radius:20rpx;padding-bottom: 20rpx;">
 				<!-- <view style="margin-top: 36rpx;margin-left: 38rpx;display: flex;flex-direction: row;">
@@ -155,6 +161,8 @@
 				totalCost: '', //总价
 				setoutTime:'',//出发去接旅客的时间
 				runTime:'',//开始执行的时间
+				
+				userInfo:null
 			}
 		},
 		onLoad(option) {
@@ -162,6 +170,7 @@
 			that.orderNumber = option.orderNumber;
 			var userInfo = uni.getStorageSync('userInfo') || '';
 			if (userInfo) {
+				that.userInfo = userInfo;
 				that.driverId = userInfo.driverId;
 			}
 			uni.getSystemInfo({
@@ -424,7 +433,14 @@
 					phoneNumber: that.passengersPhone
 				});
 			},
-
+			sendMessage:function(){
+				let that = this;
+				var msg = plus.messaging.createMessage(plus.messaging.TYPE_SMS);
+				msg.to=[that.passengersPhone];
+				msg.body = '你好，我是您的顺风车司机' + that.userInfo.userName.substring(0,1) + '师傅，';
+				plus.messaging.sendMessage(msg);
+			},
+			
 			//picker相关
 			callPolice: function() {
 				let that = this;

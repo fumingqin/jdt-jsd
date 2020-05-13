@@ -149,7 +149,7 @@
 						<view class="paymentDetail" v-for="(item,index) in specialLineDetailArr" :key="index">
 							<view>
 								<view style="font-size: 32rpx;">车费收入</view>
-								<view style="color: #999999;font-size: 30rpx;">{{item.FinishTime}}</view>
+								<view style="color: #999999;font-size: 30rpx;">{{formatTime(item.FinishTime)}}</view>
 							</view>
 							<view style="font-size: 34rpx;">{{item.FactPayPrice}}</view>
 						</view>
@@ -184,7 +184,7 @@
 						<view class="paymentDetail" v-for="(item,index) in downwindDetailArr" :key="index">
 							<view>
 								<view style="font-size: 32rpx;">车费收入</view>
-								<view style="color: #999999;font-size: 30rpx;">{{item.FinishTime}}</view>
+								<view style="color: #999999;font-size: 30rpx;">{{formatTime(item.FinishTime)}}</view>
 							</view>
 							<view style="font-size: 34rpx;">{{item.FactPayPrice}}</view>
 						</view>
@@ -251,7 +251,7 @@
 				
 				IsExist:false,
 				userInfo:null,
-				isShow:true
+				isShow:true,
 			}
 		},
 		onLoad() {
@@ -291,6 +291,11 @@
 			},
 			tabclick: function(e) {
 				this.current = e;
+				if(e > 0){
+					this.isShow = false;
+				}else{
+					this.isShow = true;
+				}
 			},
 			getnowdate: function() { //获取当前日期
 				var that = this;
@@ -680,13 +685,11 @@
 					},
 					success:function(res){
 						uni.hideLoading();
+						that.taxiDetailArr = [];
 						if(res.data.status){
-							console.log(res);
+							console.log(res.data.data.length);
 							that.taxiDetailArr = res.data.data;
-						}else{
-							that.taxiDetailArr = [];
 						}
-						console.log(that.taxiDetailArr.length);
 					},
 					fail:function(res){
 						console.log(res);
@@ -710,10 +713,9 @@
 					},
 					success:function(res){
 						uni.hideLoading();
+						that.specialLineDetailArr = [];
 						if(res.data.status){
 							that.specialLineDetailArr = res.data.data;
-						}else{
-							that.taxiDetailArr = [];
 						}
 					},
 					fail:function(res){
@@ -736,10 +738,10 @@
 					},
 					success:function(res){
 						uni.hideLoading();
+						console.log(res);
+						that.downwindDetailArr = [];
 						if(res.data.status){
-							that.dowmwindDetailArr = res.data.data;
-						}else{
-							that.taxiDetailArr = [];
+							that.downwindDetailArr = res.data.data;
 						}
 					},
 					fail:function(res){

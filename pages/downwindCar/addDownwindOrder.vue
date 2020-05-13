@@ -35,7 +35,7 @@
 							 :end-text="'离店'" :show-seconds="true" @confirm="onSelected" @cancel="onCancle" />
 						</view>
 						
-						<view>
+						<!-- <view>
 							<view style="padding-top: 20rpx ;">
 								<text class="titleFont">预计里程</text>
 							</view>
@@ -43,7 +43,7 @@
 								<input class="contentFont" v-model="mileage" type="number"  />
 								<text>公里</text>
 							</view>
-						</view>
+						</view> -->
 						
 						<view>
 							<view style="padding-top: 20rpx ;">
@@ -100,13 +100,14 @@
 				mileage:0,
 				price:0,
 				userInfo:null,
+				vehicleInfo:null,
 				seat:0,
 			}
 		},
 		onLoad() {
 			let that =this;
 			that.userInfo = uni.getStorageSync('userInfo') || '';
-			
+			that.vehicleInfo = uni.getStorageSync('vehicleInfo') || '';
 			
 			
 			that.getTodayDate();
@@ -137,7 +138,6 @@
 				this.datestring = this[this.type];
 				this.queryWeek(e.date.toString().substring(0, 3));
 				this.date = e.value;
-				console.log(date);
 			},
 			onCancle:function(){
 				this.showPicker = false;
@@ -190,10 +190,11 @@
 						DriverID:that.userInfo.driverId,
 						DriverName:that.userInfo.userName,
 						Price:that.price,
-						Seat:that.seat
+						Seat:that.seat,
+						VehicleNumber:that.vehicleInfo.vehicleNumber
 					},
 					success:function(res){
-						console.log(res)
+						console.log(res);
 						if(res.data.status){
 							that.showToast('发布成功');
 							setTimeout(function(){
@@ -217,17 +218,17 @@
 				} else if (that.endSiteName === '请选择下车点'){
 					that.showToast('请选择下车点');
 					return false;
-				} else if (that.mileage == 0){
+				} /* else if (that.mileage == 0){
 					that.showToast('请输入预计里程');
 					return false;
-				} else if (that.price == 0){
+				} */ else if (that.price == 0){
 					that.showToast('请输入价格');
 					return false;
 				} else if (that.price < 0){
 					that.showToast('价格输入有误');
 					return false;
 				} else if (that.seat <= 0){
-					that.showToast('剩余座位不能大于1个');
+					that.showToast('剩余座位不能小于1个');
 					return false;
 				} else if (that.seat > 4){
 					that.showToast('剩余座位不能大于4个');

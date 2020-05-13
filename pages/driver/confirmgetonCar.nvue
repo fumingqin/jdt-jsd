@@ -431,8 +431,6 @@
 						that.showToast('网络连接失败');
 					}
 				})
-				
-				
 			},
 			call: function() {
 				//呼叫乘客

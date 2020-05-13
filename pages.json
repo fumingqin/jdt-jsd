@@ -299,7 +299,9 @@
         }
         ,{
             "path" : "pages/grzx/gz_complaintText",
-            "style" : {}
+            "style" : {
+				"navigationBarTitleText":"申诉"
+			}
         }
 		,{
 		    "path" : "pages/downwindCar/addDownwindOrder",

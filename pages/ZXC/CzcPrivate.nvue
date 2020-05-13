@@ -6,7 +6,10 @@
 		<image @click="back" src="../../static/driver/back1.png" style="width: 120rpx;height: 120rpx;position: fixed;top: 50px;left: 1px;"></image>
 		<view v-if="state == 2" style="position: fixed;bottom: 220rpx; ">
 			<view style="flex-direction: row;justify-content: space-between;align-items: center;">
-				<image src="../../static/driver/police.png" style="width: 120rpx;height: 120rpx;margin-left: 10rpx;" @click="callPolice"></image>
+				<view style="flex-direction: row;">
+					<image src="../../static/driver/police.png" style="width: 120rpx;height: 120rpx;margin-left: 10rpx;" @click="callPolice"></image>
+					<image src="../../static/driver/message.png" style="width: 120rpx;height: 120rpx;margin-left: 10rpx;" @click="sendMessage"></image>
+				</view>
 				<view style="border-radius: 9rpx;text-align: center;">
 					<view style="background-color: #FFFFFF;padding: 20rpx;border-radius: 10rpx;">
 						<text @click="cancleOrder()" style="font-size:30rpx;font-family:Source Han Sans SC;font-weight:300;color:rgba(51,51,51,1);">取消订单</text>
@@ -48,7 +51,10 @@
 			</view>
 		</view>
 		<view v-if="state == 4" style="position: fixed;bottom: 220rpx; ">
-			<image src="../../static/driver/police.png" style="width: 120rpx;height: 120rpx;margin-left: 10rpx;" @click="callPolice"></image>
+			<view style="flex-direction: row;">
+				<image src="../../static/driver/police.png" style="width: 120rpx;height: 120rpx;margin-left: 10rpx;" @click="callPolice"></image>
+				<image src="../../static/driver/message.png" style="width: 120rpx;height: 120rpx;margin-left: 10rpx;" @click="sendMessage"></image>
+			</view>
 			<!-- 行程信息 -->
 			<view style="width: 698rpx;height: 164rpx; background-color: #FFFFFF;margin-left: 28rpx; border-radius:20rpx;">
 				<view style="margin-top: 36rpx;margin-left: 38rpx;display: flex;flex-direction: row;">
@@ -160,6 +166,8 @@
 				totalCost: '', //总价
 				setoutTime:'',//出发去接旅客的时间
 				runTime:'',//开始执行的时间
+				
+				userInfo:null,
 			}
 		},
 		onLoad(option) {
@@ -167,6 +175,7 @@
 			that.orderNumber = option.orderNumber;
 			var userInfo = uni.getStorageSync('userInfo') || '';
 			if (userInfo) {
+				that.userInfo = userInfo;
 				that.driverId = userInfo.driverId;
 			}
 			uni.getSystemInfo({
@@ -347,7 +356,7 @@
 						uni.hideLoading();
 						let data = res.data;
 						that.runTime = data.RunTime.replace('T', ' ').replace(/-/g,'/').substring(0,19);
-						console.log(that.runTime);
+						console.log(res);
 						that.setConfirmgetonCar();
 						that.state = 4;
 						Map.openMap(that.endLat, that.endLon, that.endAddress, 'gcj02');
@@ -419,8 +428,6 @@
 						that.showToast('网络连接失败');
 					}
 				})
-				
-				
 			},
 			call: function() {
 				//呼叫乘客
@@ -429,7 +436,14 @@
 					phoneNumber: that.passengersPhone
 				});
 			},
-
+			sendMessage:function(){
+				let that = this;
+				var msg = plus.messaging.createMessage(plus.messaging.TYPE_SMS);
+				msg.to=[that.passengersPhone];
+				msg.body = '你好，我是您的专线车司机' + that.userInfo.userName.substring(0,1) + '师傅，';
+				plus.messaging.sendMessage(msg);
+			},
+			
 			//picker相关
 			callPolice: function() {
 				let that = this;
