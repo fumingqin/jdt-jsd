@@ -214,7 +214,7 @@
 										}
 									},
 									fail: function(res) {
-										console.log(res);
+										//console.log(res);
 										uni.hideLoading();
 										uni.showToast({
 											title: '网络连接失败',

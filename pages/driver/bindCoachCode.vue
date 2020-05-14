@@ -152,7 +152,7 @@
 							fail: function(res) {
 								uni.hideLoading();
 								that.showToast('网络连接失败');
-								console.log(res);
+								//console.log(res);
 							}
 						})
 					} else {

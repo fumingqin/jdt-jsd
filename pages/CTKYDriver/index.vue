@@ -222,7 +222,6 @@
 					success:function(res){
 						let firHeightVal = that.firHeight / that.basicHeight * res.windowHeight;
 						let secHeightVal = that.secHeight / that.basicHeight * res.windowHeight;
-						console.log(firHeightVal);
 						that.firHeight = firHeightVal;
 						that.secHeight = secHeightVal;
 					}

@@ -194,7 +194,7 @@
 						VehicleNumber:that.vehicleInfo.vehicleNumber
 					},
 					success:function(res){
-						console.log(res);
+						//console.log(res);
 						if(res.data.status){
 							that.showToast('发布成功');
 							setTimeout(function(){
@@ -205,7 +205,7 @@
 						}
 					},
 					fail:function(res){
-						console.log(res);
+						//console.log(res);
 						that.showToast('网络连接失败');
 					}
 				})

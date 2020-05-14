@@ -180,7 +180,7 @@
 				key:'userInfo',
 				success:(user)=>{
 					this.userInfo = user.data;
-					console.log(user)
+					//console.log(user)
 					uni.request({
 						url:this.$Bcsjd.Interface.bc_GetCanReceiptCharteredOrder_Driver.value,
 						method:this.$Bcsjd.Interface.bc_GetCanReceiptCharteredOrder_Driver.method,
@@ -189,7 +189,7 @@
 							VehicleNumber : this.vehicleInfo.vehicleNumber
 						},
 						success:(res)=>{
-							console.log(res)
+							//console.log(res)
 							this.receiptInfo = res.data.data;
 						}
 					})
@@ -252,7 +252,7 @@
 						DriverName : this.userInfo.DriverName,
 					},
 					success:function(res){
-						console.log(res)
+						//console.log(res)
 						if(e.Type=='0'){
 							uni.navigateTo({
 								url: '/pages/BCDriver/specialLineCar',

@@ -56,13 +56,13 @@
 					region:that.city,
 					region_fix:0,
 					success: res => {
-						console.log(res)
+						//console.log(res)
 						that.setData({
 							list: res.data
 						})
 					},
 					fail: err => {
-						console.log(err)
+						//console.log(err)
 					}
 				})
 			},
@@ -75,16 +75,16 @@
 			bindConfirm(e) {
 				let val = e.detail.value
 				if(val!=""){
-					console.log(val)
+					//console.log(val)
 					this.searchList(val)
 				}
 			},
 			address(item) {
-				console.log(item);
+				//console.log(item);
 				let pages = getCurrentPages()
 				let prePages = pages[pages.length - 2].$vm
 
-				console.log(prePages);
+				//console.log(prePages);
 				let list = prePages.list
 				let map = prePages.map
 				map.longitude = item.location.lng

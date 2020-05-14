@@ -523,7 +523,7 @@
 						that.getSpecialLineTotal();
 					},
 					fail: function(res) {
-						console.log(res);
+						//console.log(res);
 					}
 				})
 			},
@@ -573,7 +573,7 @@
 						}
 					},
 					fail: function(res) {
-						console.log(res);
+						//console.log(res);
 					}
 				});
 			},
@@ -687,12 +687,12 @@
 						uni.hideLoading();
 						that.taxiDetailArr = [];
 						if(res.data.status){
-							console.log(res.data.data.length);
+							//console.log(res.data.data.length);
 							that.taxiDetailArr = res.data.data;
 						}
 					},
 					fail:function(res){
-						console.log(res);
+						//console.log(res);
 						uni.hideLoading();
 					}
 				});
@@ -719,7 +719,7 @@
 						}
 					},
 					fail:function(res){
-						console.log(res);
+						//console.log(res);
 					}
 				});
 			},
@@ -738,7 +738,6 @@
 					},
 					success:function(res){
 						uni.hideLoading();
-						console.log(res);
 						that.downwindDetailArr = [];
 						if(res.data.status){
 							that.downwindDetailArr = res.data.data;
@@ -746,7 +745,6 @@
 					},
 					fail:function(res){
 						uni.hideLoading();
-						console.log(res);
 					}
 				});
 			}

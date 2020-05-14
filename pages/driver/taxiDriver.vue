@@ -159,7 +159,7 @@
 			that.vehicleInfo = uni.getStorageSync("vehicleInfo")||'';
 			if(that.userInfo == ''){
 				that.showToast('请先登录');
-				console.log(that.userInfo);
+				//console.log(that.userInfo);
 			} else if(that.vehicleInfo == '') {
 				that.showToast('请先上班');
 			} else {
@@ -235,7 +235,7 @@
 					fail:function(res){
 						uni.hideLoading();
 						that.showToast('网络连接失败');
-						console.log(res);
+						//console.log(res);
 					}
 				})
 			},
@@ -257,7 +257,7 @@
 						VehicleNumber:that.vehicleInfo.vehicleNumber,
 					},
 					success:function(res){
-						console.log(res);
+						//console.log(res);
 						uni.hideLoading();
 						if(res.data.status){
 							that.showToast('接单成功,请到订单列表查看');
@@ -268,7 +268,7 @@
 					fail:function(res){
 						uni.hideLoading();
 						that.showToast('网络连接失败');
-						console.log(res);
+						//console.log(res);
 					}
 				})
 			},
@@ -298,7 +298,7 @@
 					fail:function(res){
 						uni.hideLoading();
 						that.showToast('网络连接失败');
-						console.log(res);
+						//console.log(res);
 					}
 				})
 			},
@@ -328,7 +328,7 @@
 					fail:function(res){
 						uni.hideLoading();
 						that.showToast('网络连接失败');
-						console.log(res);
+						//console.log(res);
 					}
 				})
 			},
@@ -354,7 +354,7 @@
 					},
 					success:function(res){
 						uni.hideLoading();
-						console.log(res);
+						//console.log(res);
 						if(res.data.status){
 							that.orderArr = [];
 							let data = res.data.data;
@@ -374,7 +374,7 @@
 					fail:function(res){
 						uni.hideLoading();
 						that.showToast('网络连接失败');
-						console.log(res);
+						//console.log(res);
 					}
 				})
 			},
@@ -409,7 +409,7 @@
 					fail:function(res){
 						uni.hideLoading();
 						that.showToast('网络连接失败');
-						console.log(res);
+						//console.log(res);
 					}
 				});
 			},
@@ -431,11 +431,11 @@
 							let data = res.data.data[0];
 							that.taxiOrderNum = data == undefined ? 0 : data.orderNum;
 						} else {
-							console.log(res);
+							//console.log(res);
 						}
 					},
 					fail:function(res){
-						console.log(res);
+						//console.log(res);
 					}
 				})
 			},
@@ -456,11 +456,11 @@
 							let data = res.data.data[0];
 							that.specialLineOrderNum = data == undefined?0:data.orderNum;
 						} else {
-							console.log(res);
+							//console.log(res);
 						}
 					},
 					fail:function(res){
-						console.log(res);
+						//console.log(res);
 					}
 				})
 			},

@@ -267,7 +267,7 @@
 							}
 						},
 						fail:function(res){
-							console.log(res);
+							//console.log(res);
 							that.showToast('网络连接失败');
 						}
 					});
@@ -289,7 +289,7 @@
 					},
 					success:function(res){
 						uni.hideLoading();
-						console.log(res);
+						//console.log(res);
 						if(res.data.status){
 							that.showToast('检票成功');
 							that.getRunScheduleInfo();
@@ -299,7 +299,7 @@
 					},
 					fail:function(res){
 						uni.hideLoading();
-						console.log(res);
+						//console.log(res);
 						that.showToast('网络连接失败');
 					}
 				});
@@ -328,7 +328,7 @@
 						}
 					},
 					fail:function(res){
-						console.log(res);
+						//console.log(res);
 						that.showToast('网络连接失败');
 					}
 				});

@@ -1051,7 +1051,7 @@
 						}
 					},
 					fail: function(res) {
-						console.log(res);
+						//console.log(res);
 						uni.hideLoading();
 						that.showToast('网络连接失败');
 					}
@@ -1106,7 +1106,7 @@
 						}); */
 					},
 					fail: function(res) {
-						console.log(res);
+						//console.log(res);
 						that.showToast('网络连接失败');
 						uni.hideLoading();
 					}
@@ -1162,7 +1162,7 @@
 					},
 					fail:function(res){
 						uni.hideLoading();
-						console.log(res);
+						//console.log(res);
 					}
 				})
 			},
@@ -1333,7 +1333,7 @@
 						},
 						fail:function(res){
 							uni.hideLoading();
-							console.log(url, res);
+							//console.log(url, res);
 							reject(res);
 						}
 					})
@@ -1363,7 +1363,7 @@
 						orderNumber: item.orderNumber
 					},
 					success: function(res) {
-						console.log(res);
+						//console.log(res);
 						uni.hideLoading();
 						if (res.data.status) {
 							that.showToast('订单已取消');
@@ -1373,7 +1373,7 @@
 					},
 					fail: function(res) {
 						uni.hideLoading();
-						console.log(res);
+						//console.log(res);
 						that.showToast('网络连接失败');
 					}
 				});
@@ -1385,7 +1385,7 @@
 					url:that.$taxi.Interface.FinishExpressOrder_Driver.value,
 					method:that.$taxi.Interface.FinishExpressOrder_Driver.method,
 					success:function(res){
-						console.log(res);
+						//console.log(res);
 					},
 					fail:function(res){
 						that.showToast('网络连接失败');

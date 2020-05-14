@@ -183,7 +183,7 @@ export default {
 		histogramuCharts[this.canvasId] = new uCharts(optionAs[this.canvasId]);
 		histogramuCharts[this.canvasId].addEventListener('renderComplete',function(res){
 			//this.isMount = true;
-			console.log('渲染完成');
+			//console.log('渲染完成');
 		});
 	},
 	methods: {

@@ -251,7 +251,7 @@
 						},
 						fail: function(res) {
 							reject(res);
-							console.log(res);
+							//console.log(res);
 							that.showToast('网络连接失败');
 						}
 					});
@@ -266,7 +266,7 @@
 					mask:true
 				})
 				that.getOrder().then(res => {
-					console.log(res);
+					//console.log(res);
 					uni.hideLoading();
 					var data = res.data.data[0];
 					if (res.data.status) {
@@ -364,7 +364,7 @@
 					},
 					fail:function(res){
 						uni.hideLoading();
-						console.log(res);
+						//console.log(res);
 						that.showToast('网络连接失败');
 					}
 				})
@@ -424,7 +424,7 @@
 					},
 					fail:function(res){
 						uni.hideLoading();
-						console.log(res);
+						//console.log(res);
 						that.showToast('网络连接失败');
 					}
 				})
@@ -469,7 +469,7 @@
 						type: 'gcj02',
 						geocode: true,
 						success: function(res) {
-							console.log(res);
+							//console.log(res);
 							resolve(res);
 						},
 						fail: function(rej) {
@@ -490,7 +490,7 @@
 							alarmRemark: that.alarmRemark //报警备注
 						},
 						success: function(res) {
-							console.log(res);
+							//console.log(res);
 							if (res.data.status) {
 								uni.showToast({
 									title: '报警成功',
@@ -505,7 +505,7 @@
 						},
 						fail: function(res) {
 							that.showToast('网络连接中断');
-							console.log(res);
+							//console.log(res);
 						}
 					})
 				});
@@ -524,7 +524,7 @@
 						OrderNumber:that.orderNumber
 					},
 					success:function(res){
-						console.log(res);
+						//console.log(res);
 						if(res.data.status){
 							that.showToast('取消成功');
 							setTimeout(function(){
@@ -534,12 +534,12 @@
 							},1500);
 						} else {
 							that.showToast(res.data.msg);
-							console.log(res);
+							//console.log(res);
 						}
 					},
 					fail:function(res){
 						that.showToast('网络连接失败');
-						console.log(res);
+						//console.log(res);
 					}
 				});
 			},
@@ -607,7 +607,7 @@
 						that.polyline.push(obj);
 					},
 					fail: function(res) {
-						console.log(res);
+						//console.log(res);
 					}
 				});
 			},
@@ -645,7 +645,7 @@
 					that.alreadyTime = (parseInt(that.initialMin/60) + '小时') + (that.initialMin % 60 + '分钟')
 					//						that.waitTime = that.initialMin / 60 > 0 ? (parseInt(that.initialMin/60) + '小时') + (that.initialMin % 60 + '分钟') : that.initialMin + '分钟'
 				},60000);
-				console.log('打开定时器：' + that.waitTimeInterval);
+				//console.log('打开定时器：' + that.waitTimeInterval);
 			}
 		}
 	}
