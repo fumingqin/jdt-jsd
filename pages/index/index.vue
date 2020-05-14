@@ -3,7 +3,7 @@
 		<!-- 顶部背景图片 -->
 		<image style="width: 100%; height: 294rpx;" src="../../static/index/bgimage1.png"></image>
 		<!-- 中间搜索部分 -->
-		<view style="position: fixed;top: 80rpx;left: 10rpx;right: 0px;align-items: center; display: flex;flex-direction: row;">
+		<!-- <view style="position: fixed;top: 80rpx;left: 10rpx;right: 0px;align-items: center; display: flex;flex-direction: row;">
 			<view>
 				<image @click="qrcode" style="width: 47rpx;height: 45rpx; margin-left: 20rpx;" src="../../static/index/QRcode.png"></image>
 			</view>
@@ -16,9 +16,9 @@
 			<view>
 				<image style="width: 55rpx;height: 47rpx; margin-left: 20rpx;" src="../../static/index/message.png"></image>
 			</view>
-		</view>
+		</view> -->
 		<!-- 广告 -->
-		<image style="width: 94%; height: 260rpx; margin: -104rpx 22rpx;" src="../../static/index/advertisement.png"></image>
+		<image style="width: 94%; height: 340rpx;margin-left: 22rpx; margin-top: -200rpx;" src="../../static/index/advertisement.png"></image>
 		<!-- 五个模块 -->
 		<view class="bottomContent" style="width: 100%;">
 			<view style="display: flex;flex-direction: row;width: 700rpx;text-align: center;margin-top:50rpx;margin-left: 24rpx;">
@@ -45,7 +45,7 @@
 			</view>
 		</view>
 		<!-- 工作提示框 -->
-		<view style="width: 94%;height: 335rpx; background-color: #FFFFFF;margin-left: 22rpx; border-radius:20rpx; margin-top: 250rpx;">
+		<view style="width: 94%;height: 335rpx; background-color: #FFFFFF;margin-left: 22rpx; border-radius:20rpx; margin-top: 200rpx;">
 			<view style="padding: 40rpx;display: flex;flex-direction: row;">
 				<view>
 					<image style="width: 38rpx;height: 38rpx;" src="../../static/index/workTips.png"></image>
