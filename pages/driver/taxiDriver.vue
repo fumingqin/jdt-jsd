@@ -354,6 +354,7 @@
 					},
 					success:function(res){
 						uni.hideLoading();
+						console.log(res);
 						if(res.data.status){
 							that.orderArr = [];
 							let data = res.data.data;

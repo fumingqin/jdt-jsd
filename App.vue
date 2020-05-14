@@ -59,6 +59,7 @@
 		onLaunch: function() {
 			let that = this;
 			console.log('onLaunch');
+			//客运/CTKYDriver/index
 			uni.removeStorageSync('lastIndex');
 			uni.getStorage({
 				key:'userInfo',

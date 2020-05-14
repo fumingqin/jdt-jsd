@@ -70,9 +70,9 @@
 			</view>
 			<view style="width: 698rpx; background-color: #FFFFFF;margin-left: 28rpx; border-radius:20rpx; margin-top: 30rpx;padding-bottom: 30rpx;">
 				<view style="margin-top: 36rpx;margin-left: 38rpx;display: flex;flex-direction: row;">
-					<!-- <text style="width:140rpx;height:40rpx;font-size:30rpx;font-family:Source Han Sans SC;color:#666666;line-height:36rpx;margin-right: 40rpx">已驶里程:</text>
-					<text style="width:140rpx;height:40rpx;font-size:30rpx;font-family:Source Han Sans SC;color:#666666;line-height:36rpx;">{{alreadyMileage}}</text> -->
-					<text style="width:140rpx;height:40rpx;font-size:30rpx;font-family:Source Han Sans SC;color:#666666;line-height:36rpx;">已驶时长:</text>
+					<text style="width:140rpx;height:40rpx;font-size:30rpx;font-family:Source Han Sans SC;color:#666666;line-height:36rpx;">剩余里程:</text>
+					<text style="width:140rpx;height:40rpx;font-size:30rpx;font-family:Source Han Sans SC;color:#666666;line-height:36rpx;">{{distance}}</text>
+					<text style="width:140rpx;height:40rpx;font-size:30rpx;font-family:Source Han Sans SC;color:#666666;line-height:36rpx;margin-left: 40rpx;">已驶时长:</text>
 					<text style="width:140rpx;height:40rpx;font-size:30rpx;font-family:Source Han Sans SC;color:#666666;line-height:36rpx;">{{alreadyTime}}</text>
 				</view>
 				<!-- <view style="margin-top: 20rpx;margin-left: 40rpx;display: flex;flex-direction: row;">
@@ -167,6 +167,7 @@
 				setoutTime:'',//出发去接旅客的时间
 				runTime:'',//开始执行的时间
 				
+				distance:'',//剩余里程
 				userInfo:null,
 			}
 		},
@@ -583,7 +584,7 @@
 
 						var polylineArr = [];
 						var points = [];
-
+						that.distance =  (parseInt(res.data.Distance) / 1000).toFixed(2) + '公里';
 						polylineArr = res.data.Polyline;
 
 						for (var i = 0; i < polylineArr.length; i++) {

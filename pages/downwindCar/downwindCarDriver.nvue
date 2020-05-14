@@ -65,15 +65,15 @@
 			</view>
 			<view style="width: 698rpx; background-color: #FFFFFF;margin-left: 28rpx; border-radius:20rpx; margin-top: 30rpx;padding-bottom: 30rpx;">
 				<view style="margin-top: 36rpx;margin-left: 38rpx;display: flex;flex-direction: row;">
-					<!-- <text style="width:140rpx;height:40rpx;font-size:30rpx;font-family:Source Han Sans SC;color:#666666;line-height:36rpx;margin-right: 40rpx">已驶里程:</text>
-					<text style="width:140rpx;height:40rpx;font-size:30rpx;font-family:Source Han Sans SC;color:#666666;line-height:36rpx;">{{alreadyMileage}}</text> -->
-					<text style="width:140rpx;height:40rpx;font-size:30rpx;font-family:Source Han Sans SC;color:#666666;line-height:36rpx;">已驶时长:</text>
+					<text style="width:140rpx;height:40rpx;font-size:30rpx;font-family:Source Han Sans SC;color:#666666;line-height:36rpx;">剩余里程:</text>
+					<text style="width:140rpx;height:40rpx;font-size:30rpx;font-family:Source Han Sans SC;color:#666666;line-height:36rpx;">{{distance}}</text>
+					<text style="width:140rpx;height:40rpx;font-size:30rpx;font-family:Source Han Sans SC;color:#666666;line-height:36rpx;margin-left: 40rpx;">已驶时长:</text> 
 					<text style="width:140rpx;height:40rpx;font-size:30rpx;font-family:Source Han Sans SC;color:#666666;line-height:36rpx;">{{alreadyTime}}</text>
 				</view>
-				<!-- <view style="margin-top: 20rpx;margin-left: 40rpx;display: flex;flex-direction: row;">
+				<view style="margin-top: 20rpx;margin-left: 40rpx;display: flex;flex-direction: row;">
 					<text style="width:120rpx;height:40rpx;font-size:30rpx;font-family:Source Han Sans SC;color:#666666;line-height:36rpx;">总费用:</text>
-					<text style="width:400rpx;height:40rpx;font-size:30rpx;font-family:Source Han Sans SC;color:#666666;line-height:36rpx;">{{totalCost}}元</text>
-				</view> -->
+					<text style="width:400rpx;height:40rpx;font-size:30rpx;font-family:Source Han Sans SC;color:#666666;line-height:36rpx;">{{factPayPrice}}元</text>
+				</view>
 			</view>
 			<view>
 				<button style="width: 698rpx;height: 105rpx;background-color: #FC6A6C;border-color:#FC6A6C;margin-left: 28rpx; border-radius:20rpx; position: fixed; padding: 6rpx;bottom: 90rpx;"
@@ -148,7 +148,7 @@
 				endLat: '',
 				endAddress: '',
 				orderType: '',
-				passengersPhone: '',
+				passengersPhone: '', 
 				vehicleType: '',
 				appointmentTime: '', //预约时间
 				estimatePrice: '', //预计价格
@@ -158,10 +158,11 @@
 				alreadyMileage: '', //已驶里程
 				waitTime: '0分钟', //等待时长
 				initialMin:'',
-				totalCost: '', //总价
+				factPayPrice: '', //总价
 				setoutTime:'',//出发去接旅客的时间
 				runTime:'',//开始执行的时间
 				
+				distance:'',//剩余里程
 				userInfo:null
 			}
 		},
@@ -235,6 +236,7 @@
 								that.estimatePrice = data.EstimatePrice;
 								that.estimateDistance = data.EstimateDistance;
 								that.estimateTime = data.EstimateTime;
+								that.factPayPrice = data.FactPayPrice;
 								that.runTime = data.RunTime.replace('T', ' ').replace(/-/g,'/').substring(0,19);
 								console.log(data)
 								that.setoutTime = data.SetOutTime.replace('T', ' ').replace(/-/g,'/').substring(0,19);
@@ -577,7 +579,7 @@
 
 						var polylineArr = [];
 						var points = [];
-
+					    that.distance =  (parseInt(res.data.Distance) / 1000).toFixed(2) + '公里';
 						polylineArr = res.data.Polyline;
 
 						for (var i = 0; i < polylineArr.length; i++) {

@@ -433,7 +433,7 @@
 					data: {
 						driverId: that.userInfo.driverId,
 						orderStartTime: utils.timeTodate(that.$home.dateFormat.dateformat, new Date(that.range[0]).getTime()),
-						orderEndTime: utils.timeTodate(that.$home.dateFormat.dateformat, new Date(that.range[1]).getTime())
+						orderEndTime: utils.timeTodate(that.$home.dateFormat.dateformat, new Date(that.range[1]).getTime() + (24 * 60 *60 * 1000))
 					},
 					success: function(res) {
 						let type = '出租车';

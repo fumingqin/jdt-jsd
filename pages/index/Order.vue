@@ -88,6 +88,7 @@
 											￥{{item.factPayPrice}}
 										</view>
 									</view>
+									<view>下单时间：{{taxiFormatTime(item.orderTime)}}</view>
 									<view>出发时间：{{taxiFormatTime(item.runTime)}}</view>
 									<view>上车点：{{item.startAddress}}</view>
 									<view>目的地：{{item.endAddress}}</view>
@@ -141,6 +142,7 @@
 											￥{{item.factPayPrice}}
 										</view>
 									</view>
+									<view>下单时间：{{taxiFormatTime(item.orderTime)}}</view>
 									<view>出发时间：{{taxiFormatTime(item.runTime)}}</view>
 									<view>上车点：{{item.startAddress}}</view>
 									<view>目的地：{{item.endAddress}}</view>
@@ -191,6 +193,7 @@
 											￥{{item.factPayPrice}}
 										</view>
 									</view>
+									<view>下单时间：{{taxiFormatTime(item.orderTime)}}</view>
 									<view>出发时间：{{taxiFormatTime(item.runTime)}}</view>
 									<view>上车点：{{item.startAddress}}</view>
 									<view>目的地：{{item.endAddress}}</view>
@@ -348,6 +351,7 @@
 											￥{{item.factPrice}}
 										</view>
 									</view>
+									<view>下单时间：{{taxiFormatTime(item.orderTime)}}</view>
 									<view>出发时间：{{taxiFormatTime(item.runTime)}}</view>
 									<view>上车点：{{item.startAddress}}</view>
 									<view>目的地：{{item.endAddress}}</view>
@@ -400,6 +404,7 @@
 											￥{{item.factPrice}}
 										</view>
 									</view>
+									<view>下单时间：{{taxiFormatTime(item.orderTime)}}</view>
 									<view>出发时间：{{taxiFormatTime(item.runTime)}}</view>
 									<view>上车点：{{item.startAddress}}</view>
 									<view>目的地：{{item.endAddress}}</view>
@@ -449,6 +454,7 @@
 											￥{{item.factPrice}}
 										</view>
 									</view>
+									<view>下单时间：{{taxiFormatTime(item.orderTime)}}</view>
 									<view>出发时间：{{taxiFormatTime(item.runTime)}}</view>
 									<view>上车点：{{item.startAddress}}</view>
 									<view>目的地：{{item.endAddress}}</view>
@@ -527,7 +533,7 @@
 					<!-- 包车结束 -->
 				</view>
 			</view>
-
+			<!--已完成-->
 			<view style="padding: 10rpx 0; margin-top: 50rpx;" v-if="current==2">
 				<view v-for="(item,index) in finishedArr" :key="index">
 					<!-- 客车开始 -->
@@ -606,6 +612,7 @@
 											￥{{item.factPayPrice}}
 										</view>
 									</view>
+									<view>下单时间：{{taxiFormatTime(item.orderTime)}}</view>
 									<view>出发时间：{{taxiFormatTime(item.runTime)}}</view>
 									<view>上车点：{{item.startAddress}}</view>
 									<view>目的地：{{item.endAddress}}</view>
@@ -644,6 +651,7 @@
 											￥{{item.factPayPrice}}
 										</view>
 									</view>
+									<view>下单时间：{{taxiFormatTime(item.orderTime)}}</view>
 									<view>出发时间：{{taxiFormatTime(item.runTime)}}</view>
 									<view>上车点：{{item.startAddress}}</view>
 									<view>目的地：{{item.endAddress}}</view>
@@ -683,6 +691,7 @@
 											￥{{item.factPayPrice}}
 										</view>
 									</view>
+									<view>下单时间：{{taxiFormatTime(item.orderTime)}}</view>
 									<view>出发时间：{{taxiFormatTime(item.runTime)}}</view>
 									<view>上车点：{{item.startAddress}}</view>
 									<view>目的地：{{item.endAddress}}</view>
@@ -829,6 +838,7 @@
 											客户类型：{{taxiFormatUserType(item.userType)}}
 										</view>
 									</view>
+									<view>下单时间：{{taxiFormatTime(item.orderTime)}}</view>
 									<view>出发时间：{{taxiFormatTime(item.runTime)}}</view>
 									<view>上车点：{{item.startAddress}}</view>
 									<view>目的地：{{item.endAddress}}</view>
@@ -865,6 +875,7 @@
 											客户类型：{{taxiFormatUserType(item.userType)}}
 										</view>
 									</view>
+									<view>下单时间：{{taxiFormatTime(item.orderTime)}}</view>
 									<view>出发时间：{{taxiFormatTime(item.runTime)}}</view>
 									<view>上车点：{{item.startAddress}}</view>
 									<view>目的地：{{item.endAddress}}</view>
@@ -1010,6 +1021,7 @@
 								var obj = {
 									title: '出租车',
 									orderType: item.orderType, //实时/预约
+									orderTime:item.orderTime,
 									appointmentTime: item.appointmentTime, //预约时间
 									userType: item.userType, //用户类型：普通/会员
 									runTime: item.runTime, //出发时间
@@ -1064,6 +1076,7 @@
 								var obj = {
 									title: '专线车',
 									orderType: item.OrderType, //实时/预约
+									orderTime:item.OrderTime,
 									appointmentTime: item.AppointmentTime, //预约时间
 									userType: item.UserType, //用户类型：普通/会员
 									runTime: item.RunTime, //出发时间
@@ -1119,6 +1132,7 @@
 								var obj = {
 									title: '顺风车',
 									orderType: item.OrderType, //实时/预约
+									orderTime:item.OrderTime,
 									appointmentTime: item.AppointmentTime, //预约时间
 									userType: item.UserType, //用户类型：普通/会员
 									runTime: item.RunTime, //出发时间
