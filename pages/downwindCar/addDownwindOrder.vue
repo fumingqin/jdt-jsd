@@ -233,6 +233,9 @@
 				} else if (that.seat > 4){
 					that.showToast('剩余座位不能大于4个');
 					return false;
+				} else if(new Date(that.date).getTime() < new Date().getTime()){
+					that.showToast('选择时间不能早于当前时间');
+					return false;
 				}
 				return true;
 			},
