@@ -52,16 +52,16 @@
 		<scroll-view style="height: 1000rpx;" scroll-y=true>
 			<view v-if="buttonActive" v-for='(item, index) in orderArr'  :key='index' style="width: 94%;padding-bottom: 30rpx; background-color: #FFFFFF;margin-left: 22rpx; border-radius:20rpx; margin-bottom: 30rpx;">
 				<view style="padding: 40rpx;display: flex;flex-direction: row;">
-					<text class="destinationArea" style="width:160rpx;">目的区域:</text>
-					<text class="destinationArea" style="margin-left: 10rpx;">{{item.destinationArea}}</text>
+					<text class="destinationArea" style="width:160rpx;">订单类型:</text>
+					<text class="destinationArea" style="margin-left: 10rpx;">{{item.orderType}}</text>
 				</view>
 				<view style="margin: -10rpx 44rpx;display: flex;flex-direction: row;">
 					<text class="userType">客户类型:</text>
 					<text class="userType">{{formatUserType(item.userType)}}</text>
 				</view>
 				<view style="margin: 20rpx 44rpx;display: flex;flex-direction: row;">
-					<text class="fontClass" style="width:140rpx;height:40rpx;">订单类型:</text>
-					<text class="fontClass" style="width:140rpx;height:40rpx;">{{item.orderType}}</text>
+					<text class="fontClass" style="width:140rpx;height:40rpx;">目的区域:</text>
+					<text class="fontClass" style="width:140rpx;height:40rpx;">{{item.destinationArea}}</text>
 				</view>
 				<view style="margin: 20rpx 44rpx;display: flex;flex-direction: row;" v-if="item.orderType == '预约'">
 					<text class="fontClass" style="width:140rpx;height:40rpx;">预约时间:</text>

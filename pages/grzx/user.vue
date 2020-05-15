@@ -47,6 +47,8 @@
 			}
 		},
 		onLoad(){
+			let that = this;
+			that.getCustomerService();
 		},
 		onShow(){
 			this.loadData();
@@ -172,6 +174,22 @@
 			        return false;
 			    }
 			},
+			getCustomerService:function(){
+				let that = this;
+				uni.request({
+					url:that.$GrzxInter.Interface.SearchCustomerService.value,
+					method:that.$GrzxInter.Interface.SearchCustomerService.method,
+					data:{
+						region:'泉州'
+					},
+					success:function(res){
+						that.QQ = res.data.data.qq;
+					},
+					fail:function(res){
+						console.log(res);
+					}
+				})
+			}
 		}
 		
 	}
