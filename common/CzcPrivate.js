@@ -82,7 +82,13 @@ const Interface = {
 	},
 	GetSpecialLineOrderCountRevenueByDriverID_Driver:{
 		value:Url + '/api/SpecialLine/GetSpecialLineOrderCountRevenueByDriverID_Driver',
-		name:'司机端-专线车-统计接单量',
+		name:'司机端-专线车-营收',
+		method:'POST',
+		page:[]
+	},
+	QuerySpecialLineOrderByDriverIDAndDate_Passenger:{
+		value:Url + '/api/SpecialLine/QuerySpecialLineOrderByDriverIDAndDate_Passenger',
+		name:'司机端-专线车-营收详情',
 		method:'POST',
 		page:[]
 	}

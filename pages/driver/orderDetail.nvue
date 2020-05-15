@@ -168,18 +168,15 @@
 							that.estimateDistance = data.estimateDistance;
 							that.runTime = new Date(data.runTime.replace('T', ' ').replace(/-/g,'/')); 
 							that.finishTime = new Date(data.finishTime.replace('T', ' ').replace(/-/g,'/'));
-							console.log(that.runTime);
-							console.log(that.finishTime);
-							
 							that.waitTime = that.mathTime(that.runTime,that.finishTime);
 							
 						} else {
-							console.log(res);
+							//console.log(res);
 							that.showToast(res.data.msg);
 						}
 					},
 					fail:function(res){
-						console.log(res);
+						//console.log(res);
 						that.showToast('网络连接失败');
 					},
 				})

@@ -129,7 +129,6 @@
 				uni.navigateBack();
 			},
 			checknum: function() {
-				console.log(this.num)
 				if (this.num < 1 || this.num == '') {
 					uni.showToast({
 						title: "票数不能小于1",

@@ -88,10 +88,10 @@
 											￥{{item.factPayPrice}}
 										</view>
 									</view>
+									<view>下单时间：{{taxiFormatTime(item.orderTime)}}</view>
 									<view>出发时间：{{taxiFormatTime(item.runTime)}}</view>
 									<view>上车点：{{item.startAddress}}</view>
 									<view>目的地：{{item.endAddress}}</view>
-
 								</view>
 								<view class="btnarea">
 									<view v-if="item.state==1 || item.state==2">
@@ -106,10 +106,10 @@
 									<view v-if="item.state == 1">
 										<button @click="toDepart(item)" style="background-color: #FC4646;color: #FFF;width: auto;">发车</button>
 									</view>
-									<view v-if="item.state == 4">
+									<!-- <view v-if="item.state == 4">
 										<button @click="toArrive(item)" style="background-color: #FC4646;color: #FFF;width: auto;">到达</button>
-									</view>
-									<view v-if="item.state == 5">
+									</view> -->
+									<view v-if="item.state == 4">
 										<button @click="toInputPrice(item)" style="background-color: #FC4646;color: #FFF;width: auto;">输入价格</button>
 									</view>
 								</view>
@@ -142,6 +142,7 @@
 											￥{{item.factPayPrice}}
 										</view>
 									</view>
+									<view>下单时间：{{taxiFormatTime(item.orderTime)}}</view>
 									<view>出发时间：{{taxiFormatTime(item.runTime)}}</view>
 									<view>上车点：{{item.startAddress}}</view>
 									<view>目的地：{{item.endAddress}}</view>
@@ -192,6 +193,7 @@
 											￥{{item.factPayPrice}}
 										</view>
 									</view>
+									<view>下单时间：{{taxiFormatTime(item.orderTime)}}</view>
 									<view>出发时间：{{taxiFormatTime(item.runTime)}}</view>
 									<view>上车点：{{item.startAddress}}</view>
 									<view>目的地：{{item.endAddress}}</view>
@@ -214,7 +216,6 @@
 						</view>
 					</view>
 					<!-- 顺风车结束 -->
-					
 					<!-- 包车开始 -->
 					<view v-if="item.title == '包车'" style="margin-top: 20rpx;position: relative;">
 						<view class="booktime" v-if="item.ordertype==1">
@@ -350,6 +351,7 @@
 											￥{{item.factPrice}}
 										</view>
 									</view>
+									<view>下单时间：{{taxiFormatTime(item.orderTime)}}</view>
 									<view>出发时间：{{taxiFormatTime(item.runTime)}}</view>
 									<view>上车点：{{item.startAddress}}</view>
 									<view>目的地：{{item.endAddress}}</view>
@@ -367,10 +369,10 @@
 									<view v-if="item.state == 1">
 										<button @click="toDepart(item)" style="background-color: #FC4646;color: #FFF;width: auto;">发车</button>
 									</view>
-									<view v-if="item.state == 4">
+									<!-- <view v-if="item.state == 4">
 										<button @click="toArrive(item)" style="background-color: #FC4646;color: #FFF;width: auto;">到达</button>
-									</view>
-									<view v-if="item.state == 5">
+									</view> -->
+									<view v-if="item.state == 4">
 										<button @click="toInputPrice(item)" style="background-color: #FC4646;color: #FFF;width: auto;">输入价格</button>
 									</view>
 								</view>
@@ -402,6 +404,7 @@
 											￥{{item.factPrice}}
 										</view>
 									</view>
+									<view>下单时间：{{taxiFormatTime(item.orderTime)}}</view>
 									<view>出发时间：{{taxiFormatTime(item.runTime)}}</view>
 									<view>上车点：{{item.startAddress}}</view>
 									<view>目的地：{{item.endAddress}}</view>
@@ -451,6 +454,7 @@
 											￥{{item.factPrice}}
 										</view>
 									</view>
+									<view>下单时间：{{taxiFormatTime(item.orderTime)}}</view>
 									<view>出发时间：{{taxiFormatTime(item.runTime)}}</view>
 									<view>上车点：{{item.startAddress}}</view>
 									<view>目的地：{{item.endAddress}}</view>
@@ -529,7 +533,7 @@
 					<!-- 包车结束 -->
 				</view>
 			</view>
-
+			<!--已完成-->
 			<view style="padding: 10rpx 0; margin-top: 50rpx;" v-if="current==2">
 				<view v-for="(item,index) in finishedArr" :key="index">
 					<!-- 客车开始 -->
@@ -608,10 +612,10 @@
 											￥{{item.factPayPrice}}
 										</view>
 									</view>
+									<view>下单时间：{{taxiFormatTime(item.orderTime)}}</view>
 									<view>出发时间：{{taxiFormatTime(item.runTime)}}</view>
 									<view>上车点：{{item.startAddress}}</view>
 									<view>目的地：{{item.endAddress}}</view>
-
 								</view>
 								<view class="btnarea">
 									<view v-if="item.state != 1">
@@ -647,6 +651,7 @@
 											￥{{item.factPayPrice}}
 										</view>
 									</view>
+									<view>下单时间：{{taxiFormatTime(item.orderTime)}}</view>
 									<view>出发时间：{{taxiFormatTime(item.runTime)}}</view>
 									<view>上车点：{{item.startAddress}}</view>
 									<view>目的地：{{item.endAddress}}</view>
@@ -686,6 +691,7 @@
 											￥{{item.factPayPrice}}
 										</view>
 									</view>
+									<view>下单时间：{{taxiFormatTime(item.orderTime)}}</view>
 									<view>出发时间：{{taxiFormatTime(item.runTime)}}</view>
 									<view>上车点：{{item.startAddress}}</view>
 									<view>目的地：{{item.endAddress}}</view>
@@ -832,6 +838,7 @@
 											客户类型：{{taxiFormatUserType(item.userType)}}
 										</view>
 									</view>
+									<view>下单时间：{{taxiFormatTime(item.orderTime)}}</view>
 									<view>出发时间：{{taxiFormatTime(item.runTime)}}</view>
 									<view>上车点：{{item.startAddress}}</view>
 									<view>目的地：{{item.endAddress}}</view>
@@ -868,6 +875,7 @@
 											客户类型：{{taxiFormatUserType(item.userType)}}
 										</view>
 									</view>
+									<view>下单时间：{{taxiFormatTime(item.orderTime)}}</view>
 									<view>出发时间：{{taxiFormatTime(item.runTime)}}</view>
 									<view>上车点：{{item.startAddress}}</view>
 									<view>目的地：{{item.endAddress}}</view>
@@ -968,7 +976,7 @@
 			var that = this;
 			that.userInfo = uni.getStorageSync('userInfo') || '';
 			if(that.userInfo == ''){
-				that.showToast('您未登录');
+				that.showToast('请先登录');
 			} else {
 				that.getTaxiOrder();
 			}
@@ -1013,6 +1021,7 @@
 								var obj = {
 									title: '出租车',
 									orderType: item.orderType, //实时/预约
+									orderTime:item.orderTime,
 									appointmentTime: item.appointmentTime, //预约时间
 									userType: item.userType, //用户类型：普通/会员
 									runTime: item.runTime, //出发时间
@@ -1042,7 +1051,7 @@
 						}
 					},
 					fail: function(res) {
-						console.log(res);
+						//console.log(res);
 						uni.hideLoading();
 						that.showToast('网络连接失败');
 					}
@@ -1067,6 +1076,7 @@
 								var obj = {
 									title: '专线车',
 									orderType: item.OrderType, //实时/预约
+									orderTime:item.OrderTime,
 									appointmentTime: item.AppointmentTime, //预约时间
 									userType: item.UserType, //用户类型：普通/会员
 									runTime: item.RunTime, //出发时间
@@ -1096,7 +1106,7 @@
 						}); */
 					},
 					fail: function(res) {
-						console.log(res);
+						//console.log(res);
 						that.showToast('网络连接失败');
 						uni.hideLoading();
 					}
@@ -1122,6 +1132,7 @@
 								var obj = {
 									title: '顺风车',
 									orderType: item.OrderType, //实时/预约
+									orderTime:item.OrderTime,
 									appointmentTime: item.AppointmentTime, //预约时间
 									userType: item.UserType, //用户类型：普通/会员
 									runTime: item.RunTime, //出发时间
@@ -1151,7 +1162,7 @@
 					},
 					fail:function(res){
 						uni.hideLoading();
-						console.log(res);
+						//console.log(res);
 					}
 				})
 			},
@@ -1322,7 +1333,7 @@
 						},
 						fail:function(res){
 							uni.hideLoading();
-							console.log(url, res);
+							//console.log(url, res);
 							reject(res);
 						}
 					})
@@ -1352,7 +1363,7 @@
 						orderNumber: item.orderNumber
 					},
 					success: function(res) {
-						console.log(res);
+						//console.log(res);
 						uni.hideLoading();
 						if (res.data.status) {
 							that.showToast('订单已取消');
@@ -1362,13 +1373,24 @@
 					},
 					fail: function(res) {
 						uni.hideLoading();
-						console.log(res);
+						//console.log(res);
 						that.showToast('网络连接失败');
 					}
 				});
 			},
 			//输入价格
 			toInputPrice :function(item) {
+				let that = this;
+				uni.request({
+					url:that.$taxi.Interface.FinishExpressOrder_Driver.value,
+					method:that.$taxi.Interface.FinishExpressOrder_Driver.method,
+					success:function(res){
+						//console.log(res);
+					},
+					fail:function(res){
+						that.showToast('网络连接失败');
+					}
+				});
 				uni.navigateTo({
 					url:'../driver/otherExpenses?orderNumber=' + item.orderNumber
 				});

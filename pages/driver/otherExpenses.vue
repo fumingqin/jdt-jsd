@@ -51,7 +51,6 @@
 		onLoad(option) {
 			let that = this;
 			that.orderNumber = option.orderNumber;
-			console.log(that.orderNumber);
 		},
 		methods: {
 			inputChange(e) {
@@ -88,13 +87,13 @@
 									url: '/pages/driver/orderComplete',
 								});
 							}else{
-								console.log(res);
+								//console.log(res);
 							}
 						},
 						fail: function(res) {
 							uni.hideLoading();
 							that.showToast('网络连接失败');
-							console.log(res);
+							//console.log(res);
 						}
 					});
 				
@@ -126,13 +125,13 @@
 									url: '/pages/driver/orderComplete',
 								});
 							}else{
-								console.log(res);
+								//console.log(res);
 							}
 						},
 						fail: function(res) {
 							uni.hideLoading();
 							that.showToast('网络连接失败');
-							console.log(res);
+							//console.log(res);
 						}
 					});
 

@@ -74,7 +74,9 @@ export default {
 		}
 	},
 	data() {
-		return {};
+		return {
+			isMount:false,
+		};
 	},
 	computed: {
 		cWidth() {
@@ -132,7 +134,7 @@ export default {
 				showTitle:true,//是否显示标题
 				splitNumber:5,//网格数量
 				data:[
-					{title:"收益/元",
+					{title:"   收益/元",
 					position: 'left', //Y轴位置
 					min:0
 					}
@@ -179,6 +181,10 @@ export default {
 		};
 		optionAs[this.canvasId] = Object.assign(defaultOption, this.basicAs, this.xAxisAS, this.yAxisAS, this.legendAs, this.extraAs);
 		histogramuCharts[this.canvasId] = new uCharts(optionAs[this.canvasId]);
+		histogramuCharts[this.canvasId].addEventListener('renderComplete',function(res){
+			//this.isMount = true;
+			//console.log('渲染完成');
+		});
 	},
 	methods: {
 		touchstart(e) {
@@ -218,6 +224,9 @@ export default {
 		},
 		touchend(e) {
 			histogramuCharts[this.canvasId].scrollEnd(e);
+		},
+		update(data){
+			histogramuCharts[this.canvasId].updateData(data);
 		}
 	}
 };

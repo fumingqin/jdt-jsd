@@ -110,7 +110,7 @@
 			uni.getStorage({
 				key: "AddressData",
 				success: function(res) {
-					console.log(res);
+					//console.log(res);
 					that.startPoint = res.data.addressName;
 					that.EndPoint = res.data.addressName;
 					that.BackPoint = res.data.addressName;
@@ -201,7 +201,7 @@
 						that.polyline.push(obj);
 					},
 					fail: function(res) {
-						console.log(res);
+						//console.log(res);
 					}
 				});
 			},

@@ -70,9 +70,9 @@
 			</view>
 			<view style="width: 698rpx; background-color: #FFFFFF;margin-left: 28rpx; border-radius:20rpx; margin-top: 30rpx;padding-bottom: 30rpx;">
 				<view style="margin-top: 36rpx;margin-left: 38rpx;display: flex;flex-direction: row;">
-					<!-- <text style="width:140rpx;height:40rpx;font-size:30rpx;font-family:Source Han Sans SC;color:#666666;line-height:36rpx;margin-right: 40rpx">已驶里程:</text>
-					<text style="width:140rpx;height:40rpx;font-size:30rpx;font-family:Source Han Sans SC;color:#666666;line-height:36rpx;">{{alreadyMileage}}</text> -->
-					<text style="width:140rpx;height:40rpx;font-size:30rpx;font-family:Source Han Sans SC;color:#666666;line-height:36rpx;">已驶时长:</text>
+					<text style="width:140rpx;height:40rpx;font-size:30rpx;font-family:Source Han Sans SC;color:#666666;line-height:36rpx;">剩余里程:</text>
+					<text style="width:140rpx;height:40rpx;font-size:30rpx;font-family:Source Han Sans SC;color:#666666;line-height:36rpx;">{{distance}}</text>
+					<text style="width:140rpx;height:40rpx;font-size:30rpx;font-family:Source Han Sans SC;color:#666666;line-height:36rpx;margin-left: 40rpx;">已驶时长:</text>
 					<text style="width:140rpx;height:40rpx;font-size:30rpx;font-family:Source Han Sans SC;color:#666666;line-height:36rpx;">{{alreadyTime}}</text>
 				</view>
 				<!-- <view style="margin-top: 20rpx;margin-left: 40rpx;display: flex;flex-direction: row;">
@@ -167,6 +167,7 @@
 				setoutTime:'',//出发去接旅客的时间
 				runTime:'',//开始执行的时间
 				
+				distance:'',//剩余里程
 				userInfo:null,
 			}
 		},
@@ -192,7 +193,6 @@
 			let that = this;
 			clearInterval(that.orderInterval);
 			clearInterval(that.waitTimeInterval);
-			console.log(that.orderInterval);
 			clearInterval(that.directionInterval);
 		},
 		methods: {
@@ -251,7 +251,7 @@
 						},
 						fail: function(res) {
 							reject(res);
-							console.log(res);
+							//console.log(res);
 							that.showToast('网络连接失败');
 						}
 					});
@@ -267,7 +267,7 @@
 				})
 				that.getOrder().then(res => {
 					uni.hideLoading();
-					console.log(res.data.data);
+					//console.log(res.data.data);
 					var data = res.data.data;
 					if (res.data.status) {
 						that.markers = [];
@@ -367,7 +367,7 @@
 					},
 					fail:function(res){
 						uni.hideLoading();
-						console.log(res);
+						//console.log(res);
 						that.showToast('网络连接失败');
 					}
 				})
@@ -427,12 +427,10 @@
 					},
 					fail:function(res){
 						uni.hideLoading();
-						console.log(res);
+						//console.log(res);
 						that.showToast('网络连接失败');
 					}
 				})
-				
-				
 			},
 			call: function() {
 				//呼叫乘客
@@ -474,7 +472,7 @@
 						type: 'gcj02',
 						geocode: true,
 						success: function(res) {
-							console.log(res);
+							//console.log(res);
 							resolve(res);
 						},
 						fail: function(rej) {
@@ -495,7 +493,7 @@
 							alarmRemark: that.alarmRemark //报警备注
 						},
 						success: function(res) {
-							console.log(res);
+							//console.log(res);
 							if (res.data.status) {
 								uni.showToast({
 									title: '报警成功',
@@ -510,7 +508,7 @@
 						},
 						fail: function(res) {
 							that.showToast('网络连接中断');
-							console.log(res);
+							//console.log(res);
 						}
 					})
 				});
@@ -529,7 +527,7 @@
 						OrderNumber:that.orderNumber
 					},
 					success:function(res){
-						console.log(res);
+						//console.log(res);
 						if(res.data.status){
 							that.showToast('取消成功');
 							setTimeout(function(){
@@ -539,12 +537,12 @@
 							},1500);
 						} else {
 							that.showToast(res.data.msg);
-							console.log(res);
+							//console.log(res);
 						}
 					},
 					fail:function(res){
 						that.showToast('网络连接失败');
-						console.log(res);
+						//console.log(res);
 					}
 				});
 			},
@@ -585,7 +583,7 @@
 
 						var polylineArr = [];
 						var points = [];
-
+						that.distance =  (parseInt(res.data.Distance) / 1000).toFixed(2) + '公里';
 						polylineArr = res.data.Polyline;
 
 						for (var i = 0; i < polylineArr.length; i++) {
@@ -612,7 +610,7 @@
 						that.polyline.push(obj);
 					},
 					fail: function(res) {
-						console.log(res);
+						//console.log(res);
 					}
 				});
 			},
@@ -649,7 +647,7 @@
 					that.alreadyTime = (parseInt(that.initialMin/60) + '小时') + (that.initialMin % 60 + '分钟')
 					//						that.waitTime = that.initialMin / 60 > 0 ? (parseInt(that.initialMin/60) + '小时') + (that.initialMin % 60 + '分钟') : that.initialMin + '分钟'
 				},60000);
-				console.log('打开定时器：' + that.waitTimeInterval);
+				//console.log('打开定时器：' + that.waitTimeInterval);
 			}
 			//计算等待时间
 		}

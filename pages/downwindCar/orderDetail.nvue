@@ -152,7 +152,7 @@
 						DriverId : that.userInfo.driverId
 					},
 					success:function(res){
-						console.log(res);
+						//console.log(res);
 						if(res.data.status){
 							let data = res.data.data[0];
 							that.startLon = data.StartLon;
@@ -173,12 +173,12 @@
 							that.waitTime = that.mathTime(that.runTime,that.finishTime);
 							
 						} else {
-							console.log(res);
+							//console.log(res);
 							that.showToast(res.data.msg);
 						}
 					},
 					fail:function(res){
-						console.log(res);
+						//console.log(res);
 						that.showToast('网络连接失败');
 					},
 				})

@@ -80,7 +80,6 @@
 				});
 			},
 			goBack: function() {
-				uni.clearStorageSync('vehicleInfo');
 				uni.navigateBack();
 			},
 			onClickItem(e) { //tab点击事件
@@ -155,7 +154,7 @@
 								fail: function(res) {
 									uni.hideLoading();
 									that.showToast('网络连接失败');
-									console.log(res);
+									//console.log(res);
 								}
 							})
 						} else {

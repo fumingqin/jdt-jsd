@@ -146,7 +146,7 @@
 				uni.getLocation({
 					type: 'gcj02',
 					success: function(res) {
-						console.log(res)
+						//console.log(res)
 						let map = that.data.map
 						map.longitude = res.longitude
 						map.latitude = res.latitude

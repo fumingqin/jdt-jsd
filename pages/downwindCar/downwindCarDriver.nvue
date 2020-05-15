@@ -6,7 +6,10 @@
 		<image @click="back" src="../../static/driver/back1.png" style="width: 120rpx;height: 120rpx;position: fixed;top: 50px;left: 1px;"></image>
 		<view v-if="state == 2" style="position: fixed;bottom: 220rpx; ">
 			<view style="flex-direction: row;justify-content: space-between;align-items: center;">
-				<image src="../../static/driver/police.png" style="width: 120rpx;height: 120rpx;margin-left: 10rpx;" @click="callPolice"></image>
+				<view style="flex-direction: row;">
+					<image src="../../static/driver/police.png" style="width: 120rpx;height: 120rpx;margin-left: 10rpx;" @click="callPolice"></image>
+					<image src="../../static/driver/message.png" style="width: 120rpx;height: 120rpx;margin-left: 10rpx;" @click="sendMessage"></image>
+				</view>
 			</view>
 			<!-- 行程信息 -->
 			<view style="width: 698rpx; background-color: #FFFFFF;margin-left: 28rpx; border-radius:20rpx;padding-bottom: 20rpx;">
@@ -43,7 +46,10 @@
 			</view>
 		</view>
 		<view v-if="state == 4" style="position: fixed;bottom: 220rpx; ">
-			<image src="../../static/driver/police.png" style="width: 120rpx;height: 120rpx;margin-left: 10rpx;" @click="callPolice"></image>
+			<view style="flex-direction: row;">
+				<image src="../../static/driver/police.png" style="width: 120rpx;height: 120rpx;margin-left: 10rpx;" @click="callPolice"></image>
+				<image src="../../static/driver/message.png" style="width: 120rpx;height: 120rpx;margin-left: 10rpx;" @click="sendMessage"></image>
+			</view>
 			<!-- 行程信息 -->
 			<view style="width: 698rpx; background-color: #FFFFFF;margin-left: 28rpx; border-radius:20rpx;padding-bottom: 20rpx;">
 				<!-- <view style="margin-top: 36rpx;margin-left: 38rpx;display: flex;flex-direction: row;">
@@ -59,15 +65,15 @@
 			</view>
 			<view style="width: 698rpx; background-color: #FFFFFF;margin-left: 28rpx; border-radius:20rpx; margin-top: 30rpx;padding-bottom: 30rpx;">
 				<view style="margin-top: 36rpx;margin-left: 38rpx;display: flex;flex-direction: row;">
-					<!-- <text style="width:140rpx;height:40rpx;font-size:30rpx;font-family:Source Han Sans SC;color:#666666;line-height:36rpx;margin-right: 40rpx">已驶里程:</text>
-					<text style="width:140rpx;height:40rpx;font-size:30rpx;font-family:Source Han Sans SC;color:#666666;line-height:36rpx;">{{alreadyMileage}}</text> -->
-					<text style="width:140rpx;height:40rpx;font-size:30rpx;font-family:Source Han Sans SC;color:#666666;line-height:36rpx;">已驶时长:</text>
+					<text style="width:140rpx;height:40rpx;font-size:30rpx;font-family:Source Han Sans SC;color:#666666;line-height:36rpx;">剩余里程:</text>
+					<text style="width:140rpx;height:40rpx;font-size:30rpx;font-family:Source Han Sans SC;color:#666666;line-height:36rpx;">{{distance}}</text>
+					<text style="width:140rpx;height:40rpx;font-size:30rpx;font-family:Source Han Sans SC;color:#666666;line-height:36rpx;margin-left: 40rpx;">已驶时长:</text> 
 					<text style="width:140rpx;height:40rpx;font-size:30rpx;font-family:Source Han Sans SC;color:#666666;line-height:36rpx;">{{alreadyTime}}</text>
 				</view>
-				<!-- <view style="margin-top: 20rpx;margin-left: 40rpx;display: flex;flex-direction: row;">
+				<view style="margin-top: 20rpx;margin-left: 40rpx;display: flex;flex-direction: row;">
 					<text style="width:120rpx;height:40rpx;font-size:30rpx;font-family:Source Han Sans SC;color:#666666;line-height:36rpx;">总费用:</text>
-					<text style="width:400rpx;height:40rpx;font-size:30rpx;font-family:Source Han Sans SC;color:#666666;line-height:36rpx;">{{totalCost}}元</text>
-				</view> -->
+					<text style="width:400rpx;height:40rpx;font-size:30rpx;font-family:Source Han Sans SC;color:#666666;line-height:36rpx;">{{factPayPrice}}元</text>
+				</view>
 			</view>
 			<view>
 				<button style="width: 698rpx;height: 105rpx;background-color: #FC6A6C;border-color:#FC6A6C;margin-left: 28rpx; border-radius:20rpx; position: fixed; padding: 6rpx;bottom: 90rpx;"
@@ -142,7 +148,7 @@
 				endLat: '',
 				endAddress: '',
 				orderType: '',
-				passengersPhone: '',
+				passengersPhone: '', 
 				vehicleType: '',
 				appointmentTime: '', //预约时间
 				estimatePrice: '', //预计价格
@@ -152,9 +158,12 @@
 				alreadyMileage: '', //已驶里程
 				waitTime: '0分钟', //等待时长
 				initialMin:'',
-				totalCost: '', //总价
+				factPayPrice: '', //总价
 				setoutTime:'',//出发去接旅客的时间
 				runTime:'',//开始执行的时间
+				
+				distance:'',//剩余里程
+				userInfo:null
 			}
 		},
 		onLoad(option) {
@@ -162,6 +171,7 @@
 			that.orderNumber = option.orderNumber;
 			var userInfo = uni.getStorageSync('userInfo') || '';
 			if (userInfo) {
+				that.userInfo = userInfo;
 				that.driverId = userInfo.driverId;
 			}
 			uni.getSystemInfo({
@@ -226,8 +236,9 @@
 								that.estimatePrice = data.EstimatePrice;
 								that.estimateDistance = data.EstimateDistance;
 								that.estimateTime = data.EstimateTime;
+								that.factPayPrice = data.FactPayPrice;
 								that.runTime = data.RunTime.replace('T', ' ').replace(/-/g,'/').substring(0,19);
-								console.log(data)
+								//console.log(data)
 								that.setoutTime = data.SetOutTime.replace('T', ' ').replace(/-/g,'/').substring(0,19);
 								resolve(res);
 							} else {
@@ -236,7 +247,7 @@
 						},
 						fail: function(res) {
 							reject(res);
-							console.log(res);
+							//console.log(res);
 							that.showToast('网络连接失败');
 						}
 					});
@@ -424,7 +435,14 @@
 					phoneNumber: that.passengersPhone
 				});
 			},
-
+			sendMessage:function(){
+				let that = this;
+				var msg = plus.messaging.createMessage(plus.messaging.TYPE_SMS);
+				msg.to=[that.passengersPhone];
+				msg.body = '你好，我是您的顺风车司机' + that.userInfo.userName.substring(0,1) + '师傅，';
+				plus.messaging.sendMessage(msg);
+			},
+			
 			//picker相关
 			callPolice: function() {
 				let that = this;
@@ -561,7 +579,7 @@
 
 						var polylineArr = [];
 						var points = [];
-
+					    that.distance =  (parseInt(res.data.Distance) / 1000).toFixed(2) + '公里';
 						polylineArr = res.data.Polyline;
 
 						for (var i = 0; i < polylineArr.length; i++) {

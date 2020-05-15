@@ -12,7 +12,7 @@
 			</view>
 			<view class="inputItem Captcha">
 				<image src="../../static/grzx/password.png" class="iconClass2"></image>
-				<input type="password" placeholder="请输入密码" class="inputClass" name="password" data-key="password" @input="inputChange2" :value="password"/>
+				<input type="password" placeholder="请输入密码" class="inputClass" name="password" data-key="password" :value="password" @input="inputChange3" />
 			</view>
 			<text class="switchClass" @click="switchClick">切换登录方式</text>
 			<image src="../../static/grzx/btnLogin.png" class="btnLogin" ></image>
@@ -102,14 +102,18 @@
 				const key = e.currentTarget.dataset.key;
 				this[key] = e.detail.value;
 			},
+			inputChange3(e){
+				const key = e.currentTarget.dataset.key;
+				this[key] = e.detail.value;
+			},
 			//--------------密码登录-------------
 			pwdClick(){
 				uni.showLoading({
 					title:'登录中...'
 				})
 				var that=this;
-				// console.log(that.phoneNumber)
-				// console.log(that.password)
+				console.log(that.phoneNumber)
+				console.log(that.password)
 				uni.request({
 					//url:'http://111.231.109.113:8002/api/person/LoginByPassWord_Driver',
 					url:that.$GrzxInter.Interface.LoginByPassWord_Driver.value,
@@ -287,8 +291,10 @@
 			},
 			//--------------切换登录方式-------------
 			switchClick(){
-				this.password='';
-				this.captchaCode='';
+				this.password="";
+				this.captchaCode="";
+				console.log(this.password,"this.password")
+				console.log(this.captchaCode,"this.captchaCode")
 				if(this.type==1){
 					this.type=2;
 				}else{

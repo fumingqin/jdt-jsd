@@ -98,10 +98,8 @@
 			},
 			depart:function(item) {
 				let that = this;
-				console.log(item);
 				item.SiteTicketList = that.arrayDistinct(item.SiteTicketList);
 				item.SiteTicketList = that.arrayBDToGcj02(item.SiteTicketList);
-				console.log(item);
 				uni.setStorageSync('scheduleInfo',item);
 				uni.navigateTo({
 					url: '/pages/CTKYDriver/index',
@@ -122,7 +120,7 @@
 					},
 					success:function(res){
 						uni.hideLoading();
-						console.log(res.data);
+						//console.log(res.data);
 						if(res.data.status){
 							that.orderInfo = [];
 							let data = res.data.data;
@@ -133,7 +131,7 @@
 					},
 					fail:function(res){
 						uni.hideLoading();
-						console.log(res);
+						//console.log(res);
 						that.showToast('网络连接失败');
 					}
 				});
