@@ -5,10 +5,10 @@
 			<view>
 				<text class="ol_title">{{item.complaintContent}}</text>
 			</view>
-			<view class="ol_button" v-if="item.declarantContent==' '"  @click="event(index)">
+			<view class="ol_button" v-if="item.declarantTime==''"  @click="event(index)">
 				<text class="bt_text">申诉</text>
 			</view>
-			<view class="ol_button2" v-if="item.declarantContent!==' '">
+			<view class="ol_button2" v-if="item.declarantTime!==''">
 				<text class="bt_text2">已申诉</text>
 			</view>
 		</view>
@@ -79,8 +79,7 @@
 		}
 		.ol_title{
 			display: flex;
-			padding-top: 20upx;
-			padding-left: 30upx;
+			padding: 20upx 30upx 0 30upx;
 			font-size: 30upx;
 			text-align: left;
 		}
