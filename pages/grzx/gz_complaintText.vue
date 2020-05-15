@@ -43,11 +43,12 @@
 			//字数
 			descInput: function(e) {
 				// console.log(e)
-				this.remnant = e.detail.cursor;	
+				this.remnant = e.detail.value.length;
 			},
 			//复制
 			paste:function(){
 				this.detailInfo.a=this.b;
+				this.remnant=this.b.length;
 			},
 			
 			formSubmit:function(e){
