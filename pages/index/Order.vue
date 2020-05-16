@@ -978,12 +978,18 @@
 			if(that.userInfo == ''){
 				that.showToast('请先登录');
 			} else {
+				uni.showLoading({
+					mask:true
+				});
 				that.getTaxiOrder();
 			}
 		},
 		onPullDownRefresh() {
 			var that = this;
 			if(that.userInfo != ''){
+				uni.showLoading({
+					mask:true
+				});
 				that.getTaxiOrder();
 			}
 		},
@@ -1003,9 +1009,6 @@
 			getTaxiOrder: function() {
 				let that = this;
 				uni.stopPullDownRefresh();
-				uni.showLoading({
-					mask:true
-				})
 				uni.request({
 					url: that.$order.Interface.GetExpressOrderByDriverID_Driver.value,
 					method: that.$order.Interface.GetExpressOrderByDriverID_Driver.method,
@@ -1014,7 +1017,6 @@
 						state: -1
 					},
 					success: function(res) {
-						uni.hideLoading();
 						if (res.data.status) {
 							that.orderArr = [];
 							for (let item of res.data.data) {
@@ -1059,9 +1061,6 @@
 			},
 			getCzcPrivateOrder: function() {
 				let that = this;
-				uni.showLoading({
-					mask:true
-				});
 				uni.request({
 					url: that.$order.Interface.GetSpecialLineOrderByDriverID_Driver.value,
 					method: that.$order.Interface.GetSpecialLineOrderByDriverID_Driver.method,
@@ -1070,7 +1069,6 @@
 						State: -1
 					},
 					success: function(res) {
-						uni.hideLoading();
 						if (res.data.status) {
 							for (let item of res.data.data) {
 								var obj = {
@@ -1115,9 +1113,6 @@
 			},
 			getdownwindCarOrder:function(){
 				let that = this;
-				uni.showLoading({
-					mask:true
-				});
 				uni.request({
 					url:that.$downwindCar.Interface.GetHitchhikerOrderByDriverID_Driver.value,
 					method:that.$downwindCar.Interface.GetHitchhikerOrderByDriverID_Driver.method,
