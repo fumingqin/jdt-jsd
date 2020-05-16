@@ -31,8 +31,8 @@
 							<view style="padding: 20rpx 0;border-bottom: #EAEAEA 1px solid;"> 
 								<text style="letter-spacing:1px" @click="onShowDatePicker('datetime')">{{datestring}} {{Week}}</text>
 							</view>
-							<mx-date-picker :show="showPicker" :showSeconds="false" :type="type" :value="value" :show-tips="true" :begin-text="'入住'"
-							 :end-text="'离店'" :show-seconds="true" @confirm="onSelected" @cancel="onCancle" />
+							<mx-date-picker :show="showPicker" :showSeconds="false" :type="type" :value="value" :show-tips="true" begin-text="开始"
+							 end-text="结束" :show-seconds="true" @confirm="onSelected" @cancel="onCancle" />
 						</view>
 						
 						<!-- <view>
@@ -50,18 +50,18 @@
 								<text class="titleFont">价格</text>
 							</view>
 							<view style="padding: 20rpx 0;border-bottom: #EAEAEA 1px solid;display: flex;flex-direction: row;justify-content: space-between;"> 
-								<input class="contentFont" v-model="price" type="number"  />
+								<input adjust-position=true class="contentFont" v-model="price" type="number"  />
 								<text>元</text>
 							</view>
 						</view>
-						
 						<view>
 							<view style="padding-top: 20rpx ;">
 								<text class="titleFont">剩余座位</text>
 							</view>
-							<view style="padding: 20rpx 0;border-bottom: #EAEAEA 1px solid;display: flex;flex-direction: row;justify-content: space-between;"> 
-								<input class="contentFont" v-model="seat" type="number"  />
-								<text>个</text>
+							<view style="padding: 20rpx 0;border-bottom: #EAEAEA 1px solid;"> 
+								<picker :value='index' @change='pickerChange' mode='selector' :range='seatArr'>
+									<text style="width: 100%;">{{seat}}个</text>
+								</picker>
 							</view>
 						</view>
 					</scroll-view>
@@ -101,7 +101,9 @@
 				price:0,
 				userInfo:null,
 				vehicleInfo:null,
-				seat:0,
+				seat:1,
+				seatArr:[1,2,3,4],
+				index:0
 			}
 		},
 		onLoad() {
@@ -264,7 +266,11 @@
 					},
 				});
 			},
-			
+			pickerChange:function(e){
+				let that = this;
+				that.index = e.detail.value;
+				that.seat = that.seatArr[e.detail.value];
+			},
 		}
 	}
 </script>
