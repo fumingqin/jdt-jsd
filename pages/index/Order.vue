@@ -1362,6 +1362,7 @@
 						uni.hideLoading();
 						if (res.data.status) {
 							that.showToast('订单已取消');
+							that.getTaxiOrder();
 						} else {
 							that.showToast(res.data.msg);
 						}
