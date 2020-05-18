@@ -462,7 +462,7 @@
 								//折线图
 								that.setLineData(type, dayItemPriceArr);
 								//折线图
-								that.setHistogramData(type, totalPayPrice);
+								that.setHistogramData(type, totalPayPrice.toFixed(2));
 								that.array.push({
 									type:type,
 									orderArr:orderArr
@@ -513,7 +513,7 @@
 								//折线图
 								that.setLineData(type, dayItemPriceArr);
 								//折线图
-								that.setHistogramData(type, totalPayPrice);
+								that.setHistogramData(type, totalPayPrice.toFixed(2));
 								that.array.push({
 									type:type,
 									orderArr:orderArr
@@ -562,7 +562,7 @@
 								//折线图
 								that.setLineData(type, dayItemPriceArr);
 								//柱状图
-								that.setHistogramData(type, totalPayPrice);
+								that.setHistogramData(type, totalPayPrice.toFixed(2));
 								that.array.push({
 									type:type,
 									orderArr:orderArr
@@ -650,7 +650,7 @@
 						price += items.earning;
 					}
 				}
-				return price;
+				return price.toFixed(2);
 			},
 			//详情
 			totalDayPrice:function(array){
@@ -658,14 +658,14 @@
 				for (let item of array) {
 					totalPrice += parseFloat(item.factPayPrice);
 				}
-				return totalPrice;
+				return totalPrice.toFixed(2);
 			},
 			totalDayPrice1:function(array){
 				var totalPrice = 0;
 				for (let item of array) {
 					totalPrice += parseFloat(item.FactPayPrice);
 				}
-				return totalPrice;
+				return totalPrice.toFixed(2);
 			},
 			formatTime:function(date){
 				return date.substring(11,16); 
