@@ -113,7 +113,7 @@
 					<scroll-view :scroll-y="true" :style="{height:paymentscrollHeight}">
 						<view class="paymentDetail" v-for="(item,index) in taxiDetailArr" :key="index">
 							<view>
-								<view style="font-size: 32rpx;">车费收入</view>
+								<view style="font-size: 32rpx;">{{item.payType}}</view>
 								<view style="color: #999999;font-size: 30rpx;">{{formatTime(item.finishTime)}}</view>
 							</view>
 							<view style="font-size: 34rpx;">{{item.factPayPrice}}</view>

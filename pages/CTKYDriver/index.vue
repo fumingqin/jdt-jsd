@@ -157,13 +157,13 @@
 						imageStyle: 'width: 51rpx;height: 45rpx;',
 						canClick: false
 					},
-					{
+					/* {
 						title: '购票',
 						color: 'color: #2C2D2D',
 						imageSrc: '../../static/tabbar/buy-black.png',
 						imageStyle: 'width: 49rpx;height: 36rpx;',
 						canClick: true
-					},
+					}, */
 					{
 						title: '检票',
 						color: 'color: #2C2D2D',
@@ -459,7 +459,7 @@
 	}
 	
 	.tabbarItem {
-		width: 250rpx;
+		width: 375rpx;
 		display: flex;
 		flex-direction: column;
 		align-items: center;
