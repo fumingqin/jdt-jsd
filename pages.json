@@ -321,6 +321,18 @@
 				"navigationStyle":"custom"
 			}
 		}
+        ,{
+            "path" : "pages/CustomizedBus/index",
+            "style" : {
+				"navigationStyle": "custom"
+			}
+        }
+        ,{
+            "path" : "pages/CustomizedBus/checkTicket",
+            "style" : {
+				"navigationStyle": "custom"
+			}
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
