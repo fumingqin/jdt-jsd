@@ -5,7 +5,7 @@
 				<view class="status_bar"></view>
 				<view class="headbar">
 					<uni-icons type="scan" size="24" color="#FFF" @click="qrcode"></uni-icons>
-					<view class="title">检票1</view>
+					<view class="title">检票</view>
 					<view></view>
 				</view>
 			</view>

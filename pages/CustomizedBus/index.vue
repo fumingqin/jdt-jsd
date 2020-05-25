@@ -4,7 +4,7 @@
 			<view class="status_bar"></view>
 			<view class="headbar">
 				<uni-icons @click="back" type="arrowleft" size="24" color="#FFF"></uni-icons>
-				<view class="title">客车1</view>
+				<view class="title">客车</view>
 				<view></view>
 			</view>
 		</view>

@@ -223,6 +223,7 @@
 						FactPlateNumber: that.vehicleInfo.vehicleNumber
 					},
 					success: function(res) {
+						console.log(res);
 						that.CustomizedBusOrderInfo = [];
 						if (res.data.status) {
 							let data = res.data.data;
