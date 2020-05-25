@@ -33,7 +33,7 @@
 											车次信息：{{ScheduleAndTickets.LineName}}
 										</view>
 										<view>
-											车票号：{{item.TicketID}}
+											车票号：{{formatTicketId(item.TicketID)}}
 										</view>
 									</view>
 									<view>
@@ -76,7 +76,7 @@
 											车次信息：{{ScheduleAndTickets.LineName}}
 										</view>
 										<view>
-											车票号：{{item.TicketID}}
+											车票号：{{formatTicketId(item.TicketID)}}
 										</view>
 									</view>
 									<view>
@@ -128,7 +128,8 @@
 						color: 'color: #2C2D2D',
 						imageSrc: '../../static/tabbar/index-black.png',
 						imageStyle: 'width: 51rpx;height: 45rpx;',
-						canClick: true
+						canClick: true,
+						url:'./index'
 					},
 					/* {
 						title: '购票',
@@ -142,7 +143,8 @@
 						color: 'color: #FC4646',
 						imageSrc: '../../static/tabbar/check-red.png',
 						imageStyle: 'width: 47rpx;height: 38rpx;',
-						canClick: false
+						canClick: false,
+						url:'./checkTicket'
 					}
 				],
 				IsCheck: false,
@@ -160,7 +162,6 @@
 		},
 		onUnload(){
 			let that = this;
-			uni.removeStorageSync('driverCoachid');
 		},
 		onShow() {
 			let that = this;
@@ -172,8 +173,6 @@
 				that.showToast('未取得用户信息');
 			}else if(that.vehicleInfo == ''){
 				that.showToast('未取得车辆信息');
-			}else {
-				that.getCoachid();
 			}
 		},
 		onPullDownRefresh() {
@@ -182,13 +181,13 @@
 		},
 		mounted() {
 			var that=this;
-				setTimeout(function(){//设置scollerview的高度
-					uni.getSystemInfo({
-						success(res) {
-							that.scrollheight=res.windowHeight-40-195+'px'
-						}
-					})
-				},50)
+			setTimeout(function(){//设置scollerview的高度
+				uni.getSystemInfo({
+					success(res) {
+						that.scrollheight=res.windowHeight-40-195+'px'
+					}
+				})
+			},50)
 		},
 		methods: {
 			showToast:function(title,icon='none'){
@@ -203,19 +202,8 @@
 				uni.scanCode({
 					onlyFromCamera: true,
 					success: function(res) {
-						let coachid = uni.getStorageSync('driverCoachid') || '';
-						if(coachid === ''){
-							//如果缓存内没有coachid,那重新调接口查。
-							that.getCoachid().then(res =>{
-								if(res.data.msg == '获取成功'){
-									res.data.data;
-									that.checkTicket(res.data.data,res.result);
-								}
-							});
-						} else {
-							//如果缓存内有coachid
-							that.checkTicket(coachid,res.result);
-						}
+						console.log(res);
+						that.checkTicket(res.result);
 					},
 					fail:function(){
 						
@@ -228,68 +216,31 @@
 			tabbarClick: function(el) {
 				let url = '';
 				if (el.canClick) {
-					switch (el.title) {
-						case '首页':
-							url = './index';
-							break;
-						case '购票':
-							url = './chooseSite';
-							break;
-						case '检票':
-							url = './checkTicket';
-							break;
-						default:
-							break;
-					};
 					uni.redirectTo({
-						url:url
+						url:el.url
 					})
 				}
 			},
-					
-			getCoachid:function(){
-				let that = this;
-				//获取司机对应caochid；
-				return new Promise((resolve,reject) => {
-					uni.request({
-						url: that.$Ky.Interface.GetCoachIDByVheicleNumberDriverPhone.value,
-						method:that.$Ky.Interface.GetCoachIDByVheicleNumberDriverPhone.method,
-						data:{
-							vehicleNumber : that.vehicleInfo.vehicleNumber,
-							phoneNumber: that.userInfo.phoneNumber
-						},
-						success:function(res){
-							if(res.data.msg == '获取成功'){
-								that.coachid = res.data.data;
-								uni.setStorageSync('driverCoachid',that.coachid);
-							}else{
-								that.showToast(res.data.msg);
-							}
-						},
-						fail:function(res){
-							//console.log(res);
-							that.showToast('网络连接失败');
-						}
-					});
-				});
-			},
 			
-			checkTicket:function(coachid,tickId){
+			checkTicket:function(GetTicketCode){
 				//泉运检票接口
 				let that = this;
+				let scheduleID = that.ScheduleAndTickets.ExecuteScheduleID;
+				console.log(scheduleID);
+				console.log(GetTicketCode);
 				uni.showLoading({
 					mask:true
 				});
 				uni.request({
-					url : that.$Ky.Interface.CheckTicket_ByTicketID.value,
-					method:that.$Ky.Interface.CheckTicket_ByTicketID.method,
+					url : that.$CustomizedBus.Interface.CheckTicket_Driver.value,
+					method:that.$CustomizedBus.Interface.CheckTicket_Driver.method,
 					data:{
-						coachID : coachid,
-						tickId :tickId,
+						scheduleID:scheduleID,
+						GetTicketCode:GetTicketCode,
 					},
 					success:function(res){
 						uni.hideLoading();
-						//console.log(res);
+						console.log(res);
 						if(res.data.status){
 							that.showToast('检票成功');
 							that.getRunScheduleInfo();
@@ -309,22 +260,20 @@
 				let that = this;
 				uni.stopPullDownRefresh();
 				uni.request({
-					url:that.$Ky.Interface.GetRunScheduleInfoByVheicleNumberDriverPhone.value,
-					method:that.$Ky.Interface.GetRunScheduleInfoByVheicleNumberDriverPhone.method,
+					url:that.$CustomizedBus.Interface.GetSchedule_Driver.value,
+					method:that.$CustomizedBus.Interface.GetSchedule_Driver.method,
 					data:{
-						vehicleNumber : that.vehicleInfo.vehicleNumber,
-						phoneNumber : that.userInfo.phoneNumber,
+						DriverID: that.userInfo.driverId,
+						FactPlateNumber: that.vehicleInfo.vehicleNumber
 					},
 					success:function(res){
 						if(res.data.status){
 							that.orderInfo = [];
 							let data = res.data.data;
-							data.SiteTicketList = that.arrayDistinct(data.SiteTicketList);
-							data.SiteTicketList = that.arrayBDToGcj02(data.SiteTicketList);
+							//data.SiteTicketList = that.arrayDistinct(data.SiteTicketList);
+							//data.SiteTicketList = that.arrayBDToGcj02(data.SiteTicketList);
 							that.ScheduleAndTickets = data;
 							uni.setStorageSync('scheduleInfo',that.ScheduleAndTickets);
-						} else {
-							that.showToast('未取得订单信息');
 						}
 					},
 					fail:function(res){
@@ -353,6 +302,9 @@
 			},
 			formatIDCard:function(idCard){
 				return idCard.substring(0,6) + '****' + idCard.substring(14,18);
+			},
+			formatTicketId:function(id){
+				return id.substring(0,id.indexOf('|'));
 			}
 		}
 	}

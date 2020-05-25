@@ -40,7 +40,7 @@
 							<text class="informationFont">全票人数：{{formatPersonCount(ScheduleAndTickets.Tickets)}}人</text>
 						</view> 
 						<view style="width: 305rpx;">
-							<text class="informationFont">携童人数：{{formatCarryChildCount(ScheduleAndTickets.Tickets)}}人</text> 
+							<text class="informationFont">携童人数：{{ScheduleAndTickets.FreeSeats}}人</text> 
 						</view>
 					</view>
 				</view>
@@ -155,7 +155,8 @@
 						color: 'color: #FC4646',
 						imageSrc: '../../static/tabbar/index-red.png',
 						imageStyle: 'width: 51rpx;height: 45rpx;',
-						canClick: false
+						canClick: false,
+						url:'./index'
 					},
 					/* {
 						title: '购票',
@@ -169,7 +170,8 @@
 						color: 'color: #2C2D2D',
 						imageSrc: '../../static/tabbar/check-black.png',
 						imageStyle: 'width: 47rpx;height: 38rpx;',
-						canClick: true
+						canClick: true,
+						url:'./checkTicket'
 					}
 				],
 				scrollStationIndex:'id_0',
@@ -229,30 +231,16 @@
 			},
 			
 			tabbarClick: function(el) {
-				let url = '';
 				if (el.canClick) {
-					switch (el.title) {
-						case '首页':
-							url = './index';
-							break;
-						case '购票':
-							url = './chooseSite';
-							break;
-						case '检票':
-							url = './checkTicket';
-							break;
-						default:
-							break;
-					};
 					uni.redirectTo({
-						url:url
+						url:el.url
 					})
 				}
 			},
 			
 			back:function(){
 				uni.navigateTo({
-					url:'./selectOrder',
+					url:'../CTKYDriver/selectOrder',
 					animationType:"slide-in-left"
 				})
 			},

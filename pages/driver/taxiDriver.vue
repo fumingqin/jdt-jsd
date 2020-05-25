@@ -49,7 +49,7 @@
 		
 	
 		<!-- 接单信息-出租车 -->
-		<scroll-view style="height: 1000rpx;" scroll-y=true>
+		<scroll-view style="height: 900rpx;" scroll-y=true>
 			<view v-if="buttonActive" v-for='(item, index) in orderArr'  :key='index' style="width: 94%;padding-bottom: 30rpx; background-color: #FFFFFF;margin-left: 22rpx; border-radius:20rpx; margin-bottom: 30rpx;">
 				<view style="padding: 40rpx;display: flex;flex-direction: row;">
 					<text class="destinationArea" style="width:160rpx;">订单类型:</text>
@@ -129,6 +129,12 @@
 				</view>
 			</view>
 		</scroll-view>
+		
+		<view style="width: 94%;margin-left: auto;margin-right: auto;">
+			<button @click="isOpenButton" class="buttonActive"  >
+				<text  class="buttonFont">{{buttonContent}}</text>
+			</button>
+		</view>
 	</view>
 </template>
 
@@ -150,6 +156,9 @@
 				
 				taxiLastIndex:0,
 				privateLineLastIndex:0,
+				
+				isOpen:false,
+				buttonContent:'停止接单'
 			}
 		},
 		onLoad() {
@@ -157,25 +166,42 @@
 			uni.hideLoading();
 			that.userInfo = uni.getStorageSync('userInfo') || '';
 			that.vehicleInfo = uni.getStorageSync("vehicleInfo")||'';
+			that.isOpen = uni.getStorageSync('isOpen') || false;
+			if(that.isOpen){
+				that.buttonContent = '开始接单';
+			}else{
+				that.buttonContent = '停止接单';
+			}
 			if(that.userInfo == ''){
 				that.showToast('请先登录');
 				//console.log(that.userInfo);
 			} else if(that.vehicleInfo == '') {
 				that.showToast('请先上班');
 			} else {
-				uni.showLoading({
-					mask:true
-				});
-				//在getOrder里面会关闭
-				that.getOrder(that.userInfo.driverId,that.vehicleInfo.vehicleNumber);
-				that.getSpecialLineOrder(that.userInfo.driverId,that.vehicleInfo.vehicleNumber);
-				that.realTimeOrder(that.userInfo.driverId,that.vehicleInfo.vehicleNumber); 
+				if(!that.isOpen){
+					uni.showLoading({
+						mask:true
+					});
+					//在getOrder里面会关闭
+					that.getOrder(that.userInfo.driverId,that.vehicleInfo.vehicleNumber);
+					that.getSpecialLineOrder(that.userInfo.driverId,that.vehicleInfo.vehicleNumber);
+					that.realTimeOrder(that.userInfo.driverId,that.vehicleInfo.vehicleNumber); 
+				}
+				
+				
 				//统计
 				that.getTaxiTodayOrderCount();
 				that.getSpecialTodayOrderCount();
 			}
 		},
+		onShow() {
+			
+		},
 		onUnload(){
+			let that = this;
+			clearInterval(that.getOrderInterval); 
+		},
+		onHide() {
 			let that = this;
 			clearInterval(that.getOrderInterval); 
 		},
@@ -495,6 +521,24 @@
 				});
 			},
 			
+			isOpenButton:function(){
+				let that = this;
+				that.isOpen = !that.isOpen
+				if(that.isOpen){
+					//关
+					that.buttonContent = '开始接单';
+					that.orderArr = [];
+					that.specialLineArr = [];
+					clearInterval(that.getOrderInterval);
+					that.getOrderInterval = 0;
+					uni.setStorageSync('isOpen',that.isOpen);
+				}else{
+					//开
+					that.buttonContent = '停止接单';
+					that.realTimeOrder(that.userInfo.driverId,that.vehicleInfo.vehicleNumber);
+					uni.setStorageSync('isOpen',that.isOpen);
+				}
+			}
 		}
 	}
 </script>

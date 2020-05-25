@@ -36,6 +36,18 @@ const Interface = {
 		name:'获取图片',
 		method:'POST',
 		page:[]
+	},
+	DriverSendMessage:{
+		value:Url + '/api/Chat/DriverSendMessage',
+		name:'司机端-发送消息',
+		method:'POST',
+		page:[]
+	},
+	QueryMessage:{
+		value:Url + '/api/Chat/QueryMessage',
+		name :'接收消息',
+		method:'POST',
+		page:[]
 	}
 }
 
