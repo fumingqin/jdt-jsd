@@ -322,9 +322,21 @@
 			}
 		}
         ,{
-            "path" : "pages/grzx/gz_complaintContent",
-            "style" : {}
+            "path" : "pages/CustomizedBus/index",
+            "style" : {
+				"navigationStyle": "custom"
+			}
         }
+        ,{
+            "path" : "pages/CustomizedBus/checkTicket",
+            "style" : {
+				"navigationStyle": "custom"
+			}
+        },
+		{
+		    "path" : "pages/grzx/gz_complaintContent",
+		    "style" : {}
+		}
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
