@@ -37,24 +37,30 @@ const Interface={
 	}, 
 	
 	complaintText:{
-		value:Url+'/api/person/UpdateComplaint_BeComplainant',
-		name:'提交',
+		value:Url+'/api/person/getReComplaintBynameId',
+		name:'申诉列表',
 		method:'POST',
-		pages: ['pages/grzx/gz_complaintText'],
+		pages: ['pages/grzx/gz_complaintList'],
 	}, 
 	
 	complaintList:{
-		value:Url+'/api/person/SearchComplaint_BeComplainant',
-		name:'投诉列表内容',
+		value:Url+'/api/person/InsertReComplaint',
+		name:'申诉内容页',
 		method:'POST',
-		pages: ['pages/grzx/gz_complaintList'],
+		pages: ['pages/grzx/gz_complaintContent'],
 	}, 
 	SearchCustomerService:{
 		value:Url+'/api/person/SearchCustomerService',
 		name:'获取QQ客服或电话客服',
 		method:'POST',
 		pages: ['pages/grzx/gz_complaintList'],
-	}
+	},
+	complaintContent:{
+		value:Url+'/api/person/getReComplaintDetailBynumber',
+		name:'申诉详情',
+		method:'POST',
+		pages: ['pages/grzx/gz_complaintContent'],
+	}, 
 }
 
 
