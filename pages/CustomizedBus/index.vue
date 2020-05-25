@@ -40,7 +40,7 @@
 							<text class="informationFont">全票人数：{{formatPersonCount(ScheduleAndTickets.Tickets)}}人</text>
 						</view> 
 						<view style="width: 305rpx;">
-							<text class="informationFont">携童人数：{{formatCarryChildCount(ScheduleAndTickets.Tickets)}}人</text> 
+							<text class="informationFont">携童人数：{{ScheduleAndTickets.FreeSeats}}人</text> 
 						</view>
 					</view>
 				</view>
