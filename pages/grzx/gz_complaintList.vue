@@ -224,7 +224,7 @@
 
 		onShow: function() {
 			var userInfo = uni.getStorageSync('userInfo') || '';
-			this.grzxData(userInfo.driverId);
+			this.grzxData(userInfo.phoneNumber);
 			// console.log(userInfo.driverId)
 		},
 
@@ -238,7 +238,7 @@
 						'content-type': 'application/json'
 					},
 					data: {
-						driverId: e,
+						or_phoneNumber: e,
 					},
 					success: (res) => {
 						this.complaintList = res.data.data;
