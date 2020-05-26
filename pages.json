@@ -332,7 +332,11 @@
             "style" : {
 				"navigationStyle": "custom"
 			}
-        }
+        },
+		{
+		    "path" : "pages/grzx/gz_complaintContent",
+		    "style" : {}
+		}
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

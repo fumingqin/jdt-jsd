@@ -4,7 +4,7 @@
 			<view class="status_bar"></view>
 			<view class="headbar">
 				<uni-icons @click="back" type="arrowleft" size="24" color="#FFF"></uni-icons>
-				<view class="title">客车1</view>
+				<view class="title">客车</view>
 				<view></view>
 			</view>
 		</view>
@@ -40,7 +40,7 @@
 							<text class="informationFont">全票人数：{{formatPersonCount(ScheduleAndTickets.Tickets)}}人</text>
 						</view> 
 						<view style="width: 305rpx;">
-							<text class="informationFont">携童人数：{{formatCarryChildCount(ScheduleAndTickets.Tickets)}}人</text> 
+							<text class="informationFont">携童人数：{{ScheduleAndTickets.FreeSeats}}人</text> 
 						</view>
 					</view>
 				</view>
