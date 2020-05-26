@@ -61,6 +61,12 @@ const Interface={
 		method:'POST',
 		pages: ['pages/grzx/gz_complaintContent'],
 	}, 
+	GetAllCompany:{
+		value:Url+'/api/person/GetAllCompany',
+		name:'获取公司列表',
+		method:'POST',
+		pages: [],
+	},
 }
 
 
