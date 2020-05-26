@@ -54,6 +54,12 @@ const Interface={
 		name:'获取QQ客服或电话客服',
 		method:'POST',
 		pages: ['pages/grzx/gz_complaintList'],
+	},
+	GetAllCompany:{
+		value:Url+'/api/person/GetAllCompany',
+		name:'获取公司列表',
+		method:'POST',
+		pages: [],
 	}
 }
 

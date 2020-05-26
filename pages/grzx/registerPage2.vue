@@ -20,25 +20,53 @@
 			</view>
 			<view class="boxClass1 b-b">
 				<text class="fontClass">公司</text>
-				<input class="inputClass"  name="userCompany"  placeholder="请输入公司名称" v-model="userCompany" />
+				<!-- <input class="inputClass"  name="userCompany"  placeholder="请输入公司名称" v-model="userCompany" /> -->
+				<picker class="companyClass" name="userCompany"  mode="selector" @change="companyChange" :range="companyBox" :value="userCompany">
+					{{userCompany}}
+				</picker>
 			</view>
 			<view class="boxClass1 b-b">
 				<text class="fontClass">驾照等级</text>
-				<picker class="licenseClass" name="userlicenseGrade"  mode="selector" @change="gradeChange" :range="gradeBox" :value="userlicenseGrade">
+				<!-- <picker class="licenseClass" name="userlicenseGrade"  mode="selector" @change="gradeChange" :range="gradeBox" :value="userlicenseGrade">
 					{{selector}}
-				</picker>
-				<image src="../../static/grzx/tubiao_Right.png" class="imgClass"></image>
+				</picker> -->
+				<text class="licenseClass" @click="openPopup('bottomPopup')">{{selector}}</text>
+				<!-- <image src="../../static/grzx/tubiao_Right.png" class="imgClass"></image> -->
 			</view>
 			<view @click="nextClick" class="nextClass">
 				下一步
 			</view>
 		</view>
+		
+		<!-- 弹窗 -->
+		<uni-popup ref="bottomPopup" type="bottom">
+			<view class="popupBox" style="display: flex;flex-direction: column">
+				<view class="topClass" >
+					<view class="closeClass" @click="closePopup('bottomPopup')">取消</view>
+					<view class="submitClass" @click="submitClick">确定</view>
+				</view>
+				<scroll-view class="listClass" scroll-y='true'>
+					<checkbox-group @change="checkboxChange" >
+						<label class="labelClass" v-for="item in items" :key="item.value">
+							<view style="display: flex;flex-direction: row;">
+								<checkbox :value="item.value" :checked="item.checked" />
+								<view>{{item.name}}</view>
+							</view>
+						</label>
+					</checkbox-group>
+				</scroll-view>
+			</view>
+		</uni-popup>
 	</view>
 </template>
 
 <script>
 	import { pathToBase64, base64ToPath } from '@/components/grzx/js_sdk/gsq-image-tools/image-tools/index.js';
+	import uniPopup from "@/components/uni-popup/uni-popup.vue";
 	export default{
+		components: {
+			uniPopup,
+		},
 		data(){
 			return{
 				title:'填写资料',
@@ -47,21 +75,83 @@
 					{title:'男'},
 					{title:'女'}
 				],
-				selector:'请选择',
-				gradeBox:['A1','A2','A3','B1','B2','C1','C2','C3'],
+				selector:'请选择(可多选) >',
+				selectType:[],
+				companyBox:[],
+				companyIDBox:[],
+				// company:'请选择 >',
+				// gradeBox:['A1','A2','A3','B1','B2','C1','C2','C3','C4','D','E','F','M','N','P'],
 				//-------数据-------
 				userPortrait:'',
 				userName:'',
 				userSex:0,
-				userCompany:'',
+				userCompany:'请选择 >',
+				usercompanyID:'',
 				userlicenseGrade:'',
 				portrait:'',
+				items: 
+					[{
+						value: 'A1',
+						name: 'A1'
+					},
+					{
+						value: 'A2',
+						name: 'A2',
+					},
+					{
+						value: 'A3',
+						name: 'A3',
+					},
+					{
+						value: 'B1',
+						name: 'B1',
+					},
+					{
+						value: 'B2',
+						name: 'B2',
+					},
+					{
+						value: 'C1',
+						name: 'C1'
+					},
+					{
+						value: 'C2',
+						name: 'C2'
+					},
+					{
+						value: 'C3',
+						name: 'C3'
+					},
+					{
+						value: 'C4',
+						name: 'C4'
+					}]
+					// {
+					// 	value: 'D',
+					// 	name: 'D'
+					// }
 			}
 		},
 		onLoad(){
-			
+			this.loadcompanyList();
 		},
 		methods:{
+			//-----------加载公司列表------------
+			loadcompanyList(){
+				var that=this;
+				uni.request({
+					url:that.$GrzxInter.Interface.GetAllCompany.value,
+					method:that.$GrzxInter.Interface.GetAllCompany.method,
+					success:function(res){
+						console.log(res)
+						console.log(res.data.data)
+						for(var i=0;i<res.data.data.length;i++){
+							that.companyBox.push(res.data.data[i].CompanyName);
+							that.companyIDBox.push(res.data.data[i].CompanyID);
+						}
+					}
+				})
+			},
 			//-----------返回------------
 			returnClick(){
 				uni.navigateBack();
@@ -91,7 +181,8 @@
 				console.log(this.userName)
 				console.log(this.userSex)
 				console.log(this.userCompany)
-				console.log(this.userlicenseGrade)
+				console.log(this.userCompanyID)
+				console.log(this.selector)
 				if(this.userPortrait==""||this.userPortrait==null){
 					uni.showToast({
 						title:'请添加头像',
@@ -102,12 +193,12 @@
 						title:'请填写姓名',
 						icon:'none'
 					})
-				}else if(this.userCompany==""||this.userCompany==null){
+				}else if(this.userCompany=="请选择 >"){
 					uni.showToast({
-						title:'请填写公司',
+						title:'请选择公司',
 						icon:'none'
 					})
-				}else if(this.selector=="请选择"){
+				}else if(this.selector=="请选择(可多选) >"){
 					uni.showToast({
 						title:'请选择驾照等级',
 						icon:'none'
@@ -117,8 +208,9 @@
 						userPortrait:this.userPortrait,
 						userName:this.userName,
 						userSex:this.userSex,
-						userCompany:this.userCompany,
-						userlicenseGrade:this.userlicenseGrade,
+						userCompany:this.userCompany.substring(0,this.userCompany.length-2),
+						userCompanyID:this.userCompanyID,
+						userlicenseGrade:this.selector.substring(0,this.selector.length-2),
 					}
 					uni.setStorageSync('registerList2',list)
 					uni.navigateTo({
@@ -146,6 +238,50 @@
 						}); 
 					}
 				})	
+			},
+			//-----------关闭弹窗------------
+			closePopup: function(value) {
+				if(this.selector==""){
+					this.selector="请选择(可多选) >";
+				}
+				console.log(this.items[0])
+				this.$nextTick(function() {
+					this.$refs[value].close();
+				});
+			},
+			//-----------开启弹窗------------
+			openPopup: function(value) {
+				this.$nextTick(function() {
+					this.$refs[value].open();
+				});
+			},
+			//-----------复选框点击事件------------
+			checkboxChange: function (e) {
+				console.log(e)
+				this.selectType=e.detail.value;
+				console.log(this.selectType)
+			},
+			//-----------点击确定------------
+			submitClick: function(){
+				this.selector="";
+				for(var i=0;i<this.selectType.length;i++){
+					this.selector+=this.selectType[i]+",";
+				}
+				console.log(this.selector)
+				if(this.selector==""){
+					uni.showToast({
+						title:'请选择驾照等级',
+						icon:'none'
+					})
+				}else{
+					this.selector=this.selector.substring(0,this.selector.length-1)+" >";
+					this.closePopup("bottomPopup");
+				}
+			},
+			//-----------公司选择------------
+			companyChange:function(e){
+				this.userCompany=this.companyBox[e.detail.value]+" >";
+				this.userCompanyID=this.companyIDBox[e.detail.value];
 			},
 		}
 	}
@@ -260,13 +396,64 @@
 	}
 	.licenseClass{
 		color: #2C2D2D;
-		width: 65%;
-		margin-left: 7%;
+		width: 72%;
+		margin-left: 5%;
 		font-size: 30upx;
 	}
 	.imgClass{
 		width: 20upx;
 		height: 30upx;
 		margin-top: 42upx;
+	}
+	//公司选择列表
+	.companyClass{
+		margin-left: 7%;
+		width: 65%;
+		height: 100upx;
+		color: #2C2D2D;
+		font-size: 30upx;
+	}
+	//弹框
+	.popupBox{
+		height: 640upx; 
+		background-color: #FFFFFF; 
+		border-top-left-radius: 20upx; 
+		border-top-right-radius: 20upx;
+		display: flex;
+	}
+	.topClass{
+		display: flex;
+		flex-direction: row; 
+		background-color: #E6E6E6;
+		border-top-left-radius: 20upx; 
+		border-top-right-radius: 20upx;
+		height: 100upx;
+	}
+	//弹框关闭按钮
+	.closeClass{
+		margin-left: 6%;
+		margin-top: 30upx;
+		font-size: 40upx;
+		color: #B4B4B4;
+	}
+	//弹框确定按钮
+	.submitClass{
+		margin-left: 66%;
+		margin-top: 30upx;
+		font-size: 40upx;
+		color: #71A8EB;
+	}
+	//弹框选择列表
+	.listClass{
+		margin-top: 30upx;
+		margin-left: 40%;//40%;
+		width: 60%;//60%;
+		height: 510upx;
+		// border: 1upx solid red;
+	}
+	.labelClass{
+		line-height: 100upx;
+		height: 100upx;
+		position: relative;
 	}
 </style>

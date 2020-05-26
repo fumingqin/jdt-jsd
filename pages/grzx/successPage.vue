@@ -1,8 +1,8 @@
 <template>
 	<view class="content">
 		<image style="width: 100%; height: 294rpx;" src="../../static/index/bgimage1.png"></image>
-		<image src="../../static/grzx/back.png" class="returnClass" @click="returnClick"></image>
 		<view class="titleClass">提交成功</view>
+		<image src="../../static/grzx/back.png" class="returnClass" @click="returnClick"></image>
 		<view class="boxClass">
 			<image src="../../static/grzx/success.png" class="imgClass"></image>
 			<text class="textClass">恭喜您，提交成功！</text>
@@ -23,7 +23,8 @@
 		},
 		methods:{
 			//--------返回个人中心---------
-			returnClick(){		
+			returnClick(){	
+				console.log(111)
 				uni.switchTab({
 					url:'/pages/grzx/user'
 				});

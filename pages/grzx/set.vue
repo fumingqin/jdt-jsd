@@ -100,7 +100,7 @@
 						})
 						setTimeout(function(){
 							uni.navigateTo({
-								url  : '/pages/grzx/userLogin'
+								url  : '/pages/grzx/selectOperation'
 							}) 
 						},1000)
 					}
