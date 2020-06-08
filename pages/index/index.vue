@@ -30,13 +30,13 @@
 					<image class="tabItem-image" src="../../static/index/WLYC.png"></image>
 					<text class="tabItem-font">出租车</text>
 				</view>
-				<!-- <view class="tabItem" @click="setPlateNumber('','公交车')">
-					<image class="tabItem-image" src="../../static/index/GJCX.png"></image>
-					<text class="tabItem-font">公交车</text>
-				</view>
 				<view class="tabItem" @click="setPlateNumber('../driver/bindCoachCode','包车')">
 					<image class="tabItem-image" src="../../static/index/BCFW.png"></image>
 					<text class="tabItem-font">包车</text>
+				</view>
+				<!-- <view class="tabItem" @click="setPlateNumber('','公交车')">
+					<image class="tabItem-image" src="../../static/index/GJCX.png"></image>
+					<text class="tabItem-font">公交车</text>
 				</view>
 				<view class="tabItem" @click="setPlateNumber('','旅游')">
 					<image class="tabItem-image" src="../../static/index/LVFW.png"></image>
