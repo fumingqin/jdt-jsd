@@ -253,4 +253,5 @@ const testData = {
 
 export default {
 	Interface,
+	testData
 }

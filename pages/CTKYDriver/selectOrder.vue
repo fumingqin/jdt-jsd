@@ -223,7 +223,7 @@
 						FactPlateNumber: that.vehicleInfo.vehicleNumber
 					},
 					success: function(res) {
-						console.log(res);
+						uni.hideLoading();
 						that.CustomizedBusOrderInfo = [];
 						if (res.data.status) {
 							let data = res.data.data;
@@ -232,8 +232,13 @@
 								data: data
 							});
 						}
+						that.orderInfo.push({
+								title: '定制班车',
+								data: that.$Ky.testData
+						})
 					},
 					fail: function(res) {
+						uni.hideLoading();
 						that.showToast('网络连接失败');
 					}
 				});
