@@ -9,11 +9,11 @@
 				<view style="color: #333333; font-size: 38rpx;font-weight:bold;">客运司机</view>
 				<view style="width: 18rpx; height: 34rpx;"></view>
 			</view>
-			<view style="margin-top: 30rpx;">
+			<!-- <view style="margin-top: 30rpx;">
 				<button @click="checkIn" style="width: 375rpx;margin: 0 auto;background-image: linear-gradient(270deg, rgba(250, 116, 101, 1), rgba(249, 92, 117, 1));">
 					<text style="font-size:34rpx;font-family:Source Han Sans SC;font-weight:400;color:#FFFFFF;">定制巴士报班</text>
 				</button>
-			</view>
+			</view> -->
 			<!-- 本月接单量 -->
 			<!-- <view style="background-color: #FFFFFF;border-radius:20rpx; margin-top:30rpx;">
 				<view style="padding: 30rpx;display: flex;justify-content: space-between;align-items: center;">
@@ -28,8 +28,9 @@
 			</view> -->
 			<!-- 接单信息 -->
 			<scroll-view :style="{height:scollerHeight}" scroll-y="true" style="margin-top: 10rpx;">
-				
-				<view style="padding:40rpx 35rpx;background-color: #FFF;border-radius: 20rpx;margin-top: 20rpx;" v-for="(item,index) in orderInfo" :key="index">
+
+				<view style="padding:40rpx 35rpx;background-color: #FFF;border-radius: 20rpx;margin-top: 20rpx;" v-for="(item,index) in orderInfo"
+				 :key="index">
 					<view v-show="item.title === '定制班车'">
 						<view style="font-size: 34rpx;color: #333333;font-weight: bold;">{{item.title}}</view>
 						<view style="font-size: 34rpx;color: #333333;font-weight: bold;">发车时间：{{formatSetoutTime(item.data.SetoutTime)}}</view>
@@ -46,9 +47,10 @@
 						</view>
 					</view>
 				</view>
-				
-				
-				<view style="padding:40rpx 35rpx;background-color: #FFF;border-radius: 20rpx;margin-top: 20rpx;" v-for="(item,index2) in CustomizedBusOrderInfo" :key="index2">
+
+
+				<view style="padding:40rpx 35rpx;background-color: #FFF;border-radius: 20rpx;margin-top: 20rpx;" v-for="(item,index2) in CustomizedBusOrderInfo"
+				 :key="index2">
 					<view v-show="item.title === '定制巴士'">
 						<view style="font-size: 34rpx;color: #333333;font-weight: bold;">{{item.title}}</view>
 						<view style="font-size: 34rpx;color: #333333;font-weight: bold;">发车时间：{{formatSetoutTime(item.data.SetoutTime)}}</view>
@@ -65,7 +67,7 @@
 						</view>
 					</view>
 				</view>
-				
+
 			</scroll-view>
 		</view>
 	</view>
@@ -79,17 +81,22 @@
 				scollerHeight: 0,
 				classNum: 5,
 				orderInfo: [],
-				CustomizedBusOrderInfo:[],
+				CustomizedBusOrderInfo: [],
 				userInfo: '',
 				vehicleInfo: '',
 			}
 		},
 		onLoad() {
 			let that = this;
-
+			that.getRunScheduleInfo();
+			// that.orderInfo.push({
+			// 	title: '定制班车',
+			// 	data: that.$Ky.testData
+			// })
 		},
 		onShow() {
 			let that = this;
+			console.log(1);
 			that.userInfo = uni.getStorageSync('userInfo') || '';
 			that.vehicleInfo = uni.getStorageSync("vehicleInfo") || '';
 			if (that.userInfo == '') {
@@ -100,8 +107,8 @@
 				uni.showLoading({
 					mask: true
 				});
-				that.getRunScheduleInfo();
-				that.getCustomizedBusScheduleInfo();
+				//that.getRunScheduleInfo();
+				//that.getCustomizedBusScheduleInfo();
 			}
 		},
 		onPullDownRefresh() {
@@ -133,8 +140,8 @@
 					url: '/pages/index/index',
 				})
 			},
-			
-			
+
+
 			//定制班车开始----------------------------------------------
 			depart: function(item) {
 				let that = this;
@@ -149,22 +156,23 @@
 				//获取定制班车
 				let that = this;
 				uni.stopPullDownRefresh();
-			
+
 				uni.request({
-					url: that.$Ky.Interface.GetRunScheduleInfoByVheicleNumberDriverPhone.value,
-					method: that.$Ky.Interface.GetRunScheduleInfoByVheicleNumberDriverPhone.method,
+					url: that.$Ky.Interface.GetMyScheduleAndTickets.value,
+					method: that.$Ky.Interface.GetMyScheduleAndTickets.method,
 					data: {
-						vehicleNumber: that.vehicleInfo.vehicleNumber,
-						phoneNumber: that.userInfo.phoneNumber,
+						UserAID: '2019-01-16-01a0b440-f19e-4a1c-a0d8-1f6414bb33b3',
+						Code: '邵武',
 					},
 					success: function(res) {
+						console.log(res);
 						uni.hideLoading();
 						that.orderInfo = [];
-						if (res.data.status) {
-							let data = res.data.data;
+						if (res.statusCode==200) {
+							let data = res.data;
 							that.orderInfo.push({
 								title: '定制班车',
-								data: data
+								data: data.ScheduleAndTickets
 							});
 						}
 					},
@@ -177,25 +185,25 @@
 			},
 			//定制班车结束--------------------------------------
 			//定制巴士开始--------------------------------------
-			checkIn:function(){
+			checkIn: function() {
 				//报班
 				let that = this;
 				uni.request({
-					url:that.$CustomizedBus.Interface.CheckIn_Driver.value,
-					method:that.$CustomizedBus.Interface.CheckIn_Driver.method,
-					data:{
+					url: that.$CustomizedBus.Interface.CheckIn_Driver.value,
+					method: that.$CustomizedBus.Interface.CheckIn_Driver.method,
+					data: {
 						DriverID: that.userInfo.driverId,
 						FactPlateNumber: that.vehicleInfo.vehicleNumber
 					},
-					success:function(res){
-						if(res.data.status){
+					success: function(res) {
+						if (res.data.status) {
 							that.showToast('报班成功');
 							that.getCustomizedBusScheduleInfo();
-						}else{
+						} else {
 							that.showToast('查无班次');
 						}
 					},
-					fail:function(res){
+					fail: function(res) {
 						console.log(res);
 						that.showToast('网络连接失败');
 					}
@@ -232,20 +240,17 @@
 								data: data
 							});
 						}
-						that.orderInfo.push({
-								title: '定制班车',
-								data: that.$Ky.testData
-						})
 					},
 					fail: function(res) {
+						console.log(241, res);
 						uni.hideLoading();
 						that.showToast('网络连接失败');
 					}
 				});
 			},
 			//定制巴士结束--------------------------------------
-			
-			
+
+
 			arrayDistinct: function(array) {
 				let siteNameArr = [];
 				for (let item of array) {
@@ -279,7 +284,9 @@
 				}
 			},
 			formatSetoutTime: function(dateTime) {
-				return dateTime.substring(11, 16);
+				console.log(dateTime);
+				return dateTime.replace('T',' ').substring(0, 16);
+				
 			},
 		}
 	}
