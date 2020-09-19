@@ -1,5 +1,6 @@
 //定制班车接口
-const Url = 'https://zntc.145u.net:9099';
+// const Url = 'https://zntc.145u.net:9099';
+   const Url = 'http://zxsj.ipin8.cn';
 //接口对象
 const Interface = {
 	GetCoachIDByVheicleNumberDriverPhone : {
@@ -8,8 +9,8 @@ const Interface = {
 		method: 'POST', //GET-POST
 		pages: []
 	},
-	GetRunScheduleInfoByVheicleNumberDriverPhone : {
-		value: Url + '/api/Customized/GetRunScheduleInfoByVheicleNumberDriverPhone',
+	GetMyScheduleAndTickets : {
+		value: Url + '/Deiver/GetMyScheduleAndTickets',
 		name: '司机端-定制班车-获取车辆班次信息',
 		method: 'POST', //GET-POST
 		pages: []
