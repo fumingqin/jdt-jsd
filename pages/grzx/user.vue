@@ -83,7 +83,7 @@
 				uni.getStorage({
 					key:'userInfo',
 					success(user){
-						that.userName=user.data.userName;
+						that.userName=user.data.driverName || '暂无姓名';
 						if(that.isBase64(user.data.userPortrait)){
 							base64ToPath(base64)
 							  .then(path => {
