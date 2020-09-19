@@ -129,22 +129,6 @@
 						}) 
 					},500);
 				}
-				// else{
-				// 	uni.showModal({
-				// 	    content: '确定要退出登录么',
-				// 	    success: (e)=>{
-				// 	    	if(e.confirm){
-				// 				uni.removeStorageSync('vehicleInfo');
-				// 				uni.removeStorageSync('userInfo');
-				// 	    		setTimeout(()=>{
-				// 	    			uni.switchTab({
-				// 	    				url:'/pages/grzx/user'
-				// 	    			})
-				// 	    		}, 200)
-				// 	    	}
-				// 	    }
-				// 	}); 
-				// }	
 			},
 			scanClick(){
 				uni.showToast({

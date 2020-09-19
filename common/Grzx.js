@@ -3,7 +3,8 @@
 
 //接口域名
 const Url = 'https://zntc.145u.net:9099';
-const Url1 = 'https://zntc.145u.net:9099';//此字段无用
+const Url1 = 'https://zntc.145u.net:9099';	//此字段无用
+const Url2 = 'http://zxsj.ipin8.cn';		//定制客运
 const Interface={
 	Register_Driver:{
 		value:Url+'/api/person/Register_Driver',
@@ -67,6 +68,15 @@ const Interface={
 		method:'POST',
 		pages: [],
 	},
+	
+	//定制客运登录
+	ky_login:{
+		value:Url2+'/Deiver/Login',
+		name:'定制客运登录',
+		method:'POST',
+		pages: [],
+	},
+	
 }
 
 
