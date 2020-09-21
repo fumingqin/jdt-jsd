@@ -4,30 +4,36 @@
 		<image src="../../static/grzx/backgroudimg.png" style="width: 100%; position: absolute; bottom: 0; height: 100%;"></image>
 		<image src="../../static/grzx/back.png" class="returnClass" @click="returnClick"></image>
 		
-		<view class="inputContent" :class="userType == '定制客运'?'inputHeight1':'inputHeight2'">
-			<view class="inputItem1">
-				<image src="../../static/grzx/usertype.png" class="iconClass3"></image>
-				<view class="selectClass">
-					<xfl-select  :list="list" :clearable="false" :showItemNum="4"  :listShow="false" :isCanInput="false" @change="selectClick"  
-					:style_Container="'height: 50px;font-size: 16px;'" :placeholder = "'请选择用户类型'" :initValue="userType" :selectHideType="'hideAll'">
-			        </xfl-select>
-				</view>
-			</view>
+		<!-- 手机号+密码登录 -->
+		<view class="inputContent" v-if="type==1">
 			<view class="inputItem phoneNum">
 				<image src="../../static/grzx/phone.png" class="iconClass1"></image>
-				<input placeholder="请输入账号" maxlength="20" class="inputClass" v-model="phoneNumber"/>
+				<input type="number" placeholder="手机号码" maxlength="11" class="inputClass" name="phoneNumber" data-key="phoneNumber" @input="inputChange1" :value="phoneNumber"/>
 			</view>
 			<view class="inputItem Captcha">
 				<image src="../../static/grzx/password.png" class="iconClass2"></image>
-				<input type="password" placeholder="请输入密码" class="inputClass" v-model="password" />
+				<input type="password" placeholder="请输入密码" class="inputClass" name="password" data-key="password" :value="password" @input="inputChange3" />
 			</view>
-			<view class="inputItem2" v-if="userType == '定制客运'">
-				<radio-group @change="radioChange">
-				   <label class="radio"><radio value="邵武" checked="true" style="transform: scale(0.8)" color="#F96072"/>邵武</label>
-				   <label class="radio"><radio value="泰宁" style="transform: scale(0.8)" color="#F96072"/>泰宁</label>         
-				</radio-group>
+			<text class="switchClass" @click="switchClick">切换登录方式</text>
+			<image src="../../static/grzx/btnLogin.png" class="btnLogin" ></image>
+			<text class="fontStyle" @click="pwdClick">登录</text>
+		</view>
+		
+		<!-- 手机号+验证码登录 -->
+		<view class="inputContent" v-if="type==2">
+			<view class="inputItem phoneNum">
+				<image src="../../static/grzx/phone.png" class="iconClass1"></image>
+				<input type="number" placeholder="手机号码" maxlength="11" class="inputClass" name="phoneNumber" data-key="phoneNumber" @input="inputChange1" :value="phoneNumber"/>
 			</view>
-			<text class="fontStyle" :class="userType == '定制客运'?'fontTop1':'fontTop2'" @click="pwdClick">登录</text>
+			<view class="inputItem Captcha">
+				<image src="../../static/grzx/code.png" class="iconClass2"></image>
+				<input type="number" placeholder="输入验证码" maxlength="4" class="inputClass" name="captchaCode" data-key="captchaCode" @input="inputChange2" :value="captchaCode"/>
+			</view>
+			<!-- 发送验证码 -->
+			<view class="getCode style1" @click="getCodeClick" id="Code">{{textCode}}</view>
+			<image src="../../static/grzx/btnLogin.png" class="btnLogin" ></image>
+			<text class="switchClass" @click="switchClick">切换登录方式</text>
+			<text class="fontStyle" @click="codeClick">确定</text>
 		</view>
 		
 		<!-- logo -->
@@ -36,22 +42,15 @@
 </template>
 
 <script>
-	import xflSelect from '@/components/grzx/xfl-select/xfl-select.vue';
 	export default {
-		components: { xflSelect },  //注册为子组件
 		data() {
 			return {
+				type:1,  //1为密码登录，2为验证码登录
 				textCode:"获取验证码",
 				phoneNumber:'',
 				password:'',
 				captchaCode:'',
 				imgHeight:'',
-				list: [       //下拉列表
-					'定制客运',
-				    '接客司机',
-				],
-				userType:'定制客运',	//用户类型
-				address:'邵武',		//定制客运司机登录
 			}
 		},
 		onLoad() {
@@ -67,87 +66,124 @@
 				       }
 				});
 			},
+			//--------------只能输入数字-------------
+			judgeNum(val){  
+				var regPos = /^\d+(\.\d+)?$/; //非负浮点数
+				    var regNeg = /^(-(([0-9]+\.[0-9]*[1-9][0-9]*)|([0-9]*[1-9][0-9]*\.[0-9]+)|([0-9]*[1-9][0-9]*)))$/; //负浮点数
+				    if(regPos.test(val) || regNeg.test(val)) {
+				        return true;
+				    } else {
+				        return false;
+				    }
+			},
+			inputChange1(e){
+				var num=e.detail.value;
+				if(this.judgeNum(num)){
+					
+				}else{
+					uni.showToast({
+						title : '请输入正确的手机号码',
+						icon : 'none',
+					})
+				}
+				const key = e.currentTarget.dataset.key;
+				this[key] = e.detail.value;
+			},
+			inputChange2(e){
+				var num=e.detail.value;
+				if(this.judgeNum(num)){
+					
+				}else{
+					uni.showToast({
+						title : '请输入正确的验证码',
+						icon : 'none',
+					})
+				}
+				const key = e.currentTarget.dataset.key;
+				this[key] = e.detail.value;
+			},
+			inputChange3(e){
+				const key = e.currentTarget.dataset.key;
+				this[key] = e.detail.value;
+			},
 			//--------------密码登录-------------
 			pwdClick(){
-				if(this.phoneNumber == ""){
-					uni.showToast({
-						title: '请输入账号',
-						icon:'none'
-					});
-				}else if(this.password == ""){
-					uni.showToast({
-						title: '请输入密码',
-						icon:'none'
-					});
-				}else if(this.userType == "定制客运"){
-					this.ky_login();
-				}else if(this.userType == "接客司机"){
-					this.jk_login();
-				}
-			},
-			
-			//----------------------------------定制客运登录----------------------------------
-			ky_login(){
 				uni.showLoading({
-					title: '登录中...',
-					mask: false
-				});
-				console.log(this.phoneNumber,'账号');
-				console.log(this.address,'地区');
+					title:'登录中...'
+				})
+				var that=this;
+				console.log(that.phoneNumber)
+				console.log(that.password)
 				uni.request({
-					url: this.$GrzxInter.Interface.ky_login.value,
-					method: this.$GrzxInter.Interface.ky_login.method,
-					data: {
-						User:this.phoneNumber,
-						Passwod:'',
-						Code:this.address,
+					//url:'http://111.231.109.113:8002/api/person/LoginByPassWord_Driver',
+					url:that.$GrzxInter.Interface.LoginByPassWord_Driver.value,
+					data:{
+						phoneNumber:that.phoneNumber,
+						password:that.password,
 					},
-					success: res => {
-						console.log(res,'res');
-						if(res.statusCode == 200 && res.data.User != null){
-							let data = res.data.User;
-							uni.setStorageSync('userInfo',{
-								AID:data.AID,
-								coachCardNumber:data.CoachCardNumber,
-								driverName:data.Name,
-								phoneNumber:data.PhoneNumber,
-								userID:data.UserID,
-							})
-							uni.showToast({
-								title: '登录成功',
-								icon:'none'
-							});
-							setTimeout(function(){
-								uni.switchTab({
-									url:'/pages/index/index',
-								})
-							},500)
+					method:that.$GrzxInter.Interface.LoginByPassWord_Driver.method,
+					success(res) {
+						console.log(res)
+						if(res.data.msg=='登入成功'){
+							that.getuserInfo(that.phoneNumber);
 						}else{
 							uni.showToast({
-								title: res.data.Message,
-								icon:'none'
-							});
+								title:'手机号未注册或密码错误',
+								icon:'none',
+							})
 						}
-					},
-					fail: () => {
-					},
-					complete: () => {
-						setTimeout(function(){
-							uni.hideLoading();
-						},2000)
 					}
-				});
+				})
 			},
-			
-			//----------------------------------接客司机登录----------------------------------
-			jk_login(){
-				
+			//--------------验证码登录-------------
+			codeClick(){
+				uni.showLoading({
+					title:'登录中...'
+				})
+				var that=this;
+				const {phoneNumber, captchaCode} = this;		
+				var phone=this.phoneNumber;
+				var captcha=this.captchaCode;
+				if(phone==null||phone==""){
+					uni.showToast({
+						title:"请输入手机号码",
+						icon:"none"
+					})
+				}else{
+					if(captcha==null||captcha==""){
+						uni.showToast({
+							title:"请输入验证码",
+							icon:"none"
+						})
+					}else{
+						uni.getStorage({
+							key:'captchaCode',
+							success(res) {
+								if(captcha==res.data.code&&phone==res.data.phone){
+									that.getuserInfo(phone);
+								}else{
+									uni.showToast({
+										title:"验证码错误",
+										icon:"none"
+									})
+								}
+							},
+							fail(){
+								uni.showToast({
+									title:"验证码已过期，请重新获取",
+									icon:"none"
+								})	
+							}
+						})
+					
+					}
+				}
 			},
-			
 			//--------------获取用户信息-------------
 			getuserInfo(e){
 				var that=this;
 				uni.request({
+					//url:'http://111.231.109.113:8002/api/person/GetDetailInfo_Driver',
 					url:that.$GrzxInter.Interface.GetDetailInfo_Driver.value,
 					data:{
 						phoneNumber:e
@@ -218,6 +254,7 @@
 						  	self.textCode = second+"秒后重发";
 						  }},1000)
 						 uni.request({
+							//url:'http://111.231.109.113:8002/api/person/getLoginCode',
 							url:self.$GrzxInter.Interface.getLoginCode.value,
 						    data:{
 								phoneNumber:self.phoneNumber,
@@ -248,21 +285,21 @@
 					})
 				}
 			},
-			
 			//--------------返回上一页-------------
 			returnClick(){		
 				uni.navigateBack();
 			},
-			
-			//--------------下拉选择-------------
-			selectClick(e){
-				console.log(e.newVal)
-				this.userType=e.newVal;
-			},
-			
-			//--------------单选按钮点击事件-------------
-			radioChange(e){
-				this.address = e.detail.value;
+			//--------------切换登录方式-------------
+			switchClick(){
+				this.password="";
+				this.captchaCode="";
+				console.log(this.password,"this.password")
+				console.log(this.captchaCode,"this.captchaCode")
+				if(this.type==1){
+					this.type=2;
+				}else{
+					this.type=1;
+				}
 			},
 		}
 	}
@@ -305,17 +342,12 @@
 	}
 	.inputContent{  //登录区域的样式
 		width: 90.4%;
+		height: 720upx;
 		position: absolute;
 		top:324upx;
 		left: 4.8%;
 		background-color: white;
 		border-radius: 50upx;
-	}
-	.inputHeight1{
-		height: 820upx;
-	}
-	.inputHeight2{
-		height: 750upx;
 	}
 	.inputItem{		//输入区域的样式
 		width: 87.6%;
@@ -324,12 +356,12 @@
 	}
 	.phoneNum{
 		position: absolute;
-		top:270upx;
+		top:130upx;
 		left: 6.19%;
 	}
 	.Captcha{
 		position: absolute;
-		top:410upx;
+		top:272upx;
 		left: 6.19%;
 	}
 	.inputClass{	//输入框的位置
@@ -343,7 +375,7 @@
 	}
 	.btnLogin{ //按钮
 		position: absolute;
-		top:640upx;
+		top:500upx;
 		width: 100%;
 		height: 180upx;
 	}
@@ -380,6 +412,7 @@
 	}	
 	.fontStyle{		//确定字体样式
 		position: absolute;
+		top: 530upx;
 		left: 5%;
 		text-align: center;
 		font-size: 36upx;
@@ -387,45 +420,12 @@
 		width: 90%;
 		height: 100upx;
 		line-height: 100upx;
-		background: linear-gradient(270deg, #FA7465, #F95C75);
-		box-shadow: 0px 7px 38px 8px rgba(216, 48, 75, 0.15);
-		border-radius: 12px;
 	}
-	.fontTop1{
-		top: 670upx;
-	}
-	.fontTop2{
-		top: 600upx;
-	}
-	
-	.inputItem1{ //下拉框样式
+	.switchClass{ //切换登录方式
 		position: absolute;
-		top:130upx;
-		left: 6.19%;
-		width: 87.6%;
-		height: 140upx;
-		border-bottom: 1upx solid #EAEAEA;
-	}
-	.selectClass{
-		position: absolute;
-		top:30upx;
-		left: 8.19%;
-		width: 93.6%;
-	}
-	.iconClass3{   //用户类型图标
-		width: 33upx;
-		height: 36upx;
-		top: 57upx;
-		left:2%;
-		position: absolute;
-	}
-	.inputItem2{
-		width: 90%;
-		position: absolute;
-		top:580upx;
-		left: 6.19%;
-		.radio{
-			margin-left: 18%;
-		}
+		top:440upx;
+		left: 65%; //8%;
+		font-size: 30upx;
+		color: #333333;
 	}
 </style>
