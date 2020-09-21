@@ -32,15 +32,15 @@
 										<view>
 											车次信息：{{ScheduleAndTickets.LineName}}
 										</view>
-										<view>
+										<!-- <view style="margin-top: 10rpx;">
 											车票号：{{item.TicketID}}
-										</view>
+										</view> -->
 									</view>
 									<view>
 										<image src="../../static/CTKYDriver/Nocheck.png" style="width: 104rpx;height: 104rpx;"></image>
 									</view>
 								</view>
-								<view>
+								<view style="margin-top: -30rpx;">
 									旅客姓名：{{item.PassengerName}}
 								</view>
 								<view>
@@ -75,15 +75,15 @@
 										<view>
 											车次信息：{{ScheduleAndTickets.LineName}}
 										</view>
-										<view>
+										<!-- <view>
 											车票号：{{item.TicketID}}
-										</view>
+										</view> -->
 									</view>
 									<view>
 										<image src="../../static/CTKYDriver/Checked.png" style="width: 104rpx;height: 104rpx;"></image>
 									</view>
 								</view>
-								<view>
+								<view style="margin-top: -30rpx;">
 									旅客姓名：{{item.PassengerName}}
 								</view>
 								<view>
@@ -165,13 +165,11 @@
 		onShow() {
 			let that = this;
 			that.userInfo = uni.getStorageSync('userInfo') || '';
-			that.vehicleInfo = uni.getStorageSync("vehicleInfo")||'';
+			// that.vehicleInfo = uni.getStorageSync("vehicleInfo")||'';
 			let scheduleInfo = uni.getStorageSync('scheduleInfo') || '';
 			that.ScheduleAndTickets = scheduleInfo;
 			if(that.userInfo == ''){
 				that.showToast('未取得用户信息');
-			}else if(that.vehicleInfo == ''){
-				that.showToast('未取得车辆信息');
 			}else {
 				that.getCoachid();
 			}

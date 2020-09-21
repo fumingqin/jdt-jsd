@@ -98,11 +98,9 @@
 			let that = this;
 			console.log(1);
 			that.userInfo = uni.getStorageSync('userInfo') || '';
-			that.vehicleInfo = uni.getStorageSync("vehicleInfo") || '';
+			// that.vehicleInfo = uni.getStorageSync("vehicleInfo") || '';
 			if (that.userInfo == '') {
 				that.showToast('未取得用户信息');
-			} else if (that.vehicleInfo == '') {
-				that.showToast('未取得车辆信息');
 			} else {
 				uni.showLoading({
 					mask: true
