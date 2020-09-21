@@ -251,8 +251,11 @@
 			},
 			
 			back:function(){
-				uni.navigateTo({
-					url:'./selectOrder',
+				// uni.navigateTo({
+				// 	url:'./selectOrder',
+				// 	animationType:"slide-in-left"
+				// })
+				uni.navigateBack({
 					animationType:"slide-in-left"
 				})
 			},
@@ -305,6 +308,7 @@
 				return arr.filter(x => x.CarryChild).length;
 			},
 			formatSetoutTime:function(dateTime){
+				console.log(dateTime);
 				return dateTime.substring(11,16);
 			},
 			
