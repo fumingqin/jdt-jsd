@@ -112,6 +112,7 @@
 								driverName:data.Name,
 								phoneNumber:data.PhoneNumber,
 								userID:data.UserID,
+								code:this.address,
 							})
 							uni.showToast({
 								title: '登录成功',
