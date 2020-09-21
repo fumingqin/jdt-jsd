@@ -88,7 +88,7 @@
 		},
 		onLoad() {
 			let that = this;
-			that.getRunScheduleInfo();
+			
 			// that.orderInfo.push({
 			// 	title: '定制班车',
 			// 	data: that.$Ky.testData
@@ -98,6 +98,7 @@
 			let that = this;
 			console.log(1);
 			that.userInfo = uni.getStorageSync('userInfo') || '';
+			that.getRunScheduleInfo(that.userInfo);
 			// that.vehicleInfo = uni.getStorageSync("vehicleInfo") || '';
 			if (that.userInfo == '') {
 				that.showToast('未取得用户信息');
@@ -150,17 +151,17 @@
 					url: '/pages/CTKYDriver/index',
 				})
 			},
-			getRunScheduleInfo: function() {
+			getRunScheduleInfo: function(userInfo) {
 				//获取定制班车
 				let that = this;
 				uni.stopPullDownRefresh();
-
+                console.log(that.userInfo);
 				uni.request({
 					url: that.$Ky.Interface.GetMyScheduleAndTickets.value,
 					method: that.$Ky.Interface.GetMyScheduleAndTickets.method,
 					data: {
-						UserAID: that.userInfo.AID,
-						Code: that.userInfo.code,
+						UserAID: userInfo.AID,
+						Code: userInfo.code,
 					},
 					success: function(res) {
 						console.log(res);
