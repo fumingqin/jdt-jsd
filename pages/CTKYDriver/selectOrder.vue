@@ -159,8 +159,8 @@
 					url: that.$Ky.Interface.GetMyScheduleAndTickets.value,
 					method: that.$Ky.Interface.GetMyScheduleAndTickets.method,
 					data: {
-						UserAID: '2019-01-16-01a0b440-f19e-4a1c-a0d8-1f6414bb33b3',
-						Code: '邵武',
+						UserAID: that.userInfo.AID,
+						Code: that.userInfo.code,
 					},
 					success: function(res) {
 						console.log(res);
