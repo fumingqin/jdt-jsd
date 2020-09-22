@@ -3,9 +3,9 @@
    const Url = 'http://zxsj.ipin8.cn';
 //接口对象
 const Interface = {
-	GetCoachIDByVheicleNumberDriverPhone : {
-		value: Url + '/api/Customized/GetCoachIDByVheicleNumberDriverPhone',
-		name: '司机端-定制班车-获取司机coachid',
+	TicketCheck : {
+		value: Url + '/Deiver/TicketCheck',
+		name: '司机端-定制班车-根据ticketid检票',
 		method: 'POST', //GET-POST
 		pages: []
 	},
@@ -15,12 +15,18 @@ const Interface = {
 		method: 'POST', //GET-POST
 		pages: []
 	},
-	CheckTicket_ByTicketID : {
-		value: Url + '/api/Customized/CheckTicket_ByTicketID',
-		name: '司机端-定制班车-检票',
+	GetCoachByNumber : {
+		value: Url + '/Deiver/GetCoachByNumber',
+		name: '司机端-定制班车-模糊查询车牌号',
 		method: 'POST', //GET-POST
 		pages: []
-	}
+	},
+	SetMyCoach : {
+		value: Url + '/Deiver/SetMyCoach',
+		name: '司机端-定制班车-更改车牌号',
+		method: 'POST', //GET-POST
+		pages: []
+	},
 }
 const testData = {
 	"ExecuteScheduleID": null,

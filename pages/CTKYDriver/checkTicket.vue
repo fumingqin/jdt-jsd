@@ -16,7 +16,7 @@
 				</view>
 				<!--未检-->
 				<scroll-view :style="{height:scrollheight}" :scroll-y="true" style="border-radius:20rpx ;" v-if="!IsCheck">
-					<view v-for="(item,index) in ScheduleAndTickets.Tickets" :key="index" v-show="!item.Checked"  style="background-color: #FFFFFF;border-radius: 20rpx;margin-top: 20rpx;" >
+					<view v-for="(item,index) in ScheduleAndTickets.Tickets" :key="index" v-show="!item.Checked" style="background-color: #FFFFFF;border-radius: 20rpx;margin-top: 20rpx;">
 						<view style="padding: 35rpx 35rpx 0 35rpx;">
 							<view style="display: flex;justify-content: space-between;font-size: 32rpx;padding-bottom: 30rpx;border-bottom: solid 1px #EAEAEA;">
 								<view>
@@ -51,7 +51,7 @@
 								</view>
 							</view>
 						</view>
-					   <!--<view style="display: flex;color: #666666;justify-content:flex-end;padding: 10rpx 35rpx 35rpx 0;">
+						<!--<view style="display: flex;color: #666666;justify-content:flex-end;padding: 10rpx 35rpx 35rpx 0;">
 							<view style="padding-right: 30rpx;"><button style="width: 200rpx;background-color: #FFF;font-size: 30rpx;" >过站未检</button></view>
 							<view><button @click="callPassenger(item)" style="width: 200rpx;background-color: #FFF;font-size: 30rpx;">联系电话</button></view>
 						</view> -->
@@ -59,7 +59,7 @@
 				</scroll-view>
 				<!--已检-->
 				<scroll-view :style="{height:scrollheight}" :scroll-y="true" style="border-radius:20rpx ;" v-if="IsCheck">
-					<view  v-for="(item,index) in ScheduleAndTickets.Tickets" :key="index" v-show="item.Checked"  style="background-color: #FFFFFF;margin-top: 20rpx;border-radius: 20rpx;">
+					<view v-for="(item,index) in ScheduleAndTickets.Tickets" :key="index" v-show="item.Checked" style="background-color: #FFFFFF;margin-top: 20rpx;border-radius: 20rpx;">
 						<view style="padding: 35rpx 35rpx 0 35rpx;">
 							<view style="display: flex;justify-content: space-between;font-size: 32rpx;padding-bottom: 30rpx;border-bottom: solid 1px #EAEAEA;">
 								<view>
@@ -130,13 +130,13 @@
 						imageStyle: 'width: 51rpx;height: 45rpx;',
 						canClick: true
 					},
-					/* {
+					{
 						title: '购票',
 						color: 'color: #2C2D2D',
 						imageSrc: '../../static/tabbar/buy-black.png',
 						imageStyle: 'width: 49rpx;height: 36rpx;',
 						canClick: true
-					}, */
+					},
 					{
 						title: '检票',
 						color: 'color: #FC4646',
@@ -146,19 +146,19 @@
 					}
 				],
 				IsCheck: false,
-				
-				scrollheight:'',
-				
-				vehicleInfo:'',
-				userInfo:'',
-				coachid:'',
-				ScheduleAndTickets:''
+
+				scrollheight: '',
+
+				vehicleInfo: '',
+				userInfo: '',
+				ScheduleAndTickets: ''
 			}
 		},
 		onLoad() {
 			let that = this;
+			
 		},
-		onUnload(){
+		onUnload() {
 			let that = this;
 			uni.removeStorageSync('driverCoachid');
 		},
@@ -168,10 +168,10 @@
 			// that.vehicleInfo = uni.getStorageSync("vehicleInfo")||'';
 			let scheduleInfo = uni.getStorageSync('scheduleInfo') || '';
 			that.ScheduleAndTickets = scheduleInfo;
-			if(that.userInfo == ''){
+			if (that.userInfo == '') {
 				that.showToast('未取得用户信息');
-			}else {
-				that.getCoachid();
+			} else{
+				
 			}
 		},
 		onPullDownRefresh() {
@@ -179,44 +179,32 @@
 			that.getRunScheduleInfo();
 		},
 		mounted() {
-			var that=this;
-				setTimeout(function(){//设置scollerview的高度
-					uni.getSystemInfo({
-						success(res) {
-							that.scrollheight=res.windowHeight-40-195+'px'
-						}
-					})
-				},50)
+			var that = this;
+			setTimeout(function() { //设置scollerview的高度
+				uni.getSystemInfo({
+					success(res) {
+						that.scrollheight = res.windowHeight - 40 - 195 + 'px'
+					}
+				})
+			}, 50)
 		},
 		methods: {
-			showToast:function(title,icon='none'){
+			showToast: function(title, icon = 'none') {
 				uni.showToast({
-					title:title,
-					icon:icon
+					title: title,
+					icon: icon
 				});
 			},
-			qrcode:function() {
+			qrcode: function() {
 				let that = this;
 				//扫描二维码
 				uni.scanCode({
 					onlyFromCamera: true,
 					success: function(res) {
-						let coachid = uni.getStorageSync('driverCoachid') || '';
-						if(coachid === ''){
-							//如果缓存内没有coachid,那重新调接口查。
-							that.getCoachid().then(res =>{
-								if(res.data.msg == '获取成功'){
-									res.data.data;
-									that.checkTicket(res.data.data,res.result);
-								}
-							});
-						} else {
-							//如果缓存内有coachid
-							that.checkTicket(coachid,res.result);
-						}
+						that.checkTicket(res.data.data, res.result);
 					},
-					fail:function(){
-						
+					fail: function() {
+
 					}
 				});
 			},
@@ -240,117 +228,93 @@
 							break;
 					};
 					uni.redirectTo({
-						url:url
+						url: url
 					})
 				}
 			},
-					
-			getCoachid:function(){
-				let that = this;
-				//获取司机对应caochid；
-				return new Promise((resolve,reject) => {
-					uni.request({
-						url: that.$Ky.Interface.GetCoachIDByVheicleNumberDriverPhone.value,
-						method:that.$Ky.Interface.GetCoachIDByVheicleNumberDriverPhone.method,
-						data:{
-							vehicleNumber : that.vehicleInfo.vehicleNumber,
-							phoneNumber: that.userInfo.phoneNumber
-						},
-						success:function(res){
-							if(res.data.msg == '获取成功'){
-								that.coachid = res.data.data;
-								uni.setStorageSync('driverCoachid',that.coachid);
-							}else{
-								that.showToast(res.data.msg);
-							}
-						},
-						fail:function(res){
-							//console.log(res);
-							that.showToast('网络连接失败');
-						}
-					});
-				});
-			},
-			
-			checkTicket:function(coachid,tickId){
+
+
+
+			checkTicket: function(TicketID) {
 				//泉运检票接口
 				let that = this;
 				uni.showLoading({
-					mask:true
+					mask: true
 				});
 				uni.request({
-					url : that.$Ky.Interface.CheckTicket_ByTicketID.value,
-					method:that.$Ky.Interface.CheckTicket_ByTicketID.method,
-					data:{
-						coachID : coachid,
-						tickId :tickId,
+					url: that.$Ky.Interface.TicketCheck.value,
+					method: that.$Ky.Interface.TicketCheck.method,
+					data: {
+						TicketID: that.TicketID,
+						Code: that.userInfo.code,
+						UserAID: that.userInfo.AID,
 					},
-					success:function(res){
+					success: function(res) {
 						uni.hideLoading();
-						//console.log(res);
-						if(res.data.status){
+						console.log(res);
+						if (res.data.status) {
 							that.showToast('检票成功');
-							that.getRunScheduleInfo();
-						}else{
-							that.showToast('检票失败');
+							// that.getRunScheduleInfo();
+						} else {
+							that.showToast(res.data.Message);
 						}
 					},
-					fail:function(res){
+					fail: function(res) {
 						uni.hideLoading();
 						//console.log(res);
 						that.showToast('网络连接失败');
 					}
 				});
 			},
-			
-			getRunScheduleInfo:function(){
+
+			getRunScheduleInfo: function() {
 				let that = this;
 				uni.stopPullDownRefresh();
 				uni.request({
-					url:that.$Ky.Interface.GetRunScheduleInfoByVheicleNumberDriverPhone.value,
-					method:that.$Ky.Interface.GetRunScheduleInfoByVheicleNumberDriverPhone.method,
-					data:{
-						vehicleNumber : that.vehicleInfo.vehicleNumber,
-						phoneNumber : that.userInfo.phoneNumber,
+					url: that.$Ky.Interface.GetRunScheduleInfoByVheicleNumberDriverPhone.value,
+					method: that.$Ky.Interface.GetRunScheduleInfoByVheicleNumberDriverPhone.method,
+					data: {
+						vehicleNumber: that.vehicleInfo.vehicleNumber,
+						phoneNumber: that.userInfo.phoneNumber,
 					},
-					success:function(res){
-						if(res.data.status){
+					success: function(res) {
+						if (res.data.status) {
 							that.orderInfo = [];
 							let data = res.data.data;
 							data.SiteTicketList = that.arrayDistinct(data.SiteTicketList);
 							data.SiteTicketList = that.arrayBDToGcj02(data.SiteTicketList);
 							that.ScheduleAndTickets = data;
-							uni.setStorageSync('scheduleInfo',that.ScheduleAndTickets);
+							uni.setStorageSync('scheduleInfo', that.ScheduleAndTickets);
 						} else {
 							that.showToast('未取得订单信息');
 						}
 					},
-					fail:function(res){
+					fail: function(res) {
 						//console.log(res);
 						that.showToast('网络连接失败');
 					}
 				});
 			},
-			arrayDistinct:function(array){ 
+			arrayDistinct: function(array) {
 				let siteNameArr = [];
-				for(let item of array){
+				for (let item of array) {
 					siteNameArr.push(item.SiteName);
 				}
-				let distinctArr = array.filter((x,index) => {
+				let distinctArr = array.filter((x, index) => {
 					return siteNameArr.indexOf(x.SiteName) == index
 				});
 				return distinctArr
 			},
-			arrayBDToGcj02:function(array){
+			arrayBDToGcj02: function(array) {
 				for (let item of array) {
-					var arr = tc.bd09togcj02(parseFloat(item.Longitude),parseFloat(item.Latitude));
+					var arr = tc.bd09togcj02(parseFloat(item.Longitude), parseFloat(item.Latitude));
 					item.Longitude = arr[0];
 					item.Latitude = arr[1];
 				}
 				return array;
 			},
-			formatIDCard:function(idCard){
-				return idCard.substring(0,6) + '****' + idCard.substring(14,18);
+			formatIDCard: function(idCard) {
+				return idCard.substring(0, 6) + '****' + idCard.substring(14, 18);
 			}
 		}
 	}
@@ -409,6 +373,7 @@
 		border: none;
 
 	}
+
 	.btnarea uni-button:after {
 		border: none;
 
@@ -418,6 +383,7 @@
 		color: #FC4646;
 		border-bottom: solid 1px #FC4646;
 	}
+
 	.tabbarBlock {
 		position: fixed;
 		bottom: 0;
@@ -429,7 +395,7 @@
 		z-index: 99999;
 		height: 40px;
 	}
-	
+
 	.tabbarItem {
 		width: 375rpx;
 		display: flex;
@@ -437,12 +403,13 @@
 		align-items: center;
 		justify-content: center;
 	}
+
 	.tabbarItem view {
 		height: 50rpx;
 		text-align: center;
 	}
-	
-	 .tabbarItem text {
+
+	.tabbarItem text {
 		font-size: 25rpx;
 		font-family: Source Han Sans SC;
 		font-weight: 400;
