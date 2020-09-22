@@ -337,6 +337,12 @@
 		    "path" : "pages/grzx/gz_complaintContent",
 		    "style" : {}
 		}
+        ,{
+            "path" : "pages/JKSJ/jkDriver",
+            "style" : {
+				"navigationStyle": "custom"
+			}
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
