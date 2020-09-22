@@ -5,6 +5,7 @@
 const Url = 'https://zntc.145u.net:9099';
 const Url1 = 'https://zntc.145u.net:9099';	//此字段无用
 const Url2 = 'http://zxsj.ipin8.cn';		//定制客运
+const Url3 = 'http://36.250.234.10:60032';		//定制客运
 const Interface={
 	Register_Driver:{
 		value:Url+'/api/person/Register_Driver',
@@ -73,6 +74,14 @@ const Interface={
 	ky_login:{
 		value:Url2+'/Deiver/Login',
 		name:'定制客运登录',
+		method:'POST',
+		pages: [],
+	},
+	
+	//接客司机登录
+	jk_login:{
+		value:Url3+'/api/Driver/Driver_Login',
+		name:'接客司机登录',
 		method:'POST',
 		pages: [],
 	},

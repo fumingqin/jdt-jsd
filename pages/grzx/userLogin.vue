@@ -15,7 +15,7 @@
 			</view>
 			<view class="inputItem phoneNum">
 				<image src="../../static/grzx/phone.png" class="iconClass1"></image>
-				<input placeholder="请输入账号" maxlength="20" class="inputClass" v-model="phoneNumber"/>
+				<input :placeholder="userType == '定制客运'?'请输入账号':'请输入手机号'" maxlength="20" class="inputClass" v-model="phoneNumber"/>
 			</view>
 			<view class="inputItem Captcha">
 				<image src="../../static/grzx/password.png" class="iconClass2"></image>
@@ -113,6 +113,7 @@
 								phoneNumber:data.PhoneNumber,
 								userID:data.UserID,
 								code:this.address,
+								userType:this.userType,
 							})
 							uni.showToast({
 								title: '登录成功',
@@ -142,7 +143,52 @@
 			
 			//----------------------------------接客司机登录----------------------------------
 			jk_login(){
-				
+				uni.showLoading({
+					title: '登录中...',
+					mask: false
+				});
+				uni.request({
+					url: this.$GrzxInter.Interface.jk_login.value,
+					method: this.$GrzxInter.Interface.jk_login.method,
+					data: {
+						phoneNumber:this.phoneNumber,
+						passWord:this.password,
+					},
+					success: res => {
+						console.log(res);
+						uni.showToast({
+							title: res.data.msg,
+							icon:'none',
+						});
+						if(res.data.status){
+							let data1 = res.data.data;
+							uni.setStorageSync('userInfo',{
+								AID : data1.AID,
+								approvalStatus : data1.ApprovalStatus,
+								companyID : data1.CompanyID,
+								driveState : data1.driveState,
+								idNumber : data1.IDNumber,
+								licenseNumber : data1.LicenseNumber,
+								driverName : data1.Name,
+								phoneNumber : data1.Phone,
+								sex : data1.Sex,
+								userType:this.userType,
+							})
+							setTimeout(function(){
+								uni.switchTab({
+									url:'/pages/index/index',
+								})
+							},500)
+						}
+					},
+					fail: () => {
+					},
+					complete: () => {
+						setTimeout(function(){
+							uni.hideLoading();
+						},2000)
+					}
+				});
 			},
 			
 			//--------------获取用户信息-------------
