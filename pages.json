@@ -343,6 +343,19 @@
 				"navigationStyle": "custom"
 			}
         }
+        ,{
+            "path" : "pages/JKSJ/Destination",
+            "style" : {
+				"navigationBarTitleText":"确认上车"
+			}
+        },
+		{
+		    "path" : "pages/JKSJ/PassengerInfo",
+		    "style" : {
+				"navigationBarTitleText":"乘客信息"
+			}
+		}
+        
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

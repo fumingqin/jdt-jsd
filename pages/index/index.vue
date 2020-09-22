@@ -302,7 +302,8 @@
 					return;
 				}else{
 					uni.navigateTo({
-						url: '/pages/CTKYDriver/selectOrder',
+						// url: '/pages/CTKYDriver/selectOrder',
+						url: '/pages/JKSJ/jkDriver'
 					})
 				}
 			},

@@ -1,0 +1,138 @@
+<template>
+	<view class="content">
+		<map id="map" ref='map' class="map" :style="{height:mapHeight}" :latitude="centerLatitude" :longitude="centerLongitude"
+		 :markers="markers" :show-location="showLocation" :scale="scale" :polyline="polyline" :controls="controls"
+		 @regionchange='mapChange' @markertap='markertap'>
+		</map>
+		
+		<!-- 订单信息 -->
+		<view class="order"></view>
+		<!-- 乘客信息 -->
+		<view class="passenger" @click="passengerclick">
+			<text style="font-size: 30rpx;color: #343434;margin-left: 30rpx;">查看乘客信息</text>
+			<text style="color: #9A9A9A;margin-right: 30rpx;">></text>
+		</view>
+		<!-- 滑动验证 -->
+		<view class="slider">
+			<text style="font-size: 34rpx;font-weight: 300;color: #FFFFFF;">长按确认</text>
+		</view>
+		
+	</view>
+</template>
+
+<script>
+	var that;
+	export default {
+		data() {
+			return {
+				mapHeight: '', //地图高度
+				centerLatitude: "24.517346", //地图中心点纬度
+				centerLongitude: "117.6536981221", //地图中心点经度
+				markers: [], //标记点坐标数组
+				showLocation: true,
+				scale: 18, //地图缩放比例,值越小地图可视范围越大
+				polyline: [], //画线数组
+			}
+		},
+		onLoad() {
+			that = this;
+			//获取系统信息
+			uni.getSystemInfo({
+				success: function(res) {
+					//地图高度
+					if (res.platform == 'ios') {
+						//当前是iOS系统
+						that.system = 'iOS'
+					} else {
+						//当前是Android系统
+						that.system = 'Android'
+					}
+					// console.log(that.system)
+					that.mapHeight = res.windowHeight + 'px';
+					that.Height = res.windowHeight / 2 - 4 + 'px';
+				}
+			});
+			// 获取自身位置
+			that.getMyLocation();
+		},
+		methods: {
+//----------------------------------------------------功能方法区开始----------------------------------------------------
+			//-------------------------------获取自身位置-------------------------------
+			getMyLocation: function() {
+				var that = this;
+				uni.getLocation({
+					//type默认为wgs84返回gps坐标,gcj02返回国测局坐标,可用于uni.openLocation的坐标
+					type: "gcj02",
+					//是否解析地址信息，默认false
+					geocode: true,
+					success: function(res) {
+						//如果地图中心位置坐标为空，将当前位置坐标设置为地图中心坐标
+						that.centerLongitude = res.longitude;
+						that.centerLatitude = res.latitude;
+						that.isLocation = true;
+					},
+					fail(res) {
+						that.isLocation = false;
+						uni.showModal({
+							title: '温馨提示',
+							content: '获取位置失败，请打开定位',
+							showCancel: false
+						})
+					}
+				});
+			},
+			//-------------------------------点击乘客信息-------------------------------
+			passengerclick:function(){
+				uni.navigateTo({
+					url: "./PassengerInfo"
+				})
+			},
+//----------------------------------------------------功能方法区开始----------------------------------------------------
+		}
+	}
+</script>
+
+<style>
+    .content {
+		width: 750rpx;
+		background-color: #FFFFFF;
+	}
+	.map {
+		width: 750rpx;	
+	}
+	.slider{
+		background-color: #FFFFFF;
+		position: fixed;
+		bottom: 30rpx;
+		margin-left: 25rpx;
+		height: 110rpx;
+		width: 700rpx;
+		border-radius: 20rpx;
+		text-align: center;
+		background-color: #474747;
+		flex-direction: row;
+		align-items: center;
+		justify-content: center;
+	}
+	.passenger{
+		background-color: #FFFFFF;
+		position: fixed;
+		bottom: 170rpx;
+		width: 700rpx;
+		height: 100rpx;
+		margin-left: 25rpx;
+		border-radius: 20rpx;
+		flex-direction: row;
+		align-items: center;
+		justify-content: space-between;
+	}
+	.order{
+		background-color: #FFFFFF;
+		position: fixed;
+		bottom: 300rpx;
+		width: 700rpx;
+		height: 160rpx;
+		margin-left: 25rpx;
+		border-radius: 20rpx;
+	}
+</style>
