@@ -2,7 +2,8 @@
 	<view class="content">
 		<view class="backImg">
 			<image src="../../static/grzx/backImg.png" class="imgClass"></image>
-			<!-- <image src="../../static/grzx/set.png" class="setClass" @click="navTo('/pages/grzx/set')"></image> -->
+			<image src="../../static/grzx/back.png" class="returnClass" @click="returnClick"></image>
+			<view class="returnStyle" @click="returnClick">返回</view>
 			<view class="userInfoClass" @click="checkLogin">
 				<image class="portraitClass" :src="userPortrait || '/static/grzx/touxiang.png'"></image>
 				<text class="usernameClass">{{userName || '请登录'}}</text>
@@ -157,6 +158,10 @@
 					}
 				})
 			},
+			// ---------------------------返回上一页--------------------------
+			returnClick() {
+				uni.navigateBack();
+			},
 			//退出登录
 			toLogout(){
 				uni.getStorage({
@@ -168,8 +173,8 @@
 						    	if(e.confirm){
 									uni.removeStorageSync('userInfo');
 						    		setTimeout(()=>{ 
-						    			uni.switchTab({
-						    				url:'/pages/grzx/user'
+						    			uni.redirectTo({
+						    				url:'/pages/grzx/ky_user'
 						    			})
 						    		}, 200)
 						    	}
@@ -437,5 +442,21 @@
 	}
 	.borderTop{
 		border-top: 1upx solid #EAEAEA;
+	}
+	.returnClass {
+		//返回按钮
+		width: 2.53%;
+		height: 35upx;
+		top: 90upx;
+		left: 4.13%;
+		position: absolute;
+	}
+	.returnStyle {
+		width: 10%;
+		height: 35upx;
+		top: 86upx;
+		left: 9.13%;
+		position: absolute;
+		color: #FFFFFF;
 	}
 </style>
