@@ -23,7 +23,7 @@
 					</view>
 					<view class="linedetail">
 						<view>
-							司机姓名：{{userInfo.userName}}
+							司机姓名：{{ScheduleAndTickets.DriverName}}
 						</view>
 					</view>
 					<view class="linedetail">

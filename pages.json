@@ -343,6 +343,13 @@
 				"navigationStyle": "custom"
 			}
         }
+        ,{
+            "path" : "pages/CTKYDriver/homeSattionPick",
+            "style" : {
+				
+				"navigationBarTitleText":"更换车牌号"
+			}
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
