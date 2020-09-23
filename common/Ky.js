@@ -27,6 +27,18 @@ const Interface = {
 		method: 'POST', //GET-POST
 		pages: []
 	},
+	GetMyCurrentExecuteSchedulePrices : {
+		value: Url + '/Deiver/GetMyCurrentExecuteSchedulePrices',
+		name: '司机端-定制班车- 获取当前班次票价',
+		method: 'POST', //GET-POST
+		pages: []
+	},
+	SellMobileTicket_Booking : {
+		value: Url + '/Deiver/SellMobileTicket_Booking',
+		name: '司机端-定制班车- 扫码付款',
+		method: 'POST', //GET-POST
+		pages: []
+	},
 }
 const testData = {
 	"ExecuteScheduleID": null,

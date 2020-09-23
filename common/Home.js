@@ -4,11 +4,11 @@ import Vuex from 'vuex'
 
 Vue.use(Vuex)
 //接口域名
-const Url = 'https://zntc.145u.net:9099';
+const Url = 'http://36.250.234.10:60032';
 //接口对象
 const Interface = {
 	addVehiclePosition : {
-		value: Url + '/api/zhcx/addVehiclePosition',
+		value: Url + '/api/Driver/AddVehiclePosition',
 		name:'司机端定时实时上报位置',
 		method:'GET',//GET-POST
 		pages:[]

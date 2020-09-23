@@ -31,7 +31,7 @@
 							车牌号：{{ScheduleAndTickets.CoachCardNumber}}
 						</view>
 					</view>
-					
+
 				</view>
 				<view class="uberstation" style="margin-top: 20rpx;">
 					<view style="display: flex;align-items: center;">
@@ -45,7 +45,7 @@
 						<view>{{endSite}}</view>
 					</view>
 				</view>
-				<view class="ticket">
+				<!-- <view class="ticket">
 					<view>数量</view>
 					<view style="display: flex;align-items: center;">
 						<view style="border:solid 1px #999999;width: 36rpx;height: 36rpx;border-radius: 100px;color: #999999;line-height: 30rpx;text-align: center;"
@@ -60,31 +60,44 @@
 							+
 						</view>
 					</view>
-				</view>
+				</view> -->
 				<view class="ticket">
-					<view>总金额</view>
+					<view>全票</view>
 					<view style="color:#FC4646">￥{{price}}</view>
 				</view>
-				<view style="margin-top: 122rpx;display: flex;flex-direction: column;justify-content: space-between;align-items: center;">
-					<view>
-						<button @click="payment" class="cashbtn">
-							<image src="../../static/CTKYDriver/cash.png" style="width: 42rpx;height: 42rpx;padding-right: 20rpx;"></image>
-							<text style="color: #FFF;font-size: 36rpx;">现金支付</text>
-						</button>
-					</view>
-					<view style="display: flex;margin-top: 42rpx;">
+				<view class="ticket">
+					<view>半票</view>
+					<view style="color:#FC4646">￥{{halfprice}}</view>
+				</view>
+				<view class="ticket">
+					<radio-group @change="radioChange">
+						<label class="radio">
+							<radio value="0" checked="true" style="transform: scale(0.8)" color="#00b300" />全票</label>
+						<label class="radio">
+							<radio value="1" style="transform: scale(0.8)" color="#00b300" />半票</label>
+						<label class="radio">
+							<radio value="2" style="transform: scale(0.8)" color="#00b300" />免票</label>
+					</radio-group>
+				</view>
+				<view class="ticket">
+					携带儿童
+					<radio-group @change="radiochrildChange">
+						<label class="radio">
+							<radio value="true" style="transform: scale(0.8)" color="#00b300" />是</label>
+						<label class="radio">
+							<radio value="false" checked="true" style="transform: scale(0.8)" color="#00b300" />否</label>
+					</radio-group>
+				</view>
+				<view style="margin-top: 60rpx;display: flex;flex-direction: column;justify-content: space-between;align-items: center;">
+				
+					<view style="display: flex;">
 						<view style="margin-right: 32rpx;">
 							<button @click="payment" class="weixinpaybtn">
 								<image src="../../static/CTKYDriver/weixin.png" style="width: 42rpx;height: 42rpx;padding-right: 20rpx;"></image>
-								<text  style="color: #FFF;font-size: 36rpx;">微信支付</text>
+								<text style="color: #FFF;font-size: 36rpx;">微信扫码支付</text>
 							</button>
 						</view>
-						<view>
-							<button @click="payment" class="alipaybtn">
-								<image src="../../static/CTKYDriver/alipay.png" style="width: 42rpx;height: 42rpx;padding-right: 20rpx;"></image>
-								<text style="color: #FFF;font-size: 36rpx;">支付宝支付</text>
-							</button>
-						</view>
+				
 					</view>
 				</view>
 			</view>
@@ -102,14 +115,20 @@
 		data() {
 			return {
 				num: 1,
-				
-				startSite:'',
-				endSite:'',
-				price:0,
-				
-				userInfo:'',
-				vehicleInfo:'',
-				ScheduleAndTickets:'',
+
+				startSite: '',
+				endSite: '',
+				price: 0,
+				halfprice: 0,
+
+				userInfo: '',
+				vehicleInfo: '',
+				ScheduleAndTickets: '',
+				executeScheduleID:'',
+				startSiteID:'',
+				endSiteID:'',
+				tickets:0,
+				chridren:false,
 			}
 		},
 		onLoad(option) {
@@ -120,9 +139,12 @@
 		onShow() {
 			let that = this;
 			that.userInfo = uni.getStorageSync('userInfo') || '';
-			that.vehicleInfo = uni.getStorageSync("vehicleInfo")||'';
 			that.ScheduleAndTickets = uni.getStorageSync('scheduleInfo') || '';
-			
+			that.GetExecuteSchedulePrices();
+			if (that.userInfo == '') {
+				that.showToast('未取得用户信息');
+			}
+
 		},
 		methods: {
 			goBack: function() { //返回上一页
@@ -167,16 +189,86 @@
 					}
 				}
 			},
-			
-			payment:function(){
-				uni.showToast({
-					title:'暂未开通',
-					icon:'none'
+			//生成扫码支付
+			payment: function() {
+				var that = this;
+				var param={
+					Identity:'350624199906163254',
+					Name:'张三' ,
+					TicketType:that.tickets,
+					IsCarryChild:that.chridren,
+				}
+				var parame=[];
+				parame.push(param);
+				console.log(that.userInfo.code,that.userInfo.AID,that.executeScheduleID,that.startSiteID,that.endSiteID);
+				console.log(param);
+				uni.request({
+					url: that.$Ky.Interface.SellMobileTicket_Booking.value,
+					method: that.$Ky.Interface.SellMobileTicket_Booking.method,
+					data: {
+						Code: that.userInfo.code,
+						UserAID: that.userInfo.AID,
+						executeScheduleID: that.executeScheduleID,
+						startSiteID: that.startSiteID,
+						endSiteID: that.endSiteID,
+						param: parame,
+					},
+					success: function(res) {
+						console.log(res);
+
+					},
+					fail: function(res) {
+						//console.log(res);
+						that.showToast('网络连接失败');
+					}
 				});
 			},
-			
-			formatDate:function(time){
-				return time.substring(5,10) + ' ' + time.substring(11,16);
+
+			//-------------------------获取票价-------------------------
+			GetExecuteSchedulePrices() {
+				var that = this;
+				uni.request({
+					url: that.$Ky.Interface.GetMyCurrentExecuteSchedulePrices.value,
+					method: that.$Ky.Interface.GetMyCurrentExecuteSchedulePrices.method,
+					data: {
+						Code: that.userInfo.code,
+						UserAID: that.userInfo.AID,
+					},
+					success: function(res) {
+						console.log(res);
+						//这里的return类似于if判断
+						var priceArr = res.data.MyPriceItems.filter(x => {
+							return x.StartSiteName == that.startSite && x.EndSiteName == that.endSite;
+						});
+						that.price = priceArr[0].FullPrice;
+						that.halfprice = priceArr[0].HalfPrice;
+						that.executeScheduleID=res.data.MySchedule.ExecuteScheduleID;
+						that.startSiteID=priceArr[0].StartSiteID;
+						that.endSiteID=priceArr[0].EndSiteID;
+					},
+					fail: function(res) {
+						//console.log(res);
+						that.showToast('网络连接失败');
+					}
+				});
+
+			},
+			showToast: function(title, icon = 'none') {
+				uni.showToast({
+					title: title,
+					icon: icon
+				});
+			},
+			//--------------单选按钮点击事件-------------
+			radioChange(e){
+				this.tickets = e.detail.value;
+			},
+			//--------------单选按钮点击事件-------------
+			radiochrildChange(e){
+				this.children = e.detail.value;
+			},
+			formatDate: function(time) {
+				return time.substring(5, 10) + ' ' + time.substring(11, 16);
 			}
 		}
 	}
@@ -308,7 +400,7 @@
 	}
 
 	.weixinpaybtn {
-		width: 318rpx;
+		width: 600rpx;
 		height: 100rpx;
 		background: linear-gradient(270deg, rgba(40, 204, 40, 1), rgba(83, 176, 59, 1));
 		box-shadow: 0px 7px 38px 8px rgba(78, 179, 57, 0.15);
@@ -316,5 +408,8 @@
 		display: flex;
 		justify-content: center;
 		align-items: center;
+	}
+	.radio{
+		margin-left: 56rpx;
 	}
 </style>

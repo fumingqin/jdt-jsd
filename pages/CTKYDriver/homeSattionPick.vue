@@ -127,9 +127,11 @@
 					success: function(res) {
 						uni.hideLoading();
 						console.log(res);
-						if (res.data.status) {
+						if (res.statusCode==200) {
 							that.showToast('更改车牌号成功');
-							uni.navigateBack({ });
+								setInterval(function() {
+								uni.navigateBack({});
+							}, 1000);
 						} else {
 							that.showToast(res.data.Message);
 						}

@@ -251,12 +251,7 @@
 			},
 			
 			back:function(){
-				// uni.navigateTo({
-				// 	url:'./selectOrder',
-				// 	animationType:"slide-in-left"
-				// })
 				uni.navigateBack({
-					// animationType:"slide-in-left"
 				})
 			},
 			
