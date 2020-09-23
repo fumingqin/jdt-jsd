@@ -15,11 +15,11 @@
 				<text class="fontStyle">QQ客服</text>
 				<image src="../../static/grzx/tubiao_Right.png" class="btnClass"></image>
 			</view>
-			<view class="boxClass borderTop" @click="complaintClick">
+			<!-- <view class="boxClass borderTop" @click="complaintClick">
 				<image src="../../static/grzx/tubiao_tousu.png" class="iconClass2"></image>
 				<text class="fontStyle">投诉申诉</text>
 				<image src="../../static/grzx/tubiao_Right.png" class="btnClass"></image>
-			</view>
+			</view> -->
 			<view class="boxClass borderTop" @click="toLogout">
 				<image src="../../static/grzx/tubiao_tuichu.png" class="iconClass3"></image>
 				<text class="fontStyle">退出登录</text>
@@ -161,17 +161,14 @@
 			toLogout(){
 				uni.getStorage({
 					key:'userInfo',
-					success(){
+					success:res =>{
 						uni.showModal({
 						    content: '确定要退出登录么',
 						    success: (e)=>{
 						    	if(e.confirm){
 									uni.removeStorageSync('userInfo');
-						    		setTimeout(()=>{ 
-						    			uni.switchTab({
-						    				url:'/pages/grzx/user'
-						    			})
-						    		}, 200)
+									this.userPortrait='';
+									this.userName='';
 						    	}
 						    }
 						})

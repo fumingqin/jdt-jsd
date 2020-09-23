@@ -120,8 +120,8 @@
 								icon:'none'
 							});
 							setTimeout(function(){
-								uni.switchTab({
-									url:'/pages/index/index',
+								uni.navigateTo({
+									url:'/pages/CTKYDriver/selectOrder',
 								})
 							},500)
 						}else{
