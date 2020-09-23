@@ -11,6 +11,8 @@ import GrzxInter from './common/Grzx.js'    //司机端个人中心
 import Bcsjd from 'common/Bcsjd.js' //包车司机端
 import downwindCar from 'common/downwindCar.js' //包车司机端
 import CustomizedBus from './common/CustomizedBus.js'
+import CustomDriver from './common/CustomDriver.js'
+import uView from 'uview-ui';
 Vue.config.productionTip = false
 // Vue.prototype.$store=store;  //登录
 Vue.prototype.$taxi=taxi;  //出租车
@@ -23,9 +25,9 @@ Vue.prototype.$Bcsjd=Bcsjd;  //包车
 Vue.prototype.$GrzxInter=GrzxInter;  //定制班车
 Vue.prototype.$downwindCar=downwindCar;  //个人中心
 Vue.prototype.$CustomizedBus=CustomizedBus;//定制巴士
-
+Vue.prototype.$CustomDriver=CustomDriver;//接客司机
 App.mpType = 'app'
-
+Vue.use(uView);
 const app = new Vue({ 
 	taxi,	//司机端出租车配置及全局方法
 	// store,	//登录
