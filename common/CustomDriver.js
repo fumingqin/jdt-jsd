@@ -24,6 +24,11 @@ const Interface = {
 		method :method,
 		name   :'根据任务单AID确认乘客上车'
 	},
+	ComPleteOrder:{
+		Url    :Url + '/api/SendCar/ComPleteOrder',
+		method :method,
+		name   :'确认订单完成'
+	},
 }
 
 

@@ -343,6 +343,12 @@
 				"navigationStyle": "custom"
 			}
         }
+        ,{
+            "path" : "pages/JKSJ/orderDetail",
+            "style" : {
+				"navigationBarTitleText":"订单详情"
+			}
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
@@ -368,12 +374,12 @@
 				"selectedIconPath": "static/index/order1.png",
 				"text": "订单"
 			},
-			{
-				"pagePath": "pages/index/Revenue",
-				"iconPath": "static/index/revenue.png",
-				"selectedIconPath": "static/index/revenue1.png",
-				"text": "营收"
-			},
+			// {
+			// 	"pagePath": "pages/index/Revenue",
+			// 	"iconPath": "static/index/revenue.png",
+			// 	"selectedIconPath": "static/index/revenue1.png",
+			// 	"text": "营收"
+			// },
 			{
 				"pagePath": "pages/grzx/user",
 				"iconPath": "static/index/user.png",
