@@ -337,6 +337,12 @@
 				"navigationBarTitleText":"更换车牌号"
 			}
         }
+        ,{
+            "path" : "pages/JKSJ/orderComplete",
+            "style" : {
+				"navigationStyle": "custom"
+			}
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

@@ -24,7 +24,7 @@
 			<view style="display: flex;flex-direction: row;width: 700rpx;text-align: center;margin-top:50rpx;margin-left: 24rpx;">
 				<view class="tabItem" @click="kyIndex">
 					<image class="tabItem-image" src="../../static/index/KC.png"></image>
-					<text class="tabItem-font">客车</text>
+					<text class="tabItem-font">接客司机</text>
 				</view>
 				<!-- <view class="tabItem" @click="setPlateNumber('../driver/bindCoachCode','客车')">
 					<image class="tabItem-image" src="../../static/index/KC.png"></image>
