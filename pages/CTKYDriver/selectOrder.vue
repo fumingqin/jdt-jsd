@@ -4,7 +4,8 @@
 		<view style="margin: 30rpx;">
 			<view style="display: flex;justify-content: space-between;align-items: center;">
 				<view>
-					<image @click="back" src="../../static/driver/back.png" style="width: 18rpx; height: 34rpx;"></image>
+					<!-- <image @click="back" src="../../static/driver/back.png" style="width: 18rpx; height: 34rpx;"></image> -->
+					<uni-icons type="contact" size="30" @click="navToGrzx"></uni-icons>
 				</view>
 				<view style="color: #333333; font-size: 38rpx;font-weight:bold;">客运司机</view>
 				<view style="width: 18rpx; height: 34rpx;"></view>
@@ -29,13 +30,16 @@
 							<view style="padding: 40rpx 0 20rpx 0;" @click="depart(item.data)">
 								<button style="height:90rpx;background:linear-gradient(270deg,rgba(249,92,117,1),rgba(250,116,101,1));border-radius:12rpx;color: #FFF;">查看详情</button>
 							</view>
+							<view style="padding-top: 20rpx;" @click="changeCardNumber">
+								<button style="height:90rpx;background:linear-gradient(270deg,rgba(249,92,117,1),rgba(250,116,101,1));border-radius:12rpx;color: #FFF;">更换车牌号</button>
+							</view>
 						</view>
 					</view>
 				</view>
 				
-				<view style="padding: 40rpx 0 20rpx 0;width: 90%;margin-left: 36rpx;" @click="changeCardNumber">
+				<!-- <view style="padding: 40rpx 0 20rpx 0;width: 90%;margin-left: 36rpx;" @click="changeCardNumber">
 					<button style="height:90rpx;background:linear-gradient(270deg,rgba(249,92,117,1),rgba(250,116,101,1));border-radius:12rpx;color: #FFF;">更换车牌号</button>
-				</view>
+				</view> -->
 				
 			</scroll-view>
 			<view v-if="!ScheduleState" style="text-align: center;justify-content: space-between;margin-top: 200rpx;font-size: 36rpx;">
@@ -47,7 +51,9 @@
 
 <script>
 	import tc from '@/common/my-openMap/transformCoordinate.js'
+	import uniIcons from "@/components/uni-icons/uni-icons.vue"
 	export default {
+		components: {uniIcons},
 		data() {
 			return {
 				scollerHeight: 0,
@@ -88,7 +94,7 @@
 				mask: true
 			});
 			that.getRunScheduleInfo();
-			that.getCustomizedBusScheduleInfo();
+			// that.getCustomizedBusScheduleInfo();
 		},
 		mounted() {
 			var that = this;
@@ -109,6 +115,11 @@
 				let that = this;
 				uni.switchTab({
 					url: '/pages/index/index',
+				})
+			},
+			navToGrzx(){
+				uni.navigateTo({
+					url: '/pages/grzx/ky_user',
 				})
 			},
 

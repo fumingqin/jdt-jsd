@@ -137,6 +137,7 @@
 		},
 		onLoad() {
 			let that = this;
+			getApp().globalData.constantly();
 			//添加司机缓存,可删
 			/* uni.setStorageSync('userInfo',{
 				driverId:2000003,
