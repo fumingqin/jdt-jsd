@@ -1,5 +1,5 @@
 //接口域名
-const Url = 'https://zntc.145u.net:9099';
+const Url = 'http://36.250.234.10:60032';
 const delayTime = {
 	getOrderDelay: {
 		name: '司机端-出租车-可接订单',
@@ -13,19 +13,13 @@ const delayTime = {
 
 //接口对象
 const Interface = {
-	GetExpressOrderByDriverID_Driver: {
-		value: Url + '/api/taxi/GetExpressOrderByDriverID_Driver',
-		name: '司机端-出租车-根据司机ID获取订单列表',
+	GetOrderListByDriverID: {
+		value: Url + '/api/SendCar/GetOrderListByDriverID',
+		name: '司机端-接客司机-根据司机ID获取订单列表',
 		method: 'POST', //GET-POST
 		pages: []
 	},
-	GetSpecialLineOrderByDriverID_Driver:{
-		value: Url + '/api/SpecialLine/GetSpecialLineOrderByDriverID_Driver',
-		name: '司机端-出租车-根据司机ID获取订单列表',
-		method: 'POST', //GET-POST
-		pages: []
-	}
-		
+
 }
 
 // 接口声明区
