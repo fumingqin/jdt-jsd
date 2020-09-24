@@ -58,23 +58,32 @@
 		},
 		onLaunch: function() {
 			let that = this;
-			console.log('onLaunch');
-			//客运/CTKYDriver/index
 			uni.removeStorageSync('lastIndex');
-			uni.getStorage({
-				key:'userInfo',
-				fail(){
-					uni.showToast({
-						title : '您暂未登录，请先登录',
-						icon : 'none',
-					})
-					setTimeout(function(){
-						uni.navigateTo({	
-							url  : '/pages/grzx/selectOperation?address=1'
-						}) 
-					},1000);
-				}
-			})
+			// uni.getStorage({
+			// 	key:'userInfo',
+			// 	success:res=>{
+			// 		if(res.data.userType == "定制客运"){
+			// 			uni.navigateTo({
+			// 				url  : '/pages/CTKYDriver/selectOrder'
+			// 			}) 
+			// 		}else if(res.data.userType == "接客司机"){
+			// 			uni.switchTab({
+			// 				url  : '/pages/index/index'
+			// 			}) 
+			// 		}
+			// 	},
+			// 	fail(){
+			// 		uni.showToast({
+			// 			title : '您暂未登录，请先登录',
+			// 			icon : 'none',
+			// 		})
+			// 		setTimeout(function(){
+			// 			uni.navigateTo({	
+			// 				url  : '/pages/grzx/selectOperation?address=2'
+			// 			}) 
+			// 		},1000);
+			// 	}
+			// })
 		},
 		onShow: function() {
 			console.log('App Show')
