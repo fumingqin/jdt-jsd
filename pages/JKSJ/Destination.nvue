@@ -16,13 +16,37 @@
 		<view class="slider">
 			<text style="font-size: 34rpx;font-weight: 300;color: #FFFFFF;">长按确认</text>
 		</view>
-		
+		<uni-popup ref='popup' type="bottom">
+			<view class="passengerInfo" :class="{'passengerInfo-single-click' : isPassengerClick == true}"
+			 v-for="(item,index) in passengerArr" :key="index"  @click="passengerSingleClick">
+				<view class="passengerInfo-single">
+					<text class="passengerInfo-text">乘客：{{item.name}}</text>
+					<text class="passengerInfo-text">电话：{{item.phone}}</text>
+					<text class="passengerInfo-text">上车点：{{item.getOn}}</text>
+				</view>
+				<view class="imageView">
+					<image style="width: 100rpx;height: 100rpx;" src="../../static/CTKYDriver/Checked.png"></image>
+				</view>
+			</view>
+			<view class="bottomButton">
+				<view class="guide displayCenter" @click="guideClick">
+					<text style="color: #FFFFFF;font-size: 34rpx;">拉起导航</text>
+				</view>
+				<view class="phone displayCenter" @click="phoneClick">
+					<text style="color: #000000;font-size: 34rpx;">联系电话</text>
+				</view>
+			</view>
+		</uni-popup>
 	</view>
 </template>
 
 <script>
 	var that;
+	import uniPopup from '../../components/uni-popup/uni-popup.vue'
 	export default {
+		components:{
+			uniPopup
+		},
 		data() {
 			return {
 				mapHeight: '', //地图高度
@@ -32,6 +56,19 @@
 				showLocation: true,
 				scale: 18, //地图缩放比例,值越小地图可视范围越大
 				polyline: [], //画线数组
+				passengerArr:[
+					{
+						name:'张三丰',
+						phone:'12345678',
+						getOn:'泉州'
+					},
+					{
+						name:'张三丰',
+						phone:'12345678',
+						getOn:'泉州'
+					}
+				],
+				isPassengerClick:false,
 			}
 		},
 		onLoad() {
@@ -83,7 +120,20 @@
 			},
 			//-------------------------------点击乘客信息-------------------------------
 			passengerclick:function(){
+				that.$refs.popup.open()
 				
+			},
+			passengerSingleClick:function(){
+				console.log("点击了乘客")
+				that.isPassengerClick = !that.isPassengerClick;
+			},
+			//-------------------------------点击拉起导航-------------------------------
+			guideClick:function(){
+				console.log("点击了拉起导航")
+			},
+			//-------------------------------点击联系电话-------------------------------
+			phoneClick:function(){
+				console.log("点击了联系电话")
 			},
 //----------------------------------------------------功能方法区结束----------------------------------------------------
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -98,7 +148,7 @@
 	}
 </script>
 
-<style>
+<style lang="scss">
     .content {
 		width: 750rpx;
 		background-color: #FFFFFF;
@@ -140,5 +190,62 @@
 		height: 160rpx;
 		margin-left: 25rpx;
 		border-radius: 20rpx;
+	}
+	.passengerInfo{
+		flex-direction: row;
+		align-items: center;
+		justify-content: space-between;
+		background-color: #FFFFFF;
+		border-bottom-width: 1;
+		border-bottom-color: #E3E3E3;
+	}
+	.passengerInfo-click{
+		flex-direction: row;
+		align-items: center;
+		justify-content: space-between;
+		background-color: #FFFFFF;
+	}
+	.passengerInfo-single{
+		margin-top: 50rpx;
+		margin-left: 50rpx;
+		margin-right: 50rpx;
+	}
+	.passengerInfo-text{
+		font-size: 30rpx;
+		color: #343434;
+		font-weight: 300;
+		margin-bottom: 25rpx;
+	}
+	.imageView{
+		margin-right: 50rpx;
+	}
+	.bottomButton{
+		flex-direction: row;
+		align-items: center;
+		justify-content: space-between;
+		background-color: #FFFFFF;
+		padding-top: 20rpx;
+		padding-bottom: 30rpx;
+	}
+	.guide{
+		margin-left: 50rpx;
+		background-color: #FA7466;
+		height: 90rpx;
+		width: 260rpx;
+		border-radius: 12rpx;
+	}
+	.phone{
+		margin-right: 50rpx;
+		background-color: #FFFFFF;
+		height: 90rpx;
+		width: 260rpx;
+		border-radius: 12rpx;
+		border-color: #666666;
+		border-width: 1rpx;
+	}
+	.displayCenter{
+		flex-direction: row;
+		align-items: center;
+		justify-content: center;
 	}
 </style>
