@@ -2,7 +2,7 @@
 	<view class="content" v-bind:style="{height:imgHeight+'px'}">
 		<!-- 背景图 -->
 		<image src="../../static/grzx/backgroudimg.png" style="width: 100%; position: absolute; bottom: 0; height: 100%;"></image>
-		<image src="../../static/grzx/back.png" class="returnClass" @click="returnClick"></image>
+		<!-- <image v-if="address != 2" src="../../static/grzx/back.png" class="returnClass" @click="returnClick"></image> -->
 		<view class="boxClass">
 			<image src="../../static/grzx/btnLogin.png" class="loginClass" @click="loginClick"></image>
 			<text class="fontClass" @click="loginClick">登录</text>
@@ -24,8 +24,33 @@
 			}
 		},
 		onLoad(options) {
-			this.address=options.address;
+			// this.address=options.address || 2;
 			this.load();
+		},
+		onShow: () => {
+			let that = this;
+			uni.showLoading({
+				title:'加载中...',
+				mask:true,
+			})
+			uni.getStorage({
+				key:'userInfo',
+				success:res=>{
+					if(res.data.userType == "定制客运"){
+						uni.navigateTo({
+							url  : '/pages/CTKYDriver/selectOrder'
+						}) 
+					}else if(res.data.userType == "接客司机"){
+						uni.switchTab({
+							url  : '/pages/index/index'
+						}) 
+					}
+				},complete: () => {
+					setTimeout(function(){
+						uni.hideLoading();
+					},1000)
+				}
+			})
 		},
 		methods: {
 			//--------加载数据---------

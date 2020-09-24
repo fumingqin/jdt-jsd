@@ -124,8 +124,9 @@
 			//-----------------------------------------点击发车-----------------------------------------
 			isOpenButton: function() {
 				that.isOpen = !that.isOpen
+				
 				uni.navigateTo({
-					url:'./Destination'
+					url:'./Destination?orderArr=' + encodeURIComponent(JSON.stringify(that.orderArr))
 				})
 			},
 			//-----------------------------------------格式化时间-----------------------------------------
@@ -173,6 +174,7 @@
 		background-color: #F5F9FC;
 	}
 	.scrollView{
+		padding-bottom: 20rpx;
 		margin-top: 20rpx;
 		margin-left: 20rpx;
 		margin-right: 20rpx;
