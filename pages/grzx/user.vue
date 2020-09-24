@@ -108,7 +108,7 @@
 					})
 					setTimeout(function(){
 						uni.navigateTo({	
-							url  : '/pages/grzx/selectOperation'
+							url  : './selectOperation'
 						}) 
 					},500);
 				}
@@ -169,6 +169,11 @@
 									uni.removeStorageSync('userInfo');
 									this.userPortrait='';
 									this.userName='';
+									setTimeout(function(){
+										uni.navigateTo({
+											url  : './selectOperation'
+										}) 
+									},500)
 						    	}
 						    }
 						})
@@ -180,7 +185,7 @@
 						})
 						setTimeout(function(){
 							uni.navigateTo({
-								url  : '/pages/grzx/selectOperation'
+								url  : './selectOperation'
 							}) 
 						},1000)
 					}
