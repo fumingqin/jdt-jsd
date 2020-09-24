@@ -11,7 +11,7 @@
 			</view>
 			
 			<!-- 接单信息 -->
-			<scroll-view :style="{height:scollerHeight}" scroll-y="true" style="margin-top: 10rpx;">
+			<scroll-view v-if="ScheduleState" :style="{height:scollerHeight}" scroll-y="true" style="margin-top: 10rpx;">
 
 				<view style="padding:40rpx 35rpx;background-color: #FFF;border-radius: 20rpx;margin-top: 20rpx;" v-for="(item,index) in orderInfo"
 				 :key="index">
@@ -38,6 +38,9 @@
 				</view>
 				
 			</scroll-view>
+			<view v-if="!ScheduleState" style="text-align: center;justify-content: space-between;margin-top: 200rpx;font-size: 36rpx;">
+				今日暂无可查询班次
+			</view>
 		</view>
 	</view>
 </template>
@@ -53,6 +56,7 @@
 				CustomizedBusOrderInfo: [],
 				userInfo: '',
 				vehicleInfo: '',
+				ScheduleState:false,//班次状态
 			}
 		},
 		onLoad() {
@@ -141,6 +145,11 @@
 								title: '定制班车',
 								data: data.ScheduleAndTickets
 							});
+							if(res.data.ScheduleAndTickets==null){
+								that.ScheduleState=false;
+							}else{
+								that.ScheduleState=true;
+							}
 						}
 					},
 					fail: function(res) {
@@ -151,22 +160,7 @@
 				});
 			},
 			//定制班车结束--------------------------------------
-			//定制巴士开始--------------------------------------
-			
-			departCustomizedBus: function(item) {
-				//查看详情
-				let that = this;
-				//item.SiteTicketList = that.arrayDistinct(item.SiteTicketList);
-				//item.SiteTicketList = that.arrayBDToGcj02(item.SiteTicketList);
-				uni.setStorageSync('scheduleInfo', item);
-				uni.navigateTo({
-					url: '/pages/CustomizedBus/index',
-				})
-			},
-			
-			//定制巴士结束--------------------------------------
-
-
+		
 			arrayDistinct: function(array) {
 				let siteNameArr = [];
 				for (let item of array) {
