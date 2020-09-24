@@ -124,10 +124,16 @@
 			//-----------------------------------------点击发车-----------------------------------------
 			isOpenButton: function() {
 				that.isOpen = !that.isOpen
-				
-				uni.navigateTo({
-					url:'./Destination?orderArr=' + encodeURIComponent(JSON.stringify(that.orderArr))
-				})
+				if(that.orderArr.length == 0){
+					uni.showToast({
+						title:'暂无乘客',
+						icon:'none'
+					})
+				}else {
+					uni.navigateTo({
+						url:'./Destination?orderArr=' + encodeURIComponent(JSON.stringify(that.orderArr))
+					})
+				}
 			},
 			//-----------------------------------------格式化时间-----------------------------------------
 			formatEstimateTime: function(estimateTime) {
@@ -140,6 +146,7 @@
 //----------------------------------------------------功能方法区结束----------------------------------------------------
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //----------------------------------------------------网络请求方法区开始----------------------------------------------------
+            //-----------------------------------------根据司机ID获取接客订单-----------------------------------------
 			getOrder: function(userId, vehicleNumber) {
 				uni.request({
 					url: that.$CustomDriver.Interface.GetOrderByDriverID.Url,
