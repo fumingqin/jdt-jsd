@@ -120,7 +120,7 @@
 								icon:'none'
 							});
 							setTimeout(function(){
-								uni.navigateTo({
+								uni.redirectTo({
 									url:'/pages/CTKYDriver/selectOrder',
 								})
 							},500)
