@@ -130,9 +130,8 @@
 						icon:'none'
 					})
 				}else {
-					uni.navigateTo({
-						url:'./Destination?orderArr=' + encodeURIComponent(JSON.stringify(that.orderArr))
-					})
+					//发车
+					that.PullOut();
 				}
 			},
 			//-----------------------------------------格式化时间-----------------------------------------
@@ -160,6 +159,31 @@
 						if (res.data.status) {
 							that.orderArr = [];
 							that.orderArr = res.data.data;
+						} else {
+							that.showToast(res.data.msg);
+						}
+					},
+					fail: function(res) {
+						uni.hideLoading();
+						that.showToast('网络连接失败');
+						//console.log(res);
+					}
+				})
+			},
+			PullOut: function(userId, vehicleNumber) {
+				uni.request({
+					url: that.$CustomDriver.Interface.PullOut.Url,
+					method: that.$CustomDriver.Interface.PullOut.method,
+					data: {
+						AID:that.orderArr[0].OrderAID
+					},
+					success: function(res) {
+						uni.hideLoading();
+						console.log(res)
+						if (res.data.status) {
+							uni.navigateTo({
+								url:'./Destination?orderArr=' + encodeURIComponent(JSON.stringify(that.orderArr))
+							})
 						} else {
 							that.showToast(res.data.msg);
 						}
@@ -200,7 +224,11 @@
 		margin-left: 22rpx;
 		border-radius:20rpx;
 		.passengerView_info{
+			text-overflow: ellipsis;
+			overflow: hidden;
+			white-space: nowrap;
 			display: inline-block;
+			width: 60%;
 			font-size: 30rpx;
 			color: #333333;
 		}

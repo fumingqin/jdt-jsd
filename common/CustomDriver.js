@@ -29,6 +29,11 @@ const Interface = {
 		method :method,
 		name   :'确认订单完成'
 	},
+	PullOut:{
+		Url    :Url + '/api/SendCar/PullOut',
+		method :method,
+		name   :'发车'
+	},
 }
 
 

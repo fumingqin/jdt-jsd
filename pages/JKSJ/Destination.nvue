@@ -6,13 +6,13 @@
 		
 		<!-- 订单信息 -->
 		<view class="order">
-			<view style="margin-top: 10rpx;margin-left: 30rpx;" v-if="currentPassengerArr.length > 0">
-				<text class="passengerInfo-text">乘客：{{currentPassengerArr[0].PassengerName}}</text>
-				<text class="passengerInfo-text">电话：{{currentPassengerArr[0].PhoneNumber}}</text>
-				<text class="passengerInfo-text">上车点：{{currentPassengerArr[0].PickUpAddress}}</text>
+			<view style="margin-top: 10rpx;margin-left: 30rpx;" v-if="showArray.length > 0">
+				<text class="passengerInfo-text">乘客：{{showArray[0].PassengerName}}</text>
+				<text class="passengerInfo-text">电话：{{showArray[0].PhoneNumber}}</text>
+				<text class="passengerInfo-text">上车点：{{showArray[0].PickUpAddress}}</text>
 			</view>
-			<view class="imageView" v-if="currentPassengerArr.length > 0">
-				<image style="width: 100rpx;height: 100rpx;" :src="isBoard == 1 ? unBoard : Board"></image>
+			<view class="imageView" v-if="showArray.length > 0">
+				<image style="width: 100rpx;height: 100rpx;" src="../../static/driver/unBoard.png" :src="showArray[0].State == 2? Board :unBoard"></image>
 			</view>
 		</view>
 		<!-- 乘客信息 -->
@@ -43,7 +43,8 @@
 					 </view>
 					 <view class="imageView">
 						 <!-- State = 1未上车 2已上车 -->
-					 	<image style="width: 100rpx;height: 100rpx;" :src="item.State == 1 || 2 ? unBoard : Board"></image>
+					 	<image style="width: 100rpx;height: 100rpx;" src="../../static/driver/unBoard.png" 
+						:src="item.State == 2 ? Board : unBoard"></image>
 					 </view>
 				 </view>
 			</view>
@@ -92,6 +93,7 @@
 				startLongitude:'',
 				startAddress:'',
 				passengerPhone:'',//电话
+				showArray:[],
 			}
 		},
 		onLoad(option) {
@@ -160,22 +162,26 @@
 			passengerSingleClick:function(orderArr,index){
 				console.log("点击了乘客",orderArr)
 				that.PassengerIndex = index;
-				that.currentPassengerArr = [];
+				that.showArray = [];
 				var currentPassengerArr = {
 					PassengerName : orderArr.PassengerName,
 					PhoneNumber : orderArr.PhoneNumber,
 					PickUpAddress : orderArr.PickUpAddress,
+					State : orderArr.State,
 				}
-				that.startLatitude = orderArr.StartStaionLatitude,
-				that.startLongitude = orderArr.StartStaionLongitude,
+				that.showArray.push(currentPassengerArr),
+				
+				that.startLatitude = orderArr.PickUpLatitude,
+				that.startLongitude = orderArr.PickUpLongitude,
 				that.startAddress = orderArr.PickUpAddress,
 				that.passengerID = orderArr.AID,
 				that.passengerPhone = orderArr.PhoneNumber,
-				that.isBoard = orderArr.State,
-				that.currentPassengerArr.push(currentPassengerArr)
+				that.isBoard = orderArr.State
+				// that.currentPassengerArr.push(currentPassengerArr)
 			},
 			//-------------------------------点击拉起导航-------------------------------
 			guideClick:function(){
+				console.log(that.startLatitude, that.startLongitude);
 				Map.openMap(that.startLatitude, that.startLongitude, that.startAddress, 'gcj02');
 				// Map.openMap(24.876465, 118.570195, that.startAddress, 'gcj02');
 			},
@@ -218,21 +224,23 @@
 			},
 			//-------------------------------点击地图标点-------------------------------
 			markertap:function(option){
-				that.currentPassengerArr = [];
+				that.showArray = [];
 				for(var i = 0; i < that.passengerArr.length;i++){
 					if(option.detail.markerId == i){
 						var currentPassengerArr = {
 							PassengerName : that.passengerArr[i].PassengerName,
 							PhoneNumber : that.passengerArr[i].PhoneNumber,
 							PickUpAddress : that.passengerArr[i].PickUpAddress,
+							State : that.passengerArr[i].State,
 						}
-						that.startLatitude = that.passengerArr[i].StartStaionLatitude,
-						that.startLongitude = that.passengerArr[i].StartStaionLongitude,
+						that.showArray.push(currentPassengerArr),
+						that.startLatitude = that.passengerArr[i].PickUpLatitude,
+						that.startLongitude = that.passengerArr[i].PickUpLongitude,
 						that.startAddress = that.passengerArr[i].PickUpAddress,
 						that.passengerPhone = that.passengerArr[i].PhoneNumber,
 						that.isBoard = that.passengerArr[i].State,
-						that.passengerID = that.passengerArr[i].AID,
-						that.currentPassengerArr.push(currentPassengerArr)
+						that.passengerID = that.passengerArr[i].AID
+						// that.currentPassengerArr.push(currentPassengerArr)
 					}
 				}
 			},
@@ -241,7 +249,7 @@
 //----------------------------------------------------网络请求方法区开始----------------------------------------------------
             //-------------------------------长按确认-------------------------------
             confirm:function(){
-            	if(that.currentPassengerArr.length > 0){
+            	if(that.showArray.length > 0){
             		uni.showLoading({
             			title:'加载中...'
             		})
@@ -255,6 +263,11 @@
             			success(res) {
             				uni.hideLoading()
             				console.log(res);
+							uni.showToast({
+								title:'已确认上车',
+								icon:'success'
+							})
+							that.GetOrderByDriverID(that.passengerID)
             			},
             			fail(res) {
             				uni.hideLoading()
@@ -275,45 +288,58 @@
 					success:function(res){
 						console.log(res);
 						if(res.data){
-							uni.request({
-								url: $CustomDriver.Interface.GetOrderByDriverID.Url,
-								method: $CustomDriver.Interface.GetOrderByDriverID.method,
-								data: {
-									DriverId: res.data.AID,
-								},
-								success: function(res) {
-									uni.hideLoading();
-									console.log(res)
-									if (res.data.status) {
-										for(var i = 0; i < res.data.data.length;i++){
-											if(res.data.data[i].State == 1){
-												var unBoard = []
-												unBoard.push(res.data.data[i].State)
-												if(unBoard.length > 0){
-													uni.showToast({
-														title:'有乘客未上车',
-														icon:'none'
-													})
-												}else{
-													//调完成订单接口
-													that.completeOrder();
-												}
-											}
-										}
-									} else {
-										that.showToast(res.data.msg);
-										uni.showToast({
-											title:res.data.msg,
-											icon:'none'
-										})
+							that.GetOrderByDriverID(res.data.AID)
+						}
+					}
+				})
+			},
+			GetOrderByDriverID:function(driverID,passengerID){
+				uni.request({
+					url: $CustomDriver.Interface.GetOrderByDriverID.Url,
+					method: $CustomDriver.Interface.GetOrderByDriverID.method,
+					data: {
+						DriverId: driverID,
+					},
+					success: function(res) {
+						uni.hideLoading();
+						console.log(res)
+						if (res.data.status) {
+							that.passengerArr = res.data.data;
+							for(var i = 0; i < res.data.data.length;i++){
+								if(passengerID == res.data.data[i].passengerID){
+									var currentPassengerArr = {
+										PassengerName :res.data.data[i].PassengerName,
+										PhoneNumber : res.data.data[i].PhoneNumber,
+										PickUpAddress : res.data.data[i].PickUpAddress,
+										State : res.data.data[i].State,
 									}
-								},
-								fail: function(res) {
-									uni.hideLoading();
-									that.showToast('网络连接失败');
+									that.showArray = currentPassengerArr
+									console.log(that.showArray);
 								}
+							}
+							//把数组中满足条件的值重新生成一个数组，赋值给arr
+							var arr = res.data.data.filter(x => x.State != 2)
+							if(arr.length > 0){
+								uni.showToast({
+									title:'有乘客未上车',
+									icon:'none'
+								})
+							}else {
+								//调完成订单接口
+								that.completeOrder();
+							}
+							
+						} else {
+							that.showToast(res.data.msg);
+							uni.showToast({
+								title:res.data.msg,
+								icon:'none'
 							})
 						}
+					},
+					fail: function(res) {
+						uni.hideLoading();
+						that.showToast('网络连接失败');
 					}
 				})
 			},
@@ -436,6 +462,8 @@
 		margin-right: 50rpx;
 	}
 	.passengerInfo-text{
+		text-overflow: ellipsis;
+		width: 400rpx;
 		font-size: 30rpx;
 		color: #343434;
 		font-weight: 300;
