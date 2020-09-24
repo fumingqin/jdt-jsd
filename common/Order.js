@@ -19,6 +19,12 @@ const Interface = {
 		method: 'POST', //GET-POST
 		pages: []
 	},
+	GetOrderByOrderID: {
+		value: Url + '/api/SendCar/GetOrderByOrderID',
+		name: '司机端-接客司机-根据订单ID获取任务单详情',
+		method: 'POST', //GET-POST
+		pages: []
+	},
 
 }
 
