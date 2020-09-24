@@ -94,6 +94,7 @@
 				startAddress:'',
 				passengerPhone:'',//电话
 				showArray:[],
+				doneArray:[],//完成订单时用到
 			}
 		},
 		onLoad(option) {
@@ -149,14 +150,18 @@
 			},
 			//-------------------------------点击查看乘客信息-------------------------------
 			passengerclick:function(){
-				if(that.passengerArr.length == 0){
-					uni.showToast({
-						title:'无乘客信息',
-						icon:'none'
-					})
-				}else {
-					that.$refs.popup.open()
-				}
+				that.GetOrderByDriverID(that.passengerArr[0].DriverID)
+				setTimeout(function(){
+					if(that.passengerArr.length == 0){
+						uni.showToast({
+							title:'无乘客信息',
+							icon:'none'
+						})
+					}else {
+						that.$refs.popup.open()
+					}
+				},2000)
+				
 			},
 			//-------------------------------点击乘客-------------------------------
 			passengerSingleClick:function(orderArr,index){
@@ -267,7 +272,7 @@
 								title:'已确认上车',
 								icon:'success'
 							})
-							that.GetOrderByDriverID(that.passengerID)
+							that.GetOrderByDriverID(that.passengerArr[0].DriverID)
             			},
             			fail(res) {
             				uni.hideLoading()
@@ -288,17 +293,20 @@
 					success:function(res){
 						console.log(res);
 						if(res.data){
-							that.GetOrderByDriverID(res.data.AID)
+							// that.GetOrderByDriverID(res.data.AID)
 						}
 					}
 				})
+				that.completeOrder();
 			},
 			GetOrderByDriverID:function(driverID,passengerID){
+				console.log(driverID);
+				uni.showLoading()
 				uni.request({
 					url: $CustomDriver.Interface.GetOrderByDriverID.Url,
 					method: $CustomDriver.Interface.GetOrderByDriverID.method,
 					data: {
-						DriverId: driverID,
+						DriverID: driverID,
 					},
 					success: function(res) {
 						uni.hideLoading();
@@ -318,16 +326,7 @@
 								}
 							}
 							//把数组中满足条件的值重新生成一个数组，赋值给arr
-							var arr = res.data.data.filter(x => x.State != 2)
-							if(arr.length > 0){
-								uni.showToast({
-									title:'有乘客未上车',
-									icon:'none'
-								})
-							}else {
-								//调完成订单接口
-								that.completeOrder();
-							}
+							that.doneArray = res.data.data.filter(x => x.State != 2)
 							
 						} else {
 							that.showToast(res.data.msg);
@@ -345,33 +344,42 @@
 			},
 			//-------------------------------调用完成订单接口-------------------------------
 			completeOrder:function(){
-				uni.request({
-					url: $CustomDriver.Interface.ComPleteOrder.Url,
-					method: $CustomDriver.Interface.ComPleteOrder.method,
-					data:{},
-					success(res) {
-						console.log(res);
-						if(res.data.status){
-							uni.showToast({
-								title:'订单完成！',
-								icon:'success',
-								complete() {
-									uni.navigateTo({
-										url:'./orderComplete'
-									})
-								}
-							})
-						}else {
-							uni.showToast({
-								title:res.data.msg,
-								icon:'none'
-							})
+				if(that.doneArray.length > 0){
+					uni.showToast({
+						title:'有乘客未上车',
+						icon:'none'
+					})
+				}else {
+					uni.request({
+						url: $CustomDriver.Interface.ComPleteOrder.Url,
+						method: $CustomDriver.Interface.ComPleteOrder.method,
+						data:{
+							AID:that.passengerArr[0].OrderAID
+						},
+						success(res) {
+							console.log(res);
+							if(res.data.status){
+								uni.showToast({
+									title:'订单完成！',
+									icon:'success',
+									complete() {
+										uni.navigateTo({
+											url:'./orderComplete'
+										})
+									}
+								})
+							}else {
+								uni.showToast({
+									title:res.data.msg,
+									icon:'none'
+								})
+							}
+						},
+						fail(res) {
+							console.log(res);
 						}
-					},
-					fail(res) {
-						console.log(res);
-					}
-				})
+					})
+				}
 			}
 
 

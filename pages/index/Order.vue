@@ -41,7 +41,7 @@
 
 								<view class="btnarea">
 									<view>
-										<button @click="toDetail(item[0].OrderState,item[0].OrderAID)" style="width: auto;">详情</button>
+										<button @click="toDetail(item[0].OrderState,item[0].OrderAID,item)" style="width: auto;">详情</button>
 									</view>
 									<!-- <view v-if="item.state == 1">
 										<button @click="toDepart(item)" style="background-color: #FC4646;color: #FFF;width: auto;">发车</button>
@@ -85,7 +85,7 @@
 								</view>
 								<view class="btnarea">
 									<view>
-										<button @click="toDetail(item[0].OrderState,item[0].OrderAID)" style="width: auto;">详情</button>
+										<button @click="toDetail(item[0].OrderState,item[0].OrderAID,item)" style="width: auto;">详情</button>
 									</view>
 								</view>
 							</view>
@@ -125,7 +125,7 @@
 								</view>
 								<view class="btnarea">
 									<view>
-										<button @click="toDetail(item[0].OrderState,item[0].OrderAID)" style="width: auto;">详情</button>
+										<button @click="toDetail(item[0].OrderState,item[0].OrderAID,item)" style="width: auto;">详情</button>
 									</view>
 								</view>
 							</view>
@@ -244,11 +244,11 @@
 				}
 			},
 			//详情
-			toDetail: function(item,OrderAID) {
+			toDetail: function(item,OrderAID,orderItem) {
 				let that = this;
 				if (item== 0) {
 					uni.navigateTo({
-						url: '../JKSJ/Destination?OrderAID=' + OrderAID
+						url: '../JKSJ/Destination?orderArr=' + encodeURIComponent(JSON.stringify(orderItem))
 					});
 				} else {
 					uni.navigateTo({
