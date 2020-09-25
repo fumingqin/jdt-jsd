@@ -79,7 +79,7 @@
 				showLocation: true,
 				scale: 18, //地图缩放比例,值越小地图可视范围越大
 				polyline: [], //画线数组
-				passengerArr:[],
+				passengerArr:[],//接客订单数组（后面需要改名）
 				PassengerIndex:null,
 				//地图标识宽高
 				iconWidth: 50,
@@ -125,7 +125,6 @@
 //----------------------------------------------------功能方法区开始----------------------------------------------------
 			//-------------------------------获取自身位置-------------------------------
 			getMyLocation: function() {
-				var that = this;
 				uni.getLocation({
 					//type默认为wgs84返回gps坐标,gcj02返回国测局坐标,可用于uni.openLocation的坐标
 					type: "gcj02",
@@ -150,6 +149,7 @@
 			},
 			//-------------------------------点击查看乘客信息-------------------------------
 			passengerclick:function(){
+				//查看乘客信息时先根据司机ID获取接客订单
 				that.GetOrderByDriverID(that.passengerArr[0].DriverID)
 				setTimeout(function(){
 					if(that.passengerArr.length == 0){
@@ -160,8 +160,7 @@
 					}else {
 						that.$refs.popup.open()
 					}
-				},2000)
-				
+				},300)
 			},
 			//-------------------------------点击乘客-------------------------------
 			passengerSingleClick:function(orderArr,index){
@@ -174,15 +173,16 @@
 					PickUpAddress : orderArr.PickUpAddress,
 					State : orderArr.State,
 				}
-				that.showArray.push(currentPassengerArr),
+				that.showArray.push(currentPassengerArr)
 				
-				that.startLatitude = orderArr.PickUpLatitude,
-				that.startLongitude = orderArr.PickUpLongitude,
-				that.startAddress = orderArr.PickUpAddress,
-				that.passengerID = orderArr.AID,
-				that.passengerPhone = orderArr.PhoneNumber,
+				//选择乘客的时候将经纬度、地址、AID、电话、上车状态取出
+				that.startLatitude = orderArr.PickUpLatitude
+				that.startLongitude = orderArr.PickUpLongitude
+				that.startAddress = orderArr.PickUpAddress
+				//这里的passengerID是确认乘客上车时需要的AID
+				that.passengerID = orderArr.AID
+				that.passengerPhone = orderArr.PhoneNumber
 				that.isBoard = orderArr.State
-				// that.currentPassengerArr.push(currentPassengerArr)
 			},
 			//-------------------------------点击拉起导航-------------------------------
 			guideClick:function(){
@@ -238,14 +238,16 @@
 							PickUpAddress : that.passengerArr[i].PickUpAddress,
 							State : that.passengerArr[i].State,
 						}
-						that.showArray.push(currentPassengerArr),
-						that.startLatitude = that.passengerArr[i].PickUpLatitude,
-						that.startLongitude = that.passengerArr[i].PickUpLongitude,
-						that.startAddress = that.passengerArr[i].PickUpAddress,
-						that.passengerPhone = that.passengerArr[i].PhoneNumber,
-						that.isBoard = that.passengerArr[i].State,
+						that.showArray.push(currentPassengerArr)
+						
+						//在地图上选择乘客的时候将经纬度、地址、AID、电话、上车状态取出
+						that.startLatitude = that.passengerArr[i].PickUpLatitude
+						that.startLongitude = that.passengerArr[i].PickUpLongitude
+						that.startAddress = that.passengerArr[i].PickUpAddress
+						that.passengerPhone = that.passengerArr[i].PhoneNumber
+						that.isBoard = that.passengerArr[i].State
+						//这里的passengerID是确认乘客上车时需要的AID
 						that.passengerID = that.passengerArr[i].AID
-						// that.currentPassengerArr.push(currentPassengerArr)
 					}
 				}
 			},
@@ -258,7 +260,8 @@
             		uni.showLoading({
             			title:'加载中...'
             		})
-            		console.log(that.passengerID)
+            		// console.log(that.passengerID)
+					//that.passengerID在弹框选择乘客、地图标点选择乘客时赋值
             		uni.request({
             			url: $CustomDriver.Interface.ConfirmBoard.Url,
             			method:$CustomDriver.Interface.ConfirmBoard.method,
@@ -268,11 +271,17 @@
             			success(res) {
             				uni.hideLoading()
             				console.log(res);
-							uni.showToast({
-								title:'已确认上车',
-								icon:'success'
-							})
-							that.GetOrderByDriverID(that.passengerArr[0].DriverID)
+							if(res.data.status == true){
+								setTimeout(function(){
+									uni.showToast({
+										title:'已确认上车',
+										icon:'success'
+									})
+								},1000)
+								
+								//确认上车之后再请求一次根据司机ID获取接客订单
+								that.GetOrderByDriverID(that.passengerArr[0].DriverID)
+							}
             			},
             			fail(res) {
             				uni.hideLoading()
@@ -297,10 +306,12 @@
 						}
 					}
 				})
+				
 				that.completeOrder();
 			},
-			GetOrderByDriverID:function(driverID,passengerID){
-				console.log(driverID);
+			//-------------------------------根据司机ID获取接客订单-------------------------------
+			GetOrderByDriverID:function(driverID){
+				// console.log(driverID);
 				uni.showLoading()
 				uni.request({
 					url: $CustomDriver.Interface.GetOrderByDriverID.Url,
@@ -312,17 +323,19 @@
 						uni.hideLoading();
 						console.log(res)
 						if (res.data.status) {
+							//给接客订单数组重新赋值
 							that.passengerArr = res.data.data;
 							for(var i = 0; i < res.data.data.length;i++){
-								if(passengerID == res.data.data[i].passengerID){
+								//当有乘客确认上车时给显示的数组重新赋值
+								if(that.passengerID == res.data.data[i].AID){
 									var currentPassengerArr = {
 										PassengerName :res.data.data[i].PassengerName,
 										PhoneNumber : res.data.data[i].PhoneNumber,
 										PickUpAddress : res.data.data[i].PickUpAddress,
 										State : res.data.data[i].State,
 									}
-									that.showArray = currentPassengerArr
-									console.log(that.showArray);
+									that.showArray.push(currentPassengerArr)
+									// console.log(that.showArray);
 								}
 							}
 							//把数组中满足条件的值重新生成一个数组，赋值给arr

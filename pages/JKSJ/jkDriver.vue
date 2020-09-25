@@ -150,7 +150,7 @@
 				uni.getStorage({
 					key:'userInfo',
 					success:function(res){
-						console.log(res);
+						console.log('读取司机缓存',res);
 						if(res.data){
 							// that.GetOrderByDriverID(res.data.AID)
 							uni.request({
@@ -189,10 +189,16 @@
 					},
 					success: function(res) {
 						uni.hideLoading();
-						console.log(res)
+						console.log('发车成功',res)
 						if (res.data.status) {
-							uni.navigateTo({
-								url:'./Destination?orderArr=' + encodeURIComponent(JSON.stringify(that.orderArr))
+							uni.showToast({
+								title:'发车成功',
+								icon:'success',
+								complete() {
+									uni.navigateTo({
+										url:'./Destination?orderArr=' + encodeURIComponent(JSON.stringify(that.orderArr))
+									})
+								}
 							})
 						} else {
 							that.showToast(res.data.msg);
