@@ -147,28 +147,38 @@
 //----------------------------------------------------网络请求方法区开始----------------------------------------------------
             //-----------------------------------------根据司机ID获取接客订单-----------------------------------------
 			getOrder: function(userId, vehicleNumber) {
-				uni.request({
-					url: that.$CustomDriver.Interface.GetOrderByDriverID.Url,
-					method: that.$CustomDriver.Interface.GetOrderByDriverID.method,
-					data: {
-						DriverID: "2020-09-22-f9f9da9f-9e98-4ecb-a7a0-36a63c6cd31d",
-					},
-					success: function(res) {
-						uni.hideLoading();
-						console.log(res)
-						if (res.data.status) {
-							that.orderArr = [];
-							that.orderArr = res.data.data;
-						} else {
-							that.showToast(res.data.msg);
+				uni.getStorage({
+					key:'userInfo',
+					success:function(res){
+						console.log(res);
+						if(res.data){
+							// that.GetOrderByDriverID(res.data.AID)
+							uni.request({
+								url: that.$CustomDriver.Interface.GetOrderByDriverID.Url,
+								method: that.$CustomDriver.Interface.GetOrderByDriverID.method,
+								data: {
+									DriverID: res.data.AID,
+								},
+								success: function(res) {
+									uni.hideLoading();
+									console.log(res)
+									if (res.data.status) {
+										that.orderArr = [];
+										that.orderArr = res.data.data;
+									} else {
+										that.showToast(res.data.msg);
+									}
+								},
+								fail: function(res) {
+									uni.hideLoading();
+									that.showToast('网络连接失败');
+									//console.log(res);
+								}
+							})
 						}
-					},
-					fail: function(res) {
-						uni.hideLoading();
-						that.showToast('网络连接失败');
-						//console.log(res);
 					}
 				})
+				
 			},
 			PullOut: function(userId, vehicleNumber) {
 				uni.request({
