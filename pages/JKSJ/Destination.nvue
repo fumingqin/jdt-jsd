@@ -262,6 +262,7 @@
             			title:'加载中...'
             		})
             		// console.log(that.passengerID)
+					// that.GetOrderByDriverID(that.passengerArr[0].DriverID)
 					//that.passengerID在弹框选择乘客、地图标点选择乘客时赋值
             		uni.request({
             			url: $CustomDriver.Interface.ConfirmBoard.Url,
