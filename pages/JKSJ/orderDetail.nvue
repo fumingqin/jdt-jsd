@@ -7,10 +7,10 @@
 			<text style="width:140rpx;height:40rpx;font-size:30rpx;font-family:Source Han Sans SC;color:#666666;line-height:36rpx; margin-left: 24rpx;">已完成</text>
 			</view>
 			<view class="passenger" v-for='(item, index) in orderArr' :key='index'>
-				<view class="passengerInfo-single">
-					<text class="passengerInfo-text">乘客：{{item.PassengerName}}</text>
-					<text class="passengerInfo-text">电话：{{item.PhoneNumber}}</text>
-					<text class="passengerInfo-text">上车点：{{item.PickUpAddress}}</text>
+				<view class="passengerInfo-single" v-for='(passager1, index1) in item' :key='index1'>
+					<text class="passengerInfo-text">乘客：{{passager1.PassengerName}}</text>
+					<text class="passengerInfo-text">电话：{{passager1.PhoneNumber}}</text>
+					<text class="passengerInfo-text">上车点：{{passager1.PickUpAddress}}</text>
 				</view>
 				<view class="AllInfo" v-if="orderArr.length > 3">查看全部</view>
 			</view>
@@ -89,6 +89,7 @@
 								console.log(res)
 								that.orderArr = [];
 								that.orderArr = res.data.data;
+								console.log(that.orderArr)
 							} else {
 								uni.showToast({
 									title: res.data.msg,

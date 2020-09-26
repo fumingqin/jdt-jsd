@@ -334,7 +334,8 @@
 		background-color: #FFF;
 		border-radius: 20rpx;
 		font-size: 32rpx;
-		height: 100rpx;
+		height: 150rpx;
+		padding: 28rpx;
 		color: rgba(51, 51, 51, 1);
 		padding: 33rpx 38rpx;
 		display: flex;

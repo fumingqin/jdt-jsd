@@ -27,7 +27,7 @@
 									<view class="orderstatus">{{formatState(item[0].OrderState)}}</view>
 								</view>
 
-								<view class="passengerView" v-for='(passager, index) in item' :key='index'>
+								<view class="passengerView" v-for='(passager, index1) in item' :key='index1'>
 									<view class="passengerView_info">
 										<view>乘客：{{passager.PassengerName}}</view>
 									</view>
@@ -72,7 +72,7 @@
 									<view class="orderstatus">{{formatState(item[0].OrderState)}}</view>
 								</view>
 
-								<view class="passengerView" v-for='(passager, index) in item' :key='index'>
+								<view class="passengerView" v-for='(passager, index1) in item' :key='index1'>
 									<view class="passengerView_info">
 										<view>乘客：{{passager.PassengerName}}</view>
 									</view>
@@ -112,7 +112,7 @@
 									<view class="orderstatus">{{formatState(item[0].OrderState)}}</view>
 								</view>
 
-								<view class="passengerView" v-for='(passager, index) in item' :key='index'>
+								<view class="passengerView" v-for='(passager, index1) in item' :key='index1'>
 									<view class="passengerView_info">
 										<view>乘客：{{passager.PassengerName}}</view>
 									</view>
