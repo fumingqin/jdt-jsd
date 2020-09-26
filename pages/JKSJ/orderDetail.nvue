@@ -3,17 +3,25 @@
 			<map id="map" ref='map' class="map" :style="{height:mapHeight}" :latitude="centerLatitude" :longitude="centerLongitude"
 			 :markers="markers" :show-location="showLocation" :scale="scale">
 			</map>
-			<view style="width: 698rpx;height: 80rpx; background-color: #FFFFFF;margin-left: 28rpx; border-radius:20rpx; margin-top: 16rpx; padding: 20rpx;position: fixed;bottom: 460rpx;">
-			<text style="width:140rpx;height:40rpx;font-size:30rpx;font-family:Source Han Sans SC;color:#666666;line-height:36rpx; margin-left: 24rpx;">已完成</text>
+			<view @click="doneClick" v-if="fales">
 			</view>
-			<view class="passenger" v-for='(item, index) in orderArr' :key='index'>
-				<view class="passengerInfo-single" v-for='(passager1, index1) in item' :key='index1'>
-					<text class="passengerInfo-text">乘客：{{passager1.PassengerName}}</text>
-					<text class="passengerInfo-text">电话：{{passager1.PhoneNumber}}</text>
-					<text class="passengerInfo-text">上车点：{{passager1.PickUpAddress}}</text>
+			
+			<uni-popup ref="popup" type="bottom">
+				<view style="background-color: #FFFFFF;border-bottom-color: #007AFF;border-bottom-width: 1rpx;height: 80rpx;flex-direction: row;align-items: center;justify-content: center;">
+					<text style="font-weight: bold; font-size:30rpx;font-family:Source Han Sans SC;color:#666666;margin-left: 30rpx;">已完成</text>
 				</view>
-				<view class="AllInfo" v-if="orderArr.length > 3">查看全部</view>
-			</view>
+				
+				<view class="passengerInfo" v-for="(item,index) in orderArr" :key="index">
+				     <view class="passengerInfo-content">
+						 <view class="passengerInfo-single">
+						 	<text class="passengerInfo-text">乘客：{{item.PassengerName}}</text>
+						 	<text class="passengerInfo-text">电话：{{item.PhoneNumber}}</text>
+						 	<text class="passengerInfo-text">上车点：{{item.PickUpAddress}}</text>
+						 </view>
+					 </view>
+				</view>
+			</uni-popup>
+			
 		</view>
 	</template>
 	
@@ -46,8 +54,11 @@
 					orderArr: [],
 				}
 			},
+			onShow() {
+				
+			},
 			onLoad(option) {
-				let that = this;
+				that = this;
 				
 				//获取系统信息
 				uni.getSystemInfo({
@@ -73,6 +84,10 @@
 				that.getMyLocation();
 				//绘制标记点
 				// that.setMarker();
+				setTimeout(function(){
+					that.doneClick()
+				},500)
+				
 			},
 			methods: {
 				//-------------------------------请求订单详情数据-------------------------------
@@ -130,22 +145,8 @@
 						}
 					});
 				},
-				//-------------------------------点击乘客信息-------------------------------
-				passengerclick:function(){
+				doneClick:function(){
 					that.$refs.popup.open()
-				},
-				passengerSingleClick:function(orderArr,index){
-					console.log("点击了乘客")
-					
-					that.PassengerIndex = index;
-				},
-				//-------------------------------点击拉起导航-------------------------------
-				guideClick:function(){
-					console.log("点击了拉起导航")
-				},
-				//-------------------------------点击联系电话-------------------------------
-				phoneClick:function(){
-					console.log("点击了联系电话")
 				},
 				//-------------------------------地图标点-------------------------------
 				setMarker:function(){
@@ -188,31 +189,14 @@
 		.map {
 			width: 750rpx;	
 		}
-		.slider{
-			background-color: #FFFFFF;
-			position: fixed;
-			bottom: 30rpx;
-			margin-left: 25rpx;
-			height: 110rpx;
-			width: 700rpx;
-			border-radius: 20rpx;
-			text-align: center;
-			background-color: #474747;
-			flex-direction: row;
-			align-items: center;
-			justify-content: center;
-		}
 		.passenger{
-			background-color: #FFFFFF;
-			position: fixed;
-			bottom: 170rpx;
-			width: 700rpx;
-			height: 245rpx;
-			margin-left: 25rpx;
+			width: 690rpx;
+			bottom: 30rpx;
+			margin-left: 30rpx;
+			margin-right: 30rpx;
 			border-radius: 20rpx;
-			flex-direction: row;
-			align-items: center;
-			justify-content: space-between;
+			position: fixed;
+			background-color: #FFFFFF;
 		}
 		.order{
 			background-color: #FFFFFF;
@@ -239,40 +223,13 @@
 			margin-bottom: 10rpx;
 			border-radius: 10rpx;
 		}
-		.passengerInfo-content-click{
-			flex-direction: row;
-			align-items: center;
-			justify-content: space-between;
-			margin-top: 10rpx;
-			margin-left: 10rpx;
-			margin-right: 10rpx;
-			margin-bottom: 10rpx;
-			border-radius: 10rpx;
-			border-color: #007AFF;
-			border-width: 1rpx;
-		}
-		.passengerInfo-single{
-			margin-top: 50rpx;
-			margin-left: 50rpx;
-			margin-right: 50rpx;
-		}
 		.passengerInfo-text{
 			font-size: 30rpx;
 			color: #343434;
 			font-weight: 300;
 			margin-bottom: 25rpx;
 		}
-		.imageView{
-			margin-right: 50rpx;
-		}
-		.bottomButton{
-			flex-direction: row;
-			align-items: center;
-			justify-content: space-between;
-			background-color: #FFFFFF;
-			padding-top: 20rpx;
-			padding-bottom: 30rpx;
-		}
+		
 		.guide{
 			margin-left: 50rpx;
 			background-color: #FA7466;

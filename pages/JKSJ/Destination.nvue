@@ -232,6 +232,7 @@
 				that.showArray = [];
 				for(var i = 0; i < that.passengerArr.length;i++){
 					if(option.detail.markerId == i){
+						that.showArray = [];
 						var currentPassengerArr = {
 							PassengerName : that.passengerArr[i].PassengerName,
 							PhoneNumber : that.passengerArr[i].PhoneNumber,
@@ -328,6 +329,7 @@
 							for(var i = 0; i < res.data.data.length;i++){
 								//当有乘客确认上车时给显示的数组重新赋值
 								if(that.passengerID == res.data.data[i].AID){
+									that.showArray = [];
 									var currentPassengerArr = {
 										PassengerName :res.data.data[i].PassengerName,
 										PhoneNumber : res.data.data[i].PhoneNumber,
@@ -335,7 +337,7 @@
 										State : res.data.data[i].State,
 									}
 									that.showArray.push(currentPassengerArr)
-									// console.log(that.showArray);
+									console.log('确认上车后刷新数据',that.showArray);
 								}
 							}
 							//把数组中满足条件的值重新生成一个数组，赋值给arr
