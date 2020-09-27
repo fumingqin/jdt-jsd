@@ -195,6 +195,7 @@
 			getTaxiOrder: function() {
 				let that = this;
 				uni.stopPullDownRefresh();
+				uni.hideLoading();
 				uni.request({
 					url: that.$order.Interface.GetOrderListByDriverID.value,
 					method: that.$order.Interface.GetOrderListByDriverID.method,
