@@ -190,7 +190,8 @@
 			},
 			//-------------------------------点击拉起导航-------------------------------
 			guideClick:function(){
-				console.log(that.showArray);
+				// console.log(that.showArray);
+				//选择乘客时会将乘客数据放入数组，若数组为空则表示没有选乘客-->提示选择乘客
 				if(that.showArray.length > 0){
 					if(that.showArray[0].State == 2){
 						uni.showModal({
