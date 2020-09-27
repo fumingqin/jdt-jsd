@@ -92,7 +92,8 @@
 				startLatitude:'',
 				startLongitude:'',
 				startAddress:'',
-				passengerPhone:'',//电话
+				passengerPhone:'',//乘客手机号
+				DriverPhone:'',//司机手机号
 				showArray:[],
 				doneArray:[],//完成订单时用到
 			}
@@ -147,7 +148,7 @@
 					}
 				});
 			},
-			//-------------------------------点击查看乘客信息-------------------------------
+			//-------------------------------查看乘客信息-------------------------------
 			passengerclick:function(){
 				//查看乘客信息时先根据司机ID获取接客订单
 				that.GetOrderByDriverID(that.passengerArr[0].DriverID)
@@ -181,14 +182,39 @@
 				that.startAddress = orderArr.PickUpAddress
 				//这里的passengerID是确认乘客上车时需要的AID
 				that.passengerID = orderArr.AID
+				//乘客手机号
 				that.passengerPhone = orderArr.PhoneNumber
+				//司机手机号
+				that.DriverPhone = orderArr.DriverPhone
 				that.isBoard = orderArr.State
 			},
 			//-------------------------------点击拉起导航-------------------------------
 			guideClick:function(){
-				console.log(that.startLatitude, that.startLongitude);
-				Map.openMap(that.startLatitude, that.startLongitude, that.startAddress, 'gcj02');
-				// Map.openMap(24.876465, 118.570195, that.startAddress, 'gcj02');
+				console.log(that.showArray);
+				if(that.showArray.length > 0){
+					if(that.showArray[0].State == 2){
+						uni.showModal({
+							title:'该乘客已上车，是否拉起导航',
+							success(res) {
+								if(res.confirm){
+									Map.openMap(that.startLatitude, that.startLongitude, that.startAddress, 'gcj02');
+								}
+							}
+						})
+					}else if(that.showArray[0].State == 1){
+						Map.openMap(that.startLatitude, that.startLongitude, that.startAddress, 'gcj02');
+						// Map.openMap(24.876465, 118.570195, that.startAddress, 'gcj02');
+						//拉起导航时发送信息给乘客
+						that.SendMessageBoforeGet();
+					}else {
+						console.log('乘客上车状态',that.showArray[0].State);
+					}
+				}else {
+					uni.showToast({
+						title:'请选择要拉起导航的乘客',
+						icon:'none'
+					})
+				}
 			},
 			//-------------------------------点击联系电话-------------------------------
 			phoneClick:function(){
@@ -245,7 +271,10 @@
 						that.startLatitude = that.passengerArr[i].PickUpLatitude
 						that.startLongitude = that.passengerArr[i].PickUpLongitude
 						that.startAddress = that.passengerArr[i].PickUpAddress
+						//乘客手机号
 						that.passengerPhone = that.passengerArr[i].PhoneNumber
+						//司机手机号
+						that.DriverPhone = that.passengerArr[i].DriverPhone
 						that.isBoard = that.passengerArr[i].State
 						//这里的passengerID是确认乘客上车时需要的AID
 						that.passengerID = that.passengerArr[i].AID
@@ -396,6 +425,22 @@
 						}
 					})
 				}
+			},
+			SendMessageBoforeGet:function(){
+				uni.request({
+					url:$CustomDriver.Interface.SendMessageBoforeGet.Url,
+					method:$CustomDriver.Interface.SendMessageBoforeGet.method,
+					data:{
+						phoneNumber:that.passengerPhone,
+						DriverPhone:that.DriverPhone
+					},
+					success(res) {
+						console.log('发送信息成功',res);
+					},
+					fail(res) {
+						console.log('发送信息失败',res);
+					}
+				})
 			}
 
 

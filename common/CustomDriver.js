@@ -34,6 +34,11 @@ const Interface = {
 		method :method,
 		name   :'发车'
 	},
+	SendMessageBoforeGet:{
+		Url    :'https://appdl.xmjdt.cn:18443' + '/api/SendCar/SendMessageBoforeGet',
+		method :'GET',
+		name   :'司机拉起导航时发送短信告知乘客，司机即将前往接送'
+	},
 }
 
 
