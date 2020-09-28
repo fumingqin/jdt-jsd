@@ -74,12 +74,14 @@
 						title: '请输入账号',
 						icon:'none'
 					});
-				}else if(this.password == ""){
-					uni.showToast({
-						title: '请输入密码',
-						icon:'none'
-					});
-				}else if(this.userType == "定制客运"){
+				}
+				// else if(this.password == ""){
+				// 	uni.showToast({
+				// 		title: '请输入密码',
+				// 		icon:'none'
+				// 	});
+				// }
+				else if(this.userType == "定制客运"){
 					this.ky_login();
 				}else if(this.userType == "接客司机"){
 					this.jk_login();
@@ -99,7 +101,7 @@
 					method: this.$GrzxInter.Interface.ky_login.method,
 					data: {
 						User:this.phoneNumber,
-						Passwod:'',
+						Passwod:this.password,
 						Code:this.address,
 					},
 					success: res => {
