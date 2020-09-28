@@ -17,11 +17,11 @@
 		<!-- 出租车-今日接单量 -->
 		<view v-if="buttonActive" style="width: 94%;height: 105rpx; background-color: #FFFFFF;margin-left: 22rpx; border-radius:20rpx;margin-top: 30rpx;margin-bottom: 30rpx;">
 			<view style="padding: 30rpx;display: flex;justify-content: space-between;align-items: center;">
-				<text style="font-size:36rpx;font-family:Source Han Sans SC;font-weight:bold;color:rgba(44,45,45,1);line-height:42rpx;">今日班次量</text>
+				<text style="font-size:36rpx;font-family:Source Han Sans SC;font-weight:bold;color:rgba(44,45,45,1);line-height:42rpx;">今日订单</text>
 				<view style="display: flex;align-items: center;">
-					<view style="margin:0 20rpx;width: 40rpx;height: 40rpx;border-radius: 100px;background: linear-gradient(270deg,rgba(250,116,101,1),rgba(249,92,117,1));font-size: 26rpx;color: #FFF;text-align: center;font-weight: 600;">
+					<!-- <view style="margin:0 20rpx;width: 40rpx;height: 40rpx;border-radius: 100px;background: linear-gradient(270deg,rgba(250,116,101,1),rgba(249,92,117,1));font-size: 26rpx;color: #FFF;text-align: center;font-weight: 600;">
 						{{taxiOrderNum}}
-					</view>
+					</view> -->
 					<!-- <image style="width: 14rpx;height: 26rpx;" src="../../static/driver/right.png"></image> -->
 				</view>
 			</view>
@@ -130,9 +130,8 @@
 						icon:'none'
 					})
 				}else {
-					uni.navigateTo({
-						url:'./Destination?orderArr=' + encodeURIComponent(JSON.stringify(that.orderArr))
-					})
+					//发车
+					that.PullOut();
 				}
 			},
 			//-----------------------------------------格式化时间-----------------------------------------
@@ -148,18 +147,59 @@
 //----------------------------------------------------网络请求方法区开始----------------------------------------------------
             //-----------------------------------------根据司机ID获取接客订单-----------------------------------------
 			getOrder: function(userId, vehicleNumber) {
+				uni.getStorage({
+					key:'userInfo',
+					success:function(res){
+						console.log('读取司机缓存',res);
+						if(res.data){
+							// that.GetOrderByDriverID(res.data.AID)
+							uni.request({
+								url: that.$CustomDriver.Interface.GetOrderByDriverID.Url,
+								method: that.$CustomDriver.Interface.GetOrderByDriverID.method,
+								data: {
+									DriverID: res.data.AID,
+								},
+								success: function(res) {
+									uni.hideLoading();
+									console.log(res)
+									if (res.data.status) {
+										that.orderArr = [];
+										that.orderArr = res.data.data;
+									} else {
+										that.showToast(res.data.msg);
+									}
+								},
+								fail: function(res) {
+									uni.hideLoading();
+									that.showToast('网络连接失败');
+									//console.log(res);
+								}
+							})
+						}
+					}
+				})
+				
+			},
+			PullOut: function(userId, vehicleNumber) {
 				uni.request({
-					url: that.$CustomDriver.Interface.GetOrderByDriverID.Url,
-					method: that.$CustomDriver.Interface.GetOrderByDriverID.method,
+					url: that.$CustomDriver.Interface.PullOut.Url,
+					method: that.$CustomDriver.Interface.PullOut.method,
 					data: {
-						DriverId: "2020-09-22-f9f9da9f-9e98-4ecb-a7a0-36a63c6cd31d",
+						AID:that.orderArr[0].OrderAID
 					},
 					success: function(res) {
 						uni.hideLoading();
-						console.log(res)
+						console.log('发车成功',res)
 						if (res.data.status) {
-							that.orderArr = [];
-							that.orderArr = res.data.data;
+							uni.showToast({
+								title:'发车成功',
+								icon:'success',
+								complete() {
+									uni.navigateTo({
+										url:'./Destination?orderArr=' + encodeURIComponent(JSON.stringify(that.orderArr))
+									})
+								}
+							})
 						} else {
 							that.showToast(res.data.msg);
 						}
@@ -200,7 +240,11 @@
 		margin-left: 22rpx;
 		border-radius:20rpx;
 		.passengerView_info{
+			text-overflow: ellipsis;
+			overflow: hidden;
+			white-space: nowrap;
 			display: inline-block;
+			width: 60%;
 			font-size: 30rpx;
 			color: #333333;
 		}

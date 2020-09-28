@@ -454,7 +454,7 @@
 		background-color: #FFF;
 		box-shadow: 0px 8px 20px 0px rgba(172, 172, 172, 0.55);
 		z-index: 99999;
-		height: 40px;
+		height: 60px;
 	}
 	
 	.tabbarItem {

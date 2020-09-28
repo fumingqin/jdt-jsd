@@ -27,7 +27,7 @@
 									<view class="orderstatus">{{formatState(item[0].OrderState)}}</view>
 								</view>
 
-								<view class="passengerView" v-for='(passager, index) in item' :key='index'>
+								<view class="passengerView" v-for='(passager, index1) in item' :key='index1'>
 									<view class="passengerView_info">
 										<view>乘客：{{passager.PassengerName}}</view>
 									</view>
@@ -41,7 +41,7 @@
 
 								<view class="btnarea">
 									<view>
-										<button @click="toDetail(item[0].OrderState,item[0].OrderAID)" style="width: auto;">详情</button>
+										<button @click="toDetail(item[0].OrderState,item[0].OrderAID,item)" style="width: auto;">详情</button>
 									</view>
 									<!-- <view v-if="item.state == 1">
 										<button @click="toDepart(item)" style="background-color: #FC4646;color: #FFF;width: auto;">发车</button>
@@ -72,7 +72,7 @@
 									<view class="orderstatus">{{formatState(item[0].OrderState)}}</view>
 								</view>
 
-								<view class="passengerView" v-for='(passager, index) in item' :key='index'>
+								<view class="passengerView" v-for='(passager, index1) in item' :key='index1'>
 									<view class="passengerView_info">
 										<view>乘客：{{passager.PassengerName}}</view>
 									</view>
@@ -85,7 +85,7 @@
 								</view>
 								<view class="btnarea">
 									<view>
-										<button @click="toDetail(item[0].OrderState,item[0].OrderAID)" style="width: auto;">详情</button>
+										<button @click="toDetail(item[0].OrderState,item[0].OrderAID,item)" style="width: auto;">详情</button>
 									</view>
 								</view>
 							</view>
@@ -112,7 +112,7 @@
 									<view class="orderstatus">{{formatState(item[0].OrderState)}}</view>
 								</view>
 
-								<view class="passengerView" v-for='(passager, index) in item' :key='index'>
+								<view class="passengerView" v-for='(passager, index1) in item' :key='index1'>
 									<view class="passengerView_info">
 										<view>乘客：{{passager.PassengerName}}</view>
 									</view>
@@ -125,7 +125,7 @@
 								</view>
 								<view class="btnarea">
 									<view>
-										<button @click="toDetail(item[0].OrderState,item[0].OrderAID)" style="width: auto;">详情</button>
+										<button @click="toDetail(item[0].OrderState,item[0].OrderAID,item)" style="width: auto;">详情</button>
 									</view>
 								</view>
 							</view>
@@ -195,6 +195,7 @@
 			getTaxiOrder: function() {
 				let that = this;
 				uni.stopPullDownRefresh();
+				uni.hideLoading();
 				uni.request({
 					url: that.$order.Interface.GetOrderListByDriverID.value,
 					method: that.$order.Interface.GetOrderListByDriverID.method,
@@ -244,11 +245,11 @@
 				}
 			},
 			//详情
-			toDetail: function(item,OrderAID) {
+			toDetail: function(item,OrderAID,orderItem) {
 				let that = this;
 				if (item== 0) {
 					uni.navigateTo({
-						url: '../JKSJ/Destination?OrderAID=' + OrderAID
+						url: '../JKSJ/Destination?orderArr=' + encodeURIComponent(JSON.stringify(orderItem))
 					});
 				} else {
 					uni.navigateTo({

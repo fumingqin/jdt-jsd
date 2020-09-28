@@ -8,8 +8,8 @@
 			<text class="fontClass" @click="loginClick">登录</text>
 			
 			<!-- <image src="../../static/grzx/btnLogin.png" class="registerClass" ></image> -->
-			<text class="registerClass" @click="registerClick">注册</text>
-			<text class="textClass">司机需经过注册审核后方可登录</text>
+			<!-- <text class="registerClass" @click="registerClick">注册</text> -->
+			<!-- <text class="textClass">司机需经过注册审核后方可登录</text> -->
 		</view>
 		<image src="../../static/grzx/logo.png" class="logoClass"></image>
 	</view>
